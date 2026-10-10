@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime.DvU585tb.js";import{r as t}from"./src.CvzYofXu.js";import{r as n,t as r}from"./analyzerMode.D8Bhlvd_.js";var i=e();function a({views:e,...a}){let o=n(e.map(e=>e.mode)),s=r(e,o);return(0,i.jsx)(t,{...a,cases:s.cases,families:s.families,mode:o})}export{a as default};

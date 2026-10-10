@@ -1,0 +1,1 @@
+import{r as e,t}from"./react.yIOJJ3r4.js";import{a as n}from"./src.CPEPxRSo.js";import{t as r}from"./jsx-runtime.DvU585tb.js";var i=e(t(),1),a=r();function o({id:e=`subscribe`}){let[t,r]=(0,i.useState)(`unavailable`);return(0,a.jsx)(n,{id:e,status:t,action:void 0,onSubmit:void 0})}export{o as default};

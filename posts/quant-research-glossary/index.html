@@ -1,0 +1,538 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）｜TradePose Research</title><meta name="description" content="研究文章與策略報告常用的術語整理：計算模式與單位、MAE／G_MFE／MFE 等偏移指標、績效與回撤、研究階段與父策略、延遲進場、停損停利與保本、參數選擇。每條附英文術語、定義與公式，以及容易混淆的地方。"><meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large"><link rel="canonical" href="https://research.tradepose.com/posts/quant-research-glossary/"><link rel="alternate" type="application/rss+xml" title="TradePose Research" href="/rss.xml"><meta property="og:site_name" content="TradePose Research"><meta property="og:locale" content="zh_TW"><meta property="og:type" content="article"><meta property="og:title" content="MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）"><meta property="og:description" content="研究文章與策略報告常用的術語整理：計算模式與單位、MAE／G_MFE／MFE 等偏移指標、績效與回撤、研究階段與父策略、延遲進場、停損停利與保本、參數選擇。每條附英文術語、定義與公式，以及容易混淆的地方。"><meta property="og:url" content="https://research.tradepose.com/posts/quant-research-glossary/"><meta property="og:image" content="https://research.tradepose.com/og-default.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）"><meta name="twitter:description" content="研究文章與策略報告常用的術語整理：計算模式與單位、MAE／G_MFE／MFE 等偏移指標、績效與回撤、研究階段與父策略、延遲進場、停損停利與保本、參數選擇。每條附英文術語、定義與公式，以及容易混淆的地方。"><meta name="twitter:image" content="https://research.tradepose.com/og-default.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）","description":"研究文章與策略報告常用的術語整理：計算模式與單位、MAE／G_MFE／MFE 等偏移指標、績效與回撤、研究階段與父策略、延遲進場、停損停利與保本、參數選擇。每條附英文術語、定義與公式，以及容易混淆的地方。","articleSection":"方法論","keywords":"量化交易名詞, Glossary, MAE, MFE, G_MFE, Profit Factor, Recovery Factor, Max Drawdown, Delayed Entry, Stop Loss, Trailing Stop, Breakeven, Overfitting, 獲利因子, 最大回撤","inLanguage":"zh-Hant","datePublished":"2026-10-08T23:52:00+08:00","dateModified":"2026-10-08T23:52:00+08:00","image":"https://research.tradepose.com/og-default.png","url":"https://research.tradepose.com/posts/quant-research-glossary/","mainEntityOfPage":"https://research.tradepose.com/posts/quant-research-glossary/","author":{"@type":"Organization","name":"TradePose Research"},"publisher":{"@type":"Organization","name":"TradePose","url":"https://tradepose.com"}}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"研究","item":"https://research.tradepose.com/"},{"@type":"ListItem","position":2,"name":"MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）","item":"https://research.tradepose.com/posts/quant-research-glossary/"}]}</script><script>try { const q = new URLSearchParams(location.search).get('theme'); if (q === 'light' || q === 'dark') sessionStorage.setItem('tp-theme', q); } catch {}
+try { const t = sessionStorage.getItem('tp-theme') ?? localStorage.getItem('tp-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; else if (t === 'system') delete document.documentElement.dataset.theme; } catch {}</script><link rel="stylesheet" href="/_astro/Base.Sx4b-Ppo.css"><style>html[data-view=report] [data-view-panel=article],html[data-view=case] [data-view-panel=article]{display:none}
+</style></head><body><a class="skip-link" href="#main">跳到主要內容</a><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><header class="site-header"><div class="container site-header__inner"><a class="site-brand" href="/"><span class="site-brand__mark" aria-hidden="true"></span>TradePose<span class="site-brand__sub">Research</span></a><div class="site-header__actions"><astro-island uid="Z1zQIYp" prefix="r20" component-url="/_astro/index.YUsP-8F-.js" component-export="ThemeToggle" renderer-url="/_astro/client.Dda4loRL.js" props="{}" ssr client="load" opts="{&quot;name&quot;:&quot;ThemeToggle&quot;,&quot;value&quot;:true}" await-children><div class="segmented" role="group" aria-label="主題"><button type="button" aria-pressed="false">淺色</button><button type="button" aria-pressed="false">深色</button></div><!--astro:end--></astro-island><a class="btn btn-primary btn-sm" href="/#subscribe">訂閱</a></div></div></header><main id="main"><div class="article"><div class="wide article-crumbs cluster cluster--between"><nav class="breadcrumbs" aria-label="麵包屑"><ol><li><a href="/">首頁</a></li><li><span aria-current="page">MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）</span></li></ol></nav></div></div><div class="article" data-view-panel="article"><div class="wide article-banner"><div class="article-cover article-cover--banner" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div></div><header class="article-header"><span class="category-chip">方法論</span><h1 class="article-title">MAE、<wbr/>G_MFE、<wbr/>獲利因子是什麼？<wbr/> 量化策略研究用詞表（Glossary）</h1><p class="article-dek"><p>同一個概念在交易圈常有好幾種說法，同一個詞在不同書裡也可能算法不同。這篇固定我們研究文章與策略報告裡每個術語的意思：英文術語、中文名稱、怎麼算，以及容易和哪個詞混淆。之後的文章都照這裡的定義寫。</p></p><dl class="article-meta"><div><dt>發布</dt><dd>2026-10-08 23:52</dd></div><div><dt>閱讀時間</dt><dd>12 分鐘</dd></div></dl></header><div><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value=="object"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};"requestIdleCallback"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event("astro:idle"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="ZKPXM3" prefix="r31" component-url="/_astro/index.YUsP-8F-.js" component-export="Toc" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;items&quot;:[1,[[0,{&quot;id&quot;:[0,&quot;報酬和回撤的數字是什麼單位&quot;],&quot;label&quot;:[0,&quot;報酬和回撤的數字是什麼單位？&quot;]}],[0,{&quot;id&quot;:[0,&quot;maeg_mfemfe-差在哪&quot;],&quot;label&quot;:[0,&quot;MAE、G_MFE、MFE 差在哪？&quot;]}],[0,{&quot;id&quot;:[0,&quot;怎麼看一個策略的報酬和風險&quot;],&quot;label&quot;:[0,&quot;怎麼看一個策略的報酬和風險？&quot;]}],[0,{&quot;id&quot;:[0,&quot;策略研究怎麼分層&quot;],&quot;label&quot;:[0,&quot;策略研究怎麼分層？&quot;]}],[0,{&quot;id&quot;:[0,&quot;延遲進場的-favorable-和-adverse-為什麼看起來是反的&quot;],&quot;label&quot;:[0,&quot;延遲進場的 Favorable 和 Adverse 為什麼看起來是反的？&quot;]}],[0,{&quot;id&quot;:[0,&quot;停損停利移動停損和保本怎麼運作&quot;],&quot;label&quot;:[0,&quot;停損、停利、移動停損和保本怎麼運作？&quot;]}],[0,{&quot;id&quot;:[0,&quot;怎麼判斷參數不是運氣&quot;],&quot;label&quot;:[0,&quot;怎麼判斷參數不是運氣？&quot;]}],[0,{&quot;id&quot;:[0,&quot;濾網和市場結構的用語&quot;],&quot;label&quot;:[0,&quot;濾網和市場結構的用語&quot;]}],[0,{&quot;id&quot;:[0,&quot;部位大小怎麼算&quot;],&quot;label&quot;:[0,&quot;部位大小怎麼算？&quot;]}],[0,{&quot;id&quot;:[0,&quot;faq-title&quot;],&quot;label&quot;:[0,&quot;常見問題&quot;]}],[0,{&quot;id&quot;:[0,&quot;method&quot;],&quot;label&quot;:[0,&quot;方法與資料&quot;]}]]]}" ssr client="idle" opts="{&quot;name&quot;:&quot;Toc&quot;,&quot;value&quot;:true}" await-children><nav class="toc" aria-label="目錄"><div class="toc-title" aria-hidden="true">目錄</div><button type="button" class="toc-toggle" aria-expanded="false" aria-controls="_r31R_0_"><span>目錄</span><span class="toc-count">11<!-- --> 節</span></button><ol class="toc-list" id="_r31R_0_"><li class=""><a href="#報酬和回撤的數字是什麼單位" aria-current="true">報酬和回撤的數字是什麼單位？</a></li><li class=""><a href="#maeg_mfemfe-差在哪">MAE、G_MFE、MFE 差在哪？</a></li><li class=""><a href="#怎麼看一個策略的報酬和風險">怎麼看一個策略的報酬和風險？</a></li><li class=""><a href="#策略研究怎麼分層">策略研究怎麼分層？</a></li><li class=""><a href="#延遲進場的-favorable-和-adverse-為什麼看起來是反的">延遲進場的 Favorable 和 Adverse 為什麼看起來是反的？</a></li><li class=""><a href="#停損停利移動停損和保本怎麼運作">停損、停利、移動停損和保本怎麼運作？</a></li><li class=""><a href="#怎麼判斷參數不是運氣">怎麼判斷參數不是運氣？</a></li><li class=""><a href="#濾網和市場結構的用語">濾網和市場結構的用語</a></li><li class=""><a href="#部位大小怎麼算">部位大小怎麼算？</a></li><li class=""><a href="#faq-title">常見問題</a></li><li class=""><a href="#method">方法與資料</a></li></ol></nav><!--astro:end--></astro-island></div>
+<div class="abstract"><div class="abstract-title">結論</div><p>讀我們的研究，最需要先知道三件事。第一，MFE 只量最大不利偏移（MAE）發生之前的有利走勢，整段持倉的最大有利走勢另稱 G_MFE，這和多數教科書的 MFE 不同。第二，報酬、回撤與 MAE 的單位跟著計算模式：百分比（%）、波動模式（vol，波動的倍數）或絕對數值（pts，價格點數）。第三，延遲進場的有利（Favorable）與不利（Adverse）是從掛單的角度命名，進場持倉後，同一個方向的走勢會換成相反的名字。</p></div><p class="reading-split">以上是結論；以下每一節是一個主張的證據，可以從各節或證據連結進入策略報告，看全部參數組的數據。</p>
+<div class="prose"><h2 id="報酬和回撤的數字是什麼單位">報酬和回撤的數字是什麼單位？</h2>
+<p>報酬、回撤、每筆損益與 MAE 這類數值的單位由計算模式（Analyzer mode）決定；勝率、比率與天數不受影響。文章提供兩種以上模式時，導覽列可以切換。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="報酬和回撤的數字是什麼單位？（表格）"><table class="data-table"><thead><tr><th>計算模式</th><th>怎麼算</th><th>單位</th></tr></thead><tbody><tr><td>百分比（Percentage）</td><td>每筆損益 ÷ 進場價，再加總</td><td><code>%</code></td></tr><tr><td>波動模式（Volatility-normalized）</td><td>每筆損益 ÷ 出場時的波動，再加總；相當於每筆都承擔相同的波動風險</td><td><code>vol</code>（波動的倍數）</td></tr><tr><td>絕對數值（Absolute）</td><td>每單位的價格點數；套用部位大小後為美元</td><td><code>pts</code></td></tr></tbody></table></div>
+<p>所有模式的累積報酬都是單利加總（Simple sum）：直接把每筆結果相加，不考慮部位大小與複利。</p>
+<p>波動（Volatility）是策略設定裡宣告的一條波動序列，目前的 US100 研究用日線 ATR(72)。平均真實波幅（Average True Range，ATR）是一段期間真實波幅的平均，寫法是「K 線頻率 + ATR(根數)」，例如日線 ATR(72)、1 小時 ATR(460)。同一條波動在不同地方取不同時點：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="報酬和回撤的數字是什麼單位？（表格）"><table class="data-table"><thead><tr><th>用途</th><th>取哪個時點的波動</th></tr></thead><tbody><tr><td>波動模式的每筆損益</td><td>出場時（Exit volatility）</td></tr><tr><td>停損、停利、延遲進場的距離</td><td>進場時（Entry volatility）</td></tr><tr><td>波動模式的 MAE、G_MFE、MFE</td><td>該偏移發生當下（Event-time volatility）</td></tr></tbody></table></div>
+<p>例如一筆多單賺 2 點、進場價 100、出場時波動 40 點：百分比模式是 +2%，波動模式是 +0.05 vol，絕對數值是 +2 pts。</p>
+<h2 id="maeg_mfemfe-差在哪">MAE、G_MFE、MFE 差在哪？</h2>
+<p>偏移指標（Excursions）描述一筆交易持倉期間價格走了多遠，只在實際成交之後到出場之間量測。以下用同一筆多單說明，進場價 100，第 7 根 K 棒以 102 出場：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="MAE、G_MFE、MFE 差在哪？（表格）"><table class="data-table"><thead><tr><th>K 棒</th><th class="num">1</th><th class="num">2</th><th class="num">3</th><th class="num">4</th><th class="num">5</th><th class="num">6</th><th class="num">7</th></tr></thead><tbody><tr><td>最高價</td><td class="num">100.5</td><td class="num">103</td><td class="num">102</td><td class="num">99</td><td class="num">104</td><td class="num">106</td><td class="num">105</td></tr><tr><td>最低價</td><td class="num">99</td><td class="num">101</td><td class="num">98.5</td><td class="num">97</td><td class="num">99</td><td class="num">103</td><td class="num">101</td></tr></tbody></table></div>
+<h3 id="最大不利偏移maximum-adverse-excursionmae">最大不利偏移（Maximum Adverse Excursion，MAE）</h3>
+<p>持倉期間價格對持倉最不利的距離。多單是進場價減最低價，空單是最高價減進場價；沒有不利走勢時為 0。例子中最低價 97 在第 4 根，MAE = 3。MAE 是設定停損的主要依據。</p>
+<h3 id="整段最大有利偏移global-mfeg_mfe">整段最大有利偏移（Global MFE，G_MFE）</h3>
+<p>整段持倉期間對持倉最有利的距離。多單是最高價減進場價。例子中最高價 106 在第 6 根，G_MFE = 6。G_MFE 和 MAE 各自獨立量測，誰先發生都可以。G_MFE 是設定停利、判斷這筆交易曾經有多少獲利空間的依據。</p>
+<h3 id="mae-前最大有利偏移mfe">MAE 前最大有利偏移（MFE）</h3>
+<p>只量 MAE 發生之前（不含 MAE 那根 K 棒）的最大有利距離；沒有不利走勢時量到出場為止。例子中 MAE 在第 4 根，前三根的最高價是 103，MFE = 3。因為 MFE 的區間是 G_MFE 區間的一部分，MFE 一定不大於 G_MFE。</p>
+<p>多數教科書把整段持倉的最大有利走勢稱為 MFE，對應的是這裡的 G_MFE。兩者差很多時，代表價格先往有利方向走一小段、回檔到 MAE 之後才走出主要的行情。</p>
+<h3 id="mfe-前最大不利偏移mae_lv1">MFE 前最大不利偏移（MAE_LV1）</h3>
+<p>MFE 發生之前的最大不利距離，也就是第一段有利走勢之前的回檔。例子中 MFE 在第 2 根，第 1 根最低 99，MAE_LV1 = 1。</p>
+<h3 id="最大回落maximum-high-lowmhl">最大回落（Maximum High-Low，MHL）</h3>
+<p>持倉期間從任一個高點回落到之後低點的最大深度，空單則是從低點反彈的最大高度。例子中從第 2 根的 103 回落到第 4 根的 97，MHL = 6；第 6 根的 106 回落到第 7 根的 101 只有 5。MHL 不小於 MAE，是設定移動停損寬度的參考。</p>
+<h3 id="其他偏移相關用語">其他偏移相關用語</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="其他偏移相關用語（表格）"><table class="data-table"><thead><tr><th>術語</th><th>定義</th></tr></thead><tbody><tr><td>獲利交易／虧損交易（Winner／Loser）</td><td>損益大於 0／小於 0 的交易；等於 0 另計。兩組合稱獲利組、虧損組</td></tr><tr><td>獲利擷取率（Profit extraction）</td><td>報酬中位數 ÷ G_MFE 中位數：曾經有的獲利空間吃到多少</td></tr><tr><td>獲利回吐率（Profit giveback）</td><td>1 − 獲利擷取率</td></tr><tr><td>MHL 壓力（MHL pressure）</td><td>MHL 中位數 ÷ G_MFE 中位數：回落深度相對獲利空間的比例</td></tr><tr><td>偏移範圍（Excursion range）</td><td>每筆 G_MFE + MAE 的中位數：進場後價格擺動的幅度</td></tr><tr><td>R 倍數（R multiple）</td><td>以一單位風險衡量的結果；每單位停損期望值 = 平均結果 ÷ 停損距離</td></tr><tr><td>分位數 Q1／Q2／Q3</td><td>第 25／50／75 百分位；Q2 就是中位數</td></tr></tbody></table></div>
+<h2 id="怎麼看一個策略的報酬和風險">怎麼看一個策略的報酬和風險？</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="怎麼看一個策略的報酬和風險？（表格）"><table class="data-table"><thead><tr><th>術語</th><th>定義</th></tr></thead><tbody><tr><td>累積報酬（Total return）</td><td>所有交易報酬的單利加總</td></tr><tr><td>每筆期望值（Expectancy）</td><td>平均每筆交易的報酬</td></tr><tr><td>勝率（Win rate）</td><td>損益大於 0 的交易比例</td></tr><tr><td>獲利因子（Profit factor，PF）</td><td>總獲利 ÷ 總虧損；大於 1 代表整體獲利</td></tr><tr><td>最大回撤（Max drawdown）</td><td>已出場交易的累積報酬，從前高往下的最大跌幅</td></tr><tr><td>未實現回撤（Unrealized drawdown）</td><td>另把持倉期間的 MAE 算進回撤，估計帳面上最深跌到哪裡</td></tr><tr><td>最長回撤期間（Longest drawdown duration）</td><td>從前高開始下跌、到回到前高，持續最久的一次有幾天</td></tr><tr><td>恢復因子（Recovery factor，RF）</td><td>累積報酬 ÷ 最大回撤：每承受一單位回撤賺回多少</td></tr><tr><td>Sharpe（日，年化）</td><td>每個交易日的彙總報酬（沒有出場的日子記為 0），平均 ÷ 標準差 × √252</td></tr><tr><td>Sortino（日，年化）</td><td>同上，但分母只計下方波動</td></tr><tr><td>SQN（System Quality Number）</td><td>√min(交易數, 100) × 每筆期望值 ÷ 每筆報酬標準差</td></tr><tr><td>每年為正（Positive years）</td><td>年度報酬大於 0 的年數，寫成「n / N 年」</td></tr><tr><td>最差年度（Worst year）</td><td>年度報酬最低的那一年</td></tr><tr><td>日報酬相關係數（Daily return correlation）</td><td>兩組策略每日損益的相關係數；越高越像同一個策略</td></tr></tbody></table></div>
+<p>策略報告沒有綜合排名，依五個觀察角度並列：時間一致性看每年為正與最差年度，參數穩定看參數鄰域，風險看回撤，報酬看累積報酬與期望值，分散看相關係數。</p>
+<h2 id="策略研究怎麼分層">策略研究怎麼分層？</h2>
+<p>我們的研究分成四個研究階段（Stage），每一階只在上一階選出的組上改一件事。完整說明見<a href="/posts/strategy-lineage-layers/">一個策略怎麼一層一層長出來？</a>。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="策略研究怎麼分層？（表格）"><table class="data-table"><thead><tr><th>研究階段</th><th>改什麼</th></tr></thead><tbody><tr><td>第 0 階（Stage 0）· Definition</td><td>訊號、方向、進場時點、指標與濾網</td></tr><tr><td>第 1 階（Stage 1）· 進場</td><td>延遲進場</td></tr><tr><td>第 2 階（Stage 2）· 出場</td><td>停損停利、時間出場</td></tr><tr><td>第 3 階（Stage 3）· 移動停損與保本</td><td>移動停損、保本停損</td></tr></tbody></table></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="策略研究怎麼分層？（表格）"><table class="data-table"><thead><tr><th>術語</th><th>定義</th></tr></thead><tbody><tr><td>策略定義（Definition）</td><td>一組訊號、指標與濾網的設定。加了濾網的策略是另一個 Definition，也在第 0 階</td></tr><tr><td>基準策略（Baseline）</td><td>Definition 原本的進出場：訊號出現就進場、訊號結束就出場</td></tr><tr><td>父策略（Parent）</td><td>同一個 Definition、到上一階為止設定都相同的那一組；第 0 階沒有父策略</td></tr><tr><td>兄弟（Siblings）</td><td>同一個父策略底下、同一階的其他組</td></tr><tr><td>研究變數（Research variable）</td><td>兄弟之間有變化的參數</td></tr><tr><td>參數組（Case）</td><td>策略報告裡的一組參數設定與它的回測結果</td></tr><tr><td>交易設定（Setup）</td><td>訊號、方向與進場時點的組合；後續研究沿用同一個名稱</td></tr><tr><td>對照組（Control）</td><td>只拿掉要檢驗的條件、其他設定都相同的比較對象</td></tr><tr><td>買進持有（Buy and hold）</td><td>標的每日收盤對收盤的報酬，交代行情背景</td></tr><tr><td>同時段持有（Session hold）</td><td>每天在同一個時段進場、出場，不看任何訊號；用來檢驗訊號是不是只是時段效果</td></tr></tbody></table></div>
+<h2 id="延遲進場的-favorable-和-adverse-為什麼看起來是反的">延遲進場的 Favorable 和 Adverse 為什麼看起來是反的？</h2>
+<p>延遲進場（Delayed entry）是訊號出現後不立刻進場，而是掛單等價格到某個位置。依掛單方式分兩種：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="延遲進場的 Favorable 和 Adverse 為什麼看起來是反的？（表格）"><table class="data-table"><thead><tr><th>術語</th><th>多單的掛法</th><th>掛單種類</th><th>用途</th></tr></thead><tbody><tr><td>立即進場（Immediate entry）</td><td>訊號出現的那根 K 棒開盤進場</td><td>—</td><td>基準策略的進場</td></tr><tr><td>有利延遲進場（Favorable delayed entry）</td><td>在訊號價下方掛單，價格跌到才成交</td><td>限價單</td><td>用更好的價格進場，壓低 MAE</td></tr><tr><td>不利延遲進場（Adverse delayed entry）</td><td>在訊號價上方掛單，價格漲到才成交</td><td>觸價單</td><td>等價格先證明方向，過濾失敗的訊號</td></tr></tbody></table></div>
+<p>掛單價與訊號價的距離稱為延遲距離（Entry distance），以波動的倍數表示。基準策略的訊號中最後有成交的比例稱為成交率（Fill rate）。</p>
+<p>有利與不利描述的是掛單怎麼成交，不是持倉賺或賠：限價單的成交價比掛單時的市價好，所以叫有利；觸價單的成交價比掛單時的市價差，所以叫不利。</p>
+<p>進場之後改用持倉的角度看。以多單為例，訊號價 100：</p>
+<ul>
+<li>有利延遲進場掛在 98，價格跌到 98 成交。成交後價格如果繼續跌到 96，這段下跌對持倉是不利的，算進 MAE = 2。</li>
+<li>不利延遲進場掛在 102，價格漲到 102 成交。成交後價格如果繼續漲到 105，這段上漲對持倉是有利的，算進 G_MFE = 3。</li>
+</ul>
+<p>同樣是往下的走勢，掛單時讓有利延遲進場成交，持倉後卻是不利偏移。名字看起來相反，是因為角度從「掛單」換成了「持倉」。所以讀文章時：延遲進場的有利、不利只描述進場方式；成交之後的走勢一律用 MAE、G_MFE 描述。</p>
+<p>出場就沒有這個問題：停損、移動停損與保本停損都是不利（成交價對持倉不利的保護性停損），停利是有利，掛單角度和持倉角度一致。</p>
+<h2 id="停損停利移動停損和保本怎麼運作">停損、停利、移動停損和保本怎麼運作？</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="停損、停利、移動停損和保本怎麼運作？（表格）"><table class="data-table"><thead><tr><th>術語</th><th>怎麼出場</th></tr></thead><tbody><tr><td>訊號出場（Signal exit）</td><td>依 Definition 的出場條件出場</td></tr><tr><td>停損（Stop loss，SL）</td><td>價格往不利方向走到進場價外固定距離時出場</td></tr><tr><td>停利（Take profit，TP）</td><td>價格往有利方向走到進場價外固定距離時出場</td></tr><tr><td>停損停利（SL/TP）</td><td>第 2 階同時設定停損與停利的組合</td></tr><tr><td>移動停損（Trailing stop，TS）</td><td>停損價跟著持倉後的最高價（空單為最低價）移動，保持固定距離</td></tr><tr><td>保本停損（Breakeven stop，BE）</td><td>價格先往有利方向走到觸發點（Trigger），停損就移到進場價 ± 鎖利（Lock）</td></tr><tr><td>時間出場（Time exit）</td><td>持有到固定時間或固定 K 棒數後出場；報告的出場原因顯示「逾時」</td></tr></tbody></table></div>
+<p>停損、停利與延遲進場的距離都以進場時波動的倍數設定，例如「停損 0.5 倍日線 ATR(72)」。</p>
+<p>回測的成交規則：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="停損、停利、移動停損和保本怎麼運作？（表格）"><table class="data-table"><thead><tr><th>術語</th><th>規則</th></tr></thead><tbody><tr><td>只用已完成的 K 棒（Completed-bar causality）</td><td>開盤時的決策只能用開盤價與已經走完的 K 棒，不偷看當根的高低收</td></tr><tr><td>觸價即成交（Touch-inclusive）</td><td>價格碰到掛單價就算成交，不必穿越</td></tr><tr><td>跳空開盤成交（Gap-open fill）</td><td>K 棒開盤就已越過掛單價時，以開盤價成交</td></tr><tr><td>點差、滑價（Spread、Slippage）</td><td>交易成本；文章會寫出假設值</td></tr></tbody></table></div>
+<p>一根 K 棒同時碰到停損和停利時，OHLC 看不出哪個先發生，回測一律保守地當成先停損。</p>
+<h2 id="怎麼判斷參數不是運氣">怎麼判斷參數不是運氣？</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="怎麼判斷參數不是運氣？（表格）"><table class="data-table"><thead><tr><th>術語</th><th>定義</th></tr></thead><tbody><tr><td>參數鄰域（Parameter neighborhood）</td><td>同一個父策略底下，相鄰參數值的結果</td></tr><tr><td>平台／孤島（Plateau／Island）</td><td>相鄰的參數也好是平台；只有那一格好、旁邊都差是孤島，多半是運氣</td></tr><tr><td>鄰點平均（Neighbor averaging）</td><td>每個參數值取它和前後格的平均，降低實際下單時價格誤差的影響</td></tr><tr><td>自助重抽（Bootstrap）</td><td>以交易日為單位重複抽樣，看結果在不同樣本下的分布</td></tr><tr><td>信心下限（Lower confidence bound）</td><td>重抽結果的低百分位，例如第 10 百分位是 90% 單側信心下限，用來保守估計</td></tr><tr><td>樣本內（In-sample）</td><td>用來挑選參數的期間</td></tr><tr><td>保留期（Holdout）</td><td>挑選完才拿來檢查的期間，例如 2022–2024 挑選、2025–2026 檢查</td></tr><tr><td>過度擬合（Overfitting）</td><td>參數只是剛好適合這段歷史，換一段資料就失效</td></tr><tr><td>挑選偏誤（Selection bias）</td><td>從很多組中挑出最好的一組，它的表現會被高估</td></tr><tr><td>循環平移對照（Circular-shift null）</td><td>把濾網擋單的日子沿著時間循環平移，頻率與群聚不變、只打亂時點；濾網要勝過平移版本才算有資訊</td></tr><tr><td>年度一致性（Yearly consistency）</td><td>每一年是否都成立：每年為正的年數與最差年度</td></tr></tbody></table></div>
+<p>我們的研究不稱保留期為樣本外（Out-of-sample）：前面幾個研究階段已經用過整段資料，嚴格來說每一階都看過保留期。</p>
+<h2 id="濾網和市場結構的用語">濾網和市場結構的用語</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="濾網和市場結構的用語（表格）"><table class="data-table"><thead><tr><th>術語</th><th>定義</th></tr></thead><tbody><tr><td>濾網（Filter）</td><td>決定哪些天有訊號的條件，屬於第 0 階</td></tr><tr><td>狀態濾網（Regime filter）</td><td>依市場狀態擋單，依它擋什麼命名，例如「SuperTrend 空頭時擋多單」</td></tr><tr><td>波動水準（Volatility level）</td><td>依波動的滾動分位數分成高、中、低</td></tr><tr><td>波動變化（Volatility change）</td><td>波動正在擴張（Expansion）或收斂（Contraction）</td></tr><tr><td>SuperTrend</td><td>以 ATR 乘上乘數在價格上下建立通道，收盤跌破翻空、突破翻多；寫法例如「1 小時 SuperTrend（ATR 460 × 1.5）」</td></tr><tr><td>市場輪廓（Market Profile）</td><td>把一段時間內各價位的交易活動排成分布</td></tr><tr><td>價值區（Value Area，VA）</td><td>活動最集中的 70% 價位區間；上緣 VAH、下緣 VAL</td></tr><tr><td>控制點（Point of Control，POC）</td><td>活動最多的價位</td></tr><tr><td>進場時點（Anchor time）</td><td>判斷訊號並進場的固定紐約時間</td></tr></tbody></table></div>
+<h2 id="部位大小怎麼算">部位大小怎麼算？</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="部位大小怎麼算？（表格）"><table class="data-table"><thead><tr><th>術語</th><th>定義</th></tr></thead><tbody><tr><td>風險金額（Risk amount）</td><td>每筆交易預計承擔的美元虧損</td></tr><tr><td>預估虧損（Expected loss）</td><td>每筆交易預估會虧多少點，由過去交易的 MAE 與進場時波動估計，只用進場前已知的資料</td></tr><tr><td>部位大小（Position size）</td><td>風險金額 ÷ 預估虧損點數 ÷ 每點價值</td></tr><tr><td>投資組合（Portfolio）</td><td>一起交易的多個交易設定；組合成員（Portfolio member）是其中一個</td></tr></tbody></table></div>
+<p>完整的配置方法見 <a href="/posts/us100-market-profile-portfolio-sizing/">US100 Market Profile 7 組策略怎麼配置？</a>。</p>
+</div><div class="callout callout--warning"><strong>使用這份用詞表</strong><p>這裡的定義是我們研究與報告目前的計算方式，和其他書籍或平台的同名指標可能不同，比較數字前先確認定義。名詞解釋與回測結果都不構成投資建議。</p></div>
+<section class="faq" aria-labelledby="faq-title"><h2 class="faq-title" id="faq-title">常見問題</h2><div class="faq-item"><h3 class="faq-question">MFE 和 G_MFE 該看哪一個？</h3><div class="faq-answer"><p>看整筆交易曾經有多少獲利空間、設定停利時用 G_MFE。想知道價格在最深回檔之前先走了多遠，例如判斷停損是不是太緊，看 MFE。兩者差距大，代表行情多半在回檔之後才展開。</p></div></div><div class="faq-item"><h3 class="faq-question">波動模式的 vol 是什麼單位？</h3><div class="faq-answer"><p>vol 是波動的倍數：每筆損益除以出場時的波動。1 vol 代表賺了一個波動的距離。用波動模式比較，不同波動環境的交易可以放在同一把尺上，相當於每筆都承擔相同的波動風險。</p></div></div><div class="faq-item"><h3 class="faq-question">為什麼用保留期，而不說樣本外？</h3><div class="faq-answer"><p>研究分好幾階進行，前面的階段已經用過整段資料。最後一階雖然只用前段挑選、後段檢查，後段仍不是完全沒看過的資料，所以稱為保留期，避免高估檢查的效力。</p></div></div><div class="faq-item"><h3 class="faq-question">有利延遲進場為什麼是等價格往不利的方向走？</h3><div class="faq-answer"><p>有利、不利是從掛單的角度命名：多單在訊號價下方掛限價單，成交價比市價好，所以叫有利。進場之後改用持倉的角度，同樣往下的走勢就變成不利偏移（MAE）。</p></div></div><div class="faq-item"><h3 class="faq-question">獲利因子多少算好？</h3><div class="faq-answer"><p>大於 1 代表總獲利超過總虧損。同樣的獲利因子，勝率高、每筆賺得少的策略和勝率低、每筆賺得多的策略風險很不一樣，所以要和勝率、交易數、最大回撤與每年為正一起看，不單獨用一個門檻判斷。</p></div></div></section><script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"MFE 和 G_MFE 該看哪一個？","acceptedAnswer":{"@type":"Answer","text":"看整筆交易曾經有多少獲利空間、設定停利時用 G_MFE。想知道價格在最深回檔之前先走了多遠，例如判斷停損是不是太緊，看 MFE。兩者差距大，代表行情多半在回檔之後才展開。"}},{"@type":"Question","name":"波動模式的 vol 是什麼單位？","acceptedAnswer":{"@type":"Answer","text":"vol 是波動的倍數：每筆損益除以出場時的波動。1 vol 代表賺了一個波動的距離。用波動模式比較，不同波動環境的交易可以放在同一把尺上，相當於每筆都承擔相同的波動風險。"}},{"@type":"Question","name":"為什麼用保留期，而不說樣本外？","acceptedAnswer":{"@type":"Answer","text":"研究分好幾階進行，前面的階段已經用過整段資料。最後一階雖然只用前段挑選、後段檢查，後段仍不是完全沒看過的資料，所以稱為保留期，避免高估檢查的效力。"}},{"@type":"Question","name":"有利延遲進場為什麼是等價格往不利的方向走？","acceptedAnswer":{"@type":"Answer","text":"有利、不利是從掛單的角度命名：多單在訊號價下方掛限價單，成交價比市價好，所以叫有利。進場之後改用持倉的角度，同樣往下的走勢就變成不利偏移（MAE）。"}},{"@type":"Question","name":"獲利因子多少算好？","acceptedAnswer":{"@type":"Answer","text":"大於 1 代表總獲利超過總虧損。同樣的獲利因子，勝率高、每筆賺得少的策略和勝率低、每筆賺得多的策略風險很不一樣，所以要和勝率、交易數、最大回撤與每年為正一起看，不單獨用一個門檻判斷。"}}]}</script><div class="section-head"><h2 id="method">方法與資料</h2></div><p class="section-lead">研究設定、資料與計算方式；重現研究用的識別字在資料來源。</p><div class="appendix"><div style="display:contents"><h3>更新紀錄</h3><div>2026-10-08 23:52　首次發布</div></div></div><div class="wide"><section class="related"><h2 class="related-title">相關研究</h2><div class="related-grid"><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">2069 組參數 · 獲利因子 &gt; 1</span><span class="cover-figure__value">1034 / 2069</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L0.05 9.65L0.10 10.88L0.15 11.40L0.19 12.25L0.24 12.46L0.29 12.65L0.34 12.68L0.39 12.89L0.44 12.90L0.48 13.01L0.53 13.02L0.58 13.16L0.63 13.19L0.68 13.30L0.73 13.55L0.77 13.57L0.82 13.57L0.87 13.74L0.92 13.79L0.97 13.81L1.02 13.94L1.06 13.98L1.11 14.04L1.16 14.11L1.21 14.18L1.26 14.24L1.31 14.30L1.35 14.30L1.40 14.33L1.45 14.33L1.50 14.39L1.55 14.39L1.60 14.42L1.64 14.55L1.69 14.57L1.74 14.59L1.79 14.60L1.84 14.72L1.89 14.80L1.93 14.87L1.98 14.94L2.03 14.96L2.08 15.01L2.13 15.04L2.18 15.13L2.22 15.14L2.27 15.19L2.32 15.23L2.37 15.23L2.42 15.31L2.47 15.32L2.51 15.32L2.56 15.32L2.61 15.42L2.66 15.47L2.71 15.48L2.76 15.49L2.80 15.54L2.85 15.56L2.90 15.57L2.95 15.59L3.00 15.63L3.05 15.64L3.09 15.64L3.14 15.65L3.19 15.73L3.24 15.73L3.29 15.77L3.34 15.80L3.38 15.81L3.43 15.91L3.48 15.92L3.53 15.92L3.58 15.92L3.63 15.93L3.68 15.99L3.72 16.07L3.77 16.07L3.82 16.08L3.87 16.10L3.92 16.11L3.97 16.17L4.01 16.17L4.06 16.19L4.11 16.19L4.16 16.19L4.21 16.19L4.26 16.22L4.30 16.23L4.35 16.24L4.40 16.26L4.45 16.28L4.50 16.30L4.55 16.31L4.59 16.33L4.64 16.34L4.69 16.39L4.74 16.44L4.79 16.45L4.84 16.46L4.88 16.51L4.93 16.51L4.98 16.60L5.03 16.62L5.08 16.64L5.13 16.67L5.17 16.73L5.22 16.76L5.27 16.77L5.32 16.78L5.37 16.78L5.42 16.79L5.46 16.83L5.51 16.85L5.56 16.86L5.61 16.87L5.66 16.87L5.71 16.87L5.75 16.91L5.80 16.94L5.85 16.95L5.90 16.97L5.95 16.98L6.00 17.08L6.04 17.10L6.09 17.12L6.14 17.14L6.19 17.14L6.24 17.17L6.29 17.19L6.33 17.23L6.38 17.23L6.43 17.28L6.48 17.32L6.53 17.32L6.58 17.34L6.62 17.35L6.67 17.36L6.72 17.38L6.77 17.38L6.82 17.40L6.87 17.40L6.91 17.41L6.96 17.42L7.01 17.45L7.06 17.46L7.11 17.50L7.16 17.50L7.21 17.50L7.25 17.51L7.30 17.53L7.35 17.54L7.40 17.56L7.45 17.57L7.50 17.59L7.54 17.62L7.59 17.63L7.64 17.64L7.69 17.65L7.74 17.68L7.79 17.72L7.83 17.73L7.88 17.74L7.93 17.78L7.98 17.78L8.03 17.83L8.08 17.84L8.12 17.85L8.17 17.88L8.22 17.88L8.27 17.91L8.32 17.92L8.37 17.92L8.41 17.93L8.46 18.02L8.51 18.03L8.56 18.03L8.61 18.05L8.66 18.10L8.70 18.13L8.75 18.13L8.80 18.14L8.85 18.15L8.90 18.15L8.95 18.16L8.99 18.17L9.04 18.18L9.09 18.23L9.14 18.23L9.19 18.24L9.24 18.24L9.28 18.25L9.33 18.26L9.38 18.26L9.43 18.29L9.48 18.30L9.53 18.31L9.57 18.31L9.62 18.32L9.67 18.33L9.72 18.33L9.77 18.34L9.82 18.40L9.86 18.40L9.91 18.44L9.96 18.44L10.01 18.44L10.06 18.45L10.11 18.47L10.15 18.52L10.20 18.52L10.25 18.52L10.30 18.53L10.35 18.55L10.40 18.57L10.44 18.57L10.49 18.58L10.54 18.58L10.59 18.62L10.64 18.64L10.69 18.65L10.74 18.66L10.78 18.66L10.83 18.67L10.88 18.68L10.93 18.69L10.98 18.70L11.03 18.71L11.07 18.75L11.12 18.77L11.17 18.78L11.22 18.84L11.27 18.87L11.32 18.94L11.36 18.94L11.41 18.96L11.46 18.99L11.51 18.99L11.56 19.01L11.61 19.02L11.65 19.04L11.70 19.06L11.75 19.06L11.80 19.07L11.85 19.07L11.90 19.07L11.94 19.07L11.99 19.08L12.04 19.08L12.09 19.09L12.14 19.09L12.19 19.10L12.23 19.12L12.28 19.12L12.33 19.15L12.38 19.16L12.43 19.17L12.48 19.18L12.52 19.20L12.57 19.20L12.62 19.20L12.67 19.22L12.72 19.24L12.77 19.25L12.81 19.25L12.86 19.26L12.91 19.28L12.96 19.30L13.01 19.31L13.06 19.31L13.10 19.31L13.15 19.31L13.20 19.32L13.25 19.33L13.30 19.36L13.35 19.36L13.39 19.37L13.44 19.39L13.49 19.42L13.54 19.42L13.59 19.43L13.64 19.43L13.68 19.46L13.73 19.46L13.78 19.47L13.83 19.48L13.88 19.49L13.93 19.49L13.97 19.49L14.02 19.50L14.07 19.52L14.12 19.52L14.17 19.54L14.22 19.57L14.26 19.57L14.31 19.58L14.36 19.58L14.41 19.62L14.46 19.62L14.51 19.63L14.56 19.64L14.60 19.65L14.65 19.65L14.70 19.65L14.75 19.66L14.80 19.66L14.85 19.68L14.89 19.68L14.94 19.73L14.99 19.74L15.04 19.74L15.09 19.76L15.14 19.79L15.18 19.82L15.23 19.82L15.28 19.84L15.33 19.84L15.38 19.87L15.43 19.87L15.47 19.89L15.52 19.89L15.57 19.90L15.62 19.90L15.67 19.90L15.72 19.90L15.76 19.92L15.81 19.93L15.86 19.93L15.91 19.94L15.96 19.96L16.01 19.98L16.05 19.98L16.10 19.99L16.15 20.01L16.20 20.01L16.25 20.01L16.30 20.02L16.34 20.03L16.39 20.06L16.44 20.08L16.49 20.08L16.54 20.12L16.59 20.13L16.63 20.13L16.68 20.14L16.73 20.14L16.78 20.16L16.83 20.19L16.88 20.20L16.92 20.21L16.97 20.22L17.02 20.23L17.07 20.25L17.12 20.25L17.17 20.27L17.21 20.28L17.26 20.28L17.31 20.29L17.36 20.30L17.41 20.30L17.46 20.30L17.50 20.30L17.55 20.32L17.60 20.32L17.65 20.32L17.70 20.36L17.75 20.38L17.79 20.38L17.84 20.39L17.89 20.40L17.94 20.41L17.99 20.42L18.04 20.44L18.09 20.44L18.13 20.46L18.18 20.46L18.23 20.46L18.28 20.47L18.33 20.48L18.38 20.51L18.42 20.53L18.47 20.53L18.52 20.55L18.57 20.55L18.62 20.55L18.67 20.55L18.71 20.55L18.76 20.55L18.81 20.55L18.86 20.58L18.91 20.60L18.96 20.61L19.00 20.62L19.05 20.62L19.10 20.65L19.15 20.65L19.20 20.65L19.25 20.66L19.29 20.67L19.34 20.67L19.39 20.68L19.44 20.71L19.49 20.72L19.54 20.73L19.58 20.76L19.63 20.78L19.68 20.78L19.73 20.78L19.78 20.78L19.83 20.80L19.87 20.80L19.92 20.82L19.97 20.83L20.02 20.85L20.07 20.85L20.12 20.85L20.16 20.86L20.21 20.86L20.26 20.86L20.31 20.86L20.36 20.86L20.41 20.90L20.45 20.90L20.50 20.91L20.55 20.94L20.60 20.94L20.65 20.95L20.70 20.96L20.74 20.97L20.79 20.98L20.84 20.98L20.89 20.99L20.94 20.99L20.99 21.00L21.03 21.00L21.08 21.02L21.13 21.03L21.18 21.03L21.23 21.03L21.28 21.03L21.32 21.04L21.37 21.05L21.42 21.06L21.47 21.06L21.52 21.07L21.57 21.09L21.62 21.10L21.66 21.11L21.71 21.11L21.76 21.12L21.81 21.13L21.86 21.17L21.91 21.17L21.95 21.18L22.00 21.21L22.05 21.23L22.10 21.25L22.15 21.26L22.20 21.27L22.24 21.27L22.29 21.27L22.34 21.28L22.39 21.28L22.44 21.28L22.49 21.30L22.53 21.31L22.58 21.31L22.63 21.31L22.68 21.33L22.73 21.36L22.78 21.36L22.82 21.37L22.87 21.38L22.92 21.38L22.97 21.38L23.02 21.39L23.07 21.40L23.11 21.40L23.16 21.43L23.21 21.43L23.26 21.45L23.31 21.45L23.36 21.46L23.40 21.48L23.45 21.51L23.50 21.51L23.55 21.52L23.60 21.52L23.65 21.53L23.69 21.54L23.74 21.55L23.79 21.57L23.84 21.58L23.89 21.60L23.94 21.60L23.98 21.61L24.03 21.61L24.08 21.62L24.13 21.62L24.18 21.63L24.23 21.63L24.27 21.64L24.32 21.64L24.37 21.65L24.42 21.66L24.47 21.67L24.52 21.69L24.56 21.70L24.61 21.70L24.66 21.72L24.71 21.73L24.76 21.73L24.81 21.75L24.85 21.76L24.90 21.76L24.95 21.77L25.00 21.77L25.05 21.78L25.10 21.78L25.15 21.79L25.19 21.80L25.24 21.81L25.29 21.81L25.34 21.82L25.39 21.83L25.44 21.86L25.48 21.87L25.53 21.88L25.58 21.89L25.63 21.90L25.68 21.91L25.73 21.91L25.77 21.93L25.82 21.94L25.87 21.94L25.92 21.94L25.97 21.95L26.02 21.97L26.06 21.97L26.11 21.97L26.16 21.97L26.21 21.97L26.26 21.98L26.31 21.99L26.35 22.00L26.40 22.02L26.45 22.04L26.50 22.04L26.55 22.04L26.60 22.06L26.64 22.08L26.69 22.08L26.74 22.08L26.79 22.09L26.84 22.09L26.89 22.10L26.93 22.11L26.98 22.12L27.03 22.13L27.08 22.13L27.13 22.13L27.18 22.15L27.22 22.16L27.27 22.18L27.32 22.18L27.37 22.18L27.42 22.20L27.47 22.22L27.51 22.23L27.56 22.23L27.61 22.24L27.66 22.25L27.71 22.25L27.76 22.26L27.80 22.29L27.85 22.29L27.90 22.29L27.95 22.31L28.00 22.31L28.05 22.32L28.09 22.32L28.14 22.34L28.19 22.34L28.24 22.34L28.29 22.36L28.34 22.37L28.38 22.37L28.43 22.39L28.48 22.39L28.53 22.39L28.58 22.39L28.63 22.39L28.68 22.39L28.72 22.41L28.77 22.41L28.82 22.41L28.87 22.42L28.92 22.42L28.97 22.43L29.01 22.43L29.06 22.43L29.11 22.44L29.16 22.46L29.21 22.49L29.26 22.49L29.30 22.50L29.35 22.50L29.40 22.52L29.45 22.53L29.50 22.54L29.55 22.54L29.59 22.54L29.64 22.55L29.69 22.56L29.74 22.58L29.79 22.60L29.84 22.60L29.88 22.61L29.93 22.61L29.98 22.64L30.03 22.64L30.08 22.64L30.13 22.64L30.17 22.65L30.22 22.65L30.27 22.68L30.32 22.69L30.37 22.69L30.42 22.69L30.46 22.70L30.51 22.73L30.56 22.73L30.61 22.75L30.66 22.75L30.71 22.76L30.75 22.78L30.80 22.78L30.85 22.79L30.90 22.79L30.95 22.81L31.00 22.81L31.04 22.82L31.09 22.85L31.14 22.85L31.19 22.87L31.24 22.87L31.29 22.88L31.33 22.88L31.38 22.88L31.43 22.88L31.48 22.88L31.53 22.89L31.58 22.89L31.62 22.90L31.67 22.91L31.72 22.94L31.77 22.95L31.82 22.96L31.87 22.96L31.91 22.96L31.96 22.97L32.01 22.97L32.06 22.98L32.11 23.01L32.16 23.01L32.21 23.01L32.25 23.02L32.30 23.02L32.35 23.03L32.40 23.04L32.45 23.04L32.50 23.06L32.54 23.07L32.59 23.08L32.64 23.10L32.69 23.11L32.74 23.12L32.79 23.14L32.83 23.15L32.88 23.15L32.93 23.16L32.98 23.16L33.03 23.16L33.08 23.17L33.12 23.18L33.17 23.19L33.22 23.19L33.27 23.20L33.32 23.20L33.37 23.20L33.41 23.21L33.46 23.23L33.51 23.23L33.56 23.23L33.61 23.25L33.66 23.25L33.70 23.26L33.75 23.27L33.80 23.28L33.85 23.29L33.90 23.29L33.95 23.30L33.99 23.30L34.04 23.30L34.09 23.31L34.14 23.31L34.19 23.32L34.24 23.34L34.28 23.35L34.33 23.35L34.38 23.36L34.43 23.38L34.48 23.40L34.53 23.43L34.57 23.44L34.62 23.46L34.67 23.46L34.72 23.48L34.77 23.49L34.82 23.49L34.86 23.51L34.91 23.53L34.96 23.55L35.01 23.55L35.06 23.55L35.11 23.56L35.15 23.57L35.20 23.57L35.25 23.59L35.30 23.60L35.35 23.62L35.40 23.63L35.44 23.63L35.49 23.63L35.54 23.65L35.59 23.67L35.64 23.68L35.69 23.69L35.74 23.69L35.78 23.69L35.83 23.70L35.88 23.72L35.93 23.72L35.98 23.75L36.03 23.75L36.07 23.75L36.12 23.75L36.17 23.76L36.22 23.78L36.27 23.80L36.32 23.81L36.36 23.81L36.41 23.82L36.46 23.82L36.51 23.82L36.56 23.84L36.61 23.84L36.65 23.85L36.70 23.86L36.75 23.86L36.80 23.86L36.85 23.86L36.90 23.88L36.94 23.91L36.99 23.93L37.04 23.94L37.09 23.94L37.14 23.95L37.19 23.95L37.23 23.95L37.28 23.95L37.33 23.98L37.38 23.99L37.43 23.99L37.48 24.00L37.52 24.01L37.57 24.04L37.62 24.05L37.67 24.06L37.72 24.07L37.77 24.07L37.81 24.08L37.86 24.08L37.91 24.09L37.96 24.10L38.01 24.12L38.06 24.12L38.10 24.15L38.15 24.16L38.20 24.18L38.25 24.19L38.30 24.22L38.35 24.22L38.39 24.23L38.44 24.23L38.49 24.24L38.54 24.24L38.59 24.25L38.64 24.25L38.68 24.27L38.73 24.27L38.78 24.29L38.83 24.31L38.88 24.34L38.93 24.34L38.97 24.35L39.02 24.37L39.07 24.38L39.12 24.38L39.17 24.39L39.22 24.40L39.26 24.40L39.31 24.41L39.36 24.45L39.41 24.47L39.46 24.47L39.51 24.48L39.56 24.48L39.60 24.49L39.65 24.49L39.70 24.49L39.75 24.50L39.80 24.50L39.85 24.50L39.89 24.51L39.94 24.51L39.99 24.51L40.04 24.52L40.09 24.53L40.14 24.53L40.18 24.53L40.23 24.53L40.28 24.55L40.33 24.56L40.38 24.57L40.43 24.57L40.47 24.58L40.52 24.58L40.57 24.59L40.62 24.59L40.67 24.60L40.72 24.61L40.76 24.61L40.81 24.61L40.86 24.62L40.91 24.63L40.96 24.63L41.01 24.64L41.05 24.65L41.10 24.66L41.15 24.69L41.20 24.70L41.25 24.70L41.30 24.71L41.34 24.72L41.39 24.72L41.44 24.72L41.49 24.73L41.54 24.74L41.59 24.76L41.63 24.76L41.68 24.78L41.73 24.79L41.78 24.79L41.83 24.80L41.88 24.81L41.92 24.82L41.97 24.82L42.02 24.84L42.07 24.84L42.12 24.84L42.17 24.85L42.21 24.86L42.26 24.88L42.31 24.90L42.36 24.90L42.41 24.90L42.46 24.93L42.50 24.93L42.55 24.94L42.60 24.95L42.65 24.96L42.70 24.98L42.75 24.98L42.79 25.00L42.84 25.00L42.89 25.03L42.94 25.03L42.99 25.05L43.04 25.06L43.09 25.08L43.13 25.11L43.18 25.11L43.23 25.12L43.28 25.12L43.33 25.12L43.38 25.15L43.42 25.19L43.47 25.23L43.52 25.25L43.57 25.27L43.62 25.28L43.67 25.31L43.71 25.33L43.76 25.34L43.81 25.34L43.86 25.36L43.91 25.40L43.96 25.41L44.00 25.44L44.05 25.47L44.10 25.48L44.15 25.48L44.20 25.49L44.25 25.53L44.29 25.53L44.34 25.53L44.39 25.54L44.44 25.54L44.49 25.56L44.54 25.56L44.58 25.59L44.63 25.60L44.68 25.60L44.73 25.61L44.78 25.63L44.83 25.64L44.87 25.66L44.92 25.67L44.97 25.67L45.02 25.71L45.07 25.73L45.12 25.73L45.16 25.74L45.21 25.75L45.26 25.77L45.31 25.79L45.36 25.81L45.41 25.81L45.45 25.84L45.50 25.84L45.55 25.85L45.60 25.92L45.65 25.99L45.70 25.99L45.74 26.01L45.79 26.02L45.84 26.02L45.89 26.03L45.94 26.04L45.99 26.12L46.03 26.12L46.08 26.17L46.13 26.18L46.18 26.24L46.23 26.27L46.28 26.28L46.32 26.28L46.37 26.31L46.42 26.33L46.47 26.34L46.52 26.35L46.57 26.35L46.62 26.35L46.66 26.40L46.71 26.41L46.76 26.42L46.81 26.45L46.86 26.47L46.91 26.50L46.95 26.50L47.00 26.50L47.05 26.51L47.10 26.51L47.15 26.55L47.20 26.55L47.24 26.60L47.29 26.62L47.34 26.63L47.39 26.65L47.44 26.70L47.49 26.72L47.53 26.72L47.58 26.74L47.63 26.74L47.68 26.75L47.73 26.77L47.78 26.78L47.82 26.78L47.87 26.79L47.92 26.83L47.97 26.83L48.02 26.84L48.07 26.87L48.11 26.87L48.16 26.90L48.21 26.90L48.26 26.94L48.31 26.94L48.36 26.97L48.40 26.98L48.45 27.00L48.50 27.00L48.55 27.06L48.60 27.06L48.65 27.07L48.69 27.07L48.74 27.08L48.79 27.09L48.84 27.10L48.89 27.13L48.94 27.13L48.98 27.19L49.03 27.19L49.08 27.19L49.13 27.19L49.18 27.21L49.23 27.21L49.27 27.23L49.32 27.23L49.37 27.28L49.42 27.29L49.47 27.30L49.52 27.40L49.56 27.41L49.61 27.41L49.66 27.41L49.71 27.43L49.76 27.43L49.81 27.46L49.85 27.46L49.90 27.51L49.95 27.53L50.00 27.54L50.05 27.56L50.10 27.61L50.15 27.62L50.19 27.64L50.24 27.65L50.29 27.66L50.34 27.66L50.39 27.67L50.44 27.68L50.48 27.77L50.53 27.78L50.58 27.80L50.63 27.84L50.68 27.85L50.73 27.86L50.77 27.86L50.82 27.89L50.87 27.89L50.92 27.89L50.97 27.89L51.02 27.94L51.06 27.94L51.11 27.98L51.16 27.99L51.21 28.00L51.26 28.00L51.31 28.00L51.35 28.01L51.40 28.02L51.45 28.07L51.50 28.07L51.55 28.09L51.60 28.10L51.64 28.13L51.69 28.13L51.74 28.17L51.79 28.17L51.84 28.20L51.89 28.20L51.93 28.23L51.98 28.24L52.03 28.24L52.08 28.28L52.13 28.29L52.18 28.29L52.22 28.30L52.27 28.32L52.32 28.33L52.37 28.33L52.42 28.35L52.47 28.35L52.51 28.37L52.56 28.42L52.61 28.44L52.66 28.45L52.71 28.46L52.76 28.51L52.80 28.51L52.85 28.55L52.90 28.56L52.95 28.56L53.00 28.56L53.05 28.56L53.09 28.59L53.14 28.61L53.19 28.64L53.24 28.65L53.29 28.66L53.34 28.70L53.38 28.71L53.43 28.71L53.48 28.72L53.53 28.72L53.58 28.75L53.63 28.77L53.68 28.78L53.72 28.79L53.77 28.82L53.82 28.88L53.87 28.88L53.92 28.93L53.97 28.93L54.01 29.01L54.06 29.01L54.11 29.02L54.16 29.02L54.21 29.03L54.26 29.05L54.30 29.06L54.35 29.12L54.40 29.19L54.45 29.20L54.50 29.20L54.55 29.23L54.59 29.23L54.64 29.25L54.69 29.26L54.74 29.28L54.79 29.29L54.84 29.30L54.88 29.30L54.93 29.32L54.98 29.36L55.03 29.36L55.08 29.37L55.13 29.39L55.17 29.40L55.22 29.41L55.27 29.42L55.32 29.43L55.37 29.43L55.42 29.47L55.46 29.47L55.51 29.49L55.56 29.49L55.61 29.49L55.66 29.49L55.71 29.49L55.75 29.53L55.80 29.54L55.85 29.54L55.90 29.55L55.95 29.58L56.00 29.60L56.04 29.61L56.09 29.65L56.14 29.67L56.19 29.67L56.24 29.68L56.29 29.69L56.33 29.72L56.38 29.73L56.43 29.76L56.48 29.77L56.53 29.81L56.58 29.84L56.62 29.87L56.67 29.88L56.72 29.88L56.77 29.89L56.82 29.89L56.87 29.91L56.91 29.94L56.96 29.94L57.01 29.96L57.06 29.96L57.11 29.99L57.16 29.99L57.21 30.00L57.25 30.01L57.30 30.02L57.35 30.03L57.40 30.04L57.45 30.05L57.50 30.05L57.54 30.08L57.59 30.08L57.64 30.08L57.69 30.10L57.74 30.12L57.79 30.13L57.83 30.14L57.88 30.14L57.93 30.14L57.98 30.15L58.03 30.16L58.08 30.16L58.12 30.17L58.17 30.18L58.22 30.19L58.27 30.19L58.32 30.21L58.37 30.22L58.41 30.23L58.46 30.24L58.51 30.24L58.56 30.25L58.61 30.25L58.66 30.26L58.70 30.26L58.75 30.27L58.80 30.28L58.85 30.30L58.90 30.31L58.95 30.32L58.99 30.33L59.04 30.34L59.09 30.34L59.14 30.35L59.19 30.35L59.24 30.35L59.28 30.36L59.33 30.36L59.38 30.37L59.43 30.37L59.48 30.38L59.53 30.38L59.57 30.39L59.62 30.40L59.67 30.41L59.72 30.43L59.77 30.43L59.82 30.43L59.86 30.43L59.91 30.44L59.96 30.44L60.01 30.44L60.06 30.44L60.11 30.45L60.15 30.45L60.20 30.45L60.25 30.46L60.30 30.46L60.35 30.46L60.40 30.47L60.44 30.47L60.49 30.47L60.54 30.48L60.59 30.50L60.64 30.53L60.69 30.54L60.74 30.55L60.78 30.55L60.83 30.56L60.88 30.56L60.93 30.57L60.98 30.59L61.03 30.59L61.07 30.60L61.12 30.62L61.17 30.64L61.22 30.66L61.27 30.66L61.32 30.68L61.36 30.68L61.41 30.69L61.46 30.69L61.51 30.70L61.56 30.70L61.61 30.71L61.65 30.71L61.70 30.73L61.75 30.74L61.80 30.77L61.85 30.77L61.90 30.80L61.94 30.80L61.99 30.81L62.04 30.83L62.09 30.83L62.14 30.83L62.19 30.84L62.23 30.84L62.28 30.86L62.33 30.86L62.38 30.87L62.43 30.90L62.48 30.91L62.52 30.91L62.57 30.92L62.62 30.93L62.67 30.95L62.72 30.95L62.77 30.95L62.81 30.95L62.86 30.96L62.91 30.96L62.96 30.97L63.01 30.99L63.06 31.02L63.10 31.03L63.15 31.03L63.20 31.03L63.25 31.04L63.30 31.04L63.35 31.05L63.39 31.06L63.44 31.07L63.49 31.07L63.54 31.07L63.59 31.08L63.64 31.08L63.68 31.09L63.73 31.11L63.78 31.13L63.83 31.13L63.88 31.13L63.93 31.13L63.97 31.14L64.02 31.16L64.07 31.16L64.12 31.18L64.17 31.18L64.22 31.18L64.26 31.19L64.31 31.20L64.36 31.21L64.41 31.23L64.46 31.24L64.51 31.24L64.56 31.25L64.60 31.25L64.65 31.27L64.70 31.28L64.75 31.30L64.80 31.30L64.85 31.30L64.89 31.31L64.94 31.31L64.99 31.31L65.04 31.33L65.09 31.35L65.14 31.37L65.18 31.37L65.23 31.37L65.28 31.39L65.33 31.40L65.38 31.42L65.43 31.42L65.47 31.45L65.52 31.46L65.57 31.48L65.62 31.49L65.67 31.49L65.72 31.50L65.76 31.52L65.81 31.52L65.86 31.53L65.91 31.53L65.96 31.53L66.01 31.54L66.05 31.54L66.10 31.55L66.15 31.56L66.20 31.57L66.25 31.57L66.30 31.58L66.34 31.58L66.39 31.60L66.44 31.60L66.49 31.60L66.54 31.62L66.59 31.62L66.63 31.63L66.68 31.63L66.73 31.64L66.78 31.64L66.83 31.64L66.88 31.65L66.92 31.66L66.97 31.66L67.02 31.66L67.07 31.67L67.12 31.67L67.17 31.68L67.21 31.69L67.26 31.70L67.31 31.71L67.36 31.74L67.41 31.74L67.46 31.75L67.50 31.77L67.55 31.77L67.60 31.77L67.65 31.79L67.70 31.79L67.75 31.79L67.79 31.79L67.84 31.80L67.89 31.82L67.94 31.83L67.99 31.83L68.04 31.84L68.09 31.84L68.13 31.84L68.18 31.85L68.23 31.86L68.28 31.88L68.33 31.89L68.38 31.90L68.42 31.90L68.47 31.91L68.52 31.91L68.57 31.91L68.62 31.91L68.67 31.91L68.71 31.91L68.76 31.91L68.81 31.93L68.86 31.94L68.91 31.96L68.96 31.97L69.00 31.97L69.05 31.98L69.10 31.98L69.15 32.00L69.20 32.00L69.25 32.01L69.29 32.02L69.34 32.02L69.39 32.04L69.44 32.04L69.49 32.06L69.54 32.07L69.58 32.08L69.63 32.08L69.68 32.08L69.73 32.11L69.78 32.11L69.83 32.12L69.87 32.12L69.92 32.12L69.97 32.12L70.02 32.15L70.07 32.15L70.12 32.16L70.16 32.16L70.21 32.17L70.26 32.19L70.31 32.20L70.36 32.20L70.41 32.20L70.45 32.21L70.50 32.22L70.55 32.23L70.60 32.24L70.65 32.24L70.70 32.25L70.74 32.25L70.79 32.28L70.84 32.29L70.89 32.30L70.94 32.30L70.99 32.31L71.03 32.31L71.08 32.31L71.13 32.32L71.18 32.32L71.23 32.32L71.28 32.33L71.32 32.33L71.37 32.33L71.42 32.33L71.47 32.34L71.52 32.34L71.57 32.35L71.62 32.36L71.66 32.36L71.71 32.38L71.76 32.38L71.81 32.38L71.86 32.40L71.91 32.40L71.95 32.41L72.00 32.41L72.05 32.42L72.10 32.42L72.15 32.42L72.20 32.45L72.24 32.46L72.29 32.46L72.34 32.46L72.39 32.47L72.44 32.48L72.49 32.48L72.53 32.50L72.58 32.52L72.63 32.52L72.68 32.52L72.73 32.54L72.78 32.54L72.82 32.56L72.87 32.56L72.92 32.56L72.97 32.57L73.02 32.58L73.07 32.59L73.11 32.59L73.16 32.60L73.21 32.60L73.26 32.60L73.31 32.61L73.36 32.62L73.40 32.64L73.45 32.64L73.50 32.64L73.55 32.66L73.60 32.68L73.65 32.68L73.69 32.69L73.74 32.70L73.79 32.70L73.84 32.70L73.89 32.70L73.94 32.70L73.98 32.72L74.03 32.72L74.08 32.73L74.13 32.73L74.18 32.73L74.23 32.75L74.27 32.75L74.32 32.76L74.37 32.77L74.42 32.78L74.47 32.78L74.52 32.79L74.56 32.82L74.61 32.83L74.66 32.83L74.71 32.84L74.76 32.84L74.81 32.85L74.85 32.86L74.90 32.86L74.95 32.87L75.00 32.87L75.05 32.88L75.10 32.88L75.15 32.89L75.19 32.91L75.24 32.91L75.29 32.91L75.34 32.93L75.39 32.93L75.44 32.94L75.48 32.96L75.53 32.96L75.58 32.97L75.63 32.98L75.68 32.98L75.73 32.99L75.77 32.99L75.82 33.00L75.87 33.00L75.92 33.00L75.97 33.01L76.02 33.01L76.06 33.02L76.11 33.03L76.16 33.04L76.21 33.06L76.26 33.07L76.31 33.07L76.35 33.08L76.40 33.08L76.45 33.09L76.50 33.10L76.55 33.12L76.60 33.14L76.64 33.14L76.69 33.14L76.74 33.16L76.79 33.16L76.84 33.18L76.89 33.19L76.93 33.20L76.98 33.20L77.03 33.20L77.08 33.20L77.13 33.21L77.18 33.22L77.22 33.22L77.27 33.24L77.32 33.26L77.37 33.26L77.42 33.26L77.47 33.27L77.51 33.28L77.56 33.28L77.61 33.29L77.66 33.29L77.71 33.30L77.76 33.30L77.80 33.31L77.85 33.31L77.90 33.33L77.95 33.35L78.00 33.37L78.05 33.38L78.09 33.38L78.14 33.41L78.19 33.43L78.24 33.43L78.29 33.43L78.34 33.43L78.38 33.45L78.43 33.46L78.48 33.47L78.53 33.47L78.58 33.48L78.63 33.49L78.68 33.49L78.72 33.50L78.77 33.50L78.82 33.50L78.87 33.50L78.92 33.52L78.97 33.53L79.01 33.53L79.06 33.53L79.11 33.54L79.16 33.54L79.21 33.55L79.26 33.56L79.30 33.56L79.35 33.57L79.40 33.57L79.45 33.60L79.50 33.60L79.55 33.61L79.59 33.64L79.64 33.64L79.69 33.64L79.74 33.64L79.79 33.64L79.84 33.64L79.88 33.64L79.93 33.65L79.98 33.66L80.03 33.67L80.08 33.69L80.13 33.69L80.17 33.71L80.22 33.71L80.27 33.71L80.32 33.71L80.37 33.72L80.42 33.75L80.46 33.76L80.51 33.76L80.56 33.79L80.61 33.80L80.66 33.80L80.71 33.81L80.75 33.81L80.80 33.81L80.85 33.82L80.90 33.84L80.95 33.84L81.00 33.85L81.04 33.85L81.09 33.87L81.14 33.89L81.19 33.89L81.24 33.89L81.29 33.89L81.33 33.90L81.38 33.90L81.43 33.90L81.48 33.91L81.53 33.91L81.58 33.93L81.62 33.95L81.67 33.96L81.72 33.97L81.77 33.97L81.82 33.97L81.87 33.99L81.91 33.99L81.96 34.00L82.01 34.01L82.06 34.02L82.11 34.03L82.16 34.03L82.21 34.04L82.25 34.05L82.30 34.08L82.35 34.08L82.40 34.09L82.45 34.10L82.50 34.10L82.54 34.10L82.59 34.10L82.64 34.11L82.69 34.12L82.74 34.12L82.79 34.13L82.83 34.14L82.88 34.14L82.93 34.16L82.98 34.17L83.03 34.18L83.08 34.18L83.12 34.20L83.17 34.22L83.22 34.23L83.27 34.23L83.32 34.24L83.37 34.24L83.41 34.25L83.46 34.28L83.51 34.28L83.56 34.30L83.61 34.33L83.66 34.33L83.70 34.34L83.75 34.34L83.80 34.34L83.85 34.34L83.90 34.36L83.95 34.36L83.99 34.37L84.04 34.38L84.09 34.40L84.14 34.41L84.19 34.41L84.24 34.42L84.28 34.43L84.33 34.43L84.38 34.43L84.43 34.43L84.48 34.44L84.53 34.44L84.57 34.46L84.62 34.46L84.67 34.48L84.72 34.48L84.77 34.50L84.82 34.50L84.86 34.52L84.91 34.54L84.96 34.56L85.01 34.56L85.06 34.57L85.11 34.61L85.15 34.61L85.20 34.62L85.25 34.63L85.30 34.63L85.35 34.63L85.40 34.64L85.44 34.64L85.49 34.65L85.54 34.66L85.59 34.66L85.64 34.69L85.69 34.69L85.74 34.69L85.78 34.70L85.83 34.73L85.88 34.74L85.93 34.74L85.98 34.75L86.03 34.76L86.07 34.76L86.12 34.76L86.17 34.77L86.22 34.78L86.27 34.78L86.32 34.79L86.36 34.81L86.41 34.81L86.46 34.82L86.51 34.82L86.56 34.84L86.61 34.86L86.65 34.86L86.70 34.87L86.75 34.89L86.80 34.90L86.85 34.90L86.90 34.91L86.94 34.91L86.99 34.91L87.04 34.91L87.09 34.93L87.14 34.95L87.19 34.95L87.23 34.96L87.28 34.96L87.33 34.98L87.38 34.99L87.43 34.99L87.48 35.00L87.52 35.01L87.57 35.01L87.62 35.03L87.67 35.03L87.72 35.06L87.77 35.06L87.81 35.07L87.86 35.08L87.91 35.08L87.96 35.09L88.01 35.09L88.06 35.09L88.10 35.10L88.15 35.10L88.20 35.10L88.25 35.10L88.30 35.11L88.35 35.12L88.39 35.14L88.44 35.15L88.49 35.16L88.54 35.16L88.59 35.19L88.64 35.20L88.68 35.20L88.73 35.26L88.78 35.28L88.83 35.33L88.88 35.34L88.93 35.35L88.97 35.39L89.02 35.40L89.07 35.40L89.12 35.40L89.17 35.41L89.22 35.42L89.26 35.43L89.31 35.43L89.36 35.44L89.41 35.46L89.46 35.48L89.51 35.49L89.56 35.50L89.60 35.50L89.65 35.51L89.70 35.53L89.75 35.53L89.80 35.53L89.85 35.54L89.89 35.57L89.94 35.59L89.99 35.59L90.04 35.60L90.09 35.60L90.14 35.63L90.18 35.63L90.23 35.67L90.28 35.68L90.33 35.68L90.38 35.69L90.43 35.70L90.47 35.70L90.52 35.70L90.57 35.72L90.62 35.73L90.67 35.74L90.72 35.75L90.76 35.75L90.81 35.75L90.86 35.76L90.91 35.76L90.96 35.80L91.01 35.80L91.05 35.82L91.10 35.82L91.15 35.83L91.20 35.83L91.25 35.84L91.30 35.84L91.34 35.86L91.39 35.90L91.44 35.91L91.49 35.92L91.54 35.93L91.59 36.00L91.63 36.00L91.68 36.00L91.73 36.01L91.78 36.03L91.83 36.03L91.88 36.06L91.92 36.06L91.97 36.07L92.02 36.11L92.07 36.11L92.12 36.14L92.17 36.15L92.21 36.15L92.26 36.19L92.31 36.21L92.36 36.22L92.41 36.23L92.46 36.23L92.50 36.25L92.55 36.27L92.60 36.28L92.65 36.30L92.70 36.30L92.75 36.32L92.79 36.32L92.84 36.32L92.89 36.33L92.94 36.36L92.99 36.37L93.04 36.39L93.09 36.39L93.13 36.40L93.18 36.40L93.23 36.41L93.28 36.42L93.33 36.43L93.38 36.44L93.42 36.44L93.47 36.46L93.52 36.47L93.57 36.50L93.62 36.53L93.67 36.53L93.71 36.56L93.76 36.57L93.81 36.60L93.86 36.60L93.91 36.61L93.96 36.63L94.00 36.65L94.05 36.72L94.10 36.73L94.15 36.74L94.20 36.75L94.25 36.78L94.29 36.80L94.34 36.81L94.39 36.81L94.44 36.81L94.49 36.82L94.54 36.84L94.58 36.86L94.63 36.87L94.68 36.88L94.73 36.88L94.78 36.89L94.83 36.91L94.87 36.95L94.92 36.98L94.97 36.99L95.02 37.01L95.07 37.07L95.12 37.08L95.16 37.11L95.21 37.12L95.26 37.12L95.31 37.16L95.36 37.20L95.41 37.21L95.45 37.23L95.50 37.23L95.55 37.24L95.60 37.26L95.65 37.28L95.70 37.29L95.74 37.29L95.79 37.31L95.84 37.31L95.89 37.31L95.94 37.31L95.99 37.33L96.03 37.33L96.08 37.38L96.13 37.38L96.18 37.40L96.23 37.40L96.28 37.40L96.32 37.46L96.37 37.51L96.42 37.51L96.47 37.51L96.52 37.52L96.57 37.52L96.62 37.59L96.66 37.60L96.71 37.63L96.76 37.65L96.81 37.65L96.86 37.71L96.91 37.72L96.95 37.72L97.00 37.73L97.05 37.76L97.10 37.77L97.15 37.78L97.20 37.79L97.24 37.83L97.29 37.83L97.34 37.84L97.39 37.88L97.44 37.95L97.49 37.95L97.53 37.95L97.58 37.96L97.63 38.02L97.68 38.02L97.73 38.04L97.78 38.08L97.82 38.09L97.87 38.16L97.92 38.17L97.97 38.21L98.02 38.22L98.07 38.28L98.11 38.33L98.16 38.39L98.21 38.47L98.26 38.48L98.31 38.49L98.36 38.51L98.40 38.60L98.45 38.62L98.50 38.62L98.55 38.66L98.60 38.66L98.65 38.68L98.69 38.68L98.74 38.72L98.79 38.77L98.84 38.82L98.89 38.86L98.94 38.91L98.98 38.94L99.03 39.02L99.08 39.04L99.13 39.08L99.18 39.20L99.23 39.20L99.27 39.21L99.32 39.38L99.37 39.46L99.42 39.48L99.47 39.58L99.52 39.58L99.56 39.66L99.61 39.67L99.66 39.81L99.71 39.83L99.76 39.96L99.81 40.10L99.85 40.67L99.90 41.01L99.95 41.81L100.00 46.28L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 98.00H100"></path><path class="sparkline__line" d="M0.00 2.00L0.05 9.65L0.10 10.88L0.15 11.40L0.19 12.25L0.24 12.46L0.29 12.65L0.34 12.68L0.39 12.89L0.44 12.90L0.48 13.01L0.53 13.02L0.58 13.16L0.63 13.19L0.68 13.30L0.73 13.55L0.77 13.57L0.82 13.57L0.87 13.74L0.92 13.79L0.97 13.81L1.02 13.94L1.06 13.98L1.11 14.04L1.16 14.11L1.21 14.18L1.26 14.24L1.31 14.30L1.35 14.30L1.40 14.33L1.45 14.33L1.50 14.39L1.55 14.39L1.60 14.42L1.64 14.55L1.69 14.57L1.74 14.59L1.79 14.60L1.84 14.72L1.89 14.80L1.93 14.87L1.98 14.94L2.03 14.96L2.08 15.01L2.13 15.04L2.18 15.13L2.22 15.14L2.27 15.19L2.32 15.23L2.37 15.23L2.42 15.31L2.47 15.32L2.51 15.32L2.56 15.32L2.61 15.42L2.66 15.47L2.71 15.48L2.76 15.49L2.80 15.54L2.85 15.56L2.90 15.57L2.95 15.59L3.00 15.63L3.05 15.64L3.09 15.64L3.14 15.65L3.19 15.73L3.24 15.73L3.29 15.77L3.34 15.80L3.38 15.81L3.43 15.91L3.48 15.92L3.53 15.92L3.58 15.92L3.63 15.93L3.68 15.99L3.72 16.07L3.77 16.07L3.82 16.08L3.87 16.10L3.92 16.11L3.97 16.17L4.01 16.17L4.06 16.19L4.11 16.19L4.16 16.19L4.21 16.19L4.26 16.22L4.30 16.23L4.35 16.24L4.40 16.26L4.45 16.28L4.50 16.30L4.55 16.31L4.59 16.33L4.64 16.34L4.69 16.39L4.74 16.44L4.79 16.45L4.84 16.46L4.88 16.51L4.93 16.51L4.98 16.60L5.03 16.62L5.08 16.64L5.13 16.67L5.17 16.73L5.22 16.76L5.27 16.77L5.32 16.78L5.37 16.78L5.42 16.79L5.46 16.83L5.51 16.85L5.56 16.86L5.61 16.87L5.66 16.87L5.71 16.87L5.75 16.91L5.80 16.94L5.85 16.95L5.90 16.97L5.95 16.98L6.00 17.08L6.04 17.10L6.09 17.12L6.14 17.14L6.19 17.14L6.24 17.17L6.29 17.19L6.33 17.23L6.38 17.23L6.43 17.28L6.48 17.32L6.53 17.32L6.58 17.34L6.62 17.35L6.67 17.36L6.72 17.38L6.77 17.38L6.82 17.40L6.87 17.40L6.91 17.41L6.96 17.42L7.01 17.45L7.06 17.46L7.11 17.50L7.16 17.50L7.21 17.50L7.25 17.51L7.30 17.53L7.35 17.54L7.40 17.56L7.45 17.57L7.50 17.59L7.54 17.62L7.59 17.63L7.64 17.64L7.69 17.65L7.74 17.68L7.79 17.72L7.83 17.73L7.88 17.74L7.93 17.78L7.98 17.78L8.03 17.83L8.08 17.84L8.12 17.85L8.17 17.88L8.22 17.88L8.27 17.91L8.32 17.92L8.37 17.92L8.41 17.93L8.46 18.02L8.51 18.03L8.56 18.03L8.61 18.05L8.66 18.10L8.70 18.13L8.75 18.13L8.80 18.14L8.85 18.15L8.90 18.15L8.95 18.16L8.99 18.17L9.04 18.18L9.09 18.23L9.14 18.23L9.19 18.24L9.24 18.24L9.28 18.25L9.33 18.26L9.38 18.26L9.43 18.29L9.48 18.30L9.53 18.31L9.57 18.31L9.62 18.32L9.67 18.33L9.72 18.33L9.77 18.34L9.82 18.40L9.86 18.40L9.91 18.44L9.96 18.44L10.01 18.44L10.06 18.45L10.11 18.47L10.15 18.52L10.20 18.52L10.25 18.52L10.30 18.53L10.35 18.55L10.40 18.57L10.44 18.57L10.49 18.58L10.54 18.58L10.59 18.62L10.64 18.64L10.69 18.65L10.74 18.66L10.78 18.66L10.83 18.67L10.88 18.68L10.93 18.69L10.98 18.70L11.03 18.71L11.07 18.75L11.12 18.77L11.17 18.78L11.22 18.84L11.27 18.87L11.32 18.94L11.36 18.94L11.41 18.96L11.46 18.99L11.51 18.99L11.56 19.01L11.61 19.02L11.65 19.04L11.70 19.06L11.75 19.06L11.80 19.07L11.85 19.07L11.90 19.07L11.94 19.07L11.99 19.08L12.04 19.08L12.09 19.09L12.14 19.09L12.19 19.10L12.23 19.12L12.28 19.12L12.33 19.15L12.38 19.16L12.43 19.17L12.48 19.18L12.52 19.20L12.57 19.20L12.62 19.20L12.67 19.22L12.72 19.24L12.77 19.25L12.81 19.25L12.86 19.26L12.91 19.28L12.96 19.30L13.01 19.31L13.06 19.31L13.10 19.31L13.15 19.31L13.20 19.32L13.25 19.33L13.30 19.36L13.35 19.36L13.39 19.37L13.44 19.39L13.49 19.42L13.54 19.42L13.59 19.43L13.64 19.43L13.68 19.46L13.73 19.46L13.78 19.47L13.83 19.48L13.88 19.49L13.93 19.49L13.97 19.49L14.02 19.50L14.07 19.52L14.12 19.52L14.17 19.54L14.22 19.57L14.26 19.57L14.31 19.58L14.36 19.58L14.41 19.62L14.46 19.62L14.51 19.63L14.56 19.64L14.60 19.65L14.65 19.65L14.70 19.65L14.75 19.66L14.80 19.66L14.85 19.68L14.89 19.68L14.94 19.73L14.99 19.74L15.04 19.74L15.09 19.76L15.14 19.79L15.18 19.82L15.23 19.82L15.28 19.84L15.33 19.84L15.38 19.87L15.43 19.87L15.47 19.89L15.52 19.89L15.57 19.90L15.62 19.90L15.67 19.90L15.72 19.90L15.76 19.92L15.81 19.93L15.86 19.93L15.91 19.94L15.96 19.96L16.01 19.98L16.05 19.98L16.10 19.99L16.15 20.01L16.20 20.01L16.25 20.01L16.30 20.02L16.34 20.03L16.39 20.06L16.44 20.08L16.49 20.08L16.54 20.12L16.59 20.13L16.63 20.13L16.68 20.14L16.73 20.14L16.78 20.16L16.83 20.19L16.88 20.20L16.92 20.21L16.97 20.22L17.02 20.23L17.07 20.25L17.12 20.25L17.17 20.27L17.21 20.28L17.26 20.28L17.31 20.29L17.36 20.30L17.41 20.30L17.46 20.30L17.50 20.30L17.55 20.32L17.60 20.32L17.65 20.32L17.70 20.36L17.75 20.38L17.79 20.38L17.84 20.39L17.89 20.40L17.94 20.41L17.99 20.42L18.04 20.44L18.09 20.44L18.13 20.46L18.18 20.46L18.23 20.46L18.28 20.47L18.33 20.48L18.38 20.51L18.42 20.53L18.47 20.53L18.52 20.55L18.57 20.55L18.62 20.55L18.67 20.55L18.71 20.55L18.76 20.55L18.81 20.55L18.86 20.58L18.91 20.60L18.96 20.61L19.00 20.62L19.05 20.62L19.10 20.65L19.15 20.65L19.20 20.65L19.25 20.66L19.29 20.67L19.34 20.67L19.39 20.68L19.44 20.71L19.49 20.72L19.54 20.73L19.58 20.76L19.63 20.78L19.68 20.78L19.73 20.78L19.78 20.78L19.83 20.80L19.87 20.80L19.92 20.82L19.97 20.83L20.02 20.85L20.07 20.85L20.12 20.85L20.16 20.86L20.21 20.86L20.26 20.86L20.31 20.86L20.36 20.86L20.41 20.90L20.45 20.90L20.50 20.91L20.55 20.94L20.60 20.94L20.65 20.95L20.70 20.96L20.74 20.97L20.79 20.98L20.84 20.98L20.89 20.99L20.94 20.99L20.99 21.00L21.03 21.00L21.08 21.02L21.13 21.03L21.18 21.03L21.23 21.03L21.28 21.03L21.32 21.04L21.37 21.05L21.42 21.06L21.47 21.06L21.52 21.07L21.57 21.09L21.62 21.10L21.66 21.11L21.71 21.11L21.76 21.12L21.81 21.13L21.86 21.17L21.91 21.17L21.95 21.18L22.00 21.21L22.05 21.23L22.10 21.25L22.15 21.26L22.20 21.27L22.24 21.27L22.29 21.27L22.34 21.28L22.39 21.28L22.44 21.28L22.49 21.30L22.53 21.31L22.58 21.31L22.63 21.31L22.68 21.33L22.73 21.36L22.78 21.36L22.82 21.37L22.87 21.38L22.92 21.38L22.97 21.38L23.02 21.39L23.07 21.40L23.11 21.40L23.16 21.43L23.21 21.43L23.26 21.45L23.31 21.45L23.36 21.46L23.40 21.48L23.45 21.51L23.50 21.51L23.55 21.52L23.60 21.52L23.65 21.53L23.69 21.54L23.74 21.55L23.79 21.57L23.84 21.58L23.89 21.60L23.94 21.60L23.98 21.61L24.03 21.61L24.08 21.62L24.13 21.62L24.18 21.63L24.23 21.63L24.27 21.64L24.32 21.64L24.37 21.65L24.42 21.66L24.47 21.67L24.52 21.69L24.56 21.70L24.61 21.70L24.66 21.72L24.71 21.73L24.76 21.73L24.81 21.75L24.85 21.76L24.90 21.76L24.95 21.77L25.00 21.77L25.05 21.78L25.10 21.78L25.15 21.79L25.19 21.80L25.24 21.81L25.29 21.81L25.34 21.82L25.39 21.83L25.44 21.86L25.48 21.87L25.53 21.88L25.58 21.89L25.63 21.90L25.68 21.91L25.73 21.91L25.77 21.93L25.82 21.94L25.87 21.94L25.92 21.94L25.97 21.95L26.02 21.97L26.06 21.97L26.11 21.97L26.16 21.97L26.21 21.97L26.26 21.98L26.31 21.99L26.35 22.00L26.40 22.02L26.45 22.04L26.50 22.04L26.55 22.04L26.60 22.06L26.64 22.08L26.69 22.08L26.74 22.08L26.79 22.09L26.84 22.09L26.89 22.10L26.93 22.11L26.98 22.12L27.03 22.13L27.08 22.13L27.13 22.13L27.18 22.15L27.22 22.16L27.27 22.18L27.32 22.18L27.37 22.18L27.42 22.20L27.47 22.22L27.51 22.23L27.56 22.23L27.61 22.24L27.66 22.25L27.71 22.25L27.76 22.26L27.80 22.29L27.85 22.29L27.90 22.29L27.95 22.31L28.00 22.31L28.05 22.32L28.09 22.32L28.14 22.34L28.19 22.34L28.24 22.34L28.29 22.36L28.34 22.37L28.38 22.37L28.43 22.39L28.48 22.39L28.53 22.39L28.58 22.39L28.63 22.39L28.68 22.39L28.72 22.41L28.77 22.41L28.82 22.41L28.87 22.42L28.92 22.42L28.97 22.43L29.01 22.43L29.06 22.43L29.11 22.44L29.16 22.46L29.21 22.49L29.26 22.49L29.30 22.50L29.35 22.50L29.40 22.52L29.45 22.53L29.50 22.54L29.55 22.54L29.59 22.54L29.64 22.55L29.69 22.56L29.74 22.58L29.79 22.60L29.84 22.60L29.88 22.61L29.93 22.61L29.98 22.64L30.03 22.64L30.08 22.64L30.13 22.64L30.17 22.65L30.22 22.65L30.27 22.68L30.32 22.69L30.37 22.69L30.42 22.69L30.46 22.70L30.51 22.73L30.56 22.73L30.61 22.75L30.66 22.75L30.71 22.76L30.75 22.78L30.80 22.78L30.85 22.79L30.90 22.79L30.95 22.81L31.00 22.81L31.04 22.82L31.09 22.85L31.14 22.85L31.19 22.87L31.24 22.87L31.29 22.88L31.33 22.88L31.38 22.88L31.43 22.88L31.48 22.88L31.53 22.89L31.58 22.89L31.62 22.90L31.67 22.91L31.72 22.94L31.77 22.95L31.82 22.96L31.87 22.96L31.91 22.96L31.96 22.97L32.01 22.97L32.06 22.98L32.11 23.01L32.16 23.01L32.21 23.01L32.25 23.02L32.30 23.02L32.35 23.03L32.40 23.04L32.45 23.04L32.50 23.06L32.54 23.07L32.59 23.08L32.64 23.10L32.69 23.11L32.74 23.12L32.79 23.14L32.83 23.15L32.88 23.15L32.93 23.16L32.98 23.16L33.03 23.16L33.08 23.17L33.12 23.18L33.17 23.19L33.22 23.19L33.27 23.20L33.32 23.20L33.37 23.20L33.41 23.21L33.46 23.23L33.51 23.23L33.56 23.23L33.61 23.25L33.66 23.25L33.70 23.26L33.75 23.27L33.80 23.28L33.85 23.29L33.90 23.29L33.95 23.30L33.99 23.30L34.04 23.30L34.09 23.31L34.14 23.31L34.19 23.32L34.24 23.34L34.28 23.35L34.33 23.35L34.38 23.36L34.43 23.38L34.48 23.40L34.53 23.43L34.57 23.44L34.62 23.46L34.67 23.46L34.72 23.48L34.77 23.49L34.82 23.49L34.86 23.51L34.91 23.53L34.96 23.55L35.01 23.55L35.06 23.55L35.11 23.56L35.15 23.57L35.20 23.57L35.25 23.59L35.30 23.60L35.35 23.62L35.40 23.63L35.44 23.63L35.49 23.63L35.54 23.65L35.59 23.67L35.64 23.68L35.69 23.69L35.74 23.69L35.78 23.69L35.83 23.70L35.88 23.72L35.93 23.72L35.98 23.75L36.03 23.75L36.07 23.75L36.12 23.75L36.17 23.76L36.22 23.78L36.27 23.80L36.32 23.81L36.36 23.81L36.41 23.82L36.46 23.82L36.51 23.82L36.56 23.84L36.61 23.84L36.65 23.85L36.70 23.86L36.75 23.86L36.80 23.86L36.85 23.86L36.90 23.88L36.94 23.91L36.99 23.93L37.04 23.94L37.09 23.94L37.14 23.95L37.19 23.95L37.23 23.95L37.28 23.95L37.33 23.98L37.38 23.99L37.43 23.99L37.48 24.00L37.52 24.01L37.57 24.04L37.62 24.05L37.67 24.06L37.72 24.07L37.77 24.07L37.81 24.08L37.86 24.08L37.91 24.09L37.96 24.10L38.01 24.12L38.06 24.12L38.10 24.15L38.15 24.16L38.20 24.18L38.25 24.19L38.30 24.22L38.35 24.22L38.39 24.23L38.44 24.23L38.49 24.24L38.54 24.24L38.59 24.25L38.64 24.25L38.68 24.27L38.73 24.27L38.78 24.29L38.83 24.31L38.88 24.34L38.93 24.34L38.97 24.35L39.02 24.37L39.07 24.38L39.12 24.38L39.17 24.39L39.22 24.40L39.26 24.40L39.31 24.41L39.36 24.45L39.41 24.47L39.46 24.47L39.51 24.48L39.56 24.48L39.60 24.49L39.65 24.49L39.70 24.49L39.75 24.50L39.80 24.50L39.85 24.50L39.89 24.51L39.94 24.51L39.99 24.51L40.04 24.52L40.09 24.53L40.14 24.53L40.18 24.53L40.23 24.53L40.28 24.55L40.33 24.56L40.38 24.57L40.43 24.57L40.47 24.58L40.52 24.58L40.57 24.59L40.62 24.59L40.67 24.60L40.72 24.61L40.76 24.61L40.81 24.61L40.86 24.62L40.91 24.63L40.96 24.63L41.01 24.64L41.05 24.65L41.10 24.66L41.15 24.69L41.20 24.70L41.25 24.70L41.30 24.71L41.34 24.72L41.39 24.72L41.44 24.72L41.49 24.73L41.54 24.74L41.59 24.76L41.63 24.76L41.68 24.78L41.73 24.79L41.78 24.79L41.83 24.80L41.88 24.81L41.92 24.82L41.97 24.82L42.02 24.84L42.07 24.84L42.12 24.84L42.17 24.85L42.21 24.86L42.26 24.88L42.31 24.90L42.36 24.90L42.41 24.90L42.46 24.93L42.50 24.93L42.55 24.94L42.60 24.95L42.65 24.96L42.70 24.98L42.75 24.98L42.79 25.00L42.84 25.00L42.89 25.03L42.94 25.03L42.99 25.05L43.04 25.06L43.09 25.08L43.13 25.11L43.18 25.11L43.23 25.12L43.28 25.12L43.33 25.12L43.38 25.15L43.42 25.19L43.47 25.23L43.52 25.25L43.57 25.27L43.62 25.28L43.67 25.31L43.71 25.33L43.76 25.34L43.81 25.34L43.86 25.36L43.91 25.40L43.96 25.41L44.00 25.44L44.05 25.47L44.10 25.48L44.15 25.48L44.20 25.49L44.25 25.53L44.29 25.53L44.34 25.53L44.39 25.54L44.44 25.54L44.49 25.56L44.54 25.56L44.58 25.59L44.63 25.60L44.68 25.60L44.73 25.61L44.78 25.63L44.83 25.64L44.87 25.66L44.92 25.67L44.97 25.67L45.02 25.71L45.07 25.73L45.12 25.73L45.16 25.74L45.21 25.75L45.26 25.77L45.31 25.79L45.36 25.81L45.41 25.81L45.45 25.84L45.50 25.84L45.55 25.85L45.60 25.92L45.65 25.99L45.70 25.99L45.74 26.01L45.79 26.02L45.84 26.02L45.89 26.03L45.94 26.04L45.99 26.12L46.03 26.12L46.08 26.17L46.13 26.18L46.18 26.24L46.23 26.27L46.28 26.28L46.32 26.28L46.37 26.31L46.42 26.33L46.47 26.34L46.52 26.35L46.57 26.35L46.62 26.35L46.66 26.40L46.71 26.41L46.76 26.42L46.81 26.45L46.86 26.47L46.91 26.50L46.95 26.50L47.00 26.50L47.05 26.51L47.10 26.51L47.15 26.55L47.20 26.55L47.24 26.60L47.29 26.62L47.34 26.63L47.39 26.65L47.44 26.70L47.49 26.72L47.53 26.72L47.58 26.74L47.63 26.74L47.68 26.75L47.73 26.77L47.78 26.78L47.82 26.78L47.87 26.79L47.92 26.83L47.97 26.83L48.02 26.84L48.07 26.87L48.11 26.87L48.16 26.90L48.21 26.90L48.26 26.94L48.31 26.94L48.36 26.97L48.40 26.98L48.45 27.00L48.50 27.00L48.55 27.06L48.60 27.06L48.65 27.07L48.69 27.07L48.74 27.08L48.79 27.09L48.84 27.10L48.89 27.13L48.94 27.13L48.98 27.19L49.03 27.19L49.08 27.19L49.13 27.19L49.18 27.21L49.23 27.21L49.27 27.23L49.32 27.23L49.37 27.28L49.42 27.29L49.47 27.30L49.52 27.40L49.56 27.41L49.61 27.41L49.66 27.41L49.71 27.43L49.76 27.43L49.81 27.46L49.85 27.46L49.90 27.51L49.95 27.53L50.00 27.54L50.05 27.56L50.10 27.61L50.15 27.62L50.19 27.64L50.24 27.65L50.29 27.66L50.34 27.66L50.39 27.67L50.44 27.68L50.48 27.77L50.53 27.78L50.58 27.80L50.63 27.84L50.68 27.85L50.73 27.86L50.77 27.86L50.82 27.89L50.87 27.89L50.92 27.89L50.97 27.89L51.02 27.94L51.06 27.94L51.11 27.98L51.16 27.99L51.21 28.00L51.26 28.00L51.31 28.00L51.35 28.01L51.40 28.02L51.45 28.07L51.50 28.07L51.55 28.09L51.60 28.10L51.64 28.13L51.69 28.13L51.74 28.17L51.79 28.17L51.84 28.20L51.89 28.20L51.93 28.23L51.98 28.24L52.03 28.24L52.08 28.28L52.13 28.29L52.18 28.29L52.22 28.30L52.27 28.32L52.32 28.33L52.37 28.33L52.42 28.35L52.47 28.35L52.51 28.37L52.56 28.42L52.61 28.44L52.66 28.45L52.71 28.46L52.76 28.51L52.80 28.51L52.85 28.55L52.90 28.56L52.95 28.56L53.00 28.56L53.05 28.56L53.09 28.59L53.14 28.61L53.19 28.64L53.24 28.65L53.29 28.66L53.34 28.70L53.38 28.71L53.43 28.71L53.48 28.72L53.53 28.72L53.58 28.75L53.63 28.77L53.68 28.78L53.72 28.79L53.77 28.82L53.82 28.88L53.87 28.88L53.92 28.93L53.97 28.93L54.01 29.01L54.06 29.01L54.11 29.02L54.16 29.02L54.21 29.03L54.26 29.05L54.30 29.06L54.35 29.12L54.40 29.19L54.45 29.20L54.50 29.20L54.55 29.23L54.59 29.23L54.64 29.25L54.69 29.26L54.74 29.28L54.79 29.29L54.84 29.30L54.88 29.30L54.93 29.32L54.98 29.36L55.03 29.36L55.08 29.37L55.13 29.39L55.17 29.40L55.22 29.41L55.27 29.42L55.32 29.43L55.37 29.43L55.42 29.47L55.46 29.47L55.51 29.49L55.56 29.49L55.61 29.49L55.66 29.49L55.71 29.49L55.75 29.53L55.80 29.54L55.85 29.54L55.90 29.55L55.95 29.58L56.00 29.60L56.04 29.61L56.09 29.65L56.14 29.67L56.19 29.67L56.24 29.68L56.29 29.69L56.33 29.72L56.38 29.73L56.43 29.76L56.48 29.77L56.53 29.81L56.58 29.84L56.62 29.87L56.67 29.88L56.72 29.88L56.77 29.89L56.82 29.89L56.87 29.91L56.91 29.94L56.96 29.94L57.01 29.96L57.06 29.96L57.11 29.99L57.16 29.99L57.21 30.00L57.25 30.01L57.30 30.02L57.35 30.03L57.40 30.04L57.45 30.05L57.50 30.05L57.54 30.08L57.59 30.08L57.64 30.08L57.69 30.10L57.74 30.12L57.79 30.13L57.83 30.14L57.88 30.14L57.93 30.14L57.98 30.15L58.03 30.16L58.08 30.16L58.12 30.17L58.17 30.18L58.22 30.19L58.27 30.19L58.32 30.21L58.37 30.22L58.41 30.23L58.46 30.24L58.51 30.24L58.56 30.25L58.61 30.25L58.66 30.26L58.70 30.26L58.75 30.27L58.80 30.28L58.85 30.30L58.90 30.31L58.95 30.32L58.99 30.33L59.04 30.34L59.09 30.34L59.14 30.35L59.19 30.35L59.24 30.35L59.28 30.36L59.33 30.36L59.38 30.37L59.43 30.37L59.48 30.38L59.53 30.38L59.57 30.39L59.62 30.40L59.67 30.41L59.72 30.43L59.77 30.43L59.82 30.43L59.86 30.43L59.91 30.44L59.96 30.44L60.01 30.44L60.06 30.44L60.11 30.45L60.15 30.45L60.20 30.45L60.25 30.46L60.30 30.46L60.35 30.46L60.40 30.47L60.44 30.47L60.49 30.47L60.54 30.48L60.59 30.50L60.64 30.53L60.69 30.54L60.74 30.55L60.78 30.55L60.83 30.56L60.88 30.56L60.93 30.57L60.98 30.59L61.03 30.59L61.07 30.60L61.12 30.62L61.17 30.64L61.22 30.66L61.27 30.66L61.32 30.68L61.36 30.68L61.41 30.69L61.46 30.69L61.51 30.70L61.56 30.70L61.61 30.71L61.65 30.71L61.70 30.73L61.75 30.74L61.80 30.77L61.85 30.77L61.90 30.80L61.94 30.80L61.99 30.81L62.04 30.83L62.09 30.83L62.14 30.83L62.19 30.84L62.23 30.84L62.28 30.86L62.33 30.86L62.38 30.87L62.43 30.90L62.48 30.91L62.52 30.91L62.57 30.92L62.62 30.93L62.67 30.95L62.72 30.95L62.77 30.95L62.81 30.95L62.86 30.96L62.91 30.96L62.96 30.97L63.01 30.99L63.06 31.02L63.10 31.03L63.15 31.03L63.20 31.03L63.25 31.04L63.30 31.04L63.35 31.05L63.39 31.06L63.44 31.07L63.49 31.07L63.54 31.07L63.59 31.08L63.64 31.08L63.68 31.09L63.73 31.11L63.78 31.13L63.83 31.13L63.88 31.13L63.93 31.13L63.97 31.14L64.02 31.16L64.07 31.16L64.12 31.18L64.17 31.18L64.22 31.18L64.26 31.19L64.31 31.20L64.36 31.21L64.41 31.23L64.46 31.24L64.51 31.24L64.56 31.25L64.60 31.25L64.65 31.27L64.70 31.28L64.75 31.30L64.80 31.30L64.85 31.30L64.89 31.31L64.94 31.31L64.99 31.31L65.04 31.33L65.09 31.35L65.14 31.37L65.18 31.37L65.23 31.37L65.28 31.39L65.33 31.40L65.38 31.42L65.43 31.42L65.47 31.45L65.52 31.46L65.57 31.48L65.62 31.49L65.67 31.49L65.72 31.50L65.76 31.52L65.81 31.52L65.86 31.53L65.91 31.53L65.96 31.53L66.01 31.54L66.05 31.54L66.10 31.55L66.15 31.56L66.20 31.57L66.25 31.57L66.30 31.58L66.34 31.58L66.39 31.60L66.44 31.60L66.49 31.60L66.54 31.62L66.59 31.62L66.63 31.63L66.68 31.63L66.73 31.64L66.78 31.64L66.83 31.64L66.88 31.65L66.92 31.66L66.97 31.66L67.02 31.66L67.07 31.67L67.12 31.67L67.17 31.68L67.21 31.69L67.26 31.70L67.31 31.71L67.36 31.74L67.41 31.74L67.46 31.75L67.50 31.77L67.55 31.77L67.60 31.77L67.65 31.79L67.70 31.79L67.75 31.79L67.79 31.79L67.84 31.80L67.89 31.82L67.94 31.83L67.99 31.83L68.04 31.84L68.09 31.84L68.13 31.84L68.18 31.85L68.23 31.86L68.28 31.88L68.33 31.89L68.38 31.90L68.42 31.90L68.47 31.91L68.52 31.91L68.57 31.91L68.62 31.91L68.67 31.91L68.71 31.91L68.76 31.91L68.81 31.93L68.86 31.94L68.91 31.96L68.96 31.97L69.00 31.97L69.05 31.98L69.10 31.98L69.15 32.00L69.20 32.00L69.25 32.01L69.29 32.02L69.34 32.02L69.39 32.04L69.44 32.04L69.49 32.06L69.54 32.07L69.58 32.08L69.63 32.08L69.68 32.08L69.73 32.11L69.78 32.11L69.83 32.12L69.87 32.12L69.92 32.12L69.97 32.12L70.02 32.15L70.07 32.15L70.12 32.16L70.16 32.16L70.21 32.17L70.26 32.19L70.31 32.20L70.36 32.20L70.41 32.20L70.45 32.21L70.50 32.22L70.55 32.23L70.60 32.24L70.65 32.24L70.70 32.25L70.74 32.25L70.79 32.28L70.84 32.29L70.89 32.30L70.94 32.30L70.99 32.31L71.03 32.31L71.08 32.31L71.13 32.32L71.18 32.32L71.23 32.32L71.28 32.33L71.32 32.33L71.37 32.33L71.42 32.33L71.47 32.34L71.52 32.34L71.57 32.35L71.62 32.36L71.66 32.36L71.71 32.38L71.76 32.38L71.81 32.38L71.86 32.40L71.91 32.40L71.95 32.41L72.00 32.41L72.05 32.42L72.10 32.42L72.15 32.42L72.20 32.45L72.24 32.46L72.29 32.46L72.34 32.46L72.39 32.47L72.44 32.48L72.49 32.48L72.53 32.50L72.58 32.52L72.63 32.52L72.68 32.52L72.73 32.54L72.78 32.54L72.82 32.56L72.87 32.56L72.92 32.56L72.97 32.57L73.02 32.58L73.07 32.59L73.11 32.59L73.16 32.60L73.21 32.60L73.26 32.60L73.31 32.61L73.36 32.62L73.40 32.64L73.45 32.64L73.50 32.64L73.55 32.66L73.60 32.68L73.65 32.68L73.69 32.69L73.74 32.70L73.79 32.70L73.84 32.70L73.89 32.70L73.94 32.70L73.98 32.72L74.03 32.72L74.08 32.73L74.13 32.73L74.18 32.73L74.23 32.75L74.27 32.75L74.32 32.76L74.37 32.77L74.42 32.78L74.47 32.78L74.52 32.79L74.56 32.82L74.61 32.83L74.66 32.83L74.71 32.84L74.76 32.84L74.81 32.85L74.85 32.86L74.90 32.86L74.95 32.87L75.00 32.87L75.05 32.88L75.10 32.88L75.15 32.89L75.19 32.91L75.24 32.91L75.29 32.91L75.34 32.93L75.39 32.93L75.44 32.94L75.48 32.96L75.53 32.96L75.58 32.97L75.63 32.98L75.68 32.98L75.73 32.99L75.77 32.99L75.82 33.00L75.87 33.00L75.92 33.00L75.97 33.01L76.02 33.01L76.06 33.02L76.11 33.03L76.16 33.04L76.21 33.06L76.26 33.07L76.31 33.07L76.35 33.08L76.40 33.08L76.45 33.09L76.50 33.10L76.55 33.12L76.60 33.14L76.64 33.14L76.69 33.14L76.74 33.16L76.79 33.16L76.84 33.18L76.89 33.19L76.93 33.20L76.98 33.20L77.03 33.20L77.08 33.20L77.13 33.21L77.18 33.22L77.22 33.22L77.27 33.24L77.32 33.26L77.37 33.26L77.42 33.26L77.47 33.27L77.51 33.28L77.56 33.28L77.61 33.29L77.66 33.29L77.71 33.30L77.76 33.30L77.80 33.31L77.85 33.31L77.90 33.33L77.95 33.35L78.00 33.37L78.05 33.38L78.09 33.38L78.14 33.41L78.19 33.43L78.24 33.43L78.29 33.43L78.34 33.43L78.38 33.45L78.43 33.46L78.48 33.47L78.53 33.47L78.58 33.48L78.63 33.49L78.68 33.49L78.72 33.50L78.77 33.50L78.82 33.50L78.87 33.50L78.92 33.52L78.97 33.53L79.01 33.53L79.06 33.53L79.11 33.54L79.16 33.54L79.21 33.55L79.26 33.56L79.30 33.56L79.35 33.57L79.40 33.57L79.45 33.60L79.50 33.60L79.55 33.61L79.59 33.64L79.64 33.64L79.69 33.64L79.74 33.64L79.79 33.64L79.84 33.64L79.88 33.64L79.93 33.65L79.98 33.66L80.03 33.67L80.08 33.69L80.13 33.69L80.17 33.71L80.22 33.71L80.27 33.71L80.32 33.71L80.37 33.72L80.42 33.75L80.46 33.76L80.51 33.76L80.56 33.79L80.61 33.80L80.66 33.80L80.71 33.81L80.75 33.81L80.80 33.81L80.85 33.82L80.90 33.84L80.95 33.84L81.00 33.85L81.04 33.85L81.09 33.87L81.14 33.89L81.19 33.89L81.24 33.89L81.29 33.89L81.33 33.90L81.38 33.90L81.43 33.90L81.48 33.91L81.53 33.91L81.58 33.93L81.62 33.95L81.67 33.96L81.72 33.97L81.77 33.97L81.82 33.97L81.87 33.99L81.91 33.99L81.96 34.00L82.01 34.01L82.06 34.02L82.11 34.03L82.16 34.03L82.21 34.04L82.25 34.05L82.30 34.08L82.35 34.08L82.40 34.09L82.45 34.10L82.50 34.10L82.54 34.10L82.59 34.10L82.64 34.11L82.69 34.12L82.74 34.12L82.79 34.13L82.83 34.14L82.88 34.14L82.93 34.16L82.98 34.17L83.03 34.18L83.08 34.18L83.12 34.20L83.17 34.22L83.22 34.23L83.27 34.23L83.32 34.24L83.37 34.24L83.41 34.25L83.46 34.28L83.51 34.28L83.56 34.30L83.61 34.33L83.66 34.33L83.70 34.34L83.75 34.34L83.80 34.34L83.85 34.34L83.90 34.36L83.95 34.36L83.99 34.37L84.04 34.38L84.09 34.40L84.14 34.41L84.19 34.41L84.24 34.42L84.28 34.43L84.33 34.43L84.38 34.43L84.43 34.43L84.48 34.44L84.53 34.44L84.57 34.46L84.62 34.46L84.67 34.48L84.72 34.48L84.77 34.50L84.82 34.50L84.86 34.52L84.91 34.54L84.96 34.56L85.01 34.56L85.06 34.57L85.11 34.61L85.15 34.61L85.20 34.62L85.25 34.63L85.30 34.63L85.35 34.63L85.40 34.64L85.44 34.64L85.49 34.65L85.54 34.66L85.59 34.66L85.64 34.69L85.69 34.69L85.74 34.69L85.78 34.70L85.83 34.73L85.88 34.74L85.93 34.74L85.98 34.75L86.03 34.76L86.07 34.76L86.12 34.76L86.17 34.77L86.22 34.78L86.27 34.78L86.32 34.79L86.36 34.81L86.41 34.81L86.46 34.82L86.51 34.82L86.56 34.84L86.61 34.86L86.65 34.86L86.70 34.87L86.75 34.89L86.80 34.90L86.85 34.90L86.90 34.91L86.94 34.91L86.99 34.91L87.04 34.91L87.09 34.93L87.14 34.95L87.19 34.95L87.23 34.96L87.28 34.96L87.33 34.98L87.38 34.99L87.43 34.99L87.48 35.00L87.52 35.01L87.57 35.01L87.62 35.03L87.67 35.03L87.72 35.06L87.77 35.06L87.81 35.07L87.86 35.08L87.91 35.08L87.96 35.09L88.01 35.09L88.06 35.09L88.10 35.10L88.15 35.10L88.20 35.10L88.25 35.10L88.30 35.11L88.35 35.12L88.39 35.14L88.44 35.15L88.49 35.16L88.54 35.16L88.59 35.19L88.64 35.20L88.68 35.20L88.73 35.26L88.78 35.28L88.83 35.33L88.88 35.34L88.93 35.35L88.97 35.39L89.02 35.40L89.07 35.40L89.12 35.40L89.17 35.41L89.22 35.42L89.26 35.43L89.31 35.43L89.36 35.44L89.41 35.46L89.46 35.48L89.51 35.49L89.56 35.50L89.60 35.50L89.65 35.51L89.70 35.53L89.75 35.53L89.80 35.53L89.85 35.54L89.89 35.57L89.94 35.59L89.99 35.59L90.04 35.60L90.09 35.60L90.14 35.63L90.18 35.63L90.23 35.67L90.28 35.68L90.33 35.68L90.38 35.69L90.43 35.70L90.47 35.70L90.52 35.70L90.57 35.72L90.62 35.73L90.67 35.74L90.72 35.75L90.76 35.75L90.81 35.75L90.86 35.76L90.91 35.76L90.96 35.80L91.01 35.80L91.05 35.82L91.10 35.82L91.15 35.83L91.20 35.83L91.25 35.84L91.30 35.84L91.34 35.86L91.39 35.90L91.44 35.91L91.49 35.92L91.54 35.93L91.59 36.00L91.63 36.00L91.68 36.00L91.73 36.01L91.78 36.03L91.83 36.03L91.88 36.06L91.92 36.06L91.97 36.07L92.02 36.11L92.07 36.11L92.12 36.14L92.17 36.15L92.21 36.15L92.26 36.19L92.31 36.21L92.36 36.22L92.41 36.23L92.46 36.23L92.50 36.25L92.55 36.27L92.60 36.28L92.65 36.30L92.70 36.30L92.75 36.32L92.79 36.32L92.84 36.32L92.89 36.33L92.94 36.36L92.99 36.37L93.04 36.39L93.09 36.39L93.13 36.40L93.18 36.40L93.23 36.41L93.28 36.42L93.33 36.43L93.38 36.44L93.42 36.44L93.47 36.46L93.52 36.47L93.57 36.50L93.62 36.53L93.67 36.53L93.71 36.56L93.76 36.57L93.81 36.60L93.86 36.60L93.91 36.61L93.96 36.63L94.00 36.65L94.05 36.72L94.10 36.73L94.15 36.74L94.20 36.75L94.25 36.78L94.29 36.80L94.34 36.81L94.39 36.81L94.44 36.81L94.49 36.82L94.54 36.84L94.58 36.86L94.63 36.87L94.68 36.88L94.73 36.88L94.78 36.89L94.83 36.91L94.87 36.95L94.92 36.98L94.97 36.99L95.02 37.01L95.07 37.07L95.12 37.08L95.16 37.11L95.21 37.12L95.26 37.12L95.31 37.16L95.36 37.20L95.41 37.21L95.45 37.23L95.50 37.23L95.55 37.24L95.60 37.26L95.65 37.28L95.70 37.29L95.74 37.29L95.79 37.31L95.84 37.31L95.89 37.31L95.94 37.31L95.99 37.33L96.03 37.33L96.08 37.38L96.13 37.38L96.18 37.40L96.23 37.40L96.28 37.40L96.32 37.46L96.37 37.51L96.42 37.51L96.47 37.51L96.52 37.52L96.57 37.52L96.62 37.59L96.66 37.60L96.71 37.63L96.76 37.65L96.81 37.65L96.86 37.71L96.91 37.72L96.95 37.72L97.00 37.73L97.05 37.76L97.10 37.77L97.15 37.78L97.20 37.79L97.24 37.83L97.29 37.83L97.34 37.84L97.39 37.88L97.44 37.95L97.49 37.95L97.53 37.95L97.58 37.96L97.63 38.02L97.68 38.02L97.73 38.04L97.78 38.08L97.82 38.09L97.87 38.16L97.92 38.17L97.97 38.21L98.02 38.22L98.07 38.28L98.11 38.33L98.16 38.39L98.21 38.47L98.26 38.48L98.31 38.49L98.36 38.51L98.40 38.60L98.45 38.62L98.50 38.62L98.55 38.66L98.60 38.66L98.65 38.68L98.69 38.68L98.74 38.72L98.79 38.77L98.84 38.82L98.89 38.86L98.94 38.91L98.98 38.94L99.03 39.02L99.08 39.04L99.13 39.08L99.18 39.20L99.23 39.20L99.27 39.21L99.32 39.38L99.37 39.46L99.42 39.48L99.47 39.58L99.52 39.58L99.56 39.66L99.61 39.67L99.66 39.81L99.71 39.83L99.76 39.96L99.81 40.10L99.85 40.67L99.90 41.01L99.95 41.81L100.00 46.28"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">策略研究 · US100.cash · 2069 組參數 · 2,468,094 筆交易</span><h3 class="post-card__title"><a class="post-card__link" href="/posts/us100-intraday-clock-windows/">US100 幾點進場、<wbr/>幾點出場？<wbr/> 全交易時段 2,069 組進出場時間多空回測</a></h3><span class="post-card__excerpt">那斯達克 US100 在固定的紐約時間進場、固定時間出場，涵蓋晚上 18:00 開盤到隔天下午的整個交易時段，可以跨午夜（例如 22:00 進、06:00 出），每 30 分鐘一格，多空共 2,069 組。這篇看哪些時段有優勢、好結果是平台還是孤島，以及做多與做空的差別。</span><span class="post-card__meta"><span>2026-10-09 09:30</span><span>5 分鐘</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/posts/us100-intraday-clock-windows/">讀文章</a><a class="btn btn-ghost btn-sm" href="/posts/us100-intraday-clock-windows/?view=report">看報告</a></div></div></article><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">累積報酬 · 週一 · 做多 · 18:00 · 12:30</span><span class="cover-figure__value">+34.4 vol</span><span class="cover-figure__sub">每年為正 5 / 5 年 · 獲利因子 2.149</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 93.86L1.23 93.93L2.47 91.52L3.70 89.39L4.94 92.12L6.17 95.43L7.41 93.77L8.64 96.11L9.88 96.99L11.11 96.84L12.35 97.53L13.58 97.12L14.81 96.26L16.05 93.95L17.28 94.52L18.52 95.80L19.75 97.04L20.99 92.38L22.22 91.92L23.46 88.93L24.69 90.05L25.93 93.29L27.16 93.92L28.40 92.84L29.63 90.87L30.86 93.97L32.10 92.66L33.33 89.98L34.57 88.70L35.80 88.27L37.04 84.76L38.27 84.89L39.51 84.35L40.74 81.46L41.98 78.19L43.21 76.79L44.44 74.21L45.68 74.48L46.91 76.10L48.15 75.76L49.38 73.28L50.62 72.08L51.85 70.96L53.09 67.54L54.32 66.04L55.56 67.47L56.79 66.01L58.02 64.38L59.26 64.79L60.49 65.64L61.73 61.52L62.96 60.58L64.20 65.33L65.43 59.13L66.67 60.33L67.90 60.43L69.14 59.81L70.37 58.75L71.60 55.53L72.84 51.91L74.07 50.85L75.31 46.60L76.54 46.39L77.78 43.37L79.01 39.27L80.25 34.89L81.48 31.57L82.72 29.63L83.95 31.31L85.19 29.30L86.42 20.94L87.65 21.27L88.89 21.27L90.12 15.94L91.36 16.44L92.59 16.30L93.83 7.83L95.06 5.00L96.30 7.64L97.53 6.66L98.77 7.49L100.00 2.00L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 98.00H100"></path><path class="sparkline__line" d="M0.00 93.86L1.23 93.93L2.47 91.52L3.70 89.39L4.94 92.12L6.17 95.43L7.41 93.77L8.64 96.11L9.88 96.99L11.11 96.84L12.35 97.53L13.58 97.12L14.81 96.26L16.05 93.95L17.28 94.52L18.52 95.80L19.75 97.04L20.99 92.38L22.22 91.92L23.46 88.93L24.69 90.05L25.93 93.29L27.16 93.92L28.40 92.84L29.63 90.87L30.86 93.97L32.10 92.66L33.33 89.98L34.57 88.70L35.80 88.27L37.04 84.76L38.27 84.89L39.51 84.35L40.74 81.46L41.98 78.19L43.21 76.79L44.44 74.21L45.68 74.48L46.91 76.10L48.15 75.76L49.38 73.28L50.62 72.08L51.85 70.96L53.09 67.54L54.32 66.04L55.56 67.47L56.79 66.01L58.02 64.38L59.26 64.79L60.49 65.64L61.73 61.52L62.96 60.58L64.20 65.33L65.43 59.13L66.67 60.33L67.90 60.43L69.14 59.81L70.37 58.75L71.60 55.53L72.84 51.91L74.07 50.85L75.31 46.60L76.54 46.39L77.78 43.37L79.01 39.27L80.25 34.89L81.48 31.57L82.72 29.63L83.95 31.31L85.19 29.30L86.42 20.94L87.65 21.27L88.89 21.27L90.12 15.94L91.36 16.44L92.59 16.30L93.83 7.83L95.06 5.00L96.30 7.64L97.53 6.66L98.77 7.49L100.00 2.00"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">策略研究 · US100.cash · 184 組參數 · 43,000 筆交易</span><h3 class="post-card__title"><a class="post-card__link" href="/posts/us100-weekday-clock-strategies/">US100 星期幾進場有差嗎？<wbr/> 週一到週五各自的進出場時段回測</a></h3><span class="post-card__excerpt">把那斯達克 US100 的交易拆成週一到週五五個策略，每個只在一天的交易時段進場，方向與進出場時間從涵蓋整個交易時段（可跨午夜）的 2,069 組紐約時鐘組合中依評分挑出。這篇看每一天挑出的時段是平台還是孤島、同一組參數反方向做的表現，以及哪一天的結果超出挑選偏誤。</span><span class="post-card__meta"><span>2026-10-08 22:55</span><span>6 分鐘</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/posts/us100-weekday-clock-strategies/">讀文章</a><a class="btn btn-ghost btn-sm" href="/posts/us100-weekday-clock-strategies/?view=report">看報告</a></div></div></article><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">累積報酬 · 7 組合計 · 基準</span><span class="cover-figure__value">+107.6 vol</span><span class="cover-figure__sub">每年為正 5 / 5 年 · 獲利因子 1.218</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 98.00L1.22 88.97L2.44 85.75L3.66 86.57L4.88 85.08L6.10 86.16L7.32 86.91L8.54 84.68L9.76 84.47L10.98 81.59L12.20 79.22L13.41 81.88L14.63 83.91L15.85 87.99L17.07 90.26L18.29 88.73L19.51 91.37L20.73 86.86L21.95 85.47L23.17 84.22L24.39 83.38L25.61 79.18L26.83 80.92L28.05 77.70L29.27 72.10L30.49 73.15L31.71 74.22L32.93 76.87L34.15 75.11L35.37 75.28L36.59 74.24L37.80 66.75L39.02 66.91L40.24 61.03L41.46 58.51L42.68 60.11L43.90 61.98L45.12 66.72L46.34 66.09L47.56 60.08L48.78 56.38L50.00 56.40L51.22 53.77L52.44 51.68L53.66 49.64L54.88 46.74L56.10 45.73L57.32 48.16L58.54 46.07L59.76 48.43L60.98 48.93L62.20 38.95L63.41 31.42L64.63 28.92L65.85 25.16L67.07 27.09L68.29 25.79L69.51 25.75L70.73 25.69L71.95 26.95L73.17 27.75L74.39 27.12L75.61 27.38L76.83 24.96L78.05 23.75L79.27 15.32L80.49 14.69L81.71 12.33L82.93 8.92L84.15 12.34L85.37 12.27L86.59 9.86L87.80 10.68L89.02 8.22L90.24 6.61L91.46 4.94L92.68 4.23L93.90 4.29L95.12 2.34L96.34 2.00L97.56 3.57L98.78 2.78L100.00 2.61L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 97.48H100"></path><path class="sparkline__line" d="M0.00 98.00L1.22 88.97L2.44 85.75L3.66 86.57L4.88 85.08L6.10 86.16L7.32 86.91L8.54 84.68L9.76 84.47L10.98 81.59L12.20 79.22L13.41 81.88L14.63 83.91L15.85 87.99L17.07 90.26L18.29 88.73L19.51 91.37L20.73 86.86L21.95 85.47L23.17 84.22L24.39 83.38L25.61 79.18L26.83 80.92L28.05 77.70L29.27 72.10L30.49 73.15L31.71 74.22L32.93 76.87L34.15 75.11L35.37 75.28L36.59 74.24L37.80 66.75L39.02 66.91L40.24 61.03L41.46 58.51L42.68 60.11L43.90 61.98L45.12 66.72L46.34 66.09L47.56 60.08L48.78 56.38L50.00 56.40L51.22 53.77L52.44 51.68L53.66 49.64L54.88 46.74L56.10 45.73L57.32 48.16L58.54 46.07L59.76 48.43L60.98 48.93L62.20 38.95L63.41 31.42L64.63 28.92L65.85 25.16L67.07 27.09L68.29 25.79L69.51 25.75L70.73 25.69L71.95 26.95L73.17 27.75L74.39 27.12L75.61 27.38L76.83 24.96L78.05 23.75L79.27 15.32L80.49 14.69L81.71 12.33L82.93 8.92L84.15 12.34L85.37 12.27L86.59 9.86L87.80 10.68L89.02 8.22L90.24 6.61L91.46 4.94L92.68 4.23L93.90 4.29L95.12 2.34L96.34 2.00L97.56 3.57L98.78 2.78L100.00 2.61"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">策略研究 · US100.cash · 24 組參數 · 19,212 筆交易</span><h3 class="post-card__title"><a class="post-card__link" href="/posts/us100-market-profile-portfolio-sizing/">US100 Market Profile 7 組策略怎麼配置？<wbr/>FTMO 10 萬帳戶的部位大小、<wbr/>點差與滑價</a></h3><span class="post-card__excerpt">延續納入週一後重做的 10 組 Market Profile 參數，我們去掉彼此高度相關的組合留下 7 組，扣除點差與滑價後看組合的表現，再用過去研究使用的 MAE 部位公式，在 FTMO 10 萬美元帳戶「總虧損 1 萬、單日虧損低於 4 千」的限制下決定每筆的風險金額。</span><span class="post-card__meta"><span>2026-10-08 19:30</span><span>6 分鐘</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/posts/us100-market-profile-portfolio-sizing/">讀文章</a><a class="btn btn-ghost btn-sm" href="/posts/us100-market-profile-portfolio-sizing/?view=report">看報告</a></div></div></article></div></section></div><!-- island 外層加 div：astro-island 為 display: contents，否則引用區塊會被排進格線的側欄 --><div><script>(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value=="object"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event("astro:visible"));})();</script><astro-island uid="Z1uDavW" prefix="r15" component-url="/_astro/index.YUsP-8F-.js" component-export="Citation" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;text&quot;:[0,&quot;TradePose Research（2026）。〈MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）〉TradePose Research Notes.&quot;],&quot;bibtex&quot;:[0,&quot;@article{tradepose2026quantresearchglossary,\n  title   = {MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）},\n  author  = {TradePose Research},\n  journal = {TradePose Research Notes},\n  year    = {2026}\n}&quot;]}" ssr client="visible" opts="{&quot;name&quot;:&quot;Citation&quot;,&quot;value&quot;:true}" await-children><div class="citation"><div class="citation-title">引用本文</div><p class="citation-text">TradePose Research（2026）。〈MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）〉TradePose Research Notes.</p><div class="citation-code">@article{tradepose2026quantresearchglossary,
+  title   = {MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）},
+  author  = {TradePose Research},
+  journal = {TradePose Research Notes},
+  year    = {2026}
+}<button type="button" class="btn btn-secondary btn-sm">複製</button></div></div><!--astro:end--></astro-island></div></div></main><footer class="site-footer"><div class="container"><div class="site-footer__grid"><div class="site-footer__brand"><span class="site-brand"><span class="site-brand__mark" aria-hidden="true"></span>TradePose</span><p class="site-footer__tagline">量化研究筆記：回測、統計與策略診斷。文中數字皆由文章附帶的回測統計產生。</p></div><div><h2 class="site-footer__title">研究</h2><ul><li><a href="/#research">研究目錄</a></li><li><a href="/#method">資料與計算說明</a></li><li><a href="/rss.xml">RSS</a></li></ul></div></div><div class="site-footer__legal"><span>© 2026 TradePose</span><span>研究內容不構成投資建議</span></div></div></footer><script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.DvHqxMT5.js"></script></body></html>

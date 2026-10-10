@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime.DvU585tb.js";import{r as t,t as n}from"./analyzerMode.D8Bhlvd_.js";import{t as r}from"./YearConsistency.DSqUeMTK.js";var i=e();function a({views:e,title:a,subtitle:o,foot:s}){let c=t(e.map(e=>e.mode));return(0,i.jsx)(r,{rows:n(e,c).rows,title:a,subtitle:o,foot:s,mode:c})}export{a as default};

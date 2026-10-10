@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>TradePose Research</title>
+    <link>https://research.tradepose.com/</link>
+    <description>量化研究筆記：回測、統計與策略診斷</description>
+    <language>zh-Hant</language>
+    <item>
+      <title>US100 幾點進場、幾點出場？ 全交易時段 2,069 組進出場時間多空回測</title>
+      <link>https://research.tradepose.com/posts/us100-intraday-clock-windows/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-intraday-clock-windows/</guid>
+      <description>那斯達克 US100 在固定的紐約時間進場、固定時間出場，涵蓋晚上 18:00 開盤到隔天下午的整個交易時段，可以跨午夜（例如 22:00 進、06:00 出），每 30 分鐘一格，多空共 2,069 組。這篇看哪些時段有優勢、好結果是平台還是孤島，以及做多與做空的差別。</description>
+      <category>策略研究</category>
+      <pubDate>Fri, 09 Oct 2026 01:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）</title>
+      <link>https://research.tradepose.com/posts/quant-research-glossary/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/quant-research-glossary/</guid>
+      <description>研究文章與策略報告常用的術語整理：計算模式與單位、MAE／G_MFE／MFE 等偏移指標、績效與回撤、研究階段與父策略、延遲進場、停損停利與保本、參數選擇。每條附英文術語、定義與公式，以及容易混淆的地方。</description>
+      <category>方法論</category>
+      <pubDate>Thu, 08 Oct 2026 15:52:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>US100 星期幾進場有差嗎？ 週一到週五各自的進出場時段回測</title>
+      <link>https://research.tradepose.com/posts/us100-weekday-clock-strategies/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-weekday-clock-strategies/</guid>
+      <description>把那斯達克 US100 的交易拆成週一到週五五個策略，每個只在一天的交易時段進場，方向與進出場時間從涵蓋整個交易時段（可跨午夜）的 2,069 組紐約時鐘組合中依評分挑出。這篇看每一天挑出的時段是平台還是孤島、同一組參數反方向做的表現，以及哪一天的結果超出挑選偏誤。</description>
+      <category>策略研究</category>
+      <pubDate>Thu, 08 Oct 2026 14:55:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>US100 Market Profile 7 組策略怎麼配置？FTMO 10 萬帳戶的部位大小、點差與滑價</title>
+      <link>https://research.tradepose.com/posts/us100-market-profile-portfolio-sizing/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-market-profile-portfolio-sizing/</guid>
+      <description>延續納入週一後重做的 10 組 Market Profile 參數，我們去掉彼此高度相關的組合留下 7 組，扣除點差與滑價後看組合的表現，再用過去研究使用的 MAE 部位公式，在 FTMO 10 萬美元帳戶「總虧損 1 萬、單日虧損低於 4 千」的限制下決定每筆的風險金額。</description>
+      <category>策略研究</category>
+      <pubDate>Thu, 08 Oct 2026 11:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>一個策略怎麼一層一層長出來？從原始訊號、濾網到延遲進場、停損停利與保本的父子關係</title>
+      <link>https://research.tradepose.com/posts/strategy-lineage-layers/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/strategy-lineage-layers/</guid>
+      <description>我們的策略研究不是一次掃描所有參數，而是分層往下長：先有原始訊號與濾網，再在選出的組上試延遲進場，接著是停損停利，最後是移動停損與保本。每一層只改一件事，上一層的那一組就是父策略。這篇說明父子關係怎麼決定、濾網為什麼不算一層，以及為什麼參數只和同一個父策略的兄弟比較。</description>
+      <category>方法論</category>
+      <pubDate>Thu, 08 Oct 2026 10:52:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>納入週一後重做 US100 Market Profile 策略：10 組進場、濾網與出場參數</title>
+      <link>https://research.tradepose.com/posts/us100-market-profile-all-weekdays/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-market-profile-all-weekdays/</guid>
+      <description>先前的 Market Profile 研究只用週二到週五挑參數。週一的 Profile 窗口修正後，我們把週一放回樣本，從訊號挑選、延遲進場、SuperTrend × 波動濾網、停損停利到保本停損整條流程重做，比較每一層的變化、週一與週二到週五的差異，以及套用 ST × 波動濾網和不套用的差別。</description>
+      <category>策略研究</category>
+      <pubDate>Thu, 08 Oct 2026 09:10:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>保本停損該在哪裡觸發？US100 Market Profile 5 個 setup 以虧損交易的 G_MFE Q3 設定 Breakeven</title>
+      <link>https://research.tradepose.com/posts/us100-market-profile-breakeven/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-market-profile-breakeven/</guid>
+      <description>進場、濾網、停損停利之後，出場的最後一層是保本停損（Breakeven）：價格先往有利方向走到觸發點，就把停損移到進場價附近。觸發點的意思是「走到這裡就不會是虧損交易」，所以只放在虧損交易 G_MFE 的 Q3 以上；鎖利只取 0.01 到 0.03 倍日線 ATR。我們在波動模式下評分，並以平台與成本敏感度確認穩健。</description>
+      <category>策略研究</category>
+      <pubDate>Wed, 07 Oct 2026 12:24:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>停損停利該設在哪？US100 Market Profile 14 個 setup 以父策略 MAE、G_MFE 設定 SL/TP</title>
+      <link>https://research.tradepose.com/posts/us100-market-profile-st-volatility-sl-tp/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-market-profile-st-volatility-sl-tp/</guid>
+      <description>延遲進場與 SuperTrend × 波動濾網之後，下一層是停損與停利。我們從每個父策略自己的 MAE 與 G_MFE 分布決定 SL/TP 的掃描範圍，以日線 ATR 為單位、在波動模式下評分，挑出的停損列出它在全部 MAE 中的分位數位置，並以前段挑選、後段檢查。</description>
+      <category>策略研究</category>
+      <pubDate>Wed, 07 Oct 2026 11:20:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>趨勢濾網的資訊在 SuperTrend 還是在波動？US100 Market Profile 26 個 setup 的濾網歸因與聯合挑選</title>
+      <link>https://research.tradepose.com/posts/us100-market-profile-filter-attribution/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-market-profile-filter-attribution/</guid>
+      <description>延遲進場和趨勢濾網會互相重複，接著要回答兩件事：濾網只用 ATR、不用 SuperTrend 會怎樣？濾網和延遲進場能不能一起挑？我們以每筆損益除以 ATR 的波動模式計算，把每個濾網和「同一份擋單時間表隨機平移」比較，再分層挑選每個 setup 的濾網與延遲進場，並以前段挑選、後段檢查。</description>
+      <category>策略研究</category>
+      <pubDate>Wed, 07 Oct 2026 04:18:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>延遲進場之後還要加趨勢濾網嗎？US100 Market Profile 候選參數 × SuperTrend 波動濾網</title>
+      <link>https://research.tradepose.com/posts/us100-market-profile-delayed-entry-supertrend-volatility/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-market-profile-delayed-entry-supertrend-volatility/</guid>
+      <description>延遲進場和趨勢濾網都在拿掉壞交易。我們把 US100 26 個 Market Profile setup 的延遲進場候選參數，疊上「多單在高波動、1 小時 SuperTrend 空頭時擋，空單在低波動、1 小時 SuperTrend 多頭時擋」的趨勢濾網，逐一和只做延遲進場比較回撤、最差年度與勝率，並檢查濾網擋掉的日子在延遲進場下原本會怎樣。</description>
+      <category>策略研究</category>
+      <pubDate>Tue, 06 Oct 2026 20:38:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>延遲進場能壓低 MAE 嗎？US100 Market Profile 的有利與不利延遲進場</title>
+      <link>https://research.tradepose.com/posts/us100-market-profile-delayed-entry-mae/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-market-profile-delayed-entry-mae/</guid>
+      <description>設停損之前，先決定怎麼進場。我們在 US100 的 26 個 Market Profile setup 上，用日線 ATR 為尺度掃描兩種延遲進場：掛更好的價格等回檔（有利延遲進場），以及等價格先往有利方向走一段（不利延遲進場），逐一比較每筆交易的 MAE 往 0 靠近多少、付出多少 G_MFE、濾掉的是虧損交易還是獲利交易。</description>
+      <category>策略研究</category>
+      <pubDate>Tue, 06 Oct 2026 19:58:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>趨勢濾網該在什麼波動下擋單？US100 Market Profile 26 個 setup × SuperTrend × 波動狀態</title>
+      <link>https://research.tradepose.com/posts/us100-market-profile-supertrend-regime-volatility/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-market-profile-supertrend-regime-volatility/</guid>
+      <description>SuperTrend 翻空不做多、翻多不做空，是最常見的趨勢濾網。我們把它套在 US100 全部 26 個 Market Profile setup 上，多單配「SuperTrend 空頭時擋多單」的濾網、空單配「SuperTrend 多頭時擋空單」的濾網，再依日線波動的水準與變化決定什麼時候才擋，逐一和不加濾網比較回撤、每年表現、勝率與交易數。</description>
+      <category>策略研究</category>
+      <pubDate>Tue, 06 Oct 2026 11:35:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>SuperTrend 翻空能當多單濾網嗎？ US100 63 組參數的穩健度比較</title>
+      <link>https://research.tradepose.com/posts/us100-supertrend-bear-regime-filter/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-supertrend-bear-regime-filter/</guid>
+      <description>把 SuperTrend 翻空視為空頭狀態，比較 1 小時、4 小時與日線共 63 組參數在 US100 上的空頭捕捉表現：哪個時框最穩、哪一組參數每年都站得住，以及這對拿 SuperTrend 擋多單代表什麼。</description>
+      <category>策略研究</category>
+      <pubDate>Mon, 05 Oct 2026 12:25:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Market Profile 訊號只是時段效果嗎？那斯達克同時段無條件進場對照</title>
+      <link>https://research.tradepose.com/posts/us100-session-clock-control/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-session-clock-control/</guid>
+      <description>每天在同一時間無條件進場、持有到收盤，能賺多少？我們用 US100（那斯達克 100）的同時段對照組，比較獲利因子、每年表現與回撤，檢驗 Market Profile 訊號的優勢有多少來自訊號、多少只是進場時段。</description>
+      <category>策略研究</category>
+      <pubDate>Sat, 03 Oct 2026 16:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>US100 SuperTrend 空方：時框與 ATR 參數掃描</title>
+      <link>https://research.tradepose.com/posts/supertrend-natural/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/supertrend-natural/</guid>
+      <description>SuperTrend 空方換時框、ATR 天數與乘數，能不能找到賺錢、又每年都站得住的參數？我們從每年表現、參數鄰域、回撤與報酬四個角度比較 8 組參數。</description>
+      <category>策略研究</category>
+      <pubDate>Fri, 02 Oct 2026 16:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>開盤跌破價值區該做空嗎？US100 Market Profile 13 個訊號回測</title>
+      <link>https://research.tradepose.com/posts/us100-market-profile-signals/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-market-profile-signals/</guid>
+      <description>Market Profile 的價值區（VAL、VAH、POC）訊號在那斯達克日內交易有沒有用？我們把 13 個訊號放在 5 個進場時點、多空兩個方向回測，從每年表現、相鄰時點、回撤與報酬檢查哪些訊號站得住，再看時段效果。</description>
+      <category>策略研究</category>
+      <pubDate>Fri, 02 Oct 2026 16:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>
