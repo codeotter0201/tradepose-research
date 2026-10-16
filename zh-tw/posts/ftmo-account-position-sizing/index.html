@@ -1,0 +1,668 @@
+<!DOCTYPE html><html lang="zh-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>FTMO 帳戶部位與風險分配：有停損的策略組合，每筆該押多少？｜TradePose Research</title><meta name="description" content="把一組有停損的日內策略放進 FTMO 100K 帳戶，要回答三件事：每筆押多少、風險怎麼在策略之間分配、壞日子與連續虧損怎麼不超過帳戶限制。這篇比較六種部位公式與六種風險分配方式，說明為什麼用停損距離定口數、依交易日分群做風險平價，以及群倍數為什麼估一次就固定。"><meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large"><link rel="canonical" href="https://research.tradepose.com/zh-tw/posts/ftmo-account-position-sizing/"><link rel="alternate" hreflang="en" href="https://research.tradepose.com/en/posts/ftmo-account-position-sizing/"><link rel="alternate" hreflang="zh-TW" href="https://research.tradepose.com/zh-tw/posts/ftmo-account-position-sizing/"><link rel="alternate" hreflang="x-default" href="https://research.tradepose.com/en/posts/ftmo-account-position-sizing/"><link rel="alternate" type="application/rss+xml" title="TradePose Research" href="/zh-tw/rss.xml"><meta property="og:site_name" content="TradePose Research"><meta property="og:locale" content="zh_TW"><meta property="og:locale:alternate" content="en_US"><meta property="og:type" content="article"><meta property="og:title" content="FTMO 帳戶部位與風險分配：有停損的策略組合，每筆該押多少？"><meta property="og:description" content="把一組有停損的日內策略放進 FTMO 100K 帳戶，要回答三件事：每筆押多少、風險怎麼在策略之間分配、壞日子與連續虧損怎麼不超過帳戶限制。這篇比較六種部位公式與六種風險分配方式，說明為什麼用停損距離定口數、依交易日分群做風險平價，以及群倍數為什麼估一次就固定。"><meta property="og:url" content="https://research.tradepose.com/zh-tw/posts/ftmo-account-position-sizing/"><meta property="og:image" content="https://research.tradepose.com/og-default.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="FTMO 帳戶部位與風險分配：有停損的策略組合，每筆該押多少？"><meta name="twitter:description" content="把一組有停損的日內策略放進 FTMO 100K 帳戶，要回答三件事：每筆押多少、風險怎麼在策略之間分配、壞日子與連續虧損怎麼不超過帳戶限制。這篇比較六種部位公式與六種風險分配方式，說明為什麼用停損距離定口數、依交易日分群做風險平價，以及群倍數為什麼估一次就固定。"><meta name="twitter:image" content="https://research.tradepose.com/og-default.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"FTMO 帳戶部位與風險分配：有停損的策略組合，每筆該押多少？","description":"把一組有停損的日內策略放進 FTMO 100K 帳戶，要回答三件事：每筆押多少、風險怎麼在策略之間分配、壞日子與連續虧損怎麼不超過帳戶限制。這篇比較六種部位公式與六種風險分配方式，說明為什麼用停損距離定口數、依交易日分群做風險平價，以及群倍數為什麼估一次就固定。","articleSection":"方法論","keywords":"部位大小, Position Sizing, 風險管理, 風險平價, Risk Parity, FTMO, 自營交易帳戶, 停損, MAE, 最大回撤, 單日虧損上限, 每筆風險, US100","inLanguage":"zh-TW","datePublished":"2026-10-15T19:00:00+08:00","dateModified":"2026-10-15T19:00:00+08:00","image":"https://research.tradepose.com/og-default.png","url":"https://research.tradepose.com/zh-tw/posts/ftmo-account-position-sizing/","mainEntityOfPage":"https://research.tradepose.com/zh-tw/posts/ftmo-account-position-sizing/","author":{"@type":"Organization","name":"TradePose Research"},"publisher":{"@type":"Organization","name":"TradePose","url":"https://tradepose.com"}}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"研究","item":"https://research.tradepose.com/zh-tw/"},{"@type":"ListItem","position":2,"name":"FTMO 帳戶部位與風險分配：有停損的策略組合，每筆該押多少？","item":"https://research.tradepose.com/zh-tw/posts/ftmo-account-position-sizing/"}]}</script><!-- data-init：第一次繪製前套用主題、計算模式與檢視；頁面轉場換頁後重新執行（<html> 的屬性換成新頁的） --><script data-init>try { const q = new URLSearchParams(location.search).get('theme'); if (q === 'light' || q === 'dark') sessionStorage.setItem('tp-theme', q); } catch {}
+try { const t = sessionStorage.getItem('tp-theme') ?? localStorage.getItem('tp-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; else if (t === 'system') delete document.documentElement.dataset.theme; } catch {}</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CYDbzu1r.js"></script><link rel="stylesheet" href="/_astro/Base.UAyA231S.css"><style>html[data-view=report] [data-view-panel=article],html[data-view=case] [data-view-panel=article]{display:none}
+</style></head><body><a class="skip-link" href="#main">跳到主要內容</a><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><header class="site-header"><div class="container site-header__inner"><a class="site-brand" href="/zh-tw/"><span class="site-brand__mark" aria-hidden="true"></span><span class="site-brand__name">TradePose</span><span class="site-brand__sub">Research</span></a><div class="site-header__context"><astro-island uid="zcuFR" prefix="r30" component-url="/_astro/index.CginXhOm.js" component-export="PageContext" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;FTMO 帳戶部位與風險分配：有停損的策略組合，每筆該押多少？&quot;],&quot;labels&quot;:[0,{&quot;open&quot;:[0,&quot;打開目錄與檢視&quot;],&quot;contents&quot;:[0,&quot;目錄&quot;],&quot;close&quot;:[0,&quot;關閉&quot;]}]}" ssr client="load" opts="{&quot;name&quot;:&quot;PageContext&quot;,&quot;value&quot;:true}" await-children><div class="page-context" aria-hidden="true"><span class="page-context__title">FTMO 帳戶部位與風險分配：有停損的策略組合，每筆該押多少？</span><div class="page-context__tabs"></div></div><button type="button" class="page-context-bar" tabindex="-1" aria-hidden="true" aria-label="打開目錄與檢視" aria-expanded="false" style="--progress:0"><span class="page-context__title">FTMO 帳戶部位與風險分配：有停損的策略組合，每筆該押多少？</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6l4.5 4.5L12.5 6"></path></svg><span class="page-context-bar__progress" aria-hidden="true"></span></button><template data-astro-template></template><!--astro:end--></astro-island></div><div class="site-header__actions"><astro-island uid="1jR0zF" prefix="r21" component-url="/_astro/index.CginXhOm.js" component-export="LanguageSwitch" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;items&quot;:[1,[[0,{&quot;href&quot;:[0,&quot;/en/posts/ftmo-account-position-sizing/&quot;],&quot;lang&quot;:[0,&quot;en&quot;],&quot;name&quot;:[0,&quot;English&quot;],&quot;short&quot;:[0,&quot;EN&quot;],&quot;current&quot;:[0,false]}],[0,{&quot;href&quot;:[0,&quot;/zh-tw/posts/ftmo-account-position-sizing/&quot;],&quot;lang&quot;:[0,&quot;zh-TW&quot;],&quot;name&quot;:[0,&quot;繁體中文&quot;],&quot;short&quot;:[0,&quot;中文&quot;],&quot;current&quot;:[0,true]}]]],&quot;label&quot;:[0,&quot;語言&quot;]}" ssr client="load" opts="{&quot;name&quot;:&quot;LanguageSwitch&quot;,&quot;value&quot;:true}" await-children><button type="button" id="radix-_r21R_0_" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="btn btn-ghost btn-sm language-switch" aria-label="語言: 繁體中文"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6"></circle><path d="M2 8h12M8 2c1.7 1.8 2.5 3.8 2.5 6S9.7 12.2 8 14M8 2C6.3 3.8 5.5 5.8 5.5 8s.8 4.2 2.5 6"></path></svg><span lang="zh-TW">中文</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6l4.5 4.5L12.5 6"></path></svg></button><!--astro:end--></astro-island><astro-island uid="Z1MMz7U" prefix="r22" component-url="/_astro/index.DRzo-oSI.js" component-export="ThemeToggle" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;labels&quot;:[0,{&quot;label&quot;:[0,&quot;切換深淺色&quot;]}]}" ssr client="load" opts="{&quot;name&quot;:&quot;ThemeToggle&quot;,&quot;value&quot;:true}" await-children><button type="button" class="btn btn-ghost btn-sm btn-icon theme-toggle" aria-label="切換深淺色" title="切換深淺色"><span class="theme-toggle__dark"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 9.6A5.75 5.75 0 0 1 6.4 2.5a5.75 5.75 0 1 0 7.1 7.1z"></path></svg></span><span class="theme-toggle__light"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="2.75"></circle><path d="M8 1.5v1.25M8 13.25v1.25M1.5 8h1.25M13.25 8h1.25M3.4 3.4l.9.9M11.7 11.7l.9.9M3.4 12.6l.9-.9M11.7 4.3l.9-.9"></path></svg></span></button><!--astro:end--></astro-island></div></div></header><main id="main"><div class="article"><div class="wide article-crumbs cluster cluster--between"><nav class="breadcrumbs" aria-label="麵包屑"><ol><li><a href="/zh-tw/">首頁</a></li><li><span aria-current="page">研究目錄</span></li></ol></nav></div></div><div class="article" data-view-panel="article"><div class="wide article-banner"><div class="article-cover article-cover--banner" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div></div><header class="article-header"><span class="category-chip">方法論</span><h1 class="article-title">FTMO 帳戶部位與風險分配：<wbr/>有停損的策略組合，<wbr/>每筆該押多少？</h1><p class="article-dek"><p>回測算出的報酬是每筆一單位風險的加總，真正交易時還要決定每筆開幾口。帳戶有規則時，這件事比挑策略更容易出錯：FTMO 100K 帳戶的總虧損不能超過 1 萬美元，單日虧損不能超過 5,000 美元，只要碰到一次就結束。這篇回答三個問題：有硬停損的策略，部位要用什麼公式算？風險要怎麼在多個策略之間分配？在兩條帳戶限制之下，每筆最多能押多少，之後又要怎麼維護？例子取自〈<a href="/zh-tw/posts/us100-clock-combination/">US100 時鐘策略樹</a>〉留下的 10 組策略（2022 年到 2026 年 9 月，每筆扣來回 4 點成本）。</p></p><dl class="article-meta"><div><dt>發布</dt><dd>2026-10-15 19:00</dd></div><div><dt>閱讀時間</dt><dd>18 分鐘</dd></div></dl></header><div><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value=="object"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};"requestIdleCallback"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event("astro:idle"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="HrNRV" prefix="r33" component-url="/_astro/ArticleToc.Cv7xrbUr.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;zh-tw&quot;],&quot;items&quot;:[1,[[0,{&quot;id&quot;:[0,&quot;ftmo-帳戶有哪些限制&quot;],&quot;label&quot;:[0,&quot;FTMO 帳戶有哪些限制？&quot;]}],[0,{&quot;id&quot;:[0,&quot;為什麼不用歷史-mae-估計部位&quot;],&quot;label&quot;:[0,&quot;為什麼不用歷史 MAE 估計部位？&quot;]}],[0,{&quot;id&quot;:[0,&quot;六種部位公式比較&quot;],&quot;label&quot;:[0,&quot;六種部位公式比較&quot;]}],[0,{&quot;id&quot;:[0,&quot;單日上限和總虧損哪一個先卡住&quot;],&quot;label&quot;:[0,&quot;單日上限和總虧損，哪一個先卡住？&quot;]}],[0,{&quot;id&quot;:[0,&quot;每筆停損相同風險卻不平均怎麼在策略之間分配&quot;],&quot;label&quot;:[0,&quot;每筆停損相同，風險卻不平均：怎麼在策略之間分配？&quot;]}],[0,{&quot;id&quot;:[0,&quot;群倍數怎麼算&quot;],&quot;label&quot;:[0,&quot;群倍數怎麼算？&quot;]}],[0,{&quot;id&quot;:[0,&quot;成本變高時部位要跟著調嗎&quot;],&quot;label&quot;:[0,&quot;成本變高時，部位要跟著調嗎？&quot;]}],[0,{&quot;id&quot;:[0,&quot;群倍數要每季重算嗎&quot;],&quot;label&quot;:[0,&quot;群倍數要每季重算嗎？&quot;]}],[0,{&quot;id&quot;:[0,&quot;用前一年估計的倍數擺動太大時怎麼辦&quot;],&quot;label&quot;:[0,&quot;用前一年估計的倍數擺動太大時怎麼辦？&quot;]}],[0,{&quot;id&quot;:[0,&quot;回測的最大回撤要用哪個口徑&quot;],&quot;label&quot;:[0,&quot;回測的最大回撤要用哪個口徑？&quot;]}],[0,{&quot;id&quot;:[0,&quot;實作對照&quot;],&quot;label&quot;:[0,&quot;實作對照&quot;]}],[0,{&quot;id&quot;:[0,&quot;goals-title&quot;],&quot;label&quot;:[0,&quot;這篇研究要回答的問題&quot;]}],[0,{&quot;id&quot;:[0,&quot;arising-title&quot;],&quot;label&quot;:[0,&quot;研究中衍生的問題&quot;]}],[0,{&quot;id&quot;:[0,&quot;method&quot;],&quot;label&quot;:[0,&quot;方法與資料&quot;]}]]]}" ssr client="idle" opts="{&quot;name&quot;:&quot;ArticleToc&quot;,&quot;value&quot;:true}" await-children><nav class="toc" aria-label="目錄"><div class="toc-title" aria-hidden="true">目錄</div><button type="button" class="toc-toggle" aria-expanded="false" aria-controls="_r33R_0_"><span>目錄</span><span class="toc-count">14 節</span></button><ol class="toc-list" id="_r33R_0_"><li class=""><a href="#ftmo-帳戶有哪些限制" aria-current="true">FTMO 帳戶有哪些限制？</a></li><li class=""><a href="#為什麼不用歷史-mae-估計部位">為什麼不用歷史 MAE 估計部位？</a></li><li class=""><a href="#六種部位公式比較">六種部位公式比較</a></li><li class=""><a href="#單日上限和總虧損哪一個先卡住">單日上限和總虧損，哪一個先卡住？</a></li><li class=""><a href="#每筆停損相同風險卻不平均怎麼在策略之間分配">每筆停損相同，風險卻不平均：怎麼在策略之間分配？</a></li><li class=""><a href="#群倍數怎麼算">群倍數怎麼算？</a></li><li class=""><a href="#成本變高時部位要跟著調嗎">成本變高時，部位要跟著調嗎？</a></li><li class=""><a href="#群倍數要每季重算嗎">群倍數要每季重算嗎？</a></li><li class=""><a href="#用前一年估計的倍數擺動太大時怎麼辦">用前一年估計的倍數擺動太大時怎麼辦？</a></li><li class=""><a href="#回測的最大回撤要用哪個口徑">回測的最大回撤要用哪個口徑？</a></li><li class=""><a href="#實作對照">實作對照</a></li><li class=""><a href="#goals-title">這篇研究要回答的問題</a></li><li class=""><a href="#arising-title">研究中衍生的問題</a></li><li class=""><a href="#method">方法與資料</a></li></ol></nav><!--astro:end--></astro-island></div>
+<div class="abstract"><div class="abstract-title">結論</div><p>有硬停損的策略，口數應該由停損距離決定：先定好「這筆打到停損要虧多少美元」，再除以停損點數。用歷史 MAE 估計虧損的公式，會在策略順的時候放大部位，打到停損時一筆虧掉預期的好幾倍。每筆停損金額相同還不夠，因為各策略打到停損的頻率和賺的倍數差很多；把同一天交易的策略當成一群、讓每一群承擔相同的波動（風險平價），在相同限制下獲利多、風險也分散。群倍數用過去一年估計一次就可以固定，每季檢查、偏離太多才更新。在這個例子裡，先卡住部位的是總虧損（回測最大回撤），不是單日上限。</p></div><p class="reading-split">以上是結論；以下每一節是一個主張的證據，可以從各節或證據連結進入策略報告，看全部參數組的數據。</p>
+<div class="prose"><h2 id="ftmo-帳戶有哪些限制">FTMO 帳戶有哪些限制？</h2>
+<p>以 FTMO 100K 帳戶為例：</p>
+<ul>
+<li><strong>總虧損</strong>：淨值不能低於 9 萬美元，也就是從起始資金最多虧 1 萬。</li>
+<li><strong>單日虧損</strong>：一天內（含未平倉的浮動虧損）最多虧 5,000 美元。這篇以 4,500 為上限，留 500 的緩衝。</li>
+<li><strong>一天的起點</strong>：FTMO 的一天從紐約時間 18:00 開始，和研究文章的交易時段一致。例子裡每筆交易都在同一天開平倉，不跨日，也不付隔夜利息。</li>
+<li><strong>合約</strong>：US100 每 1 手每點 1 美元，最小 0.01 手。</li>
+</ul>
+<p>部位一律是固定風險、不複利：帳戶賺了錢也不放大每筆的金額，這樣回測的最大回撤可以直接和 1 萬美元比較。</p>
+<h2 id="為什麼不用歷史-mae-估計部位">為什麼不用歷史 MAE 估計部位？</h2>
+<p>一種常見的做法，是用策略最近幾筆交易的最大不利偏移（Maximum Adverse Excursion，MAE）估計這一筆可能虧多少。我們的交易分析工具（Trades Analyzer）預設就是這樣：取這個策略最近 10 筆交易的 MAE（以日線波動的倍數表示）的第 90 百分位，乘上這筆進場時的波動再乘 4，當作預期虧損點數；口數 = 風險金額 ÷ 預期虧損點數。</p>
+<p>這個做法適合沒有停損的策略，因為它們的虧損只能從歷史的不利波動估計。有硬停損的策略不一樣：每筆最多虧多少，在進場時就已經知道，用 MAE 估反而讓實際風險失控。在 10 組時鐘策略上，同一個風險金額下，打到停損實際虧的錢是風險金額的 0.24 到 1.75 倍；最近 10 筆走得順的時候，部位會被放大好幾倍。每個策略的前 10 筆也因為沒有歷史而不下單。</p>
+<h2 id="六種部位公式比較">六種部位公式比較</h2>
+<p>每個公式算的都是預期虧損點數，口數 = 每筆風險 ÷ 預期虧損點數，無條件捨去到 0.01 手。用到歷史的公式只拿該策略自己過去的成交，不跨策略混算，並且落後一筆，不會用到未來資料。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="六種部位公式比較（表格）"><table class="data-table"><thead><tr><th>公式</th><th>預期虧損點數</th></tr></thead><tbody><tr><td>停損距離</td><td>停損倍數 × 進場時的日線波動</td></tr><tr><td>分析工具預設</td><td>最近 10 筆 MAE 的第 90 百分位 × 波動 × 4</td></tr><tr><td>MAE 第 90 百分位</td><td>最近 20 筆 MAE 的第 90 百分位 × 波動（不足 20 筆時用停損距離，以下同）</td></tr><tr><td>MAE 平均</td><td>最近 20 筆 MAE 的平均 × 波動</td></tr><tr><td>平均虧損</td><td>最近 20 筆裡虧損交易的平均虧損 × 波動</td></tr><tr><td>等波動</td><td>1 × 波動：每個策略承擔相同的波動單位</td></tr></tbody></table></div>
+<p>每個公式各自調到符合兩條限制的最大每筆風險：當天所有部位同時打到停損時虧損不超過 4,500，回測最大回撤不超過 1 萬。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="六種部位公式比較（表格）"><table class="data-table"><thead><tr><th>公式</th><th class="num">每筆風險</th><th class="num">5 年獲利</th><th class="num">最大回撤</th><th class="num">恢復因子</th><th class="num">日報酬夏普</th><th class="num">最差 5% 日的平均</th><th class="num">最差的一天</th><th class="num">全部打到停損的一天</th><th class="num">單筆停損金額（中位數 / 最大）</th></tr></thead><tbody><tr><td>停損距離</td><td class="num">625</td><td class="num">169,771</td><td class="num">9,929</td><td class="num">17.1</td><td class="num">3.66</td><td class="num">-1,649</td><td class="num">-2,012</td><td class="num">2,631</td><td class="num">624 / 625</td></tr><tr><td>分析工具預設</td><td class="num">1,312</td><td class="num">104,260</td><td class="num">6,882</td><td class="num">15.2</td><td class="num">3.65</td><td class="num">-1,152</td><td class="num">-1,796</td><td class="num">4,499</td><td class="num">353 / 2,297</td></tr><tr><td>MAE 第 90 百分位</td><td class="num">437</td><td class="num">130,338</td><td class="num">8,354</td><td class="num">15.6</td><td class="num">3.66</td><td class="num">-1,350</td><td class="num">-2,325</td><td class="num">4,477</td><td class="num">437 / 2,437</td></tr><tr><td>MAE 平均</td><td class="num">208</td><td class="num">117,257</td><td class="num">6,775</td><td class="num">17.3</td><td class="num">3.88</td><td class="num">-1,186</td><td class="num">-2,099</td><td class="num">4,397</td><td class="num">415 / 2,373</td></tr><tr><td>平均虧損</td><td class="num">123</td><td class="num">62,348</td><td class="num">5,825</td><td class="num">10.7</td><td class="num">3.43</td><td class="num">-750</td><td class="num">-3,506</td><td class="num">4,418</td><td class="num">216 / 3,469</td></tr><tr><td>等波動</td><td class="num">1,309</td><td class="num">200,073</td><td class="num">9,980</td><td class="num">20.1</td><td class="num">3.82</td><td class="num">-2,186</td><td class="num">-3,094</td><td class="num">3,535</td><td class="num">758 / 1,152</td></tr></tbody></table></div>
+<p><strong>用 MAE 或虧損歷史的四個公式都被單日限制卡住</strong>，回撤額度還沒用完。它們估的是交易平常走多深，而這些策略的停損比平常的 MAE 遠。例如週一 18:00→19:00 做多的 MAE 第 90 百分位只有 0.19 倍波動，停損卻是 0.30，部位就被放大，打到停損時一筆會虧 2,300–3,500。要讓同一天四筆同時停損仍在 4,500 以內，只能把整體部位壓小。MAE 平均的日夏普最高，因為它把較多部位放在平常回撤淺的策略上，但這個優勢換不成獲利。</p>
+<p>如果單日只看樣本中真的出現過的盤中低點（當天每筆同時處在自己的 MAE），MAE 平均可以放大到每筆 306，5 年獲利 172,623，和停損距離差不多；但同一天四筆全部打到停損時會虧 6,470，超過 FTMO 5,000 的日限。樣本中一天最多同時打到 3 個停損，4 個還沒發生過；但週一四組多單同方向、同時段持有，不能當作不會發生。</p>
+<p><strong>等波動獲利最高</strong>（恢復因子 20.1），因為停損越寬的策略分到越多風險，而停損最寬的正好是樣本內表現最好的週一多單。代價在尾端：最差 5% 日的平均虧 2,186（停損距離是 1,649），最差的一天虧 3,094，用日損益重抽估計一年內從高點回撤達 1 萬的機率是 17%（停損距離是 9%）。這等於依樣本內績效加碼，事前沒有理由。</p>
+<p><strong>採用停損距離。</strong> 它讓每筆停損金額固定，單日最壞情況在下單前就能算出，日夏普與其他公式相當，在兩條限制下的獲利僅次於等波動。MAE 在組合裡最有用的地方是決定停損放在哪裡，以及估計盤中的淨值低點；拿來決定部位大小，遇到有硬停損的策略反而會放大單筆風險。</p>
+<h2 id="單日上限和總虧損哪一個先卡住">單日上限和總虧損，哪一個先卡住？</h2>
+<p>單日最壞情況假設當天所有部位同時打到停損（FTMO 也計入未平倉虧損，而每個部位最多虧到停損）。例子裡一天最多 4 筆（週一四組多單），所以單日最壞情況約是 4 倍每筆風險。總虧損用兩種方式檢查：回測路徑的最大回撤，以及把日損益以 5 天為一塊重抽、模擬一年 5,000 次，看回撤達 1 萬美元的機率。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="單日上限和總虧損，哪一個先卡住？（表格）"><table class="data-table"><thead><tr><th class="num">每筆風險（美元）</th><th class="num">5 年累積獲利</th><th class="num">最大回撤</th><th class="num">單日最壞情況</th><th class="num">一年內從高點回撤達 1 萬（參考）</th><th class="num">一年內從起點虧到 1 萬（參考）</th></tr></thead><tbody><tr><td class="num">400</td><td class="num">108,562</td><td class="num">6,351</td><td class="num">1,683</td><td class="num">0.4%</td><td class="num">0.0%</td></tr><tr><td class="num">550</td><td class="num">149,363</td><td class="num">8,737</td><td class="num">2,315</td><td class="num">4.4%</td><td class="num">0.2%</td></tr><tr><td class="num">625</td><td class="num">169,771</td><td class="num">9,929</td><td class="num">2,631</td><td class="num">9.1%</td><td class="num">0.4%</td></tr><tr><td class="num">700</td><td class="num">190,152</td><td class="num">11,123</td><td class="num">2,947</td><td class="num">15.1%</td><td class="num">0.9%</td></tr><tr><td class="num">850</td><td class="num">230,947</td><td class="num">13,505</td><td class="num">3,578</td><td class="num">34.4%</td><td class="num">1.9%</td></tr><tr><td class="num">1,050</td><td class="num">285,375</td><td class="num">16,690</td><td class="num">4,422</td><td class="num">63.1%</td><td class="num">3.9%</td></tr></tbody></table></div>
+<p>規則是：單日最壞情況不超過 4,500，回測中從高點起算的最大回撤不超過 1 萬。每筆風險在 1,050 以內，單日最壞情況都符合；真正的限制是最大回撤：每筆 625 美元時最大回撤 9,929，再往上就超過 1 萬。重抽的機率只供參考：以 625 計算，一年內從高點回撤達 1 萬的機率約 9%，從起始資金虧到 1 萬（FTMO 實際的總虧損線）約 0.4%。以 625 美元計算，每年的結果如下：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="單日上限和總虧損，哪一個先卡住？（表格）"><table class="data-table"><thead><tr><th>年度</th><th class="num">獲利（美元）</th><th class="num">最差的一天</th></tr></thead><tbody><tr><td>2022</td><td class="num">18,839</td><td class="num">-1,923</td></tr><tr><td>2023</td><td class="num">29,406</td><td class="num">-1,956</td></tr><tr><td>2024</td><td class="num">23,768</td><td class="num">-2,012</td></tr><tr><td>2025</td><td class="num">55,191</td><td class="num">-1,927</td></tr><tr><td>2026（至 9 月）</td><td class="num">42,567</td><td class="num">-1,914</td></tr></tbody></table></div>
+<h2 id="每筆停損相同風險卻不平均怎麼在策略之間分配">每筆停損相同，風險卻不平均：怎麼在策略之間分配？</h2>
+<p>每筆停損金額一樣，只代表打到停損時虧得一樣多。這 10 組打到停損的頻率從 1% 到 45%，一筆最多賺幾倍停損也差很多，結果週四一群佔了組合日損益波動的 60%，週四 06:30→16:00 做空一組就佔三分之一。所以再比較幾種在策略之間分配風險的方式。限制相同；需要估計的權重只用過去 52 週的資料，每 13 週重估一次。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="每筆停損相同，風險卻不平均：怎麼在策略之間分配？（表格）"><table class="data-table"><thead><tr><th>分配方式</th><th class="num">每筆停損金額</th><th class="num">5 年獲利</th><th class="num">最大回撤</th><th class="num">恢復因子</th><th class="num">日報酬夏普</th><th class="num">週一／週二／週四的風險</th><th class="num">翻倍時間中位數</th></tr></thead><tbody><tr><td>每筆停損相同</td><td class="num">629</td><td class="num">171,023</td><td class="num">9,999</td><td class="num">17.1</td><td class="num">3.66</td><td class="num">22% / 18% / 60%</td><td class="num">33 個月</td></tr><tr><td>每筆波動相同</td><td class="num">393–1,153</td><td class="num">200,517</td><td class="num">9,999</td><td class="num">20.1</td><td class="num">3.82</td><td class="num">44% / 17% / 39%</td><td class="num">28 個月</td></tr><tr><td>策略風險平價</td><td class="num">163–2,559</td><td class="num">137,769</td><td class="num">8,004</td><td class="num">17.2</td><td class="num">3.93</td><td class="num">40% / 30% / 30%</td><td class="num">43 個月</td></tr><tr><td><strong>依交易日分群的風險平價</strong></td><td class="num"><strong>431–1,037</strong></td><td class="num"><strong>197,717</strong></td><td class="num"><strong>9,999</strong></td><td class="num"><strong>19.8</strong></td><td class="num"><strong>3.93</strong></td><td class="num"><strong>33% / 33% / 33%</strong></td><td class="num"><strong>29 個月</strong></td></tr><tr><td>依近期夏普加權</td><td class="num">155–1,807</td><td class="num">151,108</td><td class="num">9,511</td><td class="num">15.9</td><td class="num">3.35</td><td class="num">34% / 12% / 54%</td><td class="num">38 個月</td></tr><tr><td>權益曲線濾網（低於均線減半）</td><td class="num">326–651</td><td class="num">159,686</td><td class="num">9,999</td><td class="num">16.0</td><td class="num">3.58</td><td class="num">24% / 19% / 57%</td><td class="num">36 個月</td></tr></tbody></table></div>
+<ul>
+<li><strong>依績效調整都比不調整差。</strong> 依近期夏普加權、權益曲線濾網都追著過去的報酬走，而每個策略一季只有十幾筆，好壞大多是雜訊，結果是在高點加碼、低點減碼。</li>
+<li><strong>策略風險平價讓每個策略的風險最平均，但代價很高。</strong> 週一 18:00→19:00 做多平常幾乎不動，要放大到單筆停損 2,559 才分得到同樣的風險；週一四筆同時停損就撞上單日上限，整體只能縮小，獲利少兩成。</li>
+<li><strong>每筆波動相同獲利最高，但風險集中。</strong> 停損越寬的策略分到越多風險，剛好是樣本內最好的週一多單，最差 5% 日的平均虧損也最大（2,213）。</li>
+<li><strong>依交易日分群的風險平價把風險平分在週一、週二、週四三個交易日。</strong> 三群在不同日子交易，日損益幾乎不相關，平分到三天才是真正的分散。同一群裡的策略彼此相關（例如週一四組多單），會讓那一群的波動變大、倍數自然變小，不需要再刪掉策略；實測刪掉相關係數高於 0.4 的策略後，翻倍時間反而從 29 個月拉長到 37 個月。</li>
+</ul>
+<p>採用依交易日分群的風險平價。</p>
+<h2 id="群倍數怎麼算">群倍數怎麼算？</h2>
+<p>停損倍數決定一筆交易什麼時候算錯，群倍數決定錯了要付多少錢。分群依交易日：同一天交易的策略常一起賺、一起停損，當成一個整體；不同天的策略幾乎不相關（三群的日損益相關係數約 -0.03）。</p>
+<ol>
+<li>每筆交易換成停損單位：（損益 − 成本）÷ 停損點數，打到停損約等於 -1。這也就是每筆停損金額相同時的損益。</li>
+<li>每一群加總成每日序列，沒有交易的日子記 0。</li>
+<li>用過去 52 週三群的每日序列算共變異數，解出讓三群對組合波動的貢獻各佔三分之一的倍數，限制在 0.5～2 倍、三群平均為 1。三群幾乎不相關，所以答案就是各群標準差的倒數。</li>
+</ol>
+<p>以 2025-07-28 到 2026-07-26（260 個交易日）的估計為例：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="群倍數怎麼算？（表格）"><table class="data-table"><thead><tr><th>群</th><th class="num">每日標準差（停損單位）</th><th class="num">標準差的倒數，平均調成 1</th><th class="num">群倍數</th><th class="num">每筆停損金額</th></tr></thead><tbody><tr><td>週一</td><td class="num">0.68</td><td class="num">1.17</td><td class="num">1.18</td><td class="num">877</td></tr><tr><td>週二</td><td class="num">0.71</td><td class="num">1.13</td><td class="num">1.12</td><td class="num">832</td></tr><tr><td>週四</td><td class="num">1.14</td><td class="num">0.70</td><td class="num">0.70</td><td class="num">520</td></tr></tbody></table></div>
+<p>每筆停損金額相同時，三群佔組合波動 20% / 22% / 58%；乘上群倍數後各佔三分之一。週四的停損窄（06:30→16:00 做空只有 0.38 倍波動），贏的時候常賺好幾倍停損，以停損單位看每天的起伏最大，所以每次停損只付 520 美元，承擔的波動和週一的 877、週二的 832 一樣大。回測期間每 13 週照這個方法重估一次、套用到接下來 13 週；週四的波動一直是其他兩群的 1.6～2 倍，倍數也一直最低。每筆停損金額 = 基準 × 群倍數，基準是在兩條限制下能用的最大值，每 13 週重估時是 735 美元。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="群倍數怎麼算？（表格）"><table class="data-table"><thead><tr><th>群</th><th>策略</th><th class="num">歷次重估的倍數範圍</th><th class="num">2026-07-27 起的倍數</th><th class="num">每筆停損金額</th></tr></thead><tbody><tr><td>週一</td><td>四組多單</td><td class="num">0.98–1.29</td><td class="num">1.18</td><td class="num">865</td></tr><tr><td>週二</td><td>兩組多單、一組空單</td><td class="num">0.94–1.41</td><td class="num">1.12</td><td class="num">826</td></tr><tr><td>週四</td><td>三組空單</td><td class="num">0.59–0.78</td><td class="num">0.70</td><td class="num">514</td></tr></tbody></table></div>
+<p>風險平價平分的是波動，不是虧損金額：週二打到停損的次數最多，但每次的波動比週四小，所以分到較高的倍數，5 年下來虧損總額也最大（佔全部虧損的 44%，週一 26%、週四 30%）。</p>
+<h2 id="成本變高時部位要跟著調嗎">成本變高時，部位要跟著調嗎？</h2>
+<p>基準 735 美元、固定風險不複利，在不同的每筆來回成本下：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="成本變高時，部位要跟著調嗎？（表格）"><table class="data-table"><thead><tr><th>每筆來回成本</th><th class="num">5 年獲利</th><th class="num">最大回撤</th><th class="num">恢復因子</th><th class="num">獲利因子</th><th class="num">最差的一天</th><th class="num">全部打到停損的一天</th><th class="num">兩年內翻倍</th><th class="num">翻倍時間中位數</th><th class="num">爆倉機率</th></tr></thead><tbody><tr><td>0 點</td><td class="num">227,297</td><td class="num">9,006</td><td class="num">25.2</td><td class="num">1.89</td><td class="num">-2,847</td><td class="num">3,866</td><td class="num">41%</td><td class="num">25 個月</td><td class="num">0.9%</td></tr><tr><td>2 點</td><td class="num">212,507</td><td class="num">9,498</td><td class="num">22.4</td><td class="num">1.82</td><td class="num">-2,887</td><td class="num">3,936</td><td class="num">31%</td><td class="num">27 個月</td><td class="num">1.4%</td></tr><tr><td>4 點</td><td class="num">197,717</td><td class="num">9,999</td><td class="num">19.8</td><td class="num">1.74</td><td class="num">-2,926</td><td class="num">4,005</td><td class="num">22%</td><td class="num">29 個月</td><td class="num">1.9%</td></tr><tr><td>6 點</td><td class="num">182,927</td><td class="num">10,532</td><td class="num">17.4</td><td class="num">1.67</td><td class="num">-2,965</td><td class="num">4,074</td><td class="num">14%</td><td class="num">31 個月</td><td class="num">2.6%</td></tr></tbody></table></div>
+<p>要。基準是以每筆 4 點成本校準的；成本到 6 點時最大回撤 10,532，略超過 1 萬，實際成本偏高時基準要降到約 700。翻倍與爆倉照 FTMO 的規則計算：淨值跌破 9 萬，或單日盤中虧損達 5,000 就算爆倉；把歷史週資料以 4 週為一塊重抽，模擬 10 年、10,000 次。</p>
+<h2 id="群倍數要每季重算嗎">群倍數要每季重算嗎？</h2>
+<p>三群的倍數一直很穩，所以也測了「估一次就固定使用」：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="群倍數要每季重算嗎？（表格）"><table class="data-table"><thead><tr><th>做法</th><th class="num">基準</th><th class="num">5 年獲利</th><th class="num">恢復因子</th><th class="num">日報酬夏普</th><th class="num">全部打到停損的一天</th><th class="num">兩年內翻倍</th><th class="num">翻倍時間中位數</th></tr></thead><tbody><tr><td>每 13 週重估</td><td class="num">735</td><td class="num">197,717</td><td class="num">19.8</td><td class="num">3.93</td><td class="num">4,005</td><td class="num">22%</td><td class="num">29 個月</td></tr><tr><td>固定為第一次滿一年的估計（2023 年 1 月）</td><td class="num">760</td><td class="num">201,011</td><td class="num">20.1</td><td class="num">3.95</td><td class="num">3,505</td><td class="num">24%</td><td class="num">28 個月</td></tr><tr><td>固定為最新的估計（2026 年 7 月）</td><td class="num">743</td><td class="num">198,927</td><td class="num">19.9</td><td class="num">3.95</td><td class="num">3,689</td><td class="num">23%</td><td class="num">29 個月</td></tr></tbody></table></div>
+<p>固定倍數和每季重估幾乎一樣，每季重估多半只是在追雜訊。所以倍數固定為最新的估計（週一 1.18、週二 1.12、週四 0.70），基準 743 美元；之後每季仍照同樣方法估一次：</p>
+<ul>
+<li>三群的新估計都在設定值的 80%～125% 之間：不動，繼續使用。</li>
+<li>任一群超出這個範圍：用新的倍數重新校準基準（同樣的單日 4,500、最大回撤 1 萬兩條限制），重新設定每個策略的風險金額。</li>
+</ul>
+<p>回測期間重估了 18 次；以 2026 年 7 月的設定為準，只有一次超出範圍：2025 年 7 月，週二的新估計是設定值的 1.26 倍。</p>
+<p>另外也測了讓每個策略只用自己最近 52 筆交易的平均波動來決定部位。好處是不必人工更新，但它看不到策略之間的相關，又會把平常幾乎不動的週一 18:00→19:00 做多放大；5 年獲利只有 138,841、恢復因子 13.9，翻倍要 42 個月，所以不採用。</p>
+<h2 id="用前一年估計的倍數擺動太大時怎麼辦">用前一年估計的倍數擺動太大時怎麼辦？</h2>
+<p>時鐘策略樹的三群倍數很穩，但不是每個組合都這樣。〈<a href="/zh-tw/posts/us100-clock-market-profile-weekday-combination/">US100 星期 × 時段 × Market Profile</a>〉的 15 組策略分在五個交易日，用前一年重估時，週四的倍數曾在 0.95 到 1.81 之間來回。這種情況把同一套方法收緊三處：</p>
+<ul>
+<li><strong>只採用估計的一半</strong>，另一半維持「每天一樣」（倍數 1）。</li>
+<li><strong>限制範圍</strong>：每一群最多比平均多 25%、少 20%（0.8～1.25）。</li>
+<li><strong>更新門檻</strong>：新估計和現值相差超過 20% 才更換。</li>
+</ul>
+<p>兩條帳戶限制也只用到八成：同一天全部停損的金額在 4,500 的八成以內，回測最大回撤在 1 萬的八成以內。那篇用 2022–2024 年決定倍數、再拿 2025–2026 年檢驗，這套收緊的設計比只用歷史估計的賺得多、回撤差不多，而且倍數從沒變動過。</p>
+<h2 id="回測的最大回撤要用哪個口徑">回測的最大回撤要用哪個口徑？</h2>
+<p>同一組設定，最大回撤會因為量法不同而差好幾百美元。以 10 組時鐘策略、基準 743 美元、每筆 4 點成本為例：</p>
+<ul>
+<li><strong>每日收盤的淨值</strong>：9,986，在 1 萬以內。基準就是以這個口徑校準的。</li>
+<li><strong>照出場順序逐筆計算</strong>：10,578。同一天裡虧損的單可能先平倉，盤中的低點比收盤深。</li>
+<li><strong>把持倉中的浮動虧損也算進去</strong>：10,923。</li>
+</ul>
+<p>FTMO 的總虧損線從起始資金算起（淨值不低於 9 萬），不是從高點回撤，所以回測最大回撤到 1 萬並不等於爆倉；但它已經在 1 萬上下時，基準就沒有再往上的空間。校準時寫明用的是哪個口徑，上線後的監控也用同一個。</p>
+</div><div class="callout callout--warning"><strong>解讀注意</strong><ul>
+<li>這篇的數字都來自同一段樣本（2022 年到 2026 年 9 月）的回測，策略本身也是在這段樣本挑出的；基準與群倍數是依樣本內最大回撤推算的上限，樣本外的連續虧損可能更長，不是保證。</li>
+<li>重抽的機率來自同一段樣本的日損益，不包含樣本外更差的市況。</li>
+<li>單日最壞情況以停損金額計算；跳空越過停損時，實際虧損會比停損金額大。</li>
+<li>成本用固定的來回點數估計，沒有考慮消息時段的點差擴大。</li>
+<li>每個組合的停損倍數、交易日分布與相關程度不同，套用時要用自己的交易重新估計群倍數與基準，不能直接沿用這裡的數字。</li>
+<li>不構成投資建議。</li>
+</ul></div>
+<div class="prose"><h2 id="實作對照">實作對照</h2>
+<p>這一節是給下單系統設定用的換算，讀者可以略過。</p>
+<p><strong>口數。</strong> 先決定這筆打到停損要虧多少錢，再反推口數（US100 每手每點 1 美元）：</p>
+<p>口數 = 743 × 群倍數 ÷（停損倍數 × 當天的日線 ATR(72)），無條件捨去到 0.01 手。</p>
+<p>日線 ATR(72) 是 72 根紐約日 K 的平均真實波幅（Average True Range，ATR），約等於 60 個交易日，是〈US100 時鐘策略樹〉所有距離的單位，見〈<a href="/zh-tw/posts/quant-research-glossary/">研究用詞</a>〉。例如週一 18:00→14:00 做多，ATR 300 點：停損要虧 743 × 1.18 = 877 美元，停損距離 0.68 × 300 = 204 點，口數 877 ÷ 204 = 4.29 手；真的打到停損時虧 4.29 × 204 ≈ 875 美元。</p>
+<p><strong>每個策略的設定值。</strong> 下單系統算口數的方式固定是「口數 = 設定值 ÷ 運算式的值」，所有策略共用一個運算式 <code>pl.col(&quot;entry_volatility&quot;)</code>（進場時的日線 ATR 點數），每個策略只能各自設定那個設定值。運算式裡沒有停損倍數，所以把停損倍數移進設定值：設定值 = 743 × 群倍數 ÷ 停損倍數。設定值只是換算數字，不是會虧的錢；打到停損時真正虧的錢只有三種：877、832、520。運算式不讀任何歷史成交，群倍數也不寫進運算式（它需要三群之間的共變異數，而運算式只看得到單一策略自己的成交），同一組設定可以一直使用。</p>
+<p>表中的「有利延遲進場」是在訊號價的有利側掛限價單（多單 Buy Limit 掛在下方、空單 Sell Limit 掛在上方），等回檔才成交；「不利延遲進場」是在不利側掛觸價單（多單 Buy Stop 掛在上方、空單 Sell Stop 掛在下方），等價格先走一段才成交；數字是距離，單位同停損。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="實作對照（表格）"><table class="data-table"><thead><tr><th>策略</th><th class="num">群倍數</th><th class="num">停損倍數</th><th class="num">打到停損時虧損</th><th class="num">設定值</th><th class="num">ATR 300 點時的口數</th></tr></thead><tbody><tr><td>週一 20:30→12:30 做多</td><td class="num">1.18</td><td class="num">0.72</td><td class="num">877</td><td class="num">1,217.69</td><td class="num">4.06</td></tr><tr><td>週一 18:00→14:00 做多（有利延遲進場 0.28）</td><td class="num">1.18</td><td class="num">0.68</td><td class="num">877</td><td class="num">1,289.32</td><td class="num">4.29</td></tr><tr><td>週一 18:00→14:00 做多（有利延遲進場 0.08）</td><td class="num">1.18</td><td class="num">0.88</td><td class="num">877</td><td class="num">996.29</td><td class="num">3.32</td></tr><tr><td>週一 18:00→19:00 做多</td><td class="num">1.18</td><td class="num">0.30</td><td class="num">877</td><td class="num">2,922.46</td><td class="num">9.74</td></tr><tr><td>週二 11:30→16:30 做多（有利延遲進場 0.26）</td><td class="num">1.12</td><td class="num">0.58</td><td class="num">832</td><td class="num">1,434.75</td><td class="num">4.78</td></tr><tr><td>週二 11:30→16:30 做多（有利延遲進場 0.08）</td><td class="num">1.12</td><td class="num">0.40</td><td class="num">832</td><td class="num">2,080.40</td><td class="num">6.93</td></tr><tr><td>週二 18:00→11:00 做空</td><td class="num">1.12</td><td class="num">0.60</td><td class="num">832</td><td class="num">1,386.93</td><td class="num">4.62</td></tr><tr><td>週四 07:00→11:00 做空（不利延遲進場 0.10）</td><td class="num">0.70</td><td class="num">0.54</td><td class="num">520</td><td class="num">963.14</td><td class="num">3.21</td></tr><tr><td>週四 07:00→11:00 做空（有利延遲進場 0.20）</td><td class="num">0.70</td><td class="num">0.46</td><td class="num">520</td><td class="num">1,130.65</td><td class="num">3.77</td></tr><tr><td>週四 06:30→16:00 做空</td><td class="num">0.70</td><td class="num">0.38</td><td class="num">520</td><td class="num">1,368.68</td><td class="num">4.56</td></tr></tbody></table></div>
+<p>口數 = 設定值 ÷ 當天的日線 ATR 點數，無條件捨去到 0.01 手。週一 18:00→19:00 做多停損最窄，同樣的停損金額需要最多口數，ATR 低的日子會超過 10 手，下單前要確認券商的口數與保證金限制。</p>
+</div><section class="question-section" aria-labelledby="goals-title"><h2 class="question-section-title" id="goals-title">這篇研究要回答的問題</h2><div class="question-item"><h3 class="question-item-title">有硬停損的策略，部位要用什麼公式算？</h3><div class="question-item-answer">用停損距離：口數 = 每筆停損金額 ÷（停損倍數 × 進場時的波動點數），每筆打到停損都虧固定金額。在 10 組時鐘策略上比較的六種公式中，它在單日 4,500、最大回撤 1 萬兩條限制下的獲利僅次於「等波動」，而等波動等於依樣本內績效加碼、尾端風險較大；用 MAE 或虧損歷史估計的四種公式都被單日限制卡住，獲利少兩到六成。</div></div><div class="question-item"><h3 class="question-item-title">風險要怎麼在多個策略之間分配？</h3><div class="question-item-answer">把同一天交易的策略當成一群，讓每一群對組合波動的貢獻相同（依交易日分群的風險平價）。在 10 組時鐘策略上，它把週一、週二、週四的風險各調成三分之一，5 年獲利 197,717、恢復因子 19.8；每筆停損相同時週四一群就佔六成風險，依近期績效加權的做法則都比不調整差。</div></div><div class="question-item"><h3 class="question-item-title">在 FTMO 的兩條限制下，每筆最多能押多少？</h3><div class="question-item-answer">先算同一天全部停損的單日最壞情況，再看回測最大回撤。這個例子一天最多 4 筆，單日最壞情況離 4,500 還遠，先卡住的是最大回撤：每筆停損相同時上限約 625 美元，改成分群風險平價後基準是 743 美元乘上群倍數（週一 877、週二 832、週四 520 美元）。</div></div></section>
+<section class="question-section" aria-labelledby="arising-title"><h2 class="question-section-title" id="arising-title">研究中衍生的問題</h2><div class="question-item"><h3 class="question-item-title">為什麼交易分析工具預設的 MAE 公式反而放大風險？</h3><div class="question-item-answer">它假設虧損只能從最近的不利波動估計，適合沒有停損的策略。這些策略的停損比平常的 MAE 遠，最近走得順時部位被放大，打到停損時一筆虧掉風險金額的 0.24 到 1.75 倍。研究因此改用停損距離，MAE 只拿來決定停損的位置。</div></div><div class="question-item"><h3 class="question-item-title">群倍數需要每季重新估計嗎？</h3><div class="question-item-answer">不需要。以 10 組時鐘策略測試，每 13 週重估與「估一次就固定」的 5 年獲利與恢復因子幾乎相同，重估多半只是在追雜訊。做法是固定為最新估計，每季仍估一次，任一群偏離設定值 80%～125% 之外才重新校準；回測 18 次重估中只有一次超出。</div></div><div class="question-item"><h3 class="question-item-title">用前一年估計的倍數擺動很大時怎麼辦？</h3><div class="question-item-answer">星期 × Market Profile 的 15 組策略就是這種情況，週四的倍數曾在 0.95 到 1.81 之間。那篇只採用估計的一半、範圍限制在 0.8～1.25、相差超過 20% 才更換，兩條限制也只用到八成；樣本外比只用歷史估計的賺得多、回撤差不多，倍數從沒變動。</div></div><div class="question-item"><h3 class="question-item-title">最大回撤要用哪個口徑和 1 萬美元比較？</h3><div class="question-item-answer">同一組設定，以每日收盤淨值計算是 9,986，逐筆計算是 10,578，含浮動虧損是 10,923。基準用每日收盤的口徑校準，並且寫明口徑；FTMO 的總虧損線從起始資金算起，所以回測回撤在 1 萬上下時，基準就不再往上調。</div></div></section><div class="section-head"><h2 id="method">方法與資料</h2></div><p class="section-lead">研究設定、資料與計算方式；重現研究用的識別字在資料來源。</p><div class="appendix"><div style="display:contents"><h3>更新紀錄</h3><div>2026-10-15 19:00　首次發布</div></div></div><div class="wide"><section class="related"><h2 class="related-title">相關研究</h2><div class="related-grid"><a class="card card-interactive post-card" href="/zh-tw/posts/us100-weekday-clock-portfolio/"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"></div><div class="post-card__body"><span class="eyebrow">US100 · Market Profile · 時鐘策略</span><h3 class="post-card__title">US100 星期時段組合：<wbr/>14 個規則型策略的回測績效、<wbr/>回撤分析與參數說明</h3><span class="post-card__excerpt">一個已發布的 US100 交易組合：14 個在固定星期、固定時段，依 Market Profile 位置決定要不要做的規則型策略。這篇用 Trades Analyzer 呈現每個策略與整個組合的績效指標（勝率、PF、MDD、Sharpe、Sortino）、前五大回撤，以及最大回撤期間的逐策略拆解，並說明每個參數為什麼這樣選。</span><span class="post-card__meta"><span>2026-10-15 17:00</span><span>30 分鐘</span></span></div></a><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">104 組參數 · 獲利因子 &gt; 1.5</span><span class="cover-figure__value">100 / 104</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L0.97 14.81L1.94 22.74L2.91 27.46L3.88 28.28L4.85 31.59L5.83 31.62L6.80 33.42L7.77 33.98L8.74 34.36L9.71 35.17L10.68 36.84L11.65 38.69L12.62 38.91L13.59 41.69L14.56 42.27L15.53 42.79L16.50 44.24L17.48 44.67L18.45 44.79L19.42 45.05L20.39 45.06L21.36 45.96L22.33 46.39L23.30 46.69L24.27 46.73L25.24 46.98L26.21 47.93L27.18 48.09L28.16 48.46L29.13 48.50L30.10 48.74L31.07 49.10L32.04 49.15L33.01 49.59L33.98 50.14L34.95 50.18L35.92 50.66L36.89 50.71L37.86 51.33L38.83 51.50L39.81 51.54L40.78 51.56L41.75 51.60L42.72 51.81L43.69 52.33L44.66 52.60L45.63 53.19L46.60 53.31L47.57 53.75L48.54 54.04L49.51 54.12L50.49 54.41L51.46 54.55L52.43 55.30L53.40 55.52L54.37 55.62L55.34 55.80L56.31 56.01L57.28 56.10L58.25 56.86L59.22 57.10L60.19 57.28L61.17 57.40L62.14 57.96L63.11 57.98L64.08 58.25L65.05 58.57L66.02 58.59L66.99 58.74L67.96 58.78L68.93 58.90L69.90 59.12L70.87 59.15L71.84 59.30L72.82 59.31L73.79 59.74L74.76 59.86L75.73 60.16L76.70 61.02L77.67 61.08L78.64 61.13L79.61 61.58L80.58 61.74L81.55 61.80L82.52 61.97L83.50 62.86L84.47 63.11L85.44 63.26L86.41 63.35L87.38 64.00L88.35 64.24L89.32 64.65L90.29 64.69L91.26 65.59L92.23 65.94L93.20 66.11L94.17 66.12L95.15 66.69L96.12 66.83L97.09 67.65L98.06 67.98L99.03 68.72L100.00 71.69L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 98.00H100"></path><path class="sparkline__line" d="M0.00 2.00L0.97 14.81L1.94 22.74L2.91 27.46L3.88 28.28L4.85 31.59L5.83 31.62L6.80 33.42L7.77 33.98L8.74 34.36L9.71 35.17L10.68 36.84L11.65 38.69L12.62 38.91L13.59 41.69L14.56 42.27L15.53 42.79L16.50 44.24L17.48 44.67L18.45 44.79L19.42 45.05L20.39 45.06L21.36 45.96L22.33 46.39L23.30 46.69L24.27 46.73L25.24 46.98L26.21 47.93L27.18 48.09L28.16 48.46L29.13 48.50L30.10 48.74L31.07 49.10L32.04 49.15L33.01 49.59L33.98 50.14L34.95 50.18L35.92 50.66L36.89 50.71L37.86 51.33L38.83 51.50L39.81 51.54L40.78 51.56L41.75 51.60L42.72 51.81L43.69 52.33L44.66 52.60L45.63 53.19L46.60 53.31L47.57 53.75L48.54 54.04L49.51 54.12L50.49 54.41L51.46 54.55L52.43 55.30L53.40 55.52L54.37 55.62L55.34 55.80L56.31 56.01L57.28 56.10L58.25 56.86L59.22 57.10L60.19 57.28L61.17 57.40L62.14 57.96L63.11 57.98L64.08 58.25L65.05 58.57L66.02 58.59L66.99 58.74L67.96 58.78L68.93 58.90L69.90 59.12L70.87 59.15L71.84 59.30L72.82 59.31L73.79 59.74L74.76 59.86L75.73 60.16L76.70 61.02L77.67 61.08L78.64 61.13L79.61 61.58L80.58 61.74L81.55 61.80L82.52 61.97L83.50 62.86L84.47 63.11L85.44 63.26L86.41 63.35L87.38 64.00L88.35 64.24L89.32 64.65L90.29 64.69L91.26 65.59L92.23 65.94L93.20 66.11L94.17 66.12L95.15 66.69L96.12 66.83L97.09 67.65L98.06 67.98L99.03 68.72L100.00 71.69"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">US100 · Market Profile · 時鐘策略 · 104 組參數 · 11,508 筆交易</span><h3 class="post-card__title"><a class="post-card__link" href="/zh-tw/posts/us100-clock-market-profile-weekday-combination/">US100 星期 × 時段 × Market Profile：<wbr/>從 42 個根長出 15 組策略的組合</a></h3><span class="post-card__excerpt">時段搭配 Market Profile 條件、只在某一個星期幾交易，再逐層長出延遲進場、停損、停利、保本與移動停損。探索階段的獲利面只要求贏過同時段的大盤；參數在 2022–2024 年挑選、用 2025–2026 年確認。最後留下 15 組策略，並用固定的星期倍數為 FTMO 100K 帳戶設定部位。</span><span class="post-card__meta"><span>2026-10-15 14:30</span><span>9 分鐘</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/zh-tw/posts/us100-clock-market-profile-weekday-combination/">讀文章</a><a class="btn btn-ghost btn-sm" href="/zh-tw/posts/us100-clock-market-profile-weekday-combination/?view=report">看報告</a></div></div></article><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">累積報酬 · G09 · 做空 · 06:30 · 保留 · 基準</span><span class="cover-figure__value">+27.4 vol</span><span class="cover-figure__sub">每年為正 5 / 5 年 · 獲利因子 1.422</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 97.59L1.23 98.00L2.47 87.66L3.70 93.53L4.94 95.54L6.17 89.98L7.41 87.72L8.64 83.63L9.88 82.21L11.11 83.25L12.35 83.25L13.58 83.25L14.81 83.59L16.05 86.16L17.28 85.23L18.52 85.30L19.75 86.78L20.99 83.14L22.22 83.09L23.46 83.92L24.69 86.01L25.93 81.81L27.16 81.55L28.40 82.48L29.63 83.71L30.86 83.37L32.10 83.37L33.33 83.28L34.57 84.13L35.80 76.09L37.04 73.14L38.27 75.11L39.51 79.63L40.74 74.77L41.98 74.77L43.21 73.73L44.44 71.71L45.68 72.26L46.91 74.87L48.15 61.96L49.38 63.11L50.62 61.63L51.85 64.45L53.09 62.14L54.32 61.97L55.56 62.15L56.79 64.10L58.02 59.39L59.26 59.95L60.49 61.76L61.73 64.45L62.96 62.81L64.20 52.52L65.43 55.22L66.67 33.69L67.90 36.54L69.14 40.36L70.37 42.26L71.60 40.98L72.84 44.35L74.07 44.29L75.31 44.57L76.54 44.44L77.78 44.84L79.01 45.87L80.25 38.72L81.48 29.89L82.72 23.88L83.95 16.30L85.19 19.99L86.42 19.37L87.65 9.82L88.89 4.26L90.12 2.00L91.36 6.70L92.59 8.02L93.83 9.85L95.06 2.85L96.30 7.79L97.53 5.39L98.77 4.49L100.00 5.51L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 96.54H100"></path><path class="sparkline__line" d="M0.00 97.59L1.23 98.00L2.47 87.66L3.70 93.53L4.94 95.54L6.17 89.98L7.41 87.72L8.64 83.63L9.88 82.21L11.11 83.25L12.35 83.25L13.58 83.25L14.81 83.59L16.05 86.16L17.28 85.23L18.52 85.30L19.75 86.78L20.99 83.14L22.22 83.09L23.46 83.92L24.69 86.01L25.93 81.81L27.16 81.55L28.40 82.48L29.63 83.71L30.86 83.37L32.10 83.37L33.33 83.28L34.57 84.13L35.80 76.09L37.04 73.14L38.27 75.11L39.51 79.63L40.74 74.77L41.98 74.77L43.21 73.73L44.44 71.71L45.68 72.26L46.91 74.87L48.15 61.96L49.38 63.11L50.62 61.63L51.85 64.45L53.09 62.14L54.32 61.97L55.56 62.15L56.79 64.10L58.02 59.39L59.26 59.95L60.49 61.76L61.73 64.45L62.96 62.81L64.20 52.52L65.43 55.22L66.67 33.69L67.90 36.54L69.14 40.36L70.37 42.26L71.60 40.98L72.84 44.35L74.07 44.29L75.31 44.57L76.54 44.44L77.78 44.84L79.01 45.87L80.25 38.72L81.48 29.89L82.72 23.88L83.95 16.30L85.19 19.99L86.42 19.37L87.65 9.82L88.89 4.26L90.12 2.00L91.36 6.70L92.59 8.02L93.83 9.85L95.06 2.85L96.30 7.79L97.53 5.39L98.77 4.49L100.00 5.51"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">US100 · Market Profile · 組合與部位 · 27 組參數 · 7,578 筆交易</span><h3 class="post-card__title"><a class="post-card__link" href="/zh-tw/posts/us100-market-profile-vol-portfolio/">組合與部位大小：<wbr/>8 個 US100 Market Profile 策略放進 FTMO 10 萬帳戶，<wbr/>含點差與滑價</a></h3><span class="post-card__excerpt">Market Profile 訊號系列的組合篇：把最終策略組合起來，刪掉同步的策略，加入點差與滑價，並決定每筆部位，讓 10 萬的自營商帳戶撐過不好的一年。</span><span class="post-card__meta"><span>2026-10-13 19:00</span><span>4 分鐘</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/zh-tw/posts/us100-market-profile-vol-portfolio/">讀文章</a><a class="btn btn-ghost btn-sm" href="/zh-tw/posts/us100-market-profile-vol-portfolio/?view=report">看報告</a></div></div></article></div></section></div><!-- island 外層加 div：astro-island 為 display: contents，否則引用區塊會被排進格線的側欄 --><div><script>(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value=="object"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event("astro:visible"));})();</script><astro-island uid="K7kyc" prefix="r16" component-url="/_astro/index.DRzo-oSI.js" component-export="Citation" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;引用本文&quot;],&quot;copyLabels&quot;:[0,{&quot;copy&quot;:[0,&quot;複製&quot;],&quot;copied&quot;:[0,&quot;已複製&quot;],&quot;failed&quot;:[0,&quot;無法複製&quot;]}],&quot;text&quot;:[0,&quot;TradePose Research（2026）。〈FTMO 帳戶部位與風險分配：有停損的策略組合，每筆該押多少？〉TradePose Research Notes.&quot;],&quot;bibtex&quot;:[0,&quot;@article{tradepose2026ftmoaccountpositionsizing,\n  title   = {FTMO 帳戶部位與風險分配：有停損的策略組合，每筆該押多少？},\n  author  = {TradePose Research},\n  journal = {TradePose Research Notes},\n  year    = {2026}\n}&quot;]}" ssr client="visible" opts="{&quot;name&quot;:&quot;Citation&quot;,&quot;value&quot;:true}" await-children><div class="citation"><div class="citation-title">引用本文</div><p class="citation-text">TradePose Research（2026）。〈FTMO 帳戶部位與風險分配：有停損的策略組合，每筆該押多少？〉TradePose Research Notes.</p><div class="citation-code">@article{tradepose2026ftmoaccountpositionsizing,
+  title   = {FTMO 帳戶部位與風險分配：有停損的策略組合，每筆該押多少？},
+  author  = {TradePose Research},
+  journal = {TradePose Research Notes},
+  year    = {2026}
+}<button type="button" class="btn btn-secondary btn-sm">複製</button></div></div><!--astro:end--></astro-island></div></div></main><footer class="site-footer"><div class="container"><div class="site-footer__grid"><div class="site-footer__brand"><span class="site-brand"><span class="site-brand__mark" aria-hidden="true"></span>TradePose</span><p class="site-footer__tagline">量化研究筆記：回測、統計與策略診斷。文中數字皆由文章附帶的回測統計產生。</p></div><div><h2 class="site-footer__title">研究</h2><ul><li><a href="/zh-tw/#research">研究目錄</a></li><li><a href="/zh-tw/#method">資料與計算說明</a></li><li><a href="/zh-tw/rss.xml">RSS</a></li></ul></div></div><div class="site-footer__legal"><span>© 2026 TradePose</span><span>研究內容不構成投資建議</span></div></div></footer><script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BflPKFW9.js"></script></body></html>

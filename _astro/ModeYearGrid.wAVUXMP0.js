@@ -1,0 +1,1 @@
+import{p as e}from"./icons.C28yLCnh.js";import{r as t,t as n}from"./analyzerMode.D8Bhlvd_.js";import{t as r}from"./YearConsistency.7ul1G-CF.js";var i=e();function a({locale:e,views:a,title:o,subtitle:s,foot:c}){let l=t(a.map(e=>e.mode));return(0,i.jsx)(r,{locale:e,rows:n(a,l).rows,title:o,subtitle:s,foot:c,mode:l})}export{a as default};

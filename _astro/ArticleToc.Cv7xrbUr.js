@@ -1,0 +1,1 @@
+import{p as e}from"./icons.C28yLCnh.js";import{v as t}from"./src.BFdQBoF0.js";import{t as n}from"./messages.CBBUw-hT.js";var r=e();function i({locale:e,items:i}){let a=n(e);return(0,r.jsx)(t,{items:i,title:a.common.ui.toc.title,countLabel:a.common.ui.toc.count})}export{i as default};
