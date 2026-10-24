@@ -1,0 +1,717 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Position sizing and risk allocation for an FTMO account: how much should each trade of a stopped portfolio risk? | TradePose Research</title><meta name="description" content="Putting a set of intraday strategies with stops on an FTMO 100K account takes three answers: how much each trade risks, how risk is spread across the strategies, and how bad days and losing runs stay within the account limits. This post compares six sizing formulas and six ways to allocate risk, and explains why lots follow the stop distance, why risk parity runs over trading-day clusters, and why the cluster multipliers are estimated once and kept."><meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large"><link rel="canonical" href="https://research.tradepose.com/en/posts/ftmo-account-position-sizing/"><link rel="alternate" hreflang="en" href="https://research.tradepose.com/en/posts/ftmo-account-position-sizing/"><link rel="alternate" hreflang="zh-TW" href="https://research.tradepose.com/zh-tw/posts/ftmo-account-position-sizing/"><link rel="alternate" hreflang="x-default" href="https://research.tradepose.com/en/posts/ftmo-account-position-sizing/"><link rel="alternate" type="application/rss+xml" title="TradePose Research" href="/en/rss.xml"><meta property="og:site_name" content="TradePose Research"><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_TW"><meta property="og:type" content="article"><meta property="og:title" content="Position sizing and risk allocation for an FTMO account: how much should each trade of a stopped portfolio risk?"><meta property="og:description" content="Putting a set of intraday strategies with stops on an FTMO 100K account takes three answers: how much each trade risks, how risk is spread across the strategies, and how bad days and losing runs stay within the account limits. This post compares six sizing formulas and six ways to allocate risk, and explains why lots follow the stop distance, why risk parity runs over trading-day clusters, and why the cluster multipliers are estimated once and kept."><meta property="og:url" content="https://research.tradepose.com/en/posts/ftmo-account-position-sizing/"><meta property="og:image" content="https://research.tradepose.com/og-default.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Position sizing and risk allocation for an FTMO account: how much should each trade of a stopped portfolio risk?"><meta name="twitter:description" content="Putting a set of intraday strategies with stops on an FTMO 100K account takes three answers: how much each trade risks, how risk is spread across the strategies, and how bad days and losing runs stay within the account limits. This post compares six sizing formulas and six ways to allocate risk, and explains why lots follow the stop distance, why risk parity runs over trading-day clusters, and why the cluster multipliers are estimated once and kept."><meta name="twitter:image" content="https://research.tradepose.com/og-default.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Position sizing and risk allocation for an FTMO account: how much should each trade of a stopped portfolio risk?","description":"Putting a set of intraday strategies with stops on an FTMO 100K account takes three answers: how much each trade risks, how risk is spread across the strategies, and how bad days and losing runs stay within the account limits. This post compares six sizing formulas and six ways to allocate risk, and explains why lots follow the stop distance, why risk parity runs over trading-day clusters, and why the cluster multipliers are estimated once and kept.","articleSection":"Methodology","keywords":"position sizing, risk management, risk parity, FTMO, prop firm account, stop loss, MAE, max drawdown, daily loss limit, risk per trade, US100","inLanguage":"en","datePublished":"2026-10-20T04:00:00+08:00","dateModified":"2026-10-20T04:00:00+08:00","image":"https://research.tradepose.com/og-default.png","url":"https://research.tradepose.com/en/posts/ftmo-account-position-sizing/","mainEntityOfPage":"https://research.tradepose.com/en/posts/ftmo-account-position-sizing/","author":{"@type":"Organization","name":"TradePose Research"},"publisher":{"@type":"Organization","name":"TradePose","url":"https://tradepose.com"}}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Research","item":"https://research.tradepose.com/en/"},{"@type":"ListItem","position":2,"name":"Position sizing and risk allocation for an FTMO account: how much should each trade of a stopped portfolio risk?","item":"https://research.tradepose.com/en/posts/ftmo-account-position-sizing/"}]}</script><!-- data-init：第一次繪製前套用主題、計算模式與檢視；頁面轉場換頁後重新執行（<html> 的屬性換成新頁的） --><script data-init>try { const q = new URLSearchParams(location.search).get('theme'); if (q === 'light' || q === 'dark') sessionStorage.setItem('tp-theme', q); } catch {}
+try { const t = sessionStorage.getItem('tp-theme') ?? localStorage.getItem('tp-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; else if (t === 'system') delete document.documentElement.dataset.theme; } catch {}</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CYDbzu1r.js"></script><link rel="stylesheet" href="/_astro/Base.CYCDe2lS.css"><style>html[data-view=report] [data-view-panel=article],html[data-view=case] [data-view-panel=article]{display:none}
+</style></head><body><a class="skip-link" href="#main">Skip to main content</a><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><header class="site-header"><div class="container site-header__inner"><a class="site-brand" href="/en/"><span class="site-brand__mark" aria-hidden="true"></span><span class="site-brand__name">TradePose</span><span class="site-brand__sub">Research</span></a><div class="site-header__context"><astro-island uid="Z22SVGs" prefix="r18" component-url="/_astro/index.Betv42FV.js" component-export="PageContext" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;Position sizing and risk allocation for an FTMO account: how much should each trade of a stopped portfolio risk?&quot;],&quot;followHeading&quot;:[0,true],&quot;labels&quot;:[0,{&quot;open&quot;:[0,&quot;Open contents&quot;],&quot;contents&quot;:[0,&quot;Contents&quot;],&quot;close&quot;:[0,&quot;Close&quot;]}]}" ssr client="load" opts="{&quot;name&quot;:&quot;PageContext&quot;,&quot;value&quot;:true}" await-children><div class="page-context"><span class="page-context__heading"><span class="page-context__title" title="Position sizing and risk allocation for an FTMO account: how much should each trade of a stopped portfolio risk?">Position sizing and risk allocation for an FTMO account: how much should each trade of a stopped portfolio risk?</span></span><span class="page-context__progress" aria-hidden="true" style="--progress:0"></span></div><!--astro:end--></astro-island></div><div class="site-header__actions"><astro-island uid="28Un9u" prefix="r19" component-url="/_astro/SiteSettings.CBWXpzKJ.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;en&quot;],&quot;modes&quot;:[1,[]],&quot;languages&quot;:[1,[[0,{&quot;href&quot;:[0,&quot;/en/posts/ftmo-account-position-sizing/&quot;],&quot;lang&quot;:[0,&quot;en&quot;],&quot;name&quot;:[0,&quot;English&quot;],&quot;current&quot;:[0,true]}],[0,{&quot;href&quot;:[0,&quot;/zh-tw/posts/ftmo-account-position-sizing/&quot;],&quot;lang&quot;:[0,&quot;zh-TW&quot;],&quot;name&quot;:[0,&quot;繁體中文&quot;],&quot;current&quot;:[0,false]}]]],&quot;views&quot;:[1,[]]}" ssr client="load" opts="{&quot;name&quot;:&quot;SiteSettings&quot;,&quot;value&quot;:true}" await-children><button type="button" id="radix-_r19R_0_" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="btn btn-ghost btn-sm settings-menu" aria-label="Settings" title="Settings"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h6M12 5h1M3 11h1M7 11h6"></path><circle cx="10.5" cy="5" r="1.5"></circle><circle cx="5.5" cy="11" r="1.5"></circle></svg></button><!--astro:end--></astro-island></div></div></header><main id="main"><div class="article" data-view-panel="article"><div class="wide article-banner"><div class="article-cover article-cover--banner" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div></div><header class="article-header"><span class="category-chip">Methodology</span><h1 class="article-title visually-hidden">Position sizing and risk allocation for an FTMO account: how much should each trade of a stopped portfolio risk?</h1><p class="article-dek"><p>Backtest returns add up one unit of risk per trade; live trading also has to decide how many lots each trade takes. When the account has rules, this is easier to get wrong than picking strategies: an FTMO 100K account may lose at most USD 10,000 in total and USD 5,000 in a day, and touching either once ends it. This post answers three questions: what formula should size a strategy with a hard stop, how should risk be split across several strategies, and how much can each trade risk under the two account limits, and how is that kept up to date? The examples are the 14 strategies kept by <a href="/en/posts/us100-clock-combination/">the US100 clock strategy tree</a> (2022 to September 2026, 4 points of round-trip cost per trade).</p></p><dl class="article-meta"><div><dt>Published</dt><dd>2026-10-20 04:00</dd></div><div><dt>Reading time</dt><dd>25 min read</dd></div></dl></header><div><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value=="object"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};"requestIdleCallback"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event("astro:idle"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="Z1dhFAM" prefix="r30" component-url="/_astro/ArticleToc.GohhgC-S.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;en&quot;],&quot;items&quot;:[1,[[0,{&quot;id&quot;:[0,&quot;what-limits-does-an-ftmo-account-set&quot;],&quot;label&quot;:[0,&quot;What limits does an FTMO account set?&quot;]}],[0,{&quot;id&quot;:[0,&quot;why-not-size-from-past-mae&quot;],&quot;label&quot;:[0,&quot;Why not size from past MAE?&quot;]}],[0,{&quot;id&quot;:[0,&quot;six-sizing-formulas-compared&quot;],&quot;label&quot;:[0,&quot;Six sizing formulas compared&quot;]}],[0,{&quot;id&quot;:[0,&quot;which-binds-first-the-daily-limit-or-the-total-loss&quot;],&quot;label&quot;:[0,&quot;Which binds first, the daily limit or the total loss?&quot;]}],[0,{&quot;id&quot;:[0,&quot;equal-stop-outs-uneven-risk-how-is-risk-split-across-strategies&quot;],&quot;label&quot;:[0,&quot;Equal stop-outs, uneven risk: how is risk split across strategies?&quot;]}],[0,{&quot;id&quot;:[0,&quot;how-is-the-cluster-multiplier-computed&quot;],&quot;label&quot;:[0,&quot;How is the cluster multiplier computed?&quot;]}],[0,{&quot;id&quot;:[0,&quot;should-the-size-change-when-costs-rise&quot;],&quot;label&quot;:[0,&quot;Should the size change when costs rise?&quot;]}],[0,{&quot;id&quot;:[0,&quot;must-the-cluster-multipliers-be-re-estimated-every-quarter&quot;],&quot;label&quot;:[0,&quot;Must the cluster multipliers be re-estimated every quarter?&quot;]}],[0,{&quot;id&quot;:[0,&quot;what-if-the-trailing-year-multipliers-swing-too-much&quot;],&quot;label&quot;:[0,&quot;What if the trailing-year multipliers swing too much?&quot;]}],[0,{&quot;id&quot;:[0,&quot;which-max-drawdown-should-be-compared-with-the-limit&quot;],&quot;label&quot;:[0,&quot;Which max drawdown should be compared with the limit?&quot;]}],[0,{&quot;id&quot;:[0,&quot;implementation-reference&quot;],&quot;label&quot;:[0,&quot;Implementation reference&quot;]}],[0,{&quot;id&quot;:[0,&quot;goals-title&quot;],&quot;label&quot;:[0,&quot;Questions this study answers&quot;]}],[0,{&quot;id&quot;:[0,&quot;arising-title&quot;],&quot;label&quot;:[0,&quot;Questions raised along the way&quot;]}],[0,{&quot;id&quot;:[0,&quot;method&quot;],&quot;label&quot;:[0,&quot;Method and data&quot;]}]]]}" ssr client="idle" opts="{&quot;name&quot;:&quot;ArticleToc&quot;,&quot;value&quot;:true}" await-children><nav class="toc toc--aside" aria-label="Contents"><div class="toc-title" aria-hidden="true">Contents</div><ol class="toc-list"><li class=""><a href="#what-limits-does-an-ftmo-account-set" aria-current="true">What limits does an FTMO account set?</a></li><li class=""><a href="#why-not-size-from-past-mae">Why not size from past MAE?</a></li><li class=""><a href="#six-sizing-formulas-compared">Six sizing formulas compared</a></li><li class=""><a href="#which-binds-first-the-daily-limit-or-the-total-loss">Which binds first, the daily limit or the total loss?</a></li><li class=""><a href="#equal-stop-outs-uneven-risk-how-is-risk-split-across-strategies">Equal stop-outs, uneven risk: how is risk split across strategies?</a></li><li class=""><a href="#how-is-the-cluster-multiplier-computed">How is the cluster multiplier computed?</a></li><li class=""><a href="#should-the-size-change-when-costs-rise">Should the size change when costs rise?</a></li><li class=""><a href="#must-the-cluster-multipliers-be-re-estimated-every-quarter">Must the cluster multipliers be re-estimated every quarter?</a></li><li class=""><a href="#what-if-the-trailing-year-multipliers-swing-too-much">What if the trailing-year multipliers swing too much?</a></li><li class=""><a href="#which-max-drawdown-should-be-compared-with-the-limit">Which max drawdown should be compared with the limit?</a></li><li class=""><a href="#implementation-reference">Implementation reference</a></li><li class=""><a href="#goals-title">Questions this study answers</a></li><li class=""><a href="#arising-title">Questions raised along the way</a></li><li class=""><a href="#method">Method and data</a></li></ol></nav><!--astro:end--></astro-island></div>
+<div class="abstract"><div class="abstract-title">Conclusion</div><p>For a strategy with a hard stop, the lot size should follow the stop distance: fix what a stop-out of this trade costs in dollars, then divide by the stop in points. Formulas that estimate the loss from past MAE scale up when a strategy runs smoothly, and a single stop-out then costs several times what was planned. Equal stop-outs are not enough either, because the strategies hit their stops at very different rates and win very different multiples: with equal stop-outs the seven Monday strategies and the four Thursday ones carry 86% of the portfolio’s variance. Treating the strategies of one trading day as a cluster and giving every cluster the same variance (risk parity) spreads the risk evenly over the four trading days; with the multipliers estimated once from the latest year and kept, it earns more than equal stop-outs under the same limits. The multipliers are checked every quarter and changed only when they drift too far. In this example the daily limit binds first with equal stop-outs (the seven Monday longs can stop out together); with the cluster multipliers the total loss (the backtest max drawdown) binds.</p></div><p class="reading-split">That is the conclusion. Each section below is the evidence for one claim; follow the sections or the evidence links into the strategy report for the data on every parameter set.</p>
+<div class="prose"><h2 id="what-limits-does-an-ftmo-account-set">What limits does an FTMO account set?</h2>
+<p>Take an FTMO 100K account:</p>
+<ul>
+<li><strong>Total loss</strong>: equity may not fall below USD 90,000, a loss of at most 10,000 from the starting balance.</li>
+<li><strong>Daily loss</strong>: at most USD 5,000 within a day, open losses included. This post uses 4,500 as the cap and keeps 500 as a buffer.</li>
+<li><strong>The day</strong>: the FTMO day starts at 18:00 New York, the same as the research sessions. Every example trade opens and closes within one day, so none carries overnight financing.</li>
+<li><strong>Contract</strong>: US100 pays USD 1 per point per lot, with a minimum of 0.01 lot.</li>
+</ul>
+<p>Risk is always fixed and never compounds: profits do not raise the amount per trade, so the backtest max drawdown compares directly with USD 10,000.</p>
+<h2 id="why-not-size-from-past-mae">Why not size from past MAE?</h2>
+<p>A common approach estimates how much a trade may lose from the Maximum Adverse Excursion (MAE) of the strategy’s recent trades. Our Trades Analyzer does this by default: it takes the 90th percentile of the last 10 trades’ MAE (in multiples of daily volatility), multiplies it by this trade’s entry volatility and by 4, and treats that as the expected loss in points; lots = risk amount ÷ expected loss points.</p>
+<p>That suits strategies without a stop, whose loss can only be estimated from past adverse moves. A strategy with a hard stop is different: its largest loss is known at entry, and estimating it from MAE lets the real risk drift. On the 14 clock strategies, at one risk amount a stop-out costs 0.24 to 1.76 times that amount, and the position grows several-fold after ten smooth trades. Each strategy’s first 10 trades also get no order for lack of history.</p>
+<h2 id="six-sizing-formulas-compared">Six sizing formulas compared</h2>
+<p>Each formula gives expected loss points; lots = risk per trade ÷ expected loss points, floored to 0.01 lot. Formulas that use history roll over the strategy’s own past trades only, never mixing strategies, and lag one trade, so no future data enters.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Six sizing formulas compared (table)"><table class="data-table"><thead><tr><th>Formula</th><th>Expected loss points</th></tr></thead><tbody><tr><td>Stop distance</td><td>Stop multiple × daily volatility at entry</td></tr><tr><td>Analyzer default</td><td>90th percentile of the last 10 trades’ MAE × volatility × 4</td></tr><tr><td>MAE 90th percentile</td><td>90th percentile of the last 20 trades’ MAE × volatility (the stop distance until 20 trades exist; likewise below)</td></tr><tr><td>MAE mean</td><td>Mean of the last 20 trades’ MAE × volatility</td></tr><tr><td>Average loss</td><td>Average loss of the losing trades among the last 20 × volatility</td></tr><tr><td>Equal volatility</td><td>1 × volatility: every strategy carries the same volatility unit</td></tr></tbody></table></div>
+<p>Each formula is tuned to the largest risk per trade that meets both limits: every position of a day stopping out together loses at most 4,500, and the backtest max drawdown stays below 10,000.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Six sizing formulas compared (table)"><table class="data-table"><thead><tr><th>Formula</th><th class="num">Risk per trade</th><th class="num">5-year profit</th><th class="num">Max drawdown</th><th class="num">Recovery factor</th><th class="num">Daily Sharpe</th><th class="num">Mean of the worst 5% of days</th><th class="num">Worst day</th><th class="num">Day with every stop hit</th><th class="num">Stop-out USD (median / max)</th></tr></thead><tbody><tr><td>Stop distance</td><td class="num">541</td><td class="num">201,738</td><td class="num">9,444</td><td class="num">21.4</td><td class="num">3.39</td><td class="num">-1,956</td><td class="num">-3,365</td><td class="num">4,499</td><td class="num">540 / 541</td></tr><tr><td>Analyzer default</td><td class="num">806</td><td class="num">88,622</td><td class="num">5,039</td><td class="num">17.6</td><td class="num">3.50</td><td class="num">-927</td><td class="num">-1,854</td><td class="num">4,499</td><td class="num">210 / 1,422</td></tr><tr><td>MAE 90th percentile</td><td class="num">264</td><td class="num">113,335</td><td class="num">5,905</td><td class="num">19.2</td><td class="num">3.56</td><td class="num">-1,092</td><td class="num">-2,442</td><td class="num">4,476</td><td class="num">264 / 1,474</td></tr><tr><td>MAE mean</td><td class="num">138</td><td class="num">101,579</td><td class="num">4,956</td><td class="num">20.5</td><td class="num">3.69</td><td class="num">-975</td><td class="num">-2,324</td><td class="num">4,442</td><td class="num">246 / 1,556</td></tr><tr><td>Average loss</td><td class="num">99</td><td class="num">69,573</td><td class="num">4,702</td><td class="num">14.8</td><td class="num">3.64</td><td class="num">-666</td><td class="num">-2,344</td><td class="num">4,459</td><td class="num">141 / 2,127</td></tr><tr><td>Equal volatility</td><td class="num">998</td><td class="num">182,288</td><td class="num">9,449</td><td class="num">19.3</td><td class="num">3.36</td><td class="num">-1,999</td><td class="num">-3,615</td><td class="num">4,496</td><td class="num">399 / 898</td></tr></tbody></table></div>
+<p><strong>All six formulas stop at the daily limit, and the four built on MAE or loss history stop there with about half the drawdown room unused.</strong> They estimate how deep trades usually go, and these strategies’ stops sit beyond the usual MAE. The Monday 18:00→19:00 long, for example, has an MAE 90th percentile of only 0.19 × volatility against a 0.30 stop, so its position is scaled up and one stop-out costs 1,420-2,130 while the risk amounts are only 99-806. Keeping seven simultaneous Monday stop-outs within 4,500 then means shrinking every position. The MAE mean formula has the best daily Sharpe because it puts more size on strategies with shallow usual drawdowns, but that edge does not turn into profit.</p>
+<p>If the daily check looks only at the intraday lows the sample actually reached (every trade of the day at its own MAE at once), the history formulas can go much higher: the MAE 90th percentile reaches 571 per trade and earns 238,499 in 5 years, more than the stop distance’s 212,886 under the same check (MAE mean reaches 279 and earns 204,797; average loss 329 and 218,454). But every stop of one day hit together would then lose 7,429 to 8,118, beyond FTMO’s 5,000 daily limit. The sample never had more than 6 stop-outs on one day; with the seven Monday longs held in the same direction at overlapping hours, 7 cannot be treated as impossible.</p>
+<p><strong>Equal volatility earns less than the stop distance</strong> (recovery factor 19.3 against 21.4). It gives each strategy risk in proportion to its stop, so the Monday 18:30→14:00 longs (stops 0.90 and 0.84) get the most and the Wednesday 18:00→22:30 long (stop 0.16) the least; yet in stop units the tight-stop strategies, the Wednesday long and the Thursday 06:30→16:30 short at 0.38, have the best average trades. Its tail is also heavier: the worst 5% of days lose 1,999 on average (1,956 for the stop distance) and the worst day loses 3,615 (3,365). A bootstrap of daily P&amp;L puts the probability of a 10,000 drawdown from the peak within a year at 12% for equal volatility and 17% for the stop distance, which has more money at risk on a typical trade (a median stop-out of 540 against 399).</p>
+<p><strong>The stop distance is used.</strong> It fixes every stop-out at the same amount, so the worst day is known before any order is placed, and under both limits it earns the most of the six formulas with the best recovery factor. Its daily Sharpe is slightly below the MAE formulas’, which carry far less money. In a portfolio MAE is most useful for placing the stop and for estimating the intraday equity low; used for position size, it scales up single-trade risk whenever a strategy has a hard stop.</p>
+<h2 id="which-binds-first-the-daily-limit-or-the-total-loss">Which binds first, the daily limit or the total loss?</h2>
+<p>The worst-case day assumes every position of the day stops out together (FTMO counts open losses too), each losing its stop plus the largest overrun past a stop seen in the sample (14%) and the cost. The example holds at most 7 trades in a day (the seven Monday longs), so the worst-case day is about 8.3 times the risk per trade. The total loss is checked two ways: the backtest’s max drawdown, and a block bootstrap of daily P&amp;L (5-day blocks, one simulated year, 5,000 draws) giving the probability of a USD 10,000 drawdown.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Which binds first, the daily limit or the total loss? (table)"><table class="data-table"><thead><tr><th class="num">Risk per trade (USD)</th><th class="num">5-year profit</th><th class="num">Max drawdown</th><th class="num">Worst-case day</th><th class="num">P(10,000 from the peak within a year, reference)</th><th class="num">P(10,000 below the start within a year, reference)</th></tr></thead><tbody><tr><td class="num">300</td><td class="num">111,746</td><td class="num">5,237</td><td class="num">2,493</td><td class="num">0.4%</td><td class="num">0.0%</td></tr><tr><td class="num">400</td><td class="num">149,130</td><td class="num">6,986</td><td class="num">3,326</td><td class="num">3.1%</td><td class="num">0.2%</td></tr><tr><td class="num">475</td><td class="num">177,081</td><td class="num">8,283</td><td class="num">3,952</td><td class="num">8.8%</td><td class="num">0.5%</td></tr><tr><td class="num">525</td><td class="num">195,801</td><td class="num">9,168</td><td class="num">4,366</td><td class="num">14.7%</td><td class="num">0.8%</td></tr><tr><td class="num">550</td><td class="num">205,094</td><td class="num">9,604</td><td class="num">4,575</td><td class="num">18.1%</td><td class="num">0.9%</td></tr><tr><td class="num">625</td><td class="num">233,089</td><td class="num">10,926</td><td class="num">5,198</td><td class="num">29.6%</td><td class="num">1.5%</td></tr></tbody></table></div>
+<p>The rule: the worst-case day stays within 4,500, and the backtest max drawdown from a peak stays below 10,000. The daily rule is the real limit, though only just: in steps of USD 25 it allows 525 per trade (worst-case day 4,366) and fails at 550 (4,575), and the formula comparison’s finer search puts the cap at 541; the max drawdown alone would allow about 570 (at 575 it is 10,043). The bootstrap probabilities are for reference only: at 525, a 10,000 drawdown from the peak within a year has a probability of about 15%, and a 10,000 loss below the starting balance (FTMO’s actual total-loss line) about 0.8%. At USD 525, the years look like this:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Which binds first, the daily limit or the total loss? (table)"><table class="data-table"><thead><tr><th>Year</th><th class="num">Profit (USD)</th><th class="num">Worst day</th></tr></thead><tbody><tr><td>2022</td><td class="num">24,569</td><td class="num">-2,879</td></tr><tr><td>2023</td><td class="num">29,282</td><td class="num">-3,269</td></tr><tr><td>2024</td><td class="num">32,985</td><td class="num">-2,773</td></tr><tr><td>2025</td><td class="num">65,940</td><td class="num">-2,667</td></tr><tr><td>2026 (to September)</td><td class="num">43,025</td><td class="num">-2,116</td></tr></tbody></table></div>
+<h2 id="equal-stop-outs-uneven-risk-how-is-risk-split-across-strategies">Equal stop-outs, uneven risk: how is risk split across strategies?</h2>
+<p>An equal stop-out only means every stop costs the same. These 14 strategies hit their stop 1% to 46% of the time and their best trades are worth very different multiples of the stop, so the Monday and Thursday clusters carry 44% and 42% of the portfolio’s daily P&amp;L variance and Wednesday 4%; the Thursday 06:30→16:30 short with a favorable delayed entry of 0.02 alone carries about a fifth. So several ways of spreading risk are compared under the same limits; every estimated weight uses only the previous 52 weeks and is re-estimated every 13 weeks.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Equal stop-outs, uneven risk: how is risk split across strategies? (table)"><table class="data-table"><thead><tr><th>Allocation</th><th class="num">Stop-out USD</th><th class="num">5-year profit</th><th class="num">Max drawdown</th><th class="num">Recovery factor</th><th class="num">Daily Sharpe</th><th class="num">Mon / Tue / Wed / Thu risk</th><th class="num">Median months to double</th></tr></thead><tbody><tr><td>Equal stop-outs</td><td class="num">540</td><td class="num">201,789</td><td class="num">9,452</td><td class="num">21.3</td><td class="num">3.39</td><td class="num">44% / 10% / 4% / 42%</td><td class="num">28</td></tr><tr><td>Equal lots per volatility</td><td class="num">160-898</td><td class="num">182,607</td><td class="num">9,468</td><td class="num">19.3</td><td class="num">3.36</td><td class="num">55% / 8% / 0.4% / 37%</td><td class="num">31</td></tr><tr><td>Strategy risk parity</td><td class="num">113-1,809</td><td class="num">138,615</td><td class="num">6,055</td><td class="num">22.9</td><td class="num">3.83</td><td class="num">51% / 14% / 10% / 25%</td><td class="num">42</td></tr><tr><td><strong>Trading-day cluster risk parity</strong></td><td class="num"><strong>273-1,090</strong></td><td class="num"><strong>155,145</strong></td><td class="num"><strong>6,942</strong></td><td class="num"><strong>22.3</strong></td><td class="num"><strong>3.29</strong></td><td class="num"><strong>25% / 26% / 25% / 24%</strong></td><td class="num"><strong>38</strong></td></tr><tr><td>Recent Sharpe weighting</td><td class="num">96-1,502</td><td class="num">125,118</td><td class="num">9,999</td><td class="num">12.5</td><td class="num">3.13</td><td class="num">55% / 5% / 6% / 34%</td><td class="num">46</td></tr><tr><td>Equity-curve filter (halve below the mean)</td><td class="num">270-541</td><td class="num">177,403</td><td class="num">9,690</td><td class="num">18.3</td><td class="num">3.23</td><td class="num">43% / 10% / 5% / 42%</td><td class="num">32</td></tr></tbody></table></div>
+<ul>
+<li><strong>Weighting by performance does worse than not weighting.</strong> Recent-Sharpe weights and the equity-curve filter chase past returns, and with only a dozen trades per strategy per quarter those are mostly noise: they add near highs and cut near lows.</li>
+<li><strong>Strategy risk parity has the best daily Sharpe, at a high price in profit.</strong> The Monday 18:00→19:00 long barely moves, so it needs a single stop-out of 1,809 to carry the same risk; the seven Monday stop-outs together then hit the daily cap, every position must shrink, and profit falls by almost a third. With seven of the 14 strategies on Monday, it also leaves half of the risk on that one day.</li>
+<li><strong>Equal lots per volatility concentrates risk on Monday.</strong> The wider a strategy’s stop, the more risk it gets, and the widest stops are Monday longs; the Wednesday long is left with almost none, and its worst 5% of days are the heaviest (2,003 on average).</li>
+<li><strong>Trading-day cluster risk parity splits risk evenly over Monday, Tuesday, Wednesday and Thursday.</strong> The clusters trade on different days and their daily P&amp;L is nearly uncorrelated, so splitting across the four days is real diversification. Correlation inside a cluster (the seven Monday longs, say) raises that cluster’s volatility and so lowers its multiplier without dropping any strategy. It has the second-best recovery factor and the smallest drawdown after strategy risk parity, but in this re-estimated form it earns less than equal stop-outs: its first quarter has no estimate yet, so every multiplier is 1, and one Monday in February 2022 with seven positions caps its base at USD 545 on the daily limit, leaving about 3,000 of drawdown room unused. With the multipliers fixed (below), the drawdown binds instead and the same allocation earns 224,186.</li>
+</ul>
+<p>Trading-day cluster risk parity is used.</p>
+<h2 id="how-is-the-cluster-multiplier-computed">How is the cluster multiplier computed?</h2>
+<p>The stop multiple decides when a trade is wrong; the cluster multiplier decides what being wrong costs. Clusters follow the trading day: strategies of the same day often win and stop out together, so they count as one block; strategies of different days are nearly uncorrelated (the four clusters’ daily P&amp;L correlates at -0.04 to -0.01 pair by pair).</p>
+<ol>
+<li>Every trade in stop units: (P&amp;L − cost) ÷ stop in points; a stop-out is about -1. This is also the P&amp;L when every stop-out costs the same.</li>
+<li>Each cluster’s trades are summed into a daily series, with 0 on days without a trade.</li>
+<li>The covariance of the four daily series over the previous 52 weeks gives the multipliers under which each cluster contributes a quarter of the portfolio’s variance, bounded to 0.5-2 with a mean of 1. With the clusters nearly uncorrelated, the answer is the inverse of each cluster’s standard deviation.</li>
+</ol>
+<p>The estimate from 2025-07-22 to 2026-07-21 (260 sessions), with a stop-out cost at the base of USD 785 used live (below):</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="How is the cluster multiplier computed? (table)"><table class="data-table"><thead><tr><th>Cluster</th><th class="num">Daily standard deviation (stop units)</th><th class="num">Inverse, scaled to mean 1</th><th class="num">Cluster multiplier</th><th class="num">Stop-out USD</th></tr></thead><tbody><tr><td>Monday</td><td class="num">1.15</td><td class="num">0.59</td><td class="num">0.60</td><td class="num">471</td></tr><tr><td>Tuesday</td><td class="num">0.66</td><td class="num">1.04</td><td class="num">1.03</td><td class="num">809</td></tr><tr><td>Wednesday</td><td class="num">0.39</td><td class="num">1.77</td><td class="num">1.76</td><td class="num">1,382</td></tr><tr><td>Thursday</td><td class="num">1.13</td><td class="num">0.60</td><td class="num">0.60</td><td class="num">471</td></tr></tbody></table></div>
+<p>With equal stop-outs the clusters carry 42% / 13% / 4% / 41% of the portfolio’s variance in this window; with the multipliers, a quarter each. Monday stacks seven longs on one day and Thursday four shorts, so in stop units their days swing the most and each of their stop-outs costs only USD 471.</p>
+<p><strong>Wednesday is a single strategy</strong>, the 18:00→22:30 long, which trades on 111 of the sample’s 243 Wednesdays. Its daily series swings the least, so risk parity gives it the largest multiplier, 1.76: a Wednesday stop-out costs USD 1,382, about three times a Monday or Thursday stop-out, and that one strategy carries the same quarter of the portfolio’s variance as Monday’s seven. The 0.5-2 bound is what limits it; in five quarters the estimate sat at the cap of 2. With nothing else in its cluster, its losing runs are not diluted, and with a stop of only 0.16 × volatility it also needs the most lots of any strategy.</p>
+<p>In the backtest the multipliers were re-estimated this way every 13 weeks and applied to the next 13; Monday’s and Thursday’s volatility has run 2 to 6 times the calmest cluster’s, so their multipliers have always been the lowest. A stop-out costs the base times the cluster multiplier; with re-estimation every 13 weeks, the base is the largest value both limits allow, USD 545.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="How is the cluster multiplier computed? (table)"><table class="data-table"><thead><tr><th>Cluster</th><th>Strategies</th><th class="num">Multiplier range over all rebalances</th><th class="num">Multiplier from 2026-07-21</th><th class="num">Stop-out USD</th></tr></thead><tbody><tr><td>Monday</td><td>seven longs</td><td class="num">0.50-0.68</td><td class="num">0.60</td><td class="num">329</td></tr><tr><td>Tuesday</td><td>one long, one short</td><td class="num">0.88-1.52</td><td class="num">1.03</td><td class="num">562</td></tr><tr><td>Wednesday</td><td>one long</td><td class="num">1.24-2.00</td><td class="num">1.76</td><td class="num">961</td></tr><tr><td>Thursday</td><td>four shorts</td><td class="num">0.50-0.64</td><td class="num">0.60</td><td class="num">329</td></tr></tbody></table></div>
+<p>Risk parity equalizes variance, not losing dollars: over 5 years Monday’s seven strategies take the largest loss total (36% of all losses, against 29% for Tuesday, 24% for Thursday and 11% for Wednesday), while the Wednesday long, with the costliest single stop-out, takes the smallest.</p>
+<h2 id="should-the-size-change-when-costs-rise">Should the size change when costs rise?</h2>
+<p>Base USD 545 with re-estimation every 13 weeks, fixed risk without compounding, at different round-trip costs per trade:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Should the size change when costs rise? (table)"><table class="data-table"><thead><tr><th>Round-trip cost</th><th class="num">5-year profit</th><th class="num">Max drawdown</th><th class="num">Recovery factor</th><th class="num">Profit factor</th><th class="num">Worst day</th><th class="num">Day with every stop hit</th><th class="num">Doubled within 2 years</th><th class="num">Median months to double</th><th class="num">P(blown)</th></tr></thead><tbody><tr><td>0 points</td><td class="num">187,450</td><td class="num">6,227</td><td class="num">30.1</td><td class="num">1.77</td><td class="num">-2,906</td><td class="num">4,364</td><td class="num">11%</td><td class="num">31</td><td class="num">0.03%</td></tr><tr><td>2 points</td><td class="num">171,297</td><td class="num">6,585</td><td class="num">26.0</td><td class="num">1.68</td><td class="num">-2,950</td><td class="num">4,432</td><td class="num">6%</td><td class="num">34</td><td class="num">0.06%</td></tr><tr><td>4 points</td><td class="num">155,145</td><td class="num">6,942</td><td class="num">22.3</td><td class="num">1.60</td><td class="num">-2,994</td><td class="num">4,500</td><td class="num">3%</td><td class="num">38</td><td class="num">0.2%</td></tr><tr><td>6 points</td><td class="num">138,993</td><td class="num">7,300</td><td class="num">19.0</td><td class="num">1.52</td><td class="num">-3,038</td><td class="num">4,568</td><td class="num">1%</td><td class="num">42</td><td class="num">0.5%</td></tr></tbody></table></div>
+<p>Yes. The base is calibrated at 4 points of cost; at 6 points the day with every stop hit, 4,568, slightly exceeds 4,500, so with higher real costs the base should come down to about 535. Doubling and blow-ups follow FTMO’s rules: equity below 90,000, or an intraday loss of 5,000 within one day, ends the account; historical weeks are resampled in 4-week blocks over 10 simulated years, 10,000 times.</p>
+<h2 id="must-the-cluster-multipliers-be-re-estimated-every-quarter">Must the cluster multipliers be re-estimated every quarter?</h2>
+<p>Estimating the multipliers once and keeping them was tested too:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Must the cluster multipliers be re-estimated every quarter? (table)"><table class="data-table"><thead><tr><th>Approach</th><th class="num">Base</th><th class="num">5-year profit</th><th class="num">Recovery factor</th><th class="num">Daily Sharpe</th><th class="num">Day with every stop hit</th><th class="num">Doubled within 2 years</th><th class="num">Median months to double</th></tr></thead><tbody><tr><td>Re-estimated every 13 weeks</td><td class="num">545</td><td class="num">155,145</td><td class="num">22.3</td><td class="num">3.29</td><td class="num">4,500</td><td class="num">3%</td><td class="num">38</td></tr><tr><td>Fixed at the first full-year estimate (January 2023)</td><td class="num">800</td><td class="num">227,210</td><td class="num">22.7</td><td class="num">3.41</td><td class="num">3,863</td><td class="num">40%</td><td class="num">26</td></tr><tr><td>Fixed at the latest estimate (July 2026)</td><td class="num">785</td><td class="num">224,186</td><td class="num">22.4</td><td class="num">3.43</td><td class="num">3,922</td><td class="num">38%</td><td class="num">26</td></tr></tbody></table></div>
+<p>Fixed multipliers earn more than re-estimating every quarter. Most of the gap is the re-estimated schedule’s first quarter: with no estimate yet it runs at multiplier 1, and its seven-position Monday caps the base on the daily limit. With fixed multipliers Monday’s seven positions cost 0.6 of the base each from the start, the drawdown binds, and the base rises by more than 40%. The estimate fixed in January 2023 does as well as the latest one, so quarterly re-estimation adds nothing here. So the multipliers are fixed at the latest estimate (Monday 0.60, Tuesday 1.03, Wednesday 1.76, Thursday 0.60) with a base of USD 785, and the same estimate is still made every quarter:</p>
+<ul>
+<li>Every cluster’s new estimate within 80%-125% of its setting: nothing changes.</li>
+<li>Any cluster outside that range: recalibrate the base with the new multipliers (the same 4,500 daily and 10,000 drawdown limits) and reset every strategy’s risk per trade.</li>
+</ul>
+<p>Over the backtest’s 18 re-estimates, against the July 2026 settings, 7 left the range, always through Tuesday (up to 1.48 times its setting) and four times also through Wednesday (down to 0.71); Monday and Thursday never did. They came in two runs, 2022 and 2025, so in live use a recalibration should be expected roughly once or twice a year, driven by the Tuesday and Wednesday clusters.</p>
+<h2 id="what-if-the-trailing-year-multipliers-swing-too-much">What if the trailing-year multipliers swing too much?</h2>
+<p>In the clock tree, the Monday and Thursday multipliers are stable and the Tuesday and Wednesday ones move more (0.88-1.52 and 1.24-2.00), yet the fixed latest estimate still earned more than re-estimating, so the plain rule above is kept. Other portfolios swing further. The 15 strategies of <a href="/en/posts/us100-clock-market-profile-weekday-combination/">US100 clock windows by weekday × Market Profile</a> spread over five trading days, and re-estimated on the trailing year Thursday’s multiplier moved between 0.95 and 1.81. In that case the same method is tightened in three places:</p>
+<ul>
+<li><strong>Only half of the estimate is used</strong>; the other half stays at “every day equal” (a multiplier of 1).</li>
+<li><strong>A range</strong>: no cluster may sit more than 25% above or 20% below average (0.8-1.25).</li>
+<li><strong>A change threshold</strong>: a multiplier changes only when a new estimate moves more than 20% away.</li>
+</ul>
+<p>Both account limits are also used only to 80%: a day with every stop hit stays within 80% of 4,500, and the backtest max drawdown within 80% of 10,000. That study set the multipliers on 2022–2024 and ran them on 2025–2026; the tightened design earned more than the history-only rule for about the same drawdown, and its multipliers never changed.</p>
+<h2 id="which-max-drawdown-should-be-compared-with-the-limit">Which max drawdown should be compared with the limit?</h2>
+<p>The same settings give different max drawdowns depending on how they are measured. For the 14 clock strategies at a base of USD 785 and 4 points of cost:</p>
+<ul>
+<li><strong>On daily closing equity</strong>: 9,999.6, just inside 10,000. The base is calibrated on this measure.</li>
+<li><strong>Trade by trade in exit order</strong>: also 9,999.6. A losing trade can close before a winner of the same day, so an intraday low can be deeper than the close; on this path the deepest point falls at a session close.</li>
+<li><strong>With every trade of the day at its worst point (MAE) at once</strong>, a bound on open losses: 10,743.</li>
+</ul>
+<p>FTMO’s total-loss line counts from the starting balance (equity at least 90,000), not from a peak, so a 10,000 backtest drawdown is not a blown account; but once it sits around 10,000 the base has no room to go higher. Calibration names the measure it uses, and live monitoring uses the same one.</p>
+</div><div class="callout callout--warning"><strong>Caveats</strong><ul>
+<li>Every figure here comes from a backtest on one sample (2022 to September 2026), and the strategies themselves were chosen on it; the base and the cluster multipliers are upper bounds inferred from the in-sample max drawdown, a longer losing run out of sample is possible, and they are not a guarantee.</li>
+<li>The fixed multipliers are applied to the same history they were estimated from; only the re-estimated schedule uses past data alone.</li>
+<li>The Wednesday cluster is a single strategy carrying a quarter of the portfolio’s variance; nothing inside its cluster offsets its losing runs.</li>
+<li>The bootstrap probabilities resample this sample’s daily P&amp;L and cannot include worse markets outside it.</li>
+<li>The worst-case day is computed from stop-outs; a gap through a stop loses more than the stop amount.</li>
+<li>Costs are a fixed round trip in points and ignore wider spreads around news.</li>
+<li>Every portfolio has its own stop multiples, trading days and correlations; apply the method by re-estimating the multipliers and the base on your own trades, not by copying these numbers.</li>
+<li>Not investment advice.</li>
+</ul></div>
+<div class="prose"><h2 id="implementation-reference">Implementation reference</h2>
+<p>This section converts the settings for the order system; readers can skip it.</p>
+<p><strong>Lots.</strong> First fix what a stop-out of this trade costs, then work back to lots (US100 pays USD 1 per point per lot):</p>
+<p>Lots = 785 × the cluster multiplier ÷ (stop multiple × that day’s daily ATR(72)), floored to 0.01 lot.</p>
+<p>The daily ATR(72) is the Average True Range (ATR) over 72 New York daily bars, about 60 trading days, and the unit of every distance in the clock strategy tree; see <a href="/en/posts/quant-research-glossary/">the research glossary</a>. For the Monday 18:30→14:00 long with a favorable delayed entry of 0.20 at an ATR of 300 points: a stop-out costs 785 × 0.60 = USD 471, the stop is 0.90 × 300 = 270 points, so 471 ÷ 270 = 1.74 lots; a real stop-out loses 1.74 × 270 ≈ 470.</p>
+<p><strong>Settings per strategy.</strong> The order system always sizes as lots = setting ÷ the expression’s value; every strategy shares one expression, <code>pl.col(&quot;entry_volatility&quot;)</code> (the daily ATR at entry in points), and only the setting differs per strategy. The expression has no stop multiple, so the stop multiple moves into the setting: setting = 785 × the cluster multiplier ÷ the stop multiple. The setting is only a conversion number, not money at risk; a stop-out costs one of three amounts: 471 (Monday and Thursday), 809 (Tuesday) or 1,382 (Wednesday). The expression reads no trade history, and the cluster multipliers stay out of it (they need the covariance between clusters, while the expression sees only one strategy’s own trades), so the same settings keep working.</p>
+<p>In the table, a favorable delayed entry places a limit order on the favorable side of the signal price (a Buy Limit below for longs, a Sell Limit above for shorts) and fills on a pullback; an adverse delayed entry places a stop order on the adverse side (a Buy Stop above for longs, a Sell Stop below for shorts) and fills once price has moved first; the number is the distance, in the same unit as the stop. A take profit is given in the same unit.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Implementation reference (table)"><table class="data-table"><thead><tr><th>Strategy</th><th class="num">Cluster multiplier</th><th class="num">Stop multiple</th><th class="num">Loss at the stop</th><th class="num">Setting</th><th class="num">Lots at an ATR of 300</th></tr></thead><tbody><tr><td>Monday 18:00→12:00 long (favorable delayed entry 0.06)</td><td class="num">0.60</td><td class="num">0.78</td><td class="num">471</td><td class="num">603.85</td><td class="num">2.01</td></tr><tr><td>Monday 18:00→12:00 long (favorable delayed entry 0.06, take profit 0.34)</td><td class="num">0.60</td><td class="num">0.32</td><td class="num">471</td><td class="num">1,471.88</td><td class="num">4.90</td></tr><tr><td>Monday 18:00→19:00 long (favorable delayed entry 0.08)</td><td class="num">0.60</td><td class="num">0.30</td><td class="num">471</td><td class="num">1,570.00</td><td class="num">5.23</td></tr><tr><td>Monday 18:30→14:00 long (favorable delayed entry 0.24, take profit 0.36)</td><td class="num">0.60</td><td class="num">0.84</td><td class="num">471</td><td class="num">560.71</td><td class="num">1.86</td></tr><tr><td>Monday 18:30→14:00 long (favorable delayed entry 0.20)</td><td class="num">0.60</td><td class="num">0.90</td><td class="num">471</td><td class="num">523.33</td><td class="num">1.74</td></tr><tr><td>Monday 19:30→14:00 long (favorable delayed entry 0.36, take profit 0.32)</td><td class="num">0.60</td><td class="num">0.40</td><td class="num">471</td><td class="num">1,177.50</td><td class="num">3.92</td></tr><tr><td>Monday 22:30→10:00 long (adverse delayed entry 0.10, take profit 0.56)</td><td class="num">0.60</td><td class="num">0.28</td><td class="num">471</td><td class="num">1,682.14</td><td class="num">5.60</td></tr><tr><td>Tuesday 11:00→16:30 long (favorable delayed entry 0.18, take profit 0.50)</td><td class="num">1.03</td><td class="num">0.72</td><td class="num">809</td><td class="num">1,122.99</td><td class="num">3.74</td></tr><tr><td>Tuesday 18:30→11:00 short (favorable delayed entry 0.02)</td><td class="num">1.03</td><td class="num">0.40</td><td class="num">809</td><td class="num">2,021.38</td><td class="num">6.73</td></tr><tr><td>Wednesday 18:00→22:30 long (favorable delayed entry 0.06, RTH Profile not above filter)</td><td class="num">1.76</td><td class="num">0.16</td><td class="num">1,382</td><td class="num">8,635.00</td><td class="num">28.78</td></tr><tr><td>Thursday 06:30→16:30 short (favorable delayed entry 0.02, 1h SuperTrend × volatility filter)</td><td class="num">0.60</td><td class="num">0.38</td><td class="num">471</td><td class="num">1,239.47</td><td class="num">4.13</td></tr><tr><td>Thursday 06:30→16:30 short (adverse delayed entry 0.30)</td><td class="num">0.60</td><td class="num">0.54</td><td class="num">471</td><td class="num">872.22</td><td class="num">2.90</td></tr><tr><td>Thursday 08:00→10:30 short (favorable delayed entry 0.02, take profit 0.64, RTH Profile above filter)</td><td class="num">0.60</td><td class="num">0.56</td><td class="num">471</td><td class="num">841.07</td><td class="num">2.80</td></tr><tr><td>Thursday 08:00→10:30 short (adverse delayed entry 0.16, take profit 0.66)</td><td class="num">0.60</td><td class="num">0.64</td><td class="num">471</td><td class="num">735.94</td><td class="num">2.45</td></tr></tbody></table></div>
+<p>Lots = the setting ÷ that day’s daily ATR in points, floored to 0.01 lot. The Wednesday 18:00→22:30 long has the tightest stop and the largest multiplier, so it needs by far the most lots: about 29 at an ATR of 300 and up to 44 on the lowest-ATR days of the sample; check the broker’s lot and margin limits before trading.</p>
+</div><section class="question-section" aria-labelledby="goals-title"><h2 class="question-section-title" id="goals-title">Questions this study answers</h2><div class="question-item"><h3 class="question-item-title">What formula should size a strategy with a hard stop?</h3><div class="question-item-answer">The stop distance: lots = stop-out amount ÷ (stop multiple × volatility at entry in points), so every stop-out costs a fixed amount. Of the six formulas compared on the 14 clock strategies, it earns the most under the 4,500 daily and 10,000 drawdown limits, with the best recovery factor; equal volatility earns 10% less with a heavier tail, and the four formulas built on MAE or loss history earn 44% to 66% less.</div></div><div class="question-item"><h3 class="question-item-title">How should risk be split across several strategies?</h3><div class="question-item-answer">Treat the strategies of one trading day as a cluster and give every cluster the same share of portfolio variance (trading-day cluster risk parity). On the 14 clock strategies it puts a quarter of the risk on each of Monday, Tuesday, Wednesday and Thursday; with the multipliers fixed at the latest estimate it earns 224,186 in 5 years with a recovery factor of 22.4. With equal stop-outs the Monday and Thursday clusters carry 86% of the risk, and weighting by recent performance does worse than not weighting.</div></div><div class="question-item"><h3 class="question-item-title">How much can each trade risk under FTMO&#x27;s two limits?</h3><div class="question-item-answer">Compute the worst-case day with every stop of the day hit, then check the backtest max drawdown. This example holds up to 7 trades a day, all on Monday, so with equal stop-outs the daily limit binds first at about USD 525-541 per trade; with cluster risk parity Monday’s stop-outs shrink, the max drawdown binds, and the base is USD 785 times the cluster multiplier (471 on Monday and Thursday, 809 on Tuesday, 1,382 on Wednesday).</div></div></section>
+<section class="question-section" aria-labelledby="arising-title"><h2 class="question-section-title" id="arising-title">Questions raised along the way</h2><div class="question-item"><h3 class="question-item-title">Why does the Trades Analyzer&#x27;s default MAE formula scale risk up?</h3><div class="question-item-answer">It assumes the loss can only be estimated from recent adverse moves, which suits strategies without a stop. These strategies’ stops sit beyond their usual MAE, so after smooth trades the position grows and a stop-out costs 0.24 to 1.76 times the risk amount. The research switched to the stop distance and uses MAE only to place the stop.</div></div><div class="question-item"><h3 class="question-item-title">What does cluster risk parity give a cluster with a single strategy?</h3><div class="question-item-answer">The Wednesday cluster is one long whose daily P&amp;L swings the least, so it gets the largest multiplier, 1.76 (bounded at 2): each Wednesday stop-out costs USD 1,382, about three times a Monday or Thursday one, and that one strategy carries a quarter of the portfolio’s variance with nothing in its cluster to offset it.</div></div><div class="question-item"><h3 class="question-item-title">Must the cluster multipliers be re-estimated every quarter?</h3><div class="question-item-answer">No. On the 14 clock strategies, fixed multipliers earned more than re-estimating every 13 weeks, mostly because the re-estimated schedule starts at multiplier 1 and its seven-position Mondays cap the base on the daily limit. The multipliers are fixed at the latest estimate, still estimated every quarter, and recalibrated only when a cluster leaves 80%-125% of its setting, which happened in 7 of 18 backtest re-estimates, always through Tuesday and sometimes Wednesday.</div></div><div class="question-item"><h3 class="question-item-title">What if the trailing-year multipliers swing a lot?</h3><div class="question-item-answer">The 15 weekday × Market Profile strategies are such a case, with Thursday’s multiplier between 0.95 and 1.81. That study uses half of the estimate, a 0.8-1.25 range and a 20% change threshold, and uses both limits only to 80%; out of sample it earned more than the history-only rule for about the same drawdown and never changed its multipliers.</div></div><div class="question-item"><h3 class="question-item-title">Which max drawdown should be compared with USD 10,000?</h3><div class="question-item-answer">For the same settings it is 9,999.6 on daily closing equity, the same trade by trade, and 10,743 with every trade of the day at its MAE at once. The base is calibrated on daily closing equity and the measure is stated; since FTMO’s total-loss line counts from the starting balance, once the backtest drawdown sits around 10,000 the base goes no higher.</div></div></section><div class="section-head"><h2 id="method">Method and data</h2></div><p class="section-lead">Research setup, data and calculations; the identifiers needed to reproduce the study are under data sources.</p><div class="appendix"><div style="display:contents"><h3>Changelog</h3><div>2026-10-20 04:00 first published</div></div></div><div class="wide"><section class="related"><h2 class="related-title">Related research</h2><div class="related-grid"><a class="card card-interactive post-card" href="/en/posts/sharpe-ratio-sparse-trading/"><div class="article-cover" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div><div class="post-card__body"><span class="eyebrow">Sharpe ratio · Annualization</span><h3 class="post-card__title">Why the Sharpe ratio of a sparse strategy gets inflated: annualize over every trading day</h3><span class="post-card__excerpt">A common way to compute a strategy&#x27;s Sharpe ratio uses only the days with a closed trade and multiplies by the square root of 252. For a strategy that trades once a month, that overstates the Sharpe several times and ranks it above better strategies. This post shows where the error comes from, how TradePose builds the daily series instead, and how to fix it in your own code.</span><span class="post-card__meta"><span>2026-10-24 23:28</span><span>5 min read</span></span></div></a><a class="card card-interactive post-card" href="/en/posts/one-opportunity-many-exit-policies/"><div class="article-cover" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div><div class="post-card__body"><span class="eyebrow">Delayed entry · Stop loss &amp; take profit · Parent strategy</span><h3 class="post-card__title">One entry opportunity, many exit policies: how the engine splits a strategy</h3><span class="post-card__excerpt">TradePose splits every strategy into an entry opportunity and the trade policies applied to it. The opportunity is computed once, every policy runs on top of it in isolation, and each policy&#x27;s trades line up one by one with the opportunities they came from, including the ones a delayed entry never filled. This post explains that split and why it makes layered research possible.</span><span class="post-card__meta"><span>2026-10-24 22:10</span><span>6 min read</span></span></div></a><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">10 parameter sets · Total return above 0</span><span class="cover-figure__value">9 / 10</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L11.11 8.29L22.22 22.26L33.33 24.96L44.44 27.34L55.56 34.07L66.67 61.32L77.78 68.96L88.89 76.32L100.00 98.00L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 85.62H100"></path><path class="sparkline__line" d="M0.00 2.00L11.11 8.29L22.22 22.26L33.33 24.96L44.44 27.34L55.56 34.07L66.67 61.32L77.78 68.96L88.89 76.32L100.00 98.00"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">US100 · XAUUSD · SuperTrend · 10 parameter sets · 4,000 trades</span><h3 class="post-card__title"><a class="post-card__link" href="/en/posts/us100-xauusd-supertrend-state-redo/">SuperTrend state trades: from 768 candidates to 1 strategy on watch (US100 and gold)</a></h3><span class="post-card__excerpt">Following the strategy-selection methodology from 768 SuperTrend state candidates on US100 and gold, through calibration, the veto list, the entry and exit tree, leaf checks, combination and sizing, gave a 10-strategy portfolio: +USD 70,078 after cost in the selection period (2022-03 to 2025-12), max drawdown 4,723. Read once after the freeze, the validation period (2026-01 to 2026-10-23) lost USD 2,564. The state signal itself had no mean edge; the profit came mostly from exit parameters chosen on the same data. The portfolio is not deployed; the US100 4h held short in a bearish state (r14), still consistent in the validation period, is frozen as a new candidate and kept on watch.</span><span class="post-card__meta"><span>2026-10-24 22:00</span><span>13 min read</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/en/posts/us100-xauusd-supertrend-state-redo/">Read article</a><a class="btn btn-ghost btn-sm" href="/en/posts/us100-xauusd-supertrend-state-redo/?view=report">View report</a></div></div></article></div></section></div><!-- island 外層加 div：astro-island 為 display: contents，否則引用區塊會被排進格線的側欄 --><div><script>(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value=="object"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event("astro:visible"));})();</script><astro-island uid="Z2hEkSv" prefix="r14" component-url="/_astro/index.Abi5bUu1.js" component-export="Citation" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;Cite this article&quot;],&quot;copyLabels&quot;:[0,{&quot;copy&quot;:[0,&quot;Copy&quot;],&quot;copied&quot;:[0,&quot;Copied&quot;],&quot;failed&quot;:[0,&quot;Couldn&#39;t copy&quot;]}],&quot;text&quot;:[0,&quot;TradePose Research (2026). \&quot;Position sizing and risk allocation for an FTMO account: how much should each trade of a stopped portfolio risk?.\&quot; TradePose Research Notes.&quot;],&quot;bibtex&quot;:[0,&quot;@article{tradepose2026ftmoaccountpositionsizing,\n  title   = {Position sizing and risk allocation for an FTMO account: how much should each trade of a stopped portfolio risk?},\n  author  = {TradePose Research},\n  journal = {TradePose Research Notes},\n  year    = {2026}\n}&quot;]}" ssr client="visible" opts="{&quot;name&quot;:&quot;Citation&quot;,&quot;value&quot;:true}" await-children><div class="citation"><div class="citation-title">Cite this article</div><p class="citation-text">TradePose Research (2026). &quot;Position sizing and risk allocation for an FTMO account: how much should each trade of a stopped portfolio risk?.&quot; TradePose Research Notes.</p><div class="citation-code">@article{tradepose2026ftmoaccountpositionsizing,
+  title   = {Position sizing and risk allocation for an FTMO account: how much should each trade of a stopped portfolio risk?},
+  author  = {TradePose Research},
+  journal = {TradePose Research Notes},
+  year    = {2026}
+}<button type="button" class="btn btn-secondary btn-sm">Copy</button></div></div><!--astro:end--></astro-island></div></div></main><footer class="site-footer"><div class="container"><div class="site-footer__grid"><div class="site-footer__brand"><span class="site-brand"><span class="site-brand__mark" aria-hidden="true"></span>TradePose</span><p class="site-footer__tagline">Quantitative research notes: backtests, statistics and strategy diagnostics. Every number comes from the backtest statistics published with the article.</p></div><div><h2 class="site-footer__title">Research</h2><ul><li><a href="/en/#research">Research index</a></li><li><a href="/en/#method">Data and methodology</a></li><li><a href="/en/rss.xml">RSS</a></li></ul></div></div><div class="site-footer__legal"><span>© 2026 TradePose</span><span>Research is not investment advice</span></div></div></footer><script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BflPKFW9.js"></script></body></html>

@@ -1,0 +1,1 @@
+import"./schema.CAJpDHfC.js";var e=(e,t)=>e.valueLabels[t]??t,t=t=>t.map(t=>({key:t.key,label:t.label,values:t.values,notes:t.notes,valueLabels:Object.fromEntries(t.values.map(n=>[n,e(t,n)]))}));export{e as n,t};

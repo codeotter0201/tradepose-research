@@ -1,0 +1,483 @@
+<!DOCTYPE html><html lang="zh-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>SuperTrend 狀態交易：從 768 個候選到 1 個留觀策略（US100 與黃金）｜TradePose Research</title><meta name="description" content="照策略挑選方法論，從 US100 與黃金的 768 個 SuperTrend 狀態候選，走完校準、否決清單、進出場樹、葉節點檢查、組合與部位，得到一個 10 策略組合：挑選期（2022-03 到 2025-12）成本後 +70,078 美元、最大回撤 4,723。凍結後讀驗證期（2026-01 到 2026-10-23），組合虧 2,564 美元。拆解發現狀態訊號本身沒有平均優勢，獲利主要來自在同一段資料上挑出的出場參數。組合不上線；驗證期仍一致的 US100 4 小時空頭做空留倉策略（r14）以新候選凍結、留觀。"><meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large"><link rel="canonical" href="https://research.tradepose.com/zh-tw/posts/us100-xauusd-supertrend-state-redo/"><link rel="alternate" hreflang="en" href="https://research.tradepose.com/en/posts/us100-xauusd-supertrend-state-redo/"><link rel="alternate" hreflang="zh-TW" href="https://research.tradepose.com/zh-tw/posts/us100-xauusd-supertrend-state-redo/"><link rel="alternate" hreflang="x-default" href="https://research.tradepose.com/en/posts/us100-xauusd-supertrend-state-redo/"><link rel="alternate" type="application/rss+xml" title="TradePose Research" href="/zh-tw/rss.xml"><meta property="og:site_name" content="TradePose Research"><meta property="og:locale" content="zh_TW"><meta property="og:locale:alternate" content="en_US"><meta property="og:type" content="article"><meta property="og:title" content="SuperTrend 狀態交易：從 768 個候選到 1 個留觀策略（US100 與黃金）"><meta property="og:description" content="照策略挑選方法論，從 US100 與黃金的 768 個 SuperTrend 狀態候選，走完校準、否決清單、進出場樹、葉節點檢查、組合與部位，得到一個 10 策略組合：挑選期（2022-03 到 2025-12）成本後 +70,078 美元、最大回撤 4,723。凍結後讀驗證期（2026-01 到 2026-10-23），組合虧 2,564 美元。拆解發現狀態訊號本身沒有平均優勢，獲利主要來自在同一段資料上挑出的出場參數。組合不上線；驗證期仍一致的 US100 4 小時空頭做空留倉策略（r14）以新候選凍結、留觀。"><meta property="og:url" content="https://research.tradepose.com/zh-tw/posts/us100-xauusd-supertrend-state-redo/"><meta property="og:image" content="https://research.tradepose.com/og-default.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="SuperTrend 狀態交易：從 768 個候選到 1 個留觀策略（US100 與黃金）"><meta name="twitter:description" content="照策略挑選方法論，從 US100 與黃金的 768 個 SuperTrend 狀態候選，走完校準、否決清單、進出場樹、葉節點檢查、組合與部位，得到一個 10 策略組合：挑選期（2022-03 到 2025-12）成本後 +70,078 美元、最大回撤 4,723。凍結後讀驗證期（2026-01 到 2026-10-23），組合虧 2,564 美元。拆解發現狀態訊號本身沒有平均優勢，獲利主要來自在同一段資料上挑出的出場參數。組合不上線；驗證期仍一致的 US100 4 小時空頭做空留倉策略（r14）以新候選凍結、留觀。"><meta name="twitter:image" content="https://research.tradepose.com/og-default.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"SuperTrend 狀態交易：從 768 個候選到 1 個留觀策略（US100 與黃金）","description":"照策略挑選方法論，從 US100 與黃金的 768 個 SuperTrend 狀態候選，走完校準、否決清單、進出場樹、葉節點檢查、組合與部位，得到一個 10 策略組合：挑選期（2022-03 到 2025-12）成本後 +70,078 美元、最大回撤 4,723。凍結後讀驗證期（2026-01 到 2026-10-23），組合虧 2,564 美元。拆解發現狀態訊號本身沒有平均優勢，獲利主要來自在同一段資料上挑出的出場參數。組合不上線；驗證期仍一致的 US100 4 小時空頭做空留倉策略（r14）以新候選凍結、留觀。","articleSection":"策略研究","keywords":"SuperTrend, US100, 那斯達克, 黃金, XAUUSD, FTMO, 策略挑選, 驗證期, 過度配適, 出場參數, 部位大小, 回撤, 錯開基準, 正向對照","inLanguage":"zh-TW","datePublished":"2026-10-24T22:00:00+08:00","dateModified":"2026-10-24T22:00:00+08:00","image":"https://research.tradepose.com/og-default.png","url":"https://research.tradepose.com/zh-tw/posts/us100-xauusd-supertrend-state-redo/","mainEntityOfPage":"https://research.tradepose.com/zh-tw/posts/us100-xauusd-supertrend-state-redo/","author":{"@type":"Organization","name":"TradePose Research"},"publisher":{"@type":"Organization","name":"TradePose","url":"https://tradepose.com"}}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"研究","item":"https://research.tradepose.com/zh-tw/"},{"@type":"ListItem","position":2,"name":"SuperTrend 狀態交易：從 768 個候選到 1 個留觀策略（US100 與黃金）","item":"https://research.tradepose.com/zh-tw/posts/us100-xauusd-supertrend-state-redo/"}]}</script><!-- data-init：第一次繪製前套用主題、計算模式與檢視；頁面轉場換頁後重新執行（<html> 的屬性換成新頁的） --><script data-init>try { const q = new URLSearchParams(location.search).get('theme'); if (q === 'light' || q === 'dark') sessionStorage.setItem('tp-theme', q); } catch {}
+try { const t = sessionStorage.getItem('tp-theme') ?? localStorage.getItem('tp-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; else if (t === 'system') delete document.documentElement.dataset.theme; } catch {}</script><script data-init>(() => { const modes = ["usd","volatility_normalized","percentage"]; let m = null; try { m = localStorage.getItem('tp-analyzer-mode'); } catch {} document.documentElement.setAttribute('data-mode', modes.includes(m) ? m : modes[0]); })();</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CYDbzu1r.js"></script><link rel="stylesheet" href="/_astro/Base.CYCDe2lS.css"><style>html[data-view=report] [data-view-panel=article],html[data-view=case] [data-view-panel=article]{display:none}
+</style></head><body><a class="skip-link" href="#main">跳到主要內容</a><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><header class="site-header"><div class="container site-header__inner"><a class="site-brand" href="/zh-tw/"><span class="site-brand__mark" aria-hidden="true"></span><span class="site-brand__name">TradePose</span><span class="site-brand__sub">Research</span></a><div class="site-header__context"><astro-island uid="NIk5g" prefix="r30" component-url="/_astro/index.Betv42FV.js" component-export="PageContext" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;SuperTrend 狀態交易：從 768 個候選到 1 個留觀策略（US100 與黃金）&quot;],&quot;followHeading&quot;:[0,true],&quot;labels&quot;:[0,{&quot;open&quot;:[0,&quot;打開目錄&quot;],&quot;contents&quot;:[0,&quot;目錄&quot;],&quot;close&quot;:[0,&quot;關閉&quot;]}]}" ssr client="load" opts="{&quot;name&quot;:&quot;PageContext&quot;,&quot;value&quot;:true}" await-children><div class="page-context"><span class="page-context__heading"><span class="page-context__title" title="SuperTrend 狀態交易：從 768 個候選到 1 個留觀策略（US100 與黃金）">SuperTrend 狀態交易：從 768 個候選到 1 個留觀策略（US100 與黃金）</span></span><span class="page-context__progress" aria-hidden="true" style="--progress:0"></span></div><!--astro:end--></astro-island></div><div class="site-header__actions"><astro-island uid="Z2odjal" prefix="r31" component-url="/_astro/SiteSettings.CBWXpzKJ.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;zh-tw&quot;],&quot;modes&quot;:[1,[[0,&quot;usd&quot;],[0,&quot;volatility_normalized&quot;],[0,&quot;percentage&quot;]]],&quot;languages&quot;:[1,[[0,{&quot;href&quot;:[0,&quot;/en/posts/us100-xauusd-supertrend-state-redo/&quot;],&quot;lang&quot;:[0,&quot;en&quot;],&quot;name&quot;:[0,&quot;English&quot;],&quot;current&quot;:[0,false]}],[0,{&quot;href&quot;:[0,&quot;/zh-tw/posts/us100-xauusd-supertrend-state-redo/&quot;],&quot;lang&quot;:[0,&quot;zh-TW&quot;],&quot;name&quot;:[0,&quot;繁體中文&quot;],&quot;current&quot;:[0,true]}]]],&quot;views&quot;:[1,[[0,{&quot;label&quot;:[0,&quot;文章&quot;],&quot;href&quot;:[0,&quot;/zh-tw/posts/us100-xauusd-supertrend-state-redo/&quot;],&quot;view&quot;:[0,&quot;article&quot;]}],[0,{&quot;label&quot;:[0,&quot;策略報告&quot;],&quot;href&quot;:[0,&quot;/zh-tw/posts/us100-xauusd-supertrend-state-redo/?view=report&quot;],&quot;view&quot;:[0,&quot;report&quot;]}],[0,{&quot;label&quot;:[0,&quot;參數組&quot;],&quot;href&quot;:[0,&quot;/zh-tw/posts/us100-xauusd-supertrend-state-redo/?view=case&quot;],&quot;view&quot;:[0,&quot;case&quot;]}]]]}" ssr client="load" opts="{&quot;name&quot;:&quot;SiteSettings&quot;,&quot;value&quot;:true}" await-children><button type="button" id="radix-_r31R_0_" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="btn btn-ghost btn-sm settings-menu" aria-label="設定" title="設定"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h6M12 5h1M3 11h1M7 11h6"></path><circle cx="10.5" cy="5" r="1.5"></circle><circle cx="5.5" cy="11" r="1.5"></circle></svg></button><!--astro:end--></astro-island></div></div></header><main id="main"><script data-init>(() => { const v = new URLSearchParams(location.search).get('view'); const view = v === 'report' || v === 'case' ? v : 'article'; document.documentElement.setAttribute('data-view', view); document.querySelectorAll('[data-view-tab]').forEach((a) => { if (a.dataset.viewTab === view) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); }); })();</script><astro-island uid="1hu2rO" prefix="r14" component-url="/_astro/ResearchViews.WM8i-T1Y.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;zh-tw&quot;],&quot;slug&quot;:[0,&quot;us100-xauusd-supertrend-state-redo&quot;],&quot;title&quot;:[0,&quot;SuperTrend 狀態交易：從 768 個候選到 1 個留觀策略（US100 與黃金）&quot;],&quot;article&quot;:[0,{&quot;title&quot;:[0,&quot;US100 and gold: SuperTrend state trades, selection and validation&quot;],&quot;source&quot;:[0,&quot;Run c9585168-abfc-424b-bb5b-b1f6cfb54a53&quot;],&quot;generated_at&quot;:[0,&quot;2026-10-24T13:56:23+00:00&quot;],&quot;analyzer_mode&quot;:[0,&quot;usd&quot;],&quot;sizing&quot;:[0,{&quot;risk_amount&quot;:[0,502],&quot;point_value&quot;:[0,null],&quot;lot_size&quot;:[0,0.01]}],&quot;recipe&quot;:[0,&quot;supertrend_state_session_trade&quot;],&quot;instrument&quot;:[0,null],&quot;direction&quot;:[0,null],&quot;timezone&quot;:[0,&quot;UTC&quot;],&quot;policy&quot;:[0,&quot;Managed Long | adverse 0.16x | SL 0.96 | TP 0.96 | BE 0.4, Managed Long | adverse 0.32x | SL 1.28, Managed Short | favorable 0.06x | SL 0.72 | TP 2.64 | TS 1.08 | BE 1.08, Managed Short | adverse 0.2x | SL 0.5 | BE 0.24, Managed Long | adverse 0.16x | SL 0.55 | TS 0.61 | BE 0.27, Managed Long | adverse 0.18x | SL 0.7 | BE 0.42, Managed Long | adverse 0.16x | SL 0.56 | TS 0.62 | BE 0.33, Managed Long | adverse 0.18x | SL 0.49 | BE 0.3, Managed Short | adverse 0.24x | SL 0.66 | TP 0.96 | BE 0.52, Managed Short | adverse 0.15x | SL 0.66 | TP 0.8 | TS 0.72 | BE 0.42&quot;],&quot;n_trades&quot;:[0,4000],&quot;n_cases&quot;:[0,10],&quot;portfolios&quot;:[1,[[0,{&quot;name&quot;:[0,&quot;ten&quot;],&quot;label&quot;:[0,{&quot;en&quot;:[0,&quot;The frozen 10-strategy portfolio (not deployed)&quot;],&quot;zh-tw&quot;:[0,&quot;凍結的 10 策略組合（不上線）&quot;]}],&quot;cases&quot;:[1,[[0,&quot;r11_ts040[0] · Managed Long | adverse 0.16x | SL 0.96 | TP 0.96 | BE 0.4&quot;],[0,&quot;r13_ts067[0] · Managed Long | adverse 0.32x | SL 1.28&quot;],[0,&quot;r14_ts039[0] · Managed Short | favorable 0.06x | SL 0.72 | TP 2.64 | TS 1.08 | BE 1.08&quot;],[0,&quot;r1_ts111[0] · Managed Short | adverse 0.2x | SL 0.5 | BE 0.24&quot;],[0,&quot;r2_ts006[0] · Managed Long | adverse 0.16x | SL 0.55 | TS 0.61 | BE 0.27&quot;],[0,&quot;r3_ts068[0] · Managed Long | adverse 0.18x | SL 0.7 | BE 0.42&quot;],[0,&quot;r5_ts050[0] · Managed Long | adverse 0.16x | SL 0.56 | TS 0.62 | BE 0.33&quot;],[0,&quot;r7_ts038[0] · Managed Long | adverse 0.18x | SL 0.49 | BE 0.3&quot;],[0,&quot;r8_ts029[0] · Managed Short | adverse 0.24x | SL 0.66 | TP 0.96 | BE 0.52&quot;],[0,&quot;r9_ts037[0] · Managed Short | adverse 0.15x | SL 0.66 | TP 0.8 | TS 0.72 | BE 0.42&quot;]]]}]]],&quot;params&quot;:[1,[[0,{&quot;key&quot;:[0,&quot;group&quot;],&quot;label&quot;:[0,&quot;分組&quot;],&quot;values&quot;:[1,[[0,&quot;kept&quot;],[0,&quot;frozen&quot;]]],&quot;valueLabels&quot;:[0,{&quot;kept&quot;:[0,&quot;留觀的 r14&quot;],&quot;frozen&quot;:[0,&quot;其餘 9 個&quot;]}],&quot;notes&quot;:[0,{&quot;kept&quot;:[0,&quot;驗證期仍一致，2026-10-24 以新候選凍結&quot;],&quot;frozen&quot;:[0,&quot;10 策略組合裡驗證期沒有延續的策略&quot;]}]}],[0,{&quot;key&quot;:[0,&quot;strategy&quot;],&quot;label&quot;:[0,&quot;策略&quot;],&quot;values&quot;:[1,[[0,&quot;r1_ts111&quot;],[0,&quot;r2_ts006&quot;],[0,&quot;r3_ts068&quot;],[0,&quot;r5_ts050&quot;],[0,&quot;r7_ts038&quot;],[0,&quot;r8_ts029&quot;],[0,&quot;r9_ts037&quot;],[0,&quot;r11_ts040&quot;],[0,&quot;r13_ts067&quot;],[0,&quot;r14_ts039&quot;]]],&quot;valueLabels&quot;:[0,{&quot;r1_ts111&quot;:[0,&quot;黃金 1h 空頭做空&quot;],&quot;r2_ts006&quot;:[0,&quot;黃金 1h 多頭做多&quot;],&quot;r3_ts068&quot;:[0,&quot;US100 1h 多頭做多&quot;],&quot;r5_ts050&quot;:[0,&quot;黃金 4h 多頭做多&quot;],&quot;r7_ts038&quot;:[0,&quot;US100 4h 多頭做多&quot;],&quot;r8_ts029&quot;:[0,&quot;US100 4h 空頭做空&quot;],&quot;r9_ts037&quot;:[0,&quot;黃金 4h 空頭做空&quot;],&quot;r11_ts040&quot;:[0,&quot;US100 4h 空頭做多&quot;],&quot;r13_ts067&quot;:[0,&quot;US100 4h 空頭做多留倉&quot;],&quot;r14_ts039&quot;:[0,&quot;US100 4h 空頭做空留倉（留觀）&quot;]}],&quot;notes&quot;:[0,{&quot;r1_ts111&quot;:[0,&quot;FTMO XAUUSD；1 小時 SuperTrend（ATR 69 根 × 2.5）空頭時做空，紐約 08:30–13:30 持倉&quot;],&quot;r2_ts006&quot;:[0,&quot;FTMO XAUUSD；1 小時 SuperTrend（ATR 207 根 × 2.5）多頭時做多，紐約 08:30–13:30 持倉&quot;],&quot;r3_ts068&quot;:[0,&quot;FTMO US100.cash；1 小時 SuperTrend（ATR 621 根 × 2.5）多頭時做多，紐約 09:30–16:00 持倉&quot;],&quot;r5_ts050&quot;:[0,&quot;FTMO XAUUSD；4 小時 SuperTrend（ATR 54 根 × 2.5）多頭時做多，紐約 08:30–13:30 持倉&quot;],&quot;r7_ts038&quot;:[0,&quot;FTMO US100.cash；4 小時 SuperTrend（ATR 18 根 × 2.5）多頭時做多，紐約 09:30–16:00 持倉&quot;],&quot;r8_ts029&quot;:[0,&quot;FTMO US100.cash；4 小時 SuperTrend（ATR 54 根 × 1.5）空頭時做空，紐約 09:30–16:00 持倉&quot;],&quot;r9_ts037&quot;:[0,&quot;FTMO XAUUSD；4 小時 SuperTrend（ATR 162 根 × 1.5）空頭時做空，紐約 08:30–13:30 持倉&quot;],&quot;r11_ts040&quot;:[0,&quot;FTMO US100.cash；4 小時 SuperTrend（ATR 162 根 × 2.5）空頭時做多（逆勢），紐約 09:30–16:00 持倉&quot;],&quot;r13_ts067&quot;:[0,&quot;FTMO US100.cash；4 小時 SuperTrend（ATR 54 根 × 3.5）空頭時，紐約 09:30–16:00 內進場做多，持有到翻轉&quot;],&quot;r14_ts039&quot;:[0,&quot;FTMO US100.cash；4 小時 SuperTrend（ATR 162 根 × 1.5）空頭時，紐約 09:30–16:00 內進場做空，持有到翻轉&quot;]}]}]]]}],&quot;report&quot;:[1,[[0,{&quot;mode&quot;:[0,&quot;usd&quot;],&quot;returnBasis&quot;:[0,&quot;凍結的部位：每個策略每 1 個波動單位 502 美元；口數 = 502 ÷（進場時的波動單位 × 點值），向下取到 0.01 口，所以停損 k 個單位虧 502 × k 美元。波動單位 = 前 72 個紐約日 K 真實區間的簡單平均，在進場時凍結。US100.cash 每口每點 1 美元、XAUUSD 每口 100 盎司；每筆扣來回成本（US100 6 點、黃金每盎司 0.60 美元），未計隔夜費，不複利&quot;],&quot;urls&quot;:[0,{&quot;cases&quot;:[0,&quot;/_astro/cases.CHzgadeQ.parquet&quot;],&quot;equity&quot;:[0,&quot;/_astro/equity.CHoG19C3.parquet&quot;],&quot;yearly&quot;:[0,&quot;/_astro/yearly.Byjn1KKp.parquet&quot;]}],&quot;portfolios&quot;:[1,[[0,{&quot;name&quot;:[0,&quot;ten&quot;],&quot;label&quot;:[0,&quot;凍結的 10 策略組合（不上線）&quot;],&quot;cases&quot;:[1,[[0,&quot;r11_ts040[0] · Managed Long | adverse 0.16x | SL 0.96 | TP 0.96 | BE 0.4&quot;],[0,&quot;r13_ts067[0] · Managed Long | adverse 0.32x | SL 1.28&quot;],[0,&quot;r14_ts039[0] · Managed Short | favorable 0.06x | SL 0.72 | TP 2.64 | TS 1.08 | BE 1.08&quot;],[0,&quot;r1_ts111[0] · Managed Short | adverse 0.2x | SL 0.5 | BE 0.24&quot;],[0,&quot;r2_ts006[0] · Managed Long | adverse 0.16x | SL 0.55 | TS 0.61 | BE 0.27&quot;],[0,&quot;r3_ts068[0] · Managed Long | adverse 0.18x | SL 0.7 | BE 0.42&quot;],[0,&quot;r5_ts050[0] · Managed Long | adverse 0.16x | SL 0.56 | TS 0.62 | BE 0.33&quot;],[0,&quot;r7_ts038[0] · Managed Long | adverse 0.18x | SL 0.49 | BE 0.3&quot;],[0,&quot;r8_ts029[0] · Managed Short | adverse 0.24x | SL 0.66 | TP 0.96 | BE 0.52&quot;],[0,&quot;r9_ts037[0] · Managed Short | adverse 0.15x | SL 0.66 | TP 0.8 | TS 0.72 | BE 0.42&quot;]]],&quot;urls&quot;:[0,{&quot;cases&quot;:[0,&quot;/_astro/cases.Dx1x_CvF.parquet&quot;],&quot;equity&quot;:[0,&quot;/_astro/equity.B6VLM5Ui.parquet&quot;],&quot;yearly&quot;:[0,&quot;/_astro/yearly.2_VUkWKm.parquet&quot;]}]}]]]}],[0,{&quot;mode&quot;:[0,&quot;volatility_normalized&quot;],&quot;returnBasis&quot;:[0,&quot;每筆損益 ÷ 出場時波動（exit_volatility）後加總&quot;],&quot;urls&quot;:[0,{&quot;cases&quot;:[0,&quot;/_astro/cases.y9a6PRTz.parquet&quot;],&quot;equity&quot;:[0,&quot;/_astro/equity.DiUvL078.parquet&quot;],&quot;yearly&quot;:[0,&quot;/_astro/yearly.DVFUNjCe.parquet&quot;]}],&quot;portfolios&quot;:[1,[[0,{&quot;name&quot;:[0,&quot;ten&quot;],&quot;label&quot;:[0,&quot;凍結的 10 策略組合（不上線）&quot;],&quot;cases&quot;:[1,[[0,&quot;r11_ts040[0] · Managed Long | adverse 0.16x | SL 0.96 | TP 0.96 | BE 0.4&quot;],[0,&quot;r13_ts067[0] · Managed Long | adverse 0.32x | SL 1.28&quot;],[0,&quot;r14_ts039[0] · Managed Short | favorable 0.06x | SL 0.72 | TP 2.64 | TS 1.08 | BE 1.08&quot;],[0,&quot;r1_ts111[0] · Managed Short | adverse 0.2x | SL 0.5 | BE 0.24&quot;],[0,&quot;r2_ts006[0] · Managed Long | adverse 0.16x | SL 0.55 | TS 0.61 | BE 0.27&quot;],[0,&quot;r3_ts068[0] · Managed Long | adverse 0.18x | SL 0.7 | BE 0.42&quot;],[0,&quot;r5_ts050[0] · Managed Long | adverse 0.16x | SL 0.56 | TS 0.62 | BE 0.33&quot;],[0,&quot;r7_ts038[0] · Managed Long | adverse 0.18x | SL 0.49 | BE 0.3&quot;],[0,&quot;r8_ts029[0] · Managed Short | adverse 0.24x | SL 0.66 | TP 0.96 | BE 0.52&quot;],[0,&quot;r9_ts037[0] · Managed Short | adverse 0.15x | SL 0.66 | TP 0.8 | TS 0.72 | BE 0.42&quot;]]],&quot;urls&quot;:[0,{&quot;cases&quot;:[0,&quot;/_astro/cases.DnLWtAnP.parquet&quot;],&quot;equity&quot;:[0,&quot;/_astro/equity.DNAFzKS1.parquet&quot;],&quot;yearly&quot;:[0,&quot;/_astro/yearly.pIM0zHC5.parquet&quot;]}]}]]]}],[0,{&quot;mode&quot;:[0,&quot;percentage&quot;],&quot;returnBasis&quot;:[0,&quot;每筆報酬率加總（單利）&quot;],&quot;urls&quot;:[0,{&quot;cases&quot;:[0,&quot;/_astro/cases.DtxTdwBg.parquet&quot;],&quot;equity&quot;:[0,&quot;/_astro/equity.B7YBwOlh.parquet&quot;],&quot;yearly&quot;:[0,&quot;/_astro/yearly.CE1-sFS5.parquet&quot;]}],&quot;portfolios&quot;:[1,[[0,{&quot;name&quot;:[0,&quot;ten&quot;],&quot;label&quot;:[0,&quot;凍結的 10 策略組合（不上線）&quot;],&quot;cases&quot;:[1,[[0,&quot;r11_ts040[0] · Managed Long | adverse 0.16x | SL 0.96 | TP 0.96 | BE 0.4&quot;],[0,&quot;r13_ts067[0] · Managed Long | adverse 0.32x | SL 1.28&quot;],[0,&quot;r14_ts039[0] · Managed Short | favorable 0.06x | SL 0.72 | TP 2.64 | TS 1.08 | BE 1.08&quot;],[0,&quot;r1_ts111[0] · Managed Short | adverse 0.2x | SL 0.5 | BE 0.24&quot;],[0,&quot;r2_ts006[0] · Managed Long | adverse 0.16x | SL 0.55 | TS 0.61 | BE 0.27&quot;],[0,&quot;r3_ts068[0] · Managed Long | adverse 0.18x | SL 0.7 | BE 0.42&quot;],[0,&quot;r5_ts050[0] · Managed Long | adverse 0.16x | SL 0.56 | TS 0.62 | BE 0.33&quot;],[0,&quot;r7_ts038[0] · Managed Long | adverse 0.18x | SL 0.49 | BE 0.3&quot;],[0,&quot;r8_ts029[0] · Managed Short | adverse 0.24x | SL 0.66 | TP 0.96 | BE 0.52&quot;],[0,&quot;r9_ts037[0] · Managed Short | adverse 0.15x | SL 0.66 | TP 0.8 | TS 0.72 | BE 0.42&quot;]]],&quot;urls&quot;:[0,{&quot;cases&quot;:[0,&quot;/_astro/cases.CSodGtH5.parquet&quot;],&quot;equity&quot;:[0,&quot;/_astro/equity.BOi9-P-O.parquet&quot;],&quot;yearly&quot;:[0,&quot;/_astro/yearly.CT1qSPgs.parquet&quot;]}]}]]]}]]],&quot;cases&quot;:[1,[[0,{&quot;mode&quot;:[0,&quot;usd&quot;],&quot;returnBasis&quot;:[0,&quot;凍結的部位：每個策略每 1 個波動單位 502 美元；口數 = 502 ÷（進場時的波動單位 × 點值），向下取到 0.01 口，所以停損 k 個單位虧 502 × k 美元。波動單位 = 前 72 個紐約日 K 真實區間的簡單平均，在進場時凍結。US100.cash 每口每點 1 美元、XAUUSD 每口 100 盎司；每筆扣來回成本（US100 6 點、黃金每盎司 0.60 美元），未計隔夜費，不複利&quot;],&quot;urls&quot;:[0,{&quot;cases&quot;:[0,&quot;/_astro/cases.CHzgadeQ.parquet&quot;],&quot;equity&quot;:[0,&quot;/_astro/equity.CHoG19C3.parquet&quot;],&quot;by_freq&quot;:[0,&quot;/_astro/by_freq.BKgaU3bp.parquet&quot;],&quot;yearly&quot;:[0,&quot;/_astro/yearly.Byjn1KKp.parquet&quot;],&quot;monthly&quot;:[0,&quot;/_astro/monthly.BOJApxUR.parquet&quot;],&quot;dd_episodes&quot;:[0,&quot;/_astro/dd_episodes.BGfdsiAg.parquet&quot;],&quot;distribution&quot;:[0,&quot;/_astro/distribution.D0-Oxzuh.parquet&quot;],&quot;excursions&quot;:[0,&quot;/_astro/excursions.wvkWzh-h.parquet&quot;],&quot;cohort&quot;:[0,&quot;/_astro/cohort.WhbwZsdN.parquet&quot;],&quot;holding&quot;:[0,&quot;/_astro/holding.D9fSmO3g.parquet&quot;],&quot;rolling&quot;:[0,&quot;/_astro/rolling.C3Scex80.parquet&quot;],&quot;scatter&quot;:[0,&quot;/_astro/scatter.BTiDk0-v.parquet&quot;]}],&quot;portfolios&quot;:[1,[[0,{&quot;name&quot;:[0,&quot;ten&quot;],&quot;label&quot;:[0,&quot;凍結的 10 策略組合（不上線）&quot;],&quot;cases&quot;:[1,[[0,&quot;r11_ts040[0] · Managed Long | adverse 0.16x | SL 0.96 | TP 0.96 | BE 0.4&quot;],[0,&quot;r13_ts067[0] · Managed Long | adverse 0.32x | SL 1.28&quot;],[0,&quot;r14_ts039[0] · Managed Short | favorable 0.06x | SL 0.72 | TP 2.64 | TS 1.08 | BE 1.08&quot;],[0,&quot;r1_ts111[0] · Managed Short | adverse 0.2x | SL 0.5 | BE 0.24&quot;],[0,&quot;r2_ts006[0] · Managed Long | adverse 0.16x | SL 0.55 | TS 0.61 | BE 0.27&quot;],[0,&quot;r3_ts068[0] · Managed Long | adverse 0.18x | SL 0.7 | BE 0.42&quot;],[0,&quot;r5_ts050[0] · Managed Long | adverse 0.16x | SL 0.56 | TS 0.62 | BE 0.33&quot;],[0,&quot;r7_ts038[0] · Managed Long | adverse 0.18x | SL 0.49 | BE 0.3&quot;],[0,&quot;r8_ts029[0] · Managed Short | adverse 0.24x | SL 0.66 | TP 0.96 | BE 0.52&quot;],[0,&quot;r9_ts037[0] · Managed Short | adverse 0.15x | SL 0.66 | TP 0.8 | TS 0.72 | BE 0.42&quot;]]],&quot;urls&quot;:[0,{&quot;cases&quot;:[0,&quot;/_astro/cases.Dx1x_CvF.parquet&quot;],&quot;equity&quot;:[0,&quot;/_astro/equity.B6VLM5Ui.parquet&quot;],&quot;by_freq&quot;:[0,&quot;/_astro/by_freq.qoO5u-yo.parquet&quot;],&quot;yearly&quot;:[0,&quot;/_astro/yearly.2_VUkWKm.parquet&quot;],&quot;monthly&quot;:[0,&quot;/_astro/monthly.Cl47Yq_R.parquet&quot;],&quot;dd_episodes&quot;:[0,&quot;/_astro/dd_episodes.D8BADj-9.parquet&quot;],&quot;distribution&quot;:[0,&quot;/_astro/distribution.BlwkkH8y.parquet&quot;],&quot;excursions&quot;:[0,&quot;/_astro/excursions.BazkxfWZ.parquet&quot;],&quot;cohort&quot;:[0,&quot;/_astro/cohort.DRptwuZB.parquet&quot;],&quot;holding&quot;:[0,&quot;/_astro/holding.D7HbXOV0.parquet&quot;],&quot;rolling&quot;:[0,&quot;/_astro/rolling.DknR5c0x.parquet&quot;],&quot;scatter&quot;:[0,&quot;/_astro/scatter.BSluM4Qg.parquet&quot;]}]}]]]}],[0,{&quot;mode&quot;:[0,&quot;volatility_normalized&quot;],&quot;returnBasis&quot;:[0,&quot;每筆損益 ÷ 出場時波動（exit_volatility）後加總&quot;],&quot;urls&quot;:[0,{&quot;cases&quot;:[0,&quot;/_astro/cases.y9a6PRTz.parquet&quot;],&quot;equity&quot;:[0,&quot;/_astro/equity.DiUvL078.parquet&quot;],&quot;by_freq&quot;:[0,&quot;/_astro/by_freq.DyhPzs-N.parquet&quot;],&quot;yearly&quot;:[0,&quot;/_astro/yearly.DVFUNjCe.parquet&quot;],&quot;monthly&quot;:[0,&quot;/_astro/monthly.CtGYYFuT.parquet&quot;],&quot;dd_episodes&quot;:[0,&quot;/_astro/dd_episodes.BmDYyrdG.parquet&quot;],&quot;distribution&quot;:[0,&quot;/_astro/distribution.Ct8GEgvP.parquet&quot;],&quot;excursions&quot;:[0,&quot;/_astro/excursions.eyygPNNt.parquet&quot;],&quot;cohort&quot;:[0,&quot;/_astro/cohort.CB2w40OK.parquet&quot;],&quot;holding&quot;:[0,&quot;/_astro/holding.Bf4yaSag.parquet&quot;],&quot;rolling&quot;:[0,&quot;/_astro/rolling.DWv3K-cQ.parquet&quot;],&quot;scatter&quot;:[0,&quot;/_astro/scatter.Ds8ChWOo.parquet&quot;]}],&quot;portfolios&quot;:[1,[[0,{&quot;name&quot;:[0,&quot;ten&quot;],&quot;label&quot;:[0,&quot;凍結的 10 策略組合（不上線）&quot;],&quot;cases&quot;:[1,[[0,&quot;r11_ts040[0] · Managed Long | adverse 0.16x | SL 0.96 | TP 0.96 | BE 0.4&quot;],[0,&quot;r13_ts067[0] · Managed Long | adverse 0.32x | SL 1.28&quot;],[0,&quot;r14_ts039[0] · Managed Short | favorable 0.06x | SL 0.72 | TP 2.64 | TS 1.08 | BE 1.08&quot;],[0,&quot;r1_ts111[0] · Managed Short | adverse 0.2x | SL 0.5 | BE 0.24&quot;],[0,&quot;r2_ts006[0] · Managed Long | adverse 0.16x | SL 0.55 | TS 0.61 | BE 0.27&quot;],[0,&quot;r3_ts068[0] · Managed Long | adverse 0.18x | SL 0.7 | BE 0.42&quot;],[0,&quot;r5_ts050[0] · Managed Long | adverse 0.16x | SL 0.56 | TS 0.62 | BE 0.33&quot;],[0,&quot;r7_ts038[0] · Managed Long | adverse 0.18x | SL 0.49 | BE 0.3&quot;],[0,&quot;r8_ts029[0] · Managed Short | adverse 0.24x | SL 0.66 | TP 0.96 | BE 0.52&quot;],[0,&quot;r9_ts037[0] · Managed Short | adverse 0.15x | SL 0.66 | TP 0.8 | TS 0.72 | BE 0.42&quot;]]],&quot;urls&quot;:[0,{&quot;cases&quot;:[0,&quot;/_astro/cases.DnLWtAnP.parquet&quot;],&quot;equity&quot;:[0,&quot;/_astro/equity.DNAFzKS1.parquet&quot;],&quot;by_freq&quot;:[0,&quot;/_astro/by_freq.CohCzReD.parquet&quot;],&quot;yearly&quot;:[0,&quot;/_astro/yearly.pIM0zHC5.parquet&quot;],&quot;monthly&quot;:[0,&quot;/_astro/monthly.CjCc9ely.parquet&quot;],&quot;dd_episodes&quot;:[0,&quot;/_astro/dd_episodes.DfBQK6xt.parquet&quot;],&quot;distribution&quot;:[0,&quot;/_astro/distribution.Cn91V0h2.parquet&quot;],&quot;excursions&quot;:[0,&quot;/_astro/excursions.CLqIhKGP.parquet&quot;],&quot;cohort&quot;:[0,&quot;/_astro/cohort.DOo28Ckh.parquet&quot;],&quot;holding&quot;:[0,&quot;/_astro/holding.B0Y0vtD-.parquet&quot;],&quot;rolling&quot;:[0,&quot;/_astro/rolling.Bcql5kmb.parquet&quot;],&quot;scatter&quot;:[0,&quot;/_astro/scatter.CaHzsNIu.parquet&quot;]}]}]]]}],[0,{&quot;mode&quot;:[0,&quot;percentage&quot;],&quot;returnBasis&quot;:[0,&quot;每筆報酬率加總（單利）&quot;],&quot;urls&quot;:[0,{&quot;cases&quot;:[0,&quot;/_astro/cases.DtxTdwBg.parquet&quot;],&quot;equity&quot;:[0,&quot;/_astro/equity.B7YBwOlh.parquet&quot;],&quot;by_freq&quot;:[0,&quot;/_astro/by_freq.DDMag_zb.parquet&quot;],&quot;yearly&quot;:[0,&quot;/_astro/yearly.CE1-sFS5.parquet&quot;],&quot;monthly&quot;:[0,&quot;/_astro/monthly.CGQtygCB.parquet&quot;],&quot;dd_episodes&quot;:[0,&quot;/_astro/dd_episodes.DXB0c4I-.parquet&quot;],&quot;distribution&quot;:[0,&quot;/_astro/distribution.DHMpiI7v.parquet&quot;],&quot;excursions&quot;:[0,&quot;/_astro/excursions.D83tTuFl.parquet&quot;],&quot;cohort&quot;:[0,&quot;/_astro/cohort.ClfMIKiH.parquet&quot;],&quot;holding&quot;:[0,&quot;/_astro/holding.MCJ0cqPg.parquet&quot;],&quot;rolling&quot;:[0,&quot;/_astro/rolling.CXtiUGEQ.parquet&quot;],&quot;scatter&quot;:[0,&quot;/_astro/scatter.Cg6TXFeB.parquet&quot;]}],&quot;portfolios&quot;:[1,[[0,{&quot;name&quot;:[0,&quot;ten&quot;],&quot;label&quot;:[0,&quot;凍結的 10 策略組合（不上線）&quot;],&quot;cases&quot;:[1,[[0,&quot;r11_ts040[0] · Managed Long | adverse 0.16x | SL 0.96 | TP 0.96 | BE 0.4&quot;],[0,&quot;r13_ts067[0] · Managed Long | adverse 0.32x | SL 1.28&quot;],[0,&quot;r14_ts039[0] · Managed Short | favorable 0.06x | SL 0.72 | TP 2.64 | TS 1.08 | BE 1.08&quot;],[0,&quot;r1_ts111[0] · Managed Short | adverse 0.2x | SL 0.5 | BE 0.24&quot;],[0,&quot;r2_ts006[0] · Managed Long | adverse 0.16x | SL 0.55 | TS 0.61 | BE 0.27&quot;],[0,&quot;r3_ts068[0] · Managed Long | adverse 0.18x | SL 0.7 | BE 0.42&quot;],[0,&quot;r5_ts050[0] · Managed Long | adverse 0.16x | SL 0.56 | TS 0.62 | BE 0.33&quot;],[0,&quot;r7_ts038[0] · Managed Long | adverse 0.18x | SL 0.49 | BE 0.3&quot;],[0,&quot;r8_ts029[0] · Managed Short | adverse 0.24x | SL 0.66 | TP 0.96 | BE 0.52&quot;],[0,&quot;r9_ts037[0] · Managed Short | adverse 0.15x | SL 0.66 | TP 0.8 | TS 0.72 | BE 0.42&quot;]]],&quot;urls&quot;:[0,{&quot;cases&quot;:[0,&quot;/_astro/cases.CSodGtH5.parquet&quot;],&quot;equity&quot;:[0,&quot;/_astro/equity.BOi9-P-O.parquet&quot;],&quot;by_freq&quot;:[0,&quot;/_astro/by_freq.CfAsRWb7.parquet&quot;],&quot;yearly&quot;:[0,&quot;/_astro/yearly.CT1qSPgs.parquet&quot;],&quot;monthly&quot;:[0,&quot;/_astro/monthly.CN4I8hOE.parquet&quot;],&quot;dd_episodes&quot;:[0,&quot;/_astro/dd_episodes.THvi9J4g.parquet&quot;],&quot;distribution&quot;:[0,&quot;/_astro/distribution.BV8BczVd.parquet&quot;],&quot;excursions&quot;:[0,&quot;/_astro/excursions.BoRTmpXK.parquet&quot;],&quot;cohort&quot;:[0,&quot;/_astro/cohort.ogAWfvKu.parquet&quot;],&quot;holding&quot;:[0,&quot;/_astro/holding.mZgCJT9r.parquet&quot;],&quot;rolling&quot;:[0,&quot;/_astro/rolling.DHqa51Lw.parquet&quot;],&quot;scatter&quot;:[0,&quot;/_astro/scatter.CEKt0uaM.parquet&quot;]}]}]]]}]]],&quot;highlights&quot;:[1,[[0,{&quot;name&quot;:[0,&quot;r14_ts039[0] · Managed Short | favorable 0.06x | SL 0.72 | TP 2.64 | TS 1.08 | BE 1.08&quot;],&quot;note&quot;:[0,&quot;r14：驗證期 +1,359 美元，回撤比 90% 的錯開版本淺&quot;]}],[0,{&quot;name&quot;:[0,&quot;r3_ts068[0] · Managed Long | adverse 0.18x | SL 0.7 | BE 0.42&quot;],&quot;note&quot;:[0,&quot;r3：挑選期最強，驗證期失效&quot;]}]]],&quot;layers&quot;:[1,[[0,&quot;L1&quot;],[0,&quot;L2&quot;],[0,&quot;L3&quot;]]],&quot;tradesUrl&quot;:[0,null],&quot;ohlcv&quot;:[0,null],&quot;tags&quot;:[1,[[0,{&quot;label&quot;:[0,&quot;留觀的 r14&quot;],&quot;note&quot;:[0,&quot;2026-10-24 以新候選凍結&quot;],&quot;cases&quot;:[1,[[0,&quot;r14_ts039[0] · Managed Short | favorable 0.06x | SL 0.72 | TP 2.64 | TS 1.08 | BE 1.08&quot;]]]}],[0,{&quot;label&quot;:[0,&quot;其餘 9 個&quot;],&quot;note&quot;:[0,&quot;驗證期沒有延續&quot;],&quot;cases&quot;:[1,[[0,&quot;r11_ts040[0] · Managed Long | adverse 0.16x | SL 0.96 | TP 0.96 | BE 0.4&quot;],[0,&quot;r13_ts067[0] · Managed Long | adverse 0.32x | SL 1.28&quot;],[0,&quot;r1_ts111[0] · Managed Short | adverse 0.2x | SL 0.5 | BE 0.24&quot;],[0,&quot;r2_ts006[0] · Managed Long | adverse 0.16x | SL 0.55 | TS 0.61 | BE 0.27&quot;],[0,&quot;r3_ts068[0] · Managed Long | adverse 0.18x | SL 0.7 | BE 0.42&quot;],[0,&quot;r5_ts050[0] · Managed Long | adverse 0.16x | SL 0.56 | TS 0.62 | BE 0.33&quot;],[0,&quot;r7_ts038[0] · Managed Long | adverse 0.18x | SL 0.49 | BE 0.3&quot;],[0,&quot;r8_ts029[0] · Managed Short | adverse 0.24x | SL 0.66 | TP 0.96 | BE 0.52&quot;],[0,&quot;r9_ts037[0] · Managed Short | adverse 0.15x | SL 0.66 | TP 0.8 | TS 0.72 | BE 0.42&quot;]]]}]]],&quot;railGroup&quot;:[0,&quot;group&quot;],&quot;benchmark&quot;:[0,{}],&quot;related&quot;:[0,{}]}" ssr client="load" opts="{&quot;name&quot;:&quot;ResearchViews&quot;,&quot;value&quot;:true}"></astro-island><div class="article" data-view-panel="article"><div class="wide article-banner"><div class="article-cover article-cover--banner" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><div data-only-mode="usd" style="display: contents"><span class="cover-figure"><span class="cover-figure__label">10 組參數 · 累積報酬為正</span><span class="cover-figure__value">9 / 10</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L11.11 8.29L22.22 22.26L33.33 24.96L44.44 27.34L55.56 34.07L66.67 61.32L77.78 68.96L88.89 76.32L100.00 98.00L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 85.62H100"></path><path class="sparkline__line" d="M0.00 2.00L11.11 8.29L22.22 22.26L33.33 24.96L44.44 27.34L55.56 34.07L66.67 61.32L77.78 68.96L88.89 76.32L100.00 98.00"></path></svg></span></div><div data-only-mode="volatility_normalized" style="display: contents"><span class="cover-figure"><span class="cover-figure__label">10 組參數 · 累積報酬為正</span><span class="cover-figure__value">10 / 10</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L11.11 29.10L22.22 31.22L33.33 33.26L44.44 34.24L55.56 37.32L66.67 58.13L77.78 59.00L88.89 68.72L100.00 89.28L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 98.00H100"></path><path class="sparkline__line" d="M0.00 2.00L11.11 29.10L22.22 31.22L33.33 33.26L44.44 34.24L55.56 37.32L66.67 58.13L77.78 59.00L88.89 68.72L100.00 89.28"></path></svg></span></div><div data-only-mode="percentage" style="display: contents"><span class="cover-figure"><span class="cover-figure__label">10 組參數 · 累積報酬為正</span><span class="cover-figure__value">10 / 10</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L11.11 20.32L22.22 29.87L33.33 40.99L44.44 43.74L55.56 57.88L66.67 70.35L77.78 76.43L88.89 81.97L100.00 97.48L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 98.00H100"></path><path class="sparkline__line" d="M0.00 2.00L11.11 20.32L22.22 29.87L33.33 40.99L44.44 43.74L55.56 57.88L66.67 70.35L77.78 76.43L88.89 81.97L100.00 97.48"></path></svg></span></div></div></div><header class="article-header"><span class="category-chip">策略研究</span><h1 class="article-title visually-hidden">SuperTrend 狀態交易：<wbr/>從 768 個候選到 1 個留觀策略（US100 與黃金）</h1><p class="article-dek"><p>這篇記錄一次完整的策略挑選：從問題、假設、環境，到每個階段的結果、遇到的問題與處理方式，以及最後的決定。所有績效都由 TradePose 的 Trades Analyzer 計算，金額依凍結的部位設定、每筆已扣來回成本。這些是回測結果，不是實際交易紀錄。交易用語（Buy Limit、Sell Stop、停損、保本、移動停損）見〈<a href="/zh-tw/posts/quant-research-glossary/">研究用詞</a>〉。</p></p><dl class="article-meta"><div><dt>發布</dt><dd>2026-10-24 22:00</dd></div><div><dt>標的</dt><dd>—</dd></div><div><dt>樣本期間</dt><dd>2022-03-01 – 2026-10-23</dd></div><div><dt>交易筆數</dt><dd>4,000</dd></div><div><dt>閱讀時間</dt><dd>12 分鐘</dd></div></dl></header><div><script>(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value=="object"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};"requestIdleCallback"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event("astro:idle"));})();</script><astro-island uid="Ze1NUb" prefix="r40" component-url="/_astro/ArticleToc.GohhgC-S.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;zh-tw&quot;],&quot;items&quot;:[1,[[0,{&quot;id&quot;:[0,&quot;研究問題與假設&quot;],&quot;label&quot;:[0,&quot;研究問題與假設&quot;]}],[0,{&quot;id&quot;:[0,&quot;環境與資料&quot;],&quot;label&quot;:[0,&quot;環境與資料&quot;]}],[0,{&quot;id&quot;:[0,&quot;候選設計&quot;],&quot;label&quot;:[0,&quot;候選設計&quot;]}],[0,{&quot;id&quot;:[0,&quot;方法流程&quot;],&quot;label&quot;:[0,&quot;方法流程&quot;]}],[0,{&quot;id&quot;:[0,&quot;遇到的問題與處理方式&quot;],&quot;label&quot;:[0,&quot;遇到的問題與處理方式&quot;]}],[0,{&quot;id&quot;:[0,&quot;各階段結果&quot;],&quot;label&quot;:[0,&quot;各階段結果&quot;]}],[0,{&quot;id&quot;:[0,&quot;驗證期&quot;],&quot;label&quot;:[0,&quot;驗證期&quot;]}],[0,{&quot;id&quot;:[0,&quot;決定&quot;],&quot;label&quot;:[0,&quot;決定&quot;]}],[0,{&quot;id&quot;:[0,&quot;凍結的策略r14&quot;],&quot;label&quot;:[0,&quot;凍結的策略：r14&quot;]}],[0,{&quot;id&quot;:[0,&quot;限制與注意事項&quot;],&quot;label&quot;:[0,&quot;限制與注意事項&quot;]}],[0,{&quot;id&quot;:[0,&quot;goals-title&quot;],&quot;label&quot;:[0,&quot;這篇研究要回答的問題&quot;]}],[0,{&quot;id&quot;:[0,&quot;method&quot;],&quot;label&quot;:[0,&quot;方法與資料&quot;]}]]]}" ssr client="idle" opts="{&quot;name&quot;:&quot;ArticleToc&quot;,&quot;value&quot;:true}" await-children><nav class="toc toc--aside" aria-label="目錄"><div class="toc-title" aria-hidden="true">目錄</div><ol class="toc-list"><li class=""><a href="#研究問題與假設" aria-current="true">研究問題與假設</a></li><li class=""><a href="#環境與資料">環境與資料</a></li><li class=""><a href="#候選設計">候選設計</a></li><li class=""><a href="#方法流程">方法流程</a></li><li class=""><a href="#遇到的問題與處理方式">遇到的問題與處理方式</a></li><li class=""><a href="#各階段結果">各階段結果</a></li><li class=""><a href="#驗證期">驗證期</a></li><li class=""><a href="#決定">決定</a></li><li class=""><a href="#凍結的策略r14">凍結的策略：r14</a></li><li class=""><a href="#限制與注意事項">限制與注意事項</a></li><li class=""><a href="#goals-title">這篇研究要回答的問題</a></li><li class=""><a href="#method">方法與資料</a></li></ol></nav><!--astro:end--></astro-island></div><aside class="report-rail" aria-label="策略報告"><div class="report-rail__eyebrow">策略報告</div><p class="report-rail__hook">文章只談了其中 2 組。全部 10 組參數、4,000 筆交易的結果都攤在報告裡：哪一組最穩、最糟會跌多深、每一筆怎麼進出。</p><ol class="report-rail__list"><li><a href="/zh-tw/posts/us100-xauusd-supertrend-state-redo/?view=report&amp;stage=2"><span>第 2 階 · 出場</span><span class="report-rail__meta">1 組</span></a></li><li><a href="/zh-tw/posts/us100-xauusd-supertrend-state-redo/?view=report&amp;stage=3"><span>第 3 階 · 移動停損與保本</span><span class="report-rail__meta">9 組</span></a></li></ol><a class="btn btn-primary btn-sm report-rail__action" href="/zh-tw/posts/us100-xauusd-supertrend-state-redo/?view=report">打開策略報告</a></aside>
+<div class="callout"><strong>重點：</strong>挑選期得到的 10 策略組合，凍結後在驗證期（2026-01 到 2026-10-23）虧 2,564 美元。狀態訊號本身的平均優勢一直約為 0，挑選期的獲利主要來自在同一段資料上挑出的出場參數。組合不上線；只有 US100 4 小時空頭做空留倉（r14）在驗證期仍一致，以新候選凍結、留觀，乾淨的紀錄從 2026-10-26 起算。</div>
+<div class="abstract"><div class="abstract-title">結論</div><p>我們想知道：SuperTrend 處於某個方向時，在交易時段內順著（或逆著）它持倉，能不能做出比單純持有更能控制回撤的策略。照策略挑選方法論，從 768 個候選出發，最後得到一個 10 策略組合，挑選期成本後賺 70,078 美元、最大回撤 4,723。凍結後讀驗證期，組合虧 2,564 美元，10 個策略裡 7 個的回撤比「隨機時機」的版本深。拆解發現：根（只有狀態訊號、不加出場規則）在挑選期成本後每筆約為 0；挑選期的獲利主要來自進出場樹，而它的貢獻在驗證期從每筆 +0.040 降到 +0.006 個波動單位。研究途中也發現並修正了一個引擎問題：4 小時 K 的切分曾依 Run 起點是否在夏令時間而不同。</p></div><p class="reading-split">以上是結論；以下每一節是一個主張的證據，可以從各節或證據連結進入策略報告，看全部參數組的數據。</p>
+<div class="prose"><h2 id="研究問題與假設">研究問題與假設</h2>
+<p>假設在讀任何資料之前寫好：</p>
+<ol>
+<li><strong>現象</strong>：SuperTrend 處於某個方向時，同方向持倉的回撤比同曝險、隨機時機的持倉淺；每筆報酬沒有明顯優勢。逆勢用法（空頭時做多、多頭時做空）是對照假設。</li>
+<li><strong>錨點</strong>：SuperTrend 翻到該方向的那根 K（1 小時或 4 小時），而且落在交易時段內。</li>
+<li><strong>持倉時間</strong>：當沖是時段內持有到翻轉或時段收盤；留倉是時段內進場、持有到翻轉。</li>
+<li><strong>預期大小</strong>：每筆接近 0，重點在回撤。</li>
+<li><strong>放棄條件</strong>：回撤不比同曝險、隨機時機淺，而且 t 值在雜訊上限以內。</li>
+</ol>
+<h2 id="環境與資料">環境與資料</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="環境與資料（表格）"><table class="data-table"><thead><tr><th>項目</th><th>設定</th></tr></thead><tbody><tr><td>主要商品</td><td>FTMO US100.cash、FTMO XAUUSD</td></tr><tr><td>同類商品</td><td>Pepperstone NAS100、Pepperstone XAUUSD（只用來檢查「換商品還成立嗎」）</td></tr><tr><td>K 棒</td><td>15 分鐘執行 K，紐約時間；1 小時、4 小時、日 K 依紐約當地時間重取樣</td></tr><tr><td>交易時段</td><td>US100：紐約 09:30–16:00；黃金當沖：08:30–13:30（COMEX）；黃金留倉：09:30–16:00 內進場</td></tr><tr><td>一個交易時段</td><td>紐約 18:00 開盤到隔天 17:00；FTMO 伺服器日界（布拉格午夜）也是紐約 18:00</td></tr><tr><td>挑選期</td><td>2022-03-01 到 2025-12-31（同類商品從 2018-05 起）</td></tr><tr><td>驗證期</td><td>2026-01-01 到 2026-10-23，凍結後只讀一次</td></tr><tr><td>波動單位</td><td>前 72 個紐約日 K 真實區間的簡單平均，在進場訊號時凍結</td></tr><tr><td>成本（高成本案例）</td><td>來回 US100 6 點、黃金每盎司 0.60 美元；多單隔夜利息年化 9%（研究內部計算用）</td></tr><tr><td>引擎</td><td>TradePose 遠端 Run，所有基準也都在引擎上跑，不在本機用 K 棒重建</td></tr></tbody></table></div>
+<h2 id="候選設計">候選設計</h2>
+<p>每個商品 192 個候選：1 小時與 4 小時 SuperTrend × 當沖與留倉 × 四種用法（多頭做多、空頭做空、空頭做多、多頭做空） × ATR 長度 4 種（1、3、9、27 個交易日） × 倍數 3 種（1.5、2.5、3.5）。</p>
+<p>商品、時框、持倉方式、用法都相同的 12 格算一個<strong>家族</strong>。雜訊上限、設計檢查、門檻都按家族各自計算；往下走時每個家族只派一格代表。</p>
+<h2 id="方法流程">方法流程</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="方法流程（表格）"><table class="data-table"><thead><tr><th>階段</th><th>做什麼</th></tr></thead><tbody><tr><td>校準</td><td>設計檢查（能不能讀到值得交易的效應）、雜訊上限、正向對照（故意偷看未來的作弊版本，用來測試每項檢查抓不抓得到效應）</td></tr><tr><td>否決清單</td><td>每個候選 9 列：雜訊、孤峰、單一年份、條件沒有貢獻、市場就能做到、路徑不比隨機好、利潤太薄、狀態依賴、單一商品</td></tr><tr><td>處置規則</td><td>在看表之前寫好：市場列清楚、路徑列清楚、單一商品列沒有命中的候選才往下走。這條規則選的是「比持有更能控制風險」</td></tr><tr><td>進出場樹</td><td>延遲進場 → 停損 → 停利（MFE 與 G_MFE 兩組都測）→ 保本 → 移動停損，網格來自父節點的分位數</td></tr><tr><td>葉節點檢查</td><td>對根的配對、逐年、狀態依賴、每層穩定度、大盤版本、錯開版本</td></tr><tr><td>組合與部位</td><td>成本、相關性、帳戶限制下的部位</td></tr><tr><td>凍結與驗證期</td><td>寫下凍結定義，驗證期只讀一次</td></tr></tbody></table></div>
+<p>「錯開版本」是隨機時機的基準：把 SuperTrend 的狀態整段錯開 K 個交易時段（同一時刻），交易次數、長度、留倉晚數都一樣，只是落在別的日子。每個候選抽 40 個 K。</p>
+<h2 id="遇到的問題與處理方式">遇到的問題與處理方式</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="遇到的問題與處理方式（表格）"><table class="data-table"><thead><tr><th>問題</th><th>處理</th></tr></thead><tbody><tr><td>錯開狀態原本以「K × 固定根數」計算，交易日根數不同時會偏離同一時刻</td><td>改成以交易時段為單位錯開，每根 K 對應 K 個時段之前的同一時刻；在引擎上逐時段核對，非假日時段完全對位</td></tr><tr><td>正向對照的作弊來自「當天方向」，跟狀態時機無關，錯開後照樣有效，抓不到時機的效應</td><td>讓作弊條件跟狀態一起錯開；之後路徑列在各組抓到 77–100% 的作弊候選</td></tr><tr><td>每個候選都跑 40 個錯開版本太貴</td><td>先算每個候選只要一個 Run 的列，錯開版本只跑在處置規則還需要的候選上</td></tr><tr><td>4 小時 K 的切分曾依 Run 起點是否在夏令時間而不同，起點不同的兩個 Run 在同一天得到不同的 4 小時 K</td><td>回報並修正引擎：2 到 12 小時 K 改成依紐約當地時間切分，全年一致（過程見〈<a href="/zh-tw/posts/resample-daylight-saving-wall-clock/">4 小時 K 怎麼切</a>〉）；修正後所有用到 4 小時 K 的階段重做，1 小時與日 K 的結果逐筆不變</td></tr><tr><td>同名的 Experiment 只比對成員數量，改了參數可能沿用舊定義</td><td>Experiment 名稱加上成員、配方原始碼、參數與期間的雜湊值</td></tr></tbody></table></div>
+<h2 id="各階段結果">各階段結果</h2>
+<p><strong>校準</strong>：主要商品 32 個家族的設計檢查全部不可讀。值得交易的最小效應只有 0.043–0.048 個波動單位，每筆標準差 0.45–2.08；要讀到這麼小的平均效應，每格需要數百到數萬筆，手上只有 100 到 800 筆。29 個家族的最佳 t 落在雜訊帶內。探索照處置規則繼續，因為規則選的是回撤，不是平均報酬。</p>
+<p><strong>否決清單</strong>：368 個可接受候選 → 市場列與單一商品列都過 83 個 → 再加路徑列 50 個，分布在 13 個家族。順勢家族過得最多，過關格子連成平台；逆勢家族的過關格多在「條件沒有貢獻」命中。</p>
+<p><strong>進出場樹與葉節點</strong>：13 個根長出 228 個葉節點；逐年、狀態依賴與對根的檢查後，10 個根往下走，每根前 3 名共 28 個葉節點跑錯開比較，27 個的回撤比 80–100% 的錯開版本淺。每個葉節點的路徑上都至少有一層的自助法穩定度低於 70%。</p>
+<p><strong>組合</strong>：同一根的葉節點高度相關，每根留 1 個；10 個全部放進組合。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="各階段結果（表格）"><table class="data-table"><thead><tr><th>策略</th><th class="num">成本後每筆（單位）</th><th>90% 區間</th><th class="num">回復因子</th></tr></thead><tbody><tr><td>r1 黃金 1h 空頭做空</td><td class="num">0.027</td><td>−0.005 到 0.059</td><td class="num">2.65</td></tr><tr><td>r2 黃金 1h 多頭做多</td><td class="num">0.014</td><td>−0.010 到 0.038</td><td class="num">1.87</td></tr><tr><td>r3 US100 1h 多頭做多</td><td class="num">0.052</td><td>0.020 到 0.086</td><td class="num">8.37</td></tr><tr><td>r5 黃金 4h 多頭做多</td><td class="num">0.056</td><td>0.024 到 0.091</td><td class="num">7.22</td></tr><tr><td>r7 US100 4h 多頭做多</td><td class="num">0.040</td><td>0.012 到 0.067</td><td class="num">5.89</td></tr><tr><td>r8 US100 4h 空頭做空</td><td class="num">0.002</td><td>−0.039 到 0.043</td><td class="num">0.09</td></tr><tr><td>r9 黃金 4h 空頭做空</td><td class="num">0.012</td><td>−0.021 到 0.042</td><td class="num">0.93</td></tr><tr><td>r11 US100 4h 空頭做多</td><td class="num">0.053</td><td>0.010 到 0.096</td><td class="num">5.75</td></tr><tr><td>r13 US100 4h 空頭做多留倉</td><td class="num">0.348</td><td>0.125 到 0.576</td><td class="num">8.63（65 筆）</td></tr><tr><td>r14 US100 4h 空頭做空留倉</td><td class="num">0.090</td><td>−0.013 到 0.202</td><td class="num">2.74</td></tr></tbody></table></div>
+<p><strong>部位</strong>：使用者給的限制是單日最多虧 4,500 美元、總虧損上限 10,000 美元。所有策略的停損同一天觸發 = 8.95 個單位 → 每單位 502 美元。比較了等權重、等風險、波動反比、相關分群、風險均分、近期 MAE 等權重方式，都縮放到同一個單日預算；不受規模影響的效率差距在 ±10% 左右，沒有一種在所有指標上同時勝過等權重，所以採用等權重。在引擎上重跑並用平台的部位計算核心驗證：每筆停損的美元都在目標往下一個手數單位以內。</p>
+<p>下面的圖表打開時是凍結的 10 策略組合，包含挑選期與驗證期；右側選單可以切換到任何一個策略，r14 在「留觀的 r14」底下。</p>
+</div><div class="wide"><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value=="object"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event("astro:visible"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="ZtVxjy" prefix="r42" component-url="/_astro/EquityExplorer.B0qQxDCw.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;zh-tw&quot;],&quot;slug&quot;:[0,&quot;us100-xauusd-supertrend-state-redo&quot;],&quot;views&quot;:[1,[[0,{&quot;mode&quot;:[0,&quot;usd&quot;],&quot;src&quot;:[0,&quot;/_astro/equity.CHoG19C3.parquet&quot;],&quot;kpi&quot;:[0,{&quot;r11_ts040[0] · Managed Long | adverse 0.16x | SL 0.96 | TP 0.96 | BE 0.4&quot;:[0,{&quot;total&quot;:[0,9093.946382388922],&quot;profit_factor&quot;:[0,1.2909279058070688],&quot;max_realized_dd&quot;:[0,1908.18201733332],&quot;n_trades&quot;:[0,382]}],&quot;r13_ts067[0] · Managed Long | adverse 0.32x | SL 1.28&quot;:[0,{&quot;total&quot;:[0,12065.96528666669],&quot;profit_factor&quot;:[0,1.9161144504249217],&quot;max_realized_dd&quot;:[0,2596.634599111114],&quot;n_trades&quot;:[0,80]}],&quot;r14_ts039[0] · Managed Short | favorable 0.06x | SL 0.72 | TP 2.64 | TS 1.08 | BE 1.08&quot;:[0,{&quot;total&quot;:[0,9885.430196416673],&quot;profit_factor&quot;:[0,1.2771618558680906],&quot;max_realized_dd&quot;:[0,3108.0550737500134],&quot;n_trades&quot;:[0,233]}],&quot;r1_ts111[0] · Managed Short | adverse 0.2x | SL 0.5 | BE 0.24&quot;:[0,{&quot;total&quot;:[0,3792.4298555555483],&quot;profit_factor&quot;:[0,1.154517860858108],&quot;max_realized_dd&quot;:[0,2182.512081944455],&quot;n_trades&quot;:[0,420]}],&quot;r2_ts006[0] · Managed Long | adverse 0.16x | SL 0.55 | TS 0.61 | BE 0.27&quot;:[0,{&quot;total&quot;:[0,2600.500380555628],&quot;profit_factor&quot;:[0,1.0841182164972014],&quot;max_realized_dd&quot;:[0,1649.1238624999783],&quot;n_trades&quot;:[0,535]}],&quot;r3_ts068[0] · Managed Long | adverse 0.18x | SL 0.7 | BE 0.42&quot;:[0,{&quot;total&quot;:[0,13046.885295583328],&quot;profit_factor&quot;:[0,1.2922825661140749],&quot;max_realized_dd&quot;:[0,2102.680729888887],&quot;n_trades&quot;:[0,608]}],&quot;r5_ts050[0] · Managed Long | adverse 0.16x | SL 0.56 | TS 0.62 | BE 0.33&quot;:[0,{&quot;total&quot;:[0,9464.606713888943],&quot;profit_factor&quot;:[0,1.3712023976096543],&quot;max_realized_dd&quot;:[0,1951.1977694444267],&quot;n_trades&quot;:[0,437]}],&quot;r7_ts038[0] · Managed Long | adverse 0.18x | SL 0.49 | BE 0.3&quot;:[0,{&quot;total&quot;:[0,8042.966697680522],&quot;profit_factor&quot;:[0,1.2388412944254865],&quot;max_realized_dd&quot;:[0,1864.6105788472241],&quot;n_trades&quot;:[0,519]}],&quot;r8_ts029[0] · Managed Short | adverse 0.24x | SL 0.66 | TP 0.96 | BE 0.52&quot;:[0,{&quot;total&quot;:[0,-1930.7886060833544],&quot;profit_factor&quot;:[0,0.9463915132732889],&quot;max_realized_dd&quot;:[0,3387.992366999988],&quot;n_trades&quot;:[0,354]}],&quot;r9_ts037[0] · Managed Short | adverse 0.15x | SL 0.66 | TP 0.8 | TS 0.72 | BE 0.42&quot;:[0,{&quot;total&quot;:[0,1452.4354124999697],&quot;profit_factor&quot;:[0,1.0496318716132276],&quot;max_realized_dd&quot;:[0,2361.848719444463],&quot;n_trades&quot;:[0,432]}]}],&quot;domain&quot;:[0,{&quot;cum&quot;:[1,[[0,-2290],[0,14409]]],&quot;dd&quot;:[1,[[0,-3553.300048828125],[0,0]]]}],&quot;benchmark&quot;:[0,null],&quot;portfolios&quot;:[1,[[0,{&quot;name&quot;:[0,&quot;ten&quot;],&quot;label&quot;:[0,&quot;凍結的 10 策略組合（不上線）&quot;],&quot;kpi&quot;:[0,{&quot;total&quot;:[0,67514.37761515287],&quot;profit_factor&quot;:[0,1.2216165753569221],&quot;max_realized_dd&quot;:[0,7548.340815013755],&quot;n_trades&quot;:[0,4000]}],&quot;equityUrl&quot;:[0,&quot;/_astro/equity.B6VLM5Ui.parquet&quot;]}]]]}],[0,{&quot;mode&quot;:[0,&quot;volatility_normalized&quot;],&quot;src&quot;:[0,&quot;/_astro/equity.DiUvL078.parquet&quot;],&quot;kpi&quot;:[0,{&quot;r11_ts040[0] · Managed Long | adverse 0.16x | SL 0.96 | TP 0.96 | BE 0.4&quot;:[0,{&quot;total&quot;:[0,26.205997256574726],&quot;profit_factor&quot;:[0,1.4404412769366424],&quot;max_realized_dd&quot;:[0,3.5370969215651087],&quot;n_trades&quot;:[0,382]}],&quot;r13_ts067[0] · Managed Long | adverse 0.32x | SL 1.28&quot;:[0,{&quot;total&quot;:[0,25.809848439999957],&quot;profit_factor&quot;:[0,1.9974763959398427],&quot;max_realized_dd&quot;:[0,5.119999999999997],&quot;n_trades&quot;:[0,80]}],&quot;r14_ts039[0] · Managed Short | favorable 0.06x | SL 0.72 | TP 2.64 | TS 1.08 | BE 1.08&quot;:[0,{&quot;total&quot;:[0,24.563357483870806],&quot;profit_factor&quot;:[0,1.3597370864499734],&quot;max_realized_dd&quot;:[0,5.499745972218905],&quot;n_trades&quot;:[0,233]}],&quot;r1_ts111[0] · Managed Short | adverse 0.2x | SL 0.5 | BE 0.24&quot;:[0,{&quot;total&quot;:[0,16.137671640137373],&quot;profit_factor&quot;:[0,1.3393994634001258],&quot;max_realized_dd&quot;:[0,4.2373641478553274],&quot;n_trades&quot;:[0,420]}],&quot;r2_ts006[0] · Managed Long | adverse 0.16x | SL 0.55 | TS 0.61 | BE 0.27&quot;:[0,{&quot;total&quot;:[0,15.787422400484836],&quot;profit_factor&quot;:[0,1.2625636268819884],&quot;max_realized_dd&quot;:[0,3.0497577428300975],&quot;n_trades&quot;:[0,535]}],&quot;r3_ts068[0] · Managed Long | adverse 0.18x | SL 0.7 | BE 0.42&quot;:[0,{&quot;total&quot;:[0,38.859541462613514],&quot;profit_factor&quot;:[0,1.4621309204892883],&quot;max_realized_dd&quot;:[0,3.4676937156874743],&quot;n_trades&quot;:[0,608]}],&quot;r5_ts050[0] · Managed Long | adverse 0.16x | SL 0.56 | TS 0.62 | BE 0.33&quot;:[0,{&quot;total&quot;:[0,27.888579369046955],&quot;profit_factor&quot;:[0,1.5610116329050905],&quot;max_realized_dd&quot;:[0,3.796618056624798],&quot;n_trades&quot;:[0,437]}],&quot;r7_ts038[0] · Managed Long | adverse 0.18x | SL 0.49 | BE 0.3&quot;:[0,{&quot;total&quot;:[0,27.031026773689202],&quot;profit_factor&quot;:[0,1.4284186079229555],&quot;max_realized_dd&quot;:[0,3.328469923985537],&quot;n_trades&quot;:[0,519]}],&quot;r8_ts029[0] · Managed Short | adverse 0.24x | SL 0.66 | TP 0.96 | BE 0.52&quot;:[0,{&quot;total&quot;:[0,3.5279520838805127],&quot;profit_factor&quot;:[0,1.0516400910781585],&quot;max_realized_dd&quot;:[0,5.332380006072217],&quot;n_trades&quot;:[0,354]}],&quot;r9_ts037[0] · Managed Short | adverse 0.15x | SL 0.66 | TP 0.8 | TS 0.72 | BE 0.42&quot;:[0,{&quot;total&quot;:[0,11.85309632221155],&quot;profit_factor&quot;:[0,1.2104839948999582],&quot;max_realized_dd&quot;:[0,4.143874257919348],&quot;n_trades&quot;:[0,432]}]}],&quot;domain&quot;:[0,{&quot;cum&quot;:[1,[[0,-1.6859999895095825],[0,40.63100051879883]]],&quot;dd&quot;:[1,[[0,-6.036300182342529],[0,0]]]}],&quot;benchmark&quot;:[0,null],&quot;portfolios&quot;:[1,[[0,{&quot;name&quot;:[0,&quot;ten&quot;],&quot;label&quot;:[0,&quot;凍結的 10 策略組合（不上線）&quot;],&quot;kpi&quot;:[0,{&quot;total&quot;:[0,217.66449323250944],&quot;profit_factor&quot;:[0,1.3734439747621643],&quot;max_realized_dd&quot;:[0,13.391774774137701],&quot;n_trades&quot;:[0,4000]}],&quot;equityUrl&quot;:[0,&quot;/_astro/equity.DNAFzKS1.parquet&quot;]}]]]}],[0,{&quot;mode&quot;:[0,&quot;percentage&quot;],&quot;src&quot;:[0,&quot;/_astro/equity.B7YBwOlh.parquet&quot;],&quot;kpi&quot;:[0,{&quot;r11_ts040[0] · Managed Long | adverse 0.16x | SL 0.96 | TP 0.96 | BE 0.4&quot;:[0,{&quot;total&quot;:[0,0.4850134585050348],&quot;profit_factor&quot;:[0,1.4620747695984366],&quot;max_realized_dd&quot;:[0,0.06286427543850792],&quot;n_trades&quot;:[0,382]}],&quot;r13_ts067[0] · Managed Long | adverse 0.32x | SL 1.28&quot;:[0,{&quot;total&quot;:[0,0.553006497372228],&quot;profit_factor&quot;:[0,2.322928250212642],&quot;max_realized_dd&quot;:[0,0.07028986500999385],&quot;n_trades&quot;:[0,80]}],&quot;r14_ts039[0] · Managed Short | favorable 0.06x | SL 0.72 | TP 2.64 | TS 1.08 | BE 1.08&quot;:[0,{&quot;total&quot;:[0,0.3862718181087555],&quot;profit_factor&quot;:[0,1.3230830288231756],&quot;max_realized_dd&quot;:[0,0.11404891603679805],&quot;n_trades&quot;:[0,233]}],&quot;r1_ts111[0] · Managed Short | adverse 0.2x | SL 0.5 | BE 0.24&quot;:[0,{&quot;total&quot;:[0,0.19683934384461038],&quot;profit_factor&quot;:[0,1.2986262129822141],&quot;max_realized_dd&quot;:[0,0.07004876882093902],&quot;n_trades&quot;:[0,420]}],&quot;r2_ts006[0] · Managed Long | adverse 0.16x | SL 0.55 | TS 0.61 | BE 0.27&quot;:[0,{&quot;total&quot;:[0,0.15356072649141478],&quot;profit_factor&quot;:[0,1.1833074631961207],&quot;max_realized_dd&quot;:[0,0.05983155530765574],&quot;n_trades&quot;:[0,535]}],&quot;r3_ts068[0] · Managed Long | adverse 0.18x | SL 0.7 | BE 0.42&quot;:[0,{&quot;total&quot;:[0,0.683393802082859],&quot;profit_factor&quot;:[0,1.4805437710872276],&quot;max_realized_dd&quot;:[0,0.059099791997982765],&quot;n_trades&quot;:[0,608]}],&quot;r5_ts050[0] · Managed Long | adverse 0.16x | SL 0.56 | TS 0.62 | BE 0.33&quot;:[0,{&quot;total&quot;:[0,0.28561162042176047],&quot;profit_factor&quot;:[0,1.4074609830737104],&quot;max_realized_dd&quot;:[0,0.08392912670625452],&quot;n_trades&quot;:[0,437]}],&quot;r7_ts038[0] · Managed Long | adverse 0.18x | SL 0.49 | BE 0.3&quot;:[0,{&quot;total&quot;:[0,0.40585096088374134],&quot;profit_factor&quot;:[0,1.3765246048404922],&quot;max_realized_dd&quot;:[0,0.05888576592082451],&quot;n_trades&quot;:[0,519]}],&quot;r8_ts029[0] · Managed Short | adverse 0.24x | SL 0.66 | TP 0.96 | BE 0.52&quot;:[0,{&quot;total&quot;:[0,0.0036768508752654727],&quot;profit_factor&quot;:[0,1.0030481788486305],&quot;max_realized_dd&quot;:[0,0.10235890284528426],&quot;n_trades&quot;:[0,354]}],&quot;r9_ts037[0] · Managed Short | adverse 0.15x | SL 0.66 | TP 0.8 | TS 0.72 | BE 0.42&quot;:[0,{&quot;total&quot;:[0,0.11412500294458505],&quot;profit_factor&quot;:[0,1.1439230204267932],&quot;max_realized_dd&quot;:[0,0.08201423304535484],&quot;n_trades&quot;:[0,432]}]}],&quot;domain&quot;:[0,{&quot;cum&quot;:[1,[[0,-0.04349000006914139],[0,0.7085700035095215]]],&quot;dd&quot;:[1,[[0,-0.12236999720335007],[0,0]]]}],&quot;benchmark&quot;:[0,null],&quot;portfolios&quot;:[1,[[0,{&quot;name&quot;:[0,&quot;ten&quot;],&quot;label&quot;:[0,&quot;凍結的 10 策略組合（不上線）&quot;],&quot;kpi&quot;:[0,{&quot;total&quot;:[0,3.2673500815302545],&quot;profit_factor&quot;:[0,1.3490652911303915],&quot;max_realized_dd&quot;:[0,0.22228750566431144],&quot;n_trades&quot;:[0,4000]}],&quot;equityUrl&quot;:[0,&quot;/_astro/equity.BOi9-P-O.parquet&quot;]}]]]}]]],&quot;timezone&quot;:[0,&quot;UTC&quot;],&quot;params&quot;:[0,{&quot;defs&quot;:[1,[[0,{&quot;key&quot;:[0,&quot;group&quot;],&quot;label&quot;:[0,&quot;分組&quot;],&quot;values&quot;:[1,[[0,&quot;kept&quot;],[0,&quot;frozen&quot;]]],&quot;valueLabels&quot;:[0,{&quot;kept&quot;:[0,&quot;留觀的 r14&quot;],&quot;frozen&quot;:[0,&quot;其餘 9 個&quot;]}],&quot;notes&quot;:[0,{&quot;kept&quot;:[0,&quot;驗證期仍一致，2026-10-24 以新候選凍結&quot;],&quot;frozen&quot;:[0,&quot;10 策略組合裡驗證期沒有延續的策略&quot;]}]}],[0,{&quot;key&quot;:[0,&quot;strategy&quot;],&quot;label&quot;:[0,&quot;策略&quot;],&quot;values&quot;:[1,[[0,&quot;r1_ts111&quot;],[0,&quot;r2_ts006&quot;],[0,&quot;r3_ts068&quot;],[0,&quot;r5_ts050&quot;],[0,&quot;r7_ts038&quot;],[0,&quot;r8_ts029&quot;],[0,&quot;r9_ts037&quot;],[0,&quot;r11_ts040&quot;],[0,&quot;r13_ts067&quot;],[0,&quot;r14_ts039&quot;]]],&quot;valueLabels&quot;:[0,{&quot;r1_ts111&quot;:[0,&quot;黃金 1h 空頭做空&quot;],&quot;r2_ts006&quot;:[0,&quot;黃金 1h 多頭做多&quot;],&quot;r3_ts068&quot;:[0,&quot;US100 1h 多頭做多&quot;],&quot;r5_ts050&quot;:[0,&quot;黃金 4h 多頭做多&quot;],&quot;r7_ts038&quot;:[0,&quot;US100 4h 多頭做多&quot;],&quot;r8_ts029&quot;:[0,&quot;US100 4h 空頭做空&quot;],&quot;r9_ts037&quot;:[0,&quot;黃金 4h 空頭做空&quot;],&quot;r11_ts040&quot;:[0,&quot;US100 4h 空頭做多&quot;],&quot;r13_ts067&quot;:[0,&quot;US100 4h 空頭做多留倉&quot;],&quot;r14_ts039&quot;:[0,&quot;US100 4h 空頭做空留倉（留觀）&quot;]}],&quot;notes&quot;:[0,{&quot;r1_ts111&quot;:[0,&quot;FTMO XAUUSD；1 小時 SuperTrend（ATR 69 根 × 2.5）空頭時做空，紐約 08:30–13:30 持倉&quot;],&quot;r2_ts006&quot;:[0,&quot;FTMO XAUUSD；1 小時 SuperTrend（ATR 207 根 × 2.5）多頭時做多，紐約 08:30–13:30 持倉&quot;],&quot;r3_ts068&quot;:[0,&quot;FTMO US100.cash；1 小時 SuperTrend（ATR 621 根 × 2.5）多頭時做多，紐約 09:30–16:00 持倉&quot;],&quot;r5_ts050&quot;:[0,&quot;FTMO XAUUSD；4 小時 SuperTrend（ATR 54 根 × 2.5）多頭時做多，紐約 08:30–13:30 持倉&quot;],&quot;r7_ts038&quot;:[0,&quot;FTMO US100.cash；4 小時 SuperTrend（ATR 18 根 × 2.5）多頭時做多，紐約 09:30–16:00 持倉&quot;],&quot;r8_ts029&quot;:[0,&quot;FTMO US100.cash；4 小時 SuperTrend（ATR 54 根 × 1.5）空頭時做空，紐約 09:30–16:00 持倉&quot;],&quot;r9_ts037&quot;:[0,&quot;FTMO XAUUSD；4 小時 SuperTrend（ATR 162 根 × 1.5）空頭時做空，紐約 08:30–13:30 持倉&quot;],&quot;r11_ts040&quot;:[0,&quot;FTMO US100.cash；4 小時 SuperTrend（ATR 162 根 × 2.5）空頭時做多（逆勢），紐約 09:30–16:00 持倉&quot;],&quot;r13_ts067&quot;:[0,&quot;FTMO US100.cash；4 小時 SuperTrend（ATR 54 根 × 3.5）空頭時，紐約 09:30–16:00 內進場做多，持有到翻轉&quot;],&quot;r14_ts039&quot;:[0,&quot;FTMO US100.cash；4 小時 SuperTrend（ATR 162 根 × 1.5）空頭時，紐約 09:30–16:00 內進場做空，持有到翻轉&quot;]}]}]]],&quot;cases&quot;:[0,{&quot;r11_ts040[0] · Managed Long | adverse 0.16x | SL 0.96 | TP 0.96 | BE 0.4&quot;:[0,{&quot;group&quot;:[0,&quot;frozen&quot;],&quot;strategy&quot;:[0,&quot;r11_ts040&quot;]}],&quot;r13_ts067[0] · Managed Long | adverse 0.32x | SL 1.28&quot;:[0,{&quot;group&quot;:[0,&quot;frozen&quot;],&quot;strategy&quot;:[0,&quot;r13_ts067&quot;]}],&quot;r14_ts039[0] · Managed Short | favorable 0.06x | SL 0.72 | TP 2.64 | TS 1.08 | BE 1.08&quot;:[0,{&quot;group&quot;:[0,&quot;kept&quot;],&quot;strategy&quot;:[0,&quot;r14_ts039&quot;]}],&quot;r1_ts111[0] · Managed Short | adverse 0.2x | SL 0.5 | BE 0.24&quot;:[0,{&quot;group&quot;:[0,&quot;frozen&quot;],&quot;strategy&quot;:[0,&quot;r1_ts111&quot;]}],&quot;r2_ts006[0] · Managed Long | adverse 0.16x | SL 0.55 | TS 0.61 | BE 0.27&quot;:[0,{&quot;group&quot;:[0,&quot;frozen&quot;],&quot;strategy&quot;:[0,&quot;r2_ts006&quot;]}],&quot;r3_ts068[0] · Managed Long | adverse 0.18x | SL 0.7 | BE 0.42&quot;:[0,{&quot;group&quot;:[0,&quot;frozen&quot;],&quot;strategy&quot;:[0,&quot;r3_ts068&quot;]}],&quot;r5_ts050[0] · Managed Long | adverse 0.16x | SL 0.56 | TS 0.62 | BE 0.33&quot;:[0,{&quot;group&quot;:[0,&quot;frozen&quot;],&quot;strategy&quot;:[0,&quot;r5_ts050&quot;]}],&quot;r7_ts038[0] · Managed Long | adverse 0.18x | SL 0.49 | BE 0.3&quot;:[0,{&quot;group&quot;:[0,&quot;frozen&quot;],&quot;strategy&quot;:[0,&quot;r7_ts038&quot;]}],&quot;r8_ts029[0] · Managed Short | adverse 0.24x | SL 0.66 | TP 0.96 | BE 0.52&quot;:[0,{&quot;group&quot;:[0,&quot;frozen&quot;],&quot;strategy&quot;:[0,&quot;r8_ts029&quot;]}],&quot;r9_ts037[0] · Managed Short | adverse 0.15x | SL 0.66 | TP 0.8 | TS 0.72 | BE 0.42&quot;:[0,{&quot;group&quot;:[0,&quot;frozen&quot;],&quot;strategy&quot;:[0,&quot;r9_ts037&quot;]}]}]}],&quot;initialCase&quot;:[0,&quot;portfolio:ten&quot;],&quot;featured&quot;:[1,[[0,&quot;r14_ts039[0] · Managed Short | favorable 0.06x | SL 0.72 | TP 2.64 | TS 1.08 | BE 1.08&quot;],[0,&quot;r3_ts068[0] · Managed Long | adverse 0.18x | SL 0.7 | BE 0.42&quot;]]],&quot;sessions&quot;:[0,{&quot;r11_ts040[0] · Managed Long | adverse 0.16x | SL 0.96 | TP 0.96 | BE 0.4&quot;:[0,null],&quot;r13_ts067[0] · Managed Long | adverse 0.32x | SL 1.28&quot;:[0,null],&quot;r14_ts039[0] · Managed Short | favorable 0.06x | SL 0.72 | TP 2.64 | TS 1.08 | BE 1.08&quot;:[0,null],&quot;r1_ts111[0] · Managed Short | adverse 0.2x | SL 0.5 | BE 0.24&quot;:[0,null],&quot;r2_ts006[0] · Managed Long | adverse 0.16x | SL 0.55 | TS 0.61 | BE 0.27&quot;:[0,null],&quot;r3_ts068[0] · Managed Long | adverse 0.18x | SL 0.7 | BE 0.42&quot;:[0,null],&quot;r5_ts050[0] · Managed Long | adverse 0.16x | SL 0.56 | TS 0.62 | BE 0.33&quot;:[0,null],&quot;r7_ts038[0] · Managed Long | adverse 0.18x | SL 0.49 | BE 0.3&quot;:[0,null],&quot;r8_ts029[0] · Managed Short | adverse 0.24x | SL 0.66 | TP 0.96 | BE 0.52&quot;:[0,null],&quot;r9_ts037[0] · Managed Short | adverse 0.15x | SL 0.66 | TP 0.8 | TS 0.72 | BE 0.42&quot;:[0,null]}],&quot;pairs&quot;:[0],&quot;compareLabel&quot;:[0],&quot;market&quot;:[0,true]}" ssr client="visible" opts="{&quot;name&quot;:&quot;EquityExplorer&quot;,&quot;value&quot;:true}" await-children><section class="chart-card"><div class="chart-head"><div><h3 class="chart-title">累積報酬與回撤</h3><p class="chart-subtitle">點選表格的一列切換參數組（預設列出文章提到的組；最前面是文章結論的組合：Analyzer 把成員的交易合在一起算出的一組）；上圖為累積報酬、下圖為水下回撤，共用時間軸，座標依顯示中的線伸縮</p></div></div><div><div class="table-wrap" style="--table-max-height:240px" tabindex="0" role="region" aria-label="參數組績效"><table class="data-table data-table--compact data-table--sticky-first"><thead><tr><th aria-sort="none"><button type="button" class="th-sort">參數組<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-direction="none"><path d="M5 6.5L8 3.5l3 3" opacity="1"></path><path d="M5 9.5l3 3 3-3" opacity="1"></path></svg></button></th><th class="num" aria-sort="none"><button type="button" class="th-sort"><span class="term" tabindex="0" data-def="所有交易的報酬加總（單利），單位依計算模式。">累積報酬</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-direction="none"><path d="M5 6.5L8 3.5l3 3" opacity="1"></path><path d="M5 9.5l3 3 3-3" opacity="1"></path></svg></button></th><th class="num" aria-sort="none"><button type="button" class="th-sort"><span class="term" tabindex="0" data-def="總獲利 ÷ 總虧損；大於 1 代表整體獲利。">獲利因子</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-direction="none"><path d="M5 6.5L8 3.5l3 3" opacity="1"></path><path d="M5 9.5l3 3 3-3" opacity="1"></path></svg></button></th><th class="num" aria-sort="none"><button type="button" class="th-sort"><span class="term" tabindex="0" data-def="以出場累積報酬計算的最大回撤。">最大回撤</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-direction="none"><path d="M5 6.5L8 3.5l3 3" opacity="1"></path><path d="M5 9.5l3 3 3-3" opacity="1"></path></svg></button></th><th class="num" aria-sort="none"><button type="button" class="th-sort"><span class="term" tabindex="0" data-def="完成的交易筆數。">交易數</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-direction="none"><path d="M5 6.5L8 3.5l3 3" opacity="1"></path><path d="M5 9.5l3 3 3-3" opacity="1"></path></svg></button></th></tr></thead><tbody><tr class="is-highlight is-clickable" tabindex="0" aria-current="true"><td class="">凍結的 10 策略組合（不上線）</td><td class="num up">+$67,514</td><td class="num up">1.222</td><td class="num down">−$7,548</td><td class="num">4,000</td></tr><tr class="is-clickable" tabindex="0"><td class="">留觀的 r14 · US100 4h 空頭做空留倉（留觀）</td><td class="num up">+$9,885</td><td class="num up">1.277</td><td class="num down">−$3,108</td><td class="num">233</td></tr><tr class="is-clickable" tabindex="0"><td class="">其餘 9 個 · US100 1h 多頭做多</td><td class="num up">+$13,047</td><td class="num up">1.292</td><td class="num down">−$2,103</td><td class="num">608</td></tr></tbody></table></div><div class="cluster"><button type="button" class="btn btn-ghost btn-sm">列出全部 10 組</button><a class="btn btn-ghost btn-sm" href="/zh-tw/posts/us100-xauusd-supertrend-state-redo/?view=report">在策略報告比較全部參數組</a></div></div><div class="chart-stage is-computing" style="height:380px" role="status"><span class="visually-hidden">載入權益曲線…</span></div><div class="chart-foot"><span><span class="param-summary"><span>凍結的 10 策略組合（不上線）<!-- --> <b class="up">+$67,514</b></span><span>獲利因子<!-- --> <b class="up">1.222</b></span><span>最大回撤<!-- --> <b class="down">−$7,548</b></span></span></span><span></span></div></section><!--astro:end--></astro-island></div>
+<div class="prose"><h2 id="驗證期">驗證期</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="驗證期（表格）"><table class="data-table"><thead><tr><th>策略</th><th class="num">筆數</th><th class="num">美元</th><th class="num">回撤比錯開版本淺的比例</th><th>判讀</th></tr></thead><tbody><tr><td>r14 US100 4h 空頭做空留倉</td><td class="num">45</td><td class="num">+1,359</td><td class="num">0.90</td><td>平均在挑選期帶內，回撤比挑選期還淺</td></tr><tr><td>r13 US100 4h 空頭做多留倉</td><td class="num">15</td><td class="num">+754</td><td class="num">0.95</td><td>筆數太少</td></tr><tr><td>r11 US100 4h 空頭做多</td><td class="num">71</td><td class="num">+808</td><td class="num">0.20</td><td>帶外</td></tr><tr><td>r3 US100 1h 多頭做多</td><td class="num">100</td><td class="num">−108</td><td class="num">0.35</td><td>失效</td></tr><tr><td>r5 黃金 4h 多頭做多</td><td class="num">73</td><td class="num">−560</td><td class="num">0.18</td><td>沒有行情</td></tr><tr><td>r7 US100 4h 多頭做多</td><td class="num">84</td><td class="num">−621</td><td class="num">0.48</td><td>沒有行情</td></tr><tr><td>r9 黃金 4h 空頭做空</td><td class="num">73</td><td class="num">−626</td><td class="num">0.48</td><td>帶內</td></tr><tr><td>r2 黃金 1h 多頭做多</td><td class="num">80</td><td class="num">−648</td><td class="num">0.38</td><td>沒有行情</td></tr><tr><td>r1 黃金 1h 空頭做空</td><td class="num">73</td><td class="num">−733</td><td class="num">0.20</td><td>沒有行情</td></tr><tr><td>r8 US100 4h 空頭做空</td><td class="num">65</td><td class="num">−2,189</td><td class="num">0.28</td><td>沒有行情</td></tr></tbody></table></div>
+<p>組合：−2,564 美元，最大回撤 5,532，最差一天 −1,129，沒有任何一天超過 4,500。「沒有行情」是指策略自己的大盤版本（同樣進場、持有到時段收盤）也虧，而策略對它的邊際還在挑選期的範圍內；「失效」是大盤版本有賺、策略的邊際低於範圍。</p>
+<h3 id="為什麼沒有延續">為什麼沒有延續</h3>
+<p>每個策略的「根」是同一個狀態訊號、不加任何出場規則。成本後每筆平均（波動單位）：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="為什麼沒有延續（表格）"><table class="data-table"><thead><tr><th>策略</th><th class="num">根（挑選）</th><th class="num">出場規則的貢獻（挑選）</th><th class="num">根（驗證）</th><th class="num">出場規則的貢獻（驗證）</th></tr></thead><tbody><tr><td>r1</td><td class="num">0.001</td><td class="num">+0.026</td><td class="num">0.012</td><td class="num">−0.036</td></tr><tr><td>r2</td><td class="num">0.001</td><td class="num">+0.013</td><td class="num">−0.018</td><td class="num">+0.001</td></tr><tr><td>r3</td><td class="num">0.002</td><td class="num">+0.049</td><td class="num">−0.007</td><td class="num">+0.004</td></tr><tr><td>r5</td><td class="num">0.007</td><td class="num">+0.050</td><td class="num">−0.052</td><td class="num">+0.037</td></tr><tr><td>r7</td><td class="num">0.010</td><td class="num">+0.030</td><td class="num">−0.055</td><td class="num">+0.040</td></tr><tr><td>r8</td><td class="num">−0.023</td><td class="num">+0.025</td><td class="num">−0.016</td><td class="num">−0.051</td></tr><tr><td>r9</td><td class="num">0.012</td><td class="num">0.000</td><td class="num">0.022</td><td class="num">−0.039</td></tr><tr><td>r11</td><td class="num">0.007</td><td class="num">+0.046</td><td class="num">0.015</td><td class="num">+0.008</td></tr><tr><td>r13</td><td class="num">0.357</td><td class="num">−0.009</td><td class="num">0.549</td><td class="num">−0.448</td></tr><tr><td>r14</td><td class="num">−0.035</td><td class="num">+0.125</td><td class="num">−0.033</td><td class="num">+0.093</td></tr></tbody></table></div>
+<ol>
+<li><strong>狀態訊號沒有平均優勢</strong>：根在挑選期成本後每筆約為 0，跟校準時「平均效應讀不到」一致。</li>
+<li><strong>出場參數是在同一段資料上挑的</strong>：r13 以外，出場規則的貢獻從平均 +0.040 降到 +0.006。每個葉節點都有穩定度低於 70% 的層，代表最佳參數換一段資料就容易換人。</li>
+<li><strong>錯開比較偏向真實時機</strong>：出場規則是照真實時機的交易調出來的，錯開版本只是套用同一組規則，所以挑選期的領先有一部分來自調參。</li>
+<li><strong>2026 年的市場</strong>：多個根在驗證期每筆 −0.05 左右，勝率普遍下降約 5 到 10 個百分點。</li>
+</ol>
+<h2 id="決定">決定</h2>
+<ol>
+<li><strong>10 策略組合不上線。</strong></li>
+<li><strong>r14 留觀</strong>：驗證期 45 筆、+1,359 美元，回撤 2.70 個單位，比大盤版本（3.72）與 90% 的錯開版本淺。它是看過驗證期才挑出的，所以是新的候選，2026-10-24 凍結，沒有乾淨的驗證期；乾淨的紀錄從 2026-10-26 起累積，3 到 6 個月後依凍結後紀錄決定保留、減碼或停止。</li>
+<li><strong>r14 的證據要讀清楚</strong>：它的根（空頭時做空、不加出場）在兩段期間都為負，挑選期 −0.035、驗證期 −0.033；獲利來自出場規則（+0.125、+0.093）。它證明的是「這組出場規則在驗證期仍有效」，不是「SuperTrend 空頭狀態本身有優勢」。</li>
+</ol>
+<h2 id="凍結的策略r14">凍結的策略：r14</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="凍結的策略：r14（表格）"><table class="data-table"><thead><tr><th>項目</th><th>值</th></tr></thead><tbody><tr><td>商品</td><td>FTMO US100.cash</td></tr><tr><td>狀態</td><td>4 小時 SuperTrend：ATR = 最近 162 根 4 小時 K 真實區間的簡單平均（約 27 個交易日），倍數 1.5；讀上一根已完成的方向</td></tr><tr><td>方向</td><td>空頭時做空</td></tr><tr><td>進場</td><td>紐約 09:30–16:00 內、處於空頭的第一根 15 分鐘 K 為基準訊號；掛 Sell Limit 在基準價上方 0.06 個單位（順向延遲進場），在出場前沒成交就放棄</td></tr><tr><td>持倉</td><td>持有到 SuperTrend 翻多（留倉；中位數約 22.5 小時、1 晚）</td></tr><tr><td>停損</td><td>0.72 個單位</td></tr><tr><td>停利</td><td>2.64 個單位</td></tr><tr><td>保本</td><td>浮盈達 1.08 個單位後，停損移到成交價往有利方向 0.90 個單位</td></tr><tr><td>移動停損</td><td>從持倉以來最佳價回落 1.08 個單位出場</td></tr><tr><td>部位</td><td>每單位 522 美元（單獨運作時，以挑選期回撤第 99 百分位等於總虧損上限 10,000 美元定出），每筆停損約 376 美元，口數 = 522 ÷（波動單位 × 1 美元／點），向下取到 0.01 口</td></tr></tbody></table></div>
+<p>所有距離都是「倍數 × 進場時凍結的波動單位」（前 72 個紐約日 K 真實區間的簡單平均）。挑選期 188 筆：勝率 39%，成本後每筆 +0.090 單位，逐年 +5.46、+1.45、+2.57、+3.32 單位。驗證期 45 筆：勝率 40%，每筆 +0.060。</p>
+<p>用 SDK 重建：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> tradepose_client </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> ExperimentMember, Policy, authoring </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> tp</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> playbook.strategies.research.supertrend_state_session_trade </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    SupertrendStateSessionTradeParams </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> P, supertrend_state_session_trade </span><span style="color:#F97583">as</span><span style="color:#E1E4E8"> recipe)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">r14 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> ExperimentMember(</span></span>
+<span class="line"><span style="color:#FFAB70">    id</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;r14_us100_4h_bear_short_hold&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">source</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">recipe,</span></span>
+<span class="line"><span style="color:#FFAB70">    params</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">P(</span><span style="color:#FFAB70">primary</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">P.Primary(</span><span style="color:#FFAB70">instrument</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;FTMO:US100.cash&quot;</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#FFAB70">             trend</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">P.Trend(</span><span style="color:#FFAB70">freq</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">tp.Freq.</span><span style="color:#79B8FF">HOUR_4</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">                           atr</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">tp.SMAIndicator(</span><span style="color:#FFAB70">period</span><span style="color:#F97583">=</span><span style="color:#79B8FF">162</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">column</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">tp.input(</span><span style="color:#9ECBFF">&quot;trend.tr&quot;</span><span style="color:#E1E4E8">), </span><span style="color:#FFAB70">shift</span><span style="color:#F97583">=</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#FFAB70">                           supertrend</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">tp.SuperTrendIndicator(</span><span style="color:#FFAB70">multiplier</span><span style="color:#F97583">=</span><span style="color:#79B8FF">1.5</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">volatility_column</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">tp.input(</span><span style="color:#9ECBFF">&quot;trend.atr&quot;</span><span style="color:#E1E4E8">),</span></span>
+<span class="line"><span style="color:#FFAB70">                                                             shift</span><span style="color:#F97583">=</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">fields</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;direction&quot;</span><span style="color:#E1E4E8">,))),</span></span>
+<span class="line"><span style="color:#FFAB70">             opportunity</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">P.Opportunity(</span><span style="color:#FFAB70">direction</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">tp.TradeDirection.</span><span style="color:#79B8FF">SHORT</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">state</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;bearish&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">                                       session_start_minute</span><span style="color:#F97583">=</span><span style="color:#79B8FF">570</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">session_end_minute</span><span style="color:#F97583">=</span><span style="color:#79B8FF">960</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">exit_at_window_close</span><span style="color:#F97583">=</span><span style="color:#79B8FF">False</span><span style="color:#E1E4E8">)),</span></span>
+<span class="line"><span style="color:#FFAB70">    policies</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">Policy.sweep(</span><span style="color:#FFAB70">direction</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">tp.TradeDirection.</span><span style="color:#79B8FF">SHORT</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">entry_kind</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;favorable&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">entry_distances</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0.06</span><span style="color:#E1E4E8">,),</span></span>
+<span class="line"><span style="color:#FFAB70">                          stop_losses</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">0.72</span><span style="color:#E1E4E8">,), </span><span style="color:#FFAB70">take_profits</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">2.64</span><span style="color:#E1E4E8">,), </span><span style="color:#FFAB70">breakevens</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">((</span><span style="color:#79B8FF">1.08</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">0.90</span><span style="color:#E1E4E8">),), </span><span style="color:#FFAB70">trailing_stops</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1.08</span><span style="color:#E1E4E8">,)))</span></span></code></pre>
+<p>部位：RiskPolicy 運算式 <code>pl.col(&quot;entry_volatility&quot;)</code>，risk amount 522，lot size 0.01。</p>
+</div><section class="question-section" aria-labelledby="goals-title"><h2 class="question-section-title" id="goals-title">這篇研究要回答的問題</h2><div class="question-item"><h3 class="question-item-title">研究的問題是什麼？</h3><div class="question-item-answer">SuperTrend 處於某個方向時，在交易時段內順著或逆著它持倉，能不能做出比單純持有更能控制回撤的策略。</div></div><div class="question-item"><h3 class="question-item-title">挑選期得到什麼？</h3><div class="question-item-answer">一個 10 策略組合，每單位 502 美元，2022-03 到 2025-12 成本後 +70,078 美元、最大回撤 4,723、最差一天 −1,523。</div></div><div class="question-item"><h3 class="question-item-title">驗證期結果如何？</h3><div class="question-item-answer">2026-01 到 2026-10-23 組合虧 2,564 美元；10 個策略裡只有 r14 仍一致且回撤控制成立。</div></div><div class="question-item"><h3 class="question-item-title">為什麼沒有延續？</h3><div class="question-item-answer">狀態訊號本身沒有平均優勢，挑選期的獲利主要來自在同一段資料上挑出的出場參數，它的貢獻在驗證期從每筆 +0.040 降到 +0.006 個波動單位。</div></div><div class="question-item"><h3 class="question-item-title">最後的決定？</h3><div class="question-item-answer">組合不上線；r14 以新候選凍結、留觀，從 2026-10-26 起累積乾淨的紀錄。</div></div></section>
+<div class="prose"><h2 id="限制與注意事項">限制與注意事項</h2>
+<ul>
+<li>這是回測；2026 年在先前同商品的研究讀過，驗證結果不是完全乾淨的樣本外。</li>
+<li>頁面統計未計隔夜費；r13、r14 是留倉策略，研究內部對多單計了年化 9% 的隔夜利息，空單（r14）沒有計。</li>
+<li>r13 只有 65 筆交易，低於方法論 70 筆的門檻。</li>
+<li>r14 是看過驗證期才挑出的，留觀期間的結果才是它的第一份乾淨證據。</li>
+</ul></div><div class="section-head"><h2 id="method">方法與資料</h2></div><p class="section-lead">研究設定、資料與計算方式；重現研究用的識別字在資料來源。</p><aside class="method"><div class="method-title">研究設定</div><dl><div style="display:contents"><dt>文章類型</dt><dd>方法論</dd></div><div style="display:contents"><dt>標的</dt><dd>—</dd></div><div style="display:contents"><dt>方向</dt><dd>雙向</dd></div><div style="display:contents"><dt>策略</dt><dd>SuperTrend 處於某個方向時，在交易時段內順勢或逆勢持倉；1 小時與 4 小時 SuperTrend，當沖與留倉</dd></div><div style="display:contents"><dt>K 線</dt><dd>FTMO US100.cash 與 FTMO XAUUSD 的 15 分鐘 K 線，紐約時間；1 小時、4 小時、日 K 依紐約當地時間重取樣</dd></div><div style="display:contents"><dt>波動單位</dt><dd>前 72 個紐約日 K 真實區間的簡單平均，在進場時凍結；所有距離與報酬都以這個單位表示</dd></div><div style="display:contents"><dt>部位</dt><dd>凍結的 10 策略組合：每個策略每 1 個波動單位 502 美元；口數 = 502 ÷（波動單位 × 點值），向下取到 0.01 口，不複利</dd></div><div style="display:contents"><dt>成本</dt><dd>每筆扣來回成本：US100 6 點、黃金每盎司 0.60 美元；頁面統計未計隔夜費</dd></div><div style="display:contents"><dt>統計樣本</dt><dd>挑選期 2022-03-01 到 2025-12-31；驗證期 2026-01-01 到 2026-10-23，凍結後只讀一次。2026 年在先前同商品的研究讀過，驗證結果標「先前研究看過」</dd></div><div style="display:contents"><dt>計算模式</dt><dd>預設為 USD（上面的部位與成本）；可切換為波動模式與百分比</dd></div><div style="display:contents"><dt>參數</dt><dd>分組：留觀的 r14／其餘 9 個；策略：10 種，完整清單在策略報告</dd></div><div style="display:contents"><dt>報酬計算</dt><dd>USD 加權：凍結的部位：每個策略每 1 個波動單位 502 美元；口數 = 502 ÷（進場時的波動單位 × 點值），向下取到 0.01 口，所以停損 k 個單位虧 502 × k 美元。波動單位 = 前 72 個紐約日 K 真實區間的簡單平均，在進場時凍結。US100.cash 每口每點 1 美元、XAUUSD 每口 100 盎司；每筆扣來回成本（US100 6 點、黃金每盎司 0.60 美元），未計隔夜費，不複利；波動模式：每筆損益 ÷ 出場時波動（exit_volatility）後加總；百分比：每筆報酬率加總（單利）</dd></div></dl></aside><div class="appendix"><div style="display:contents"><h3>資料</h3><div>時區 UTC · 統計產生於 2026-10-24</div></div><div style="display:contents"><h3>更新紀錄</h3><div>2026-10-24 22:00　首次發布</div></div></div><details class="data-sources"><summary>資料來源</summary><dl><div style="display:contents"><dt>交易資料</dt><dd><code>Run c9585168-abfc-424b-bb5b-b1f6cfb54a53</code></dd></div><div style="display:contents"><dt>策略配方</dt><dd><code>supertrend_state_session_trade</code></dd></div><div style="display:contents"><dt>統計格式</dt><dd><code>Parquet 表格 · analyzer_mode=usd, volatility_normalized, percentage</code></dd></div><div style="display:contents"><dt>參數組</dt><dd><code>10 組，完整清單在策略報告</code></dd></div></dl></details><div class="wide"><section class="related"><h2 class="related-title">相關研究</h2><div class="related-grid"><a class="card card-interactive post-card" href="/zh-tw/posts/sharpe-ratio-sparse-trading/"><div class="article-cover" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div><div class="post-card__body"><span class="eyebrow">Sharpe 比率 · 年化</span><h3 class="post-card__title">交易稀少的策略，<wbr/>為什麼 Sharpe 會被高估：<wbr/>年化要用完整的交易日</h3><span class="post-card__excerpt">常見的 Sharpe 算法只用有交易出場的日子，再乘上 √252 年化。對一個月才交易一次的策略，這會把 Sharpe 高估好幾倍，還會讓它排在更好的策略前面。這篇說明誤差從哪裡來、TradePose 怎麼組成日序列，以及在自己的程式裡怎麼改。</span><span class="post-card__meta"><span>2026-10-24 23:28</span><span>4 分鐘</span></span></div></a><a class="card card-interactive post-card" href="/zh-tw/posts/one-opportunity-many-exit-policies/"><div class="article-cover" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div><div class="post-card__body"><span class="eyebrow">延遲進場 · 停損停利 · 父策略</span><h3 class="post-card__title">一個進場機會，<wbr/>同時計算多種出場：<wbr/>引擎怎麼拆解一個策略</h3><span class="post-card__excerpt">TradePose 把每個策略拆成一個進場機會，和套在它上面的交易政策。進場機會只算一次，每個政策在它之上獨立計算，而且每個政策的交易都能逐筆對回它來自的機會，包括延遲進場沒有成交的那些。這篇說明這個拆法，以及它為什麼讓分層研究做得到。</span><span class="post-card__meta"><span>2026-10-24 22:10</span><span>5 分鐘</span></span></div></a><a class="card card-interactive post-card" href="/zh-tw/posts/backtest-lookahead-bar-timing/"><div class="article-cover" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div><div class="post-card__body"><span class="eyebrow">偷看未來 · 同一根 K 線成交</span><h3 class="post-card__title">回測怎麼避免偷看未來：<wbr/>K 線的時間標記、<wbr/>shift 與同一根 K 線裡的先後</h3><span class="post-card__excerpt">回測偷看未來最常見的兩種方式很隱蔽：在一根 K 線還沒收完時就讀它的收盤價，以及在同一根 K 線裡假設對自己有利的先後順序。這篇說明 TradePose 在什麼時候做決策、哪些部分由引擎保證、哪些由策略作者負責，以及一根 K 線碰到多個價格時引擎採用的保守規則。</span><span class="post-card__meta"><span>2026-10-24 20:38</span><span>8 分鐘</span></span></div></a></div></section></div><!-- island 外層加 div：astro-island 為 display: contents，否則引用區塊會被排進格線的側欄 --><div><astro-island uid="Z23EqyI" prefix="r25" component-url="/_astro/index.Abi5bUu1.js" component-export="Citation" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;引用本文&quot;],&quot;copyLabels&quot;:[0,{&quot;copy&quot;:[0,&quot;複製&quot;],&quot;copied&quot;:[0,&quot;已複製&quot;],&quot;failed&quot;:[0,&quot;無法複製&quot;]}],&quot;text&quot;:[0,&quot;TradePose Research（2026）。〈SuperTrend 狀態交易：從 768 個候選到 1 個留觀策略（US100 與黃金）〉TradePose Research Notes.&quot;],&quot;bibtex&quot;:[0,&quot;@article{tradepose2026us100xauusdsupertrendstateredo,\n  title   = {SuperTrend 狀態交易：從 768 個候選到 1 個留觀策略（US100 與黃金）},\n  author  = {TradePose Research},\n  journal = {TradePose Research Notes},\n  year    = {2026}\n}&quot;]}" ssr client="visible" opts="{&quot;name&quot;:&quot;Citation&quot;,&quot;value&quot;:true}" await-children><div class="citation"><div class="citation-title">引用本文</div><p class="citation-text">TradePose Research（2026）。〈SuperTrend 狀態交易：從 768 個候選到 1 個留觀策略（US100 與黃金）〉TradePose Research Notes.</p><div class="citation-code">@article{tradepose2026us100xauusdsupertrendstateredo,
+  title   = {SuperTrend 狀態交易：從 768 個候選到 1 個留觀策略（US100 與黃金）},
+  author  = {TradePose Research},
+  journal = {TradePose Research Notes},
+  year    = {2026}
+}<button type="button" class="btn btn-secondary btn-sm">複製</button></div></div><!--astro:end--></astro-island></div></div></main><footer class="site-footer"><div class="container"><div class="site-footer__grid"><div class="site-footer__brand"><span class="site-brand"><span class="site-brand__mark" aria-hidden="true"></span>TradePose</span><p class="site-footer__tagline">量化研究筆記：回測、統計與策略診斷。文中數字皆由文章附帶的回測統計產生。</p></div><div><h2 class="site-footer__title">研究</h2><ul><li><a href="/zh-tw/#research">研究目錄</a></li><li><a href="/zh-tw/#method">資料與計算說明</a></li><li><a href="/zh-tw/rss.xml">RSS</a></li></ul></div></div><div class="site-footer__legal"><span>© 2026 TradePose</span><span>研究內容不構成投資建議</span></div></div></footer><script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BflPKFW9.js"></script></body></html>

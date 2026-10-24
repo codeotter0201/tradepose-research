@@ -1,0 +1,1060 @@
+<!DOCTYPE html><html lang="zh-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）｜TradePose Research</title><meta name="description" content="研究文章與策略報告共用的術語與方法：三種單位與它們為什麼不能直接對照、MAE／G_MFE／MFE 等偏移指標、績效與回撤、研究分層的順序、對照組、有利與不利延遲進場、停損停利與保本、濾網的檢驗方法，以及 Market Profile 訊號 G01–G16 的代號總表。"><meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large"><link rel="canonical" href="https://research.tradepose.com/zh-tw/posts/quant-research-glossary/"><link rel="alternate" hreflang="en" href="https://research.tradepose.com/en/posts/quant-research-glossary/"><link rel="alternate" hreflang="zh-TW" href="https://research.tradepose.com/zh-tw/posts/quant-research-glossary/"><link rel="alternate" hreflang="x-default" href="https://research.tradepose.com/en/posts/quant-research-glossary/"><link rel="alternate" type="application/rss+xml" title="TradePose Research" href="/zh-tw/rss.xml"><meta property="og:site_name" content="TradePose Research"><meta property="og:locale" content="zh_TW"><meta property="og:locale:alternate" content="en_US"><meta property="og:type" content="article"><meta property="og:title" content="MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）"><meta property="og:description" content="研究文章與策略報告共用的術語與方法：三種單位與它們為什麼不能直接對照、MAE／G_MFE／MFE 等偏移指標、績效與回撤、研究分層的順序、對照組、有利與不利延遲進場、停損停利與保本、濾網的檢驗方法，以及 Market Profile 訊號 G01–G16 的代號總表。"><meta property="og:url" content="https://research.tradepose.com/zh-tw/posts/quant-research-glossary/"><meta property="og:image" content="https://research.tradepose.com/og-default.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）"><meta name="twitter:description" content="研究文章與策略報告共用的術語與方法：三種單位與它們為什麼不能直接對照、MAE／G_MFE／MFE 等偏移指標、績效與回撤、研究分層的順序、對照組、有利與不利延遲進場、停損停利與保本、濾網的檢驗方法，以及 Market Profile 訊號 G01–G16 的代號總表。"><meta name="twitter:image" content="https://research.tradepose.com/og-default.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）","description":"研究文章與策略報告共用的術語與方法：三種單位與它們為什麼不能直接對照、MAE／G_MFE／MFE 等偏移指標、績效與回撤、研究分層的順序、對照組、有利與不利延遲進場、停損停利與保本、濾網的檢驗方法，以及 Market Profile 訊號 G01–G16 的代號總表。","articleSection":"方法論","keywords":"量化交易名詞, Glossary, MAE, MFE, G_MFE, Profit Factor, Recovery Factor, Max Drawdown, Delayed Entry, Buy Limit, Buy Stop, Stop Loss, Trailing Stop, Breakeven, Market Profile, 循環平移對照, 對照組, 獲利因子, 最大回撤","inLanguage":"zh-TW","datePublished":"2026-10-08T23:52:00+08:00","dateModified":"2026-10-08T23:52:00+08:00","image":"https://research.tradepose.com/og-default.png","url":"https://research.tradepose.com/zh-tw/posts/quant-research-glossary/","mainEntityOfPage":"https://research.tradepose.com/zh-tw/posts/quant-research-glossary/","author":{"@type":"Organization","name":"TradePose Research"},"publisher":{"@type":"Organization","name":"TradePose","url":"https://tradepose.com"}}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"研究","item":"https://research.tradepose.com/zh-tw/"},{"@type":"ListItem","position":2,"name":"MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）","item":"https://research.tradepose.com/zh-tw/posts/quant-research-glossary/"}]}</script><!-- data-init：第一次繪製前套用主題、計算模式與檢視；頁面轉場換頁後重新執行（<html> 的屬性換成新頁的） --><script data-init>try { const q = new URLSearchParams(location.search).get('theme'); if (q === 'light' || q === 'dark') sessionStorage.setItem('tp-theme', q); } catch {}
+try { const t = sessionStorage.getItem('tp-theme') ?? localStorage.getItem('tp-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; else if (t === 'system') delete document.documentElement.dataset.theme; } catch {}</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CYDbzu1r.js"></script><link rel="stylesheet" href="/_astro/Base.CYCDe2lS.css"><style>html[data-view=report] [data-view-panel=article],html[data-view=case] [data-view-panel=article]{display:none}
+</style></head><body><a class="skip-link" href="#main">跳到主要內容</a><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><header class="site-header"><div class="container site-header__inner"><a class="site-brand" href="/zh-tw/"><span class="site-brand__mark" aria-hidden="true"></span><span class="site-brand__name">TradePose</span><span class="site-brand__sub">Research</span></a><div class="site-header__context"><astro-island uid="9t1mg" prefix="r18" component-url="/_astro/index.Betv42FV.js" component-export="PageContext" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）&quot;],&quot;followHeading&quot;:[0,true],&quot;labels&quot;:[0,{&quot;open&quot;:[0,&quot;打開目錄&quot;],&quot;contents&quot;:[0,&quot;目錄&quot;],&quot;close&quot;:[0,&quot;關閉&quot;]}]}" ssr client="load" opts="{&quot;name&quot;:&quot;PageContext&quot;,&quot;value&quot;:true}" await-children><div class="page-context"><span class="page-context__heading"><span class="page-context__title" title="MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）">MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）</span></span><span class="page-context__progress" aria-hidden="true" style="--progress:0"></span></div><!--astro:end--></astro-island></div><div class="site-header__actions"><astro-island uid="1u9uL0" prefix="r19" component-url="/_astro/SiteSettings.CBWXpzKJ.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;zh-tw&quot;],&quot;modes&quot;:[1,[]],&quot;languages&quot;:[1,[[0,{&quot;href&quot;:[0,&quot;/en/posts/quant-research-glossary/&quot;],&quot;lang&quot;:[0,&quot;en&quot;],&quot;name&quot;:[0,&quot;English&quot;],&quot;current&quot;:[0,false]}],[0,{&quot;href&quot;:[0,&quot;/zh-tw/posts/quant-research-glossary/&quot;],&quot;lang&quot;:[0,&quot;zh-TW&quot;],&quot;name&quot;:[0,&quot;繁體中文&quot;],&quot;current&quot;:[0,true]}]]],&quot;views&quot;:[1,[]]}" ssr client="load" opts="{&quot;name&quot;:&quot;SiteSettings&quot;,&quot;value&quot;:true}" await-children><button type="button" id="radix-_r19R_0_" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="btn btn-ghost btn-sm settings-menu" aria-label="設定" title="設定"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h6M12 5h1M3 11h1M7 11h6"></path><circle cx="10.5" cy="5" r="1.5"></circle><circle cx="5.5" cy="11" r="1.5"></circle></svg></button><!--astro:end--></astro-island></div></div></header><main id="main"><div class="article" data-view-panel="article"><div class="wide article-banner"><div class="article-cover article-cover--banner" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div></div><header class="article-header"><span class="category-chip">方法論</span><h1 class="article-title visually-hidden">MAE、<wbr/>G_MFE、<wbr/>獲利因子是什麼？<wbr/> 量化策略研究用詞表（Glossary）</h1><p class="article-dek"><p>同一個概念在交易圈常有好幾種說法，同一個詞在不同書裡也可能算法不同。這篇固定我們研究文章與策略報告裡每個術語的意思：英文術語、中文名稱、怎麼算，以及容易和哪個詞混淆；也整理各研究共用的方法，例如對照組、波動單位的選擇、停利與濾網用什麼標準判斷，並列出 Market Profile 訊號的代號總表。之後的文章都照這裡的定義寫。</p></p><dl class="article-meta"><div><dt>發布</dt><dd>2026-10-08 23:52</dd></div><div><dt>閱讀時間</dt><dd>27 分鐘</dd></div></dl></header><div><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value=="object"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};"requestIdleCallback"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event("astro:idle"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="20qqxQ" prefix="r31" component-url="/_astro/ArticleToc.GohhgC-S.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;zh-tw&quot;],&quot;items&quot;:[1,[[0,{&quot;id&quot;:[0,&quot;報酬和回撤的數字是什麼單位&quot;],&quot;label&quot;:[0,&quot;報酬和回撤的數字是什麼單位？&quot;]}],[0,{&quot;id&quot;:[0,&quot;為什麼波動用日線-atr取約-60-個交易日&quot;],&quot;label&quot;:[0,&quot;為什麼波動用日線 ATR、取約 60 個交易日？&quot;]}],[0,{&quot;id&quot;:[0,&quot;為什麼有些研究改用真實區間中位數&quot;],&quot;label&quot;:[0,&quot;為什麼有些研究改用真實區間中位數？&quot;]}],[0,{&quot;id&quot;:[0,&quot;maeg_mfemfe-差在哪&quot;],&quot;label&quot;:[0,&quot;MAE、G_MFE、MFE 差在哪？&quot;]}],[0,{&quot;id&quot;:[0,&quot;怎麼看一個策略的報酬和風險&quot;],&quot;label&quot;:[0,&quot;怎麼看一個策略的報酬和風險？&quot;]}],[0,{&quot;id&quot;:[0,&quot;策略研究怎麼分層&quot;],&quot;label&quot;:[0,&quot;策略研究怎麼分層？&quot;]}],[0,{&quot;id&quot;:[0,&quot;為什麼回測需要對照組&quot;],&quot;label&quot;:[0,&quot;為什麼回測需要對照組？&quot;]}],[0,{&quot;id&quot;:[0,&quot;延遲進場的有利和不利指的是什麼&quot;],&quot;label&quot;:[0,&quot;延遲進場的有利和不利指的是什麼？&quot;]}],[0,{&quot;id&quot;:[0,&quot;停損停利移動停損和保本怎麼運作&quot;],&quot;label&quot;:[0,&quot;停損、停利、移動停損和保本怎麼運作？&quot;]}],[0,{&quot;id&quot;:[0,&quot;停利要用什麼標準判斷&quot;],&quot;label&quot;:[0,&quot;停利要用什麼標準判斷？&quot;]}],[0,{&quot;id&quot;:[0,&quot;怎麼確認濾網真的有資訊&quot;],&quot;label&quot;:[0,&quot;怎麼確認濾網真的有資訊？&quot;]}],[0,{&quot;id&quot;:[0,&quot;怎麼判斷參數不是運氣&quot;],&quot;label&quot;:[0,&quot;怎麼判斷參數不是運氣？&quot;]}],[0,{&quot;id&quot;:[0,&quot;濾網和市場結構的用語&quot;],&quot;label&quot;:[0,&quot;濾網和市場結構的用語&quot;]}],[0,{&quot;id&quot;:[0,&quot;策略代號總表&quot;],&quot;label&quot;:[0,&quot;策略代號總表&quot;]}],[0,{&quot;id&quot;:[0,&quot;部位大小怎麼算&quot;],&quot;label&quot;:[0,&quot;部位大小怎麼算？&quot;]}],[0,{&quot;id&quot;:[0,&quot;goals-title&quot;],&quot;label&quot;:[0,&quot;這篇研究要回答的問題&quot;]}],[0,{&quot;id&quot;:[0,&quot;arising-title&quot;],&quot;label&quot;:[0,&quot;研究中衍生的問題&quot;]}],[0,{&quot;id&quot;:[0,&quot;method&quot;],&quot;label&quot;:[0,&quot;方法與資料&quot;]}]]]}" ssr client="idle" opts="{&quot;name&quot;:&quot;ArticleToc&quot;,&quot;value&quot;:true}" await-children><nav class="toc toc--aside" aria-label="目錄"><div class="toc-title" aria-hidden="true">目錄</div><ol class="toc-list"><li class=""><a href="#報酬和回撤的數字是什麼單位" aria-current="true">報酬和回撤的數字是什麼單位？</a></li><li class=""><a href="#為什麼波動用日線-atr取約-60-個交易日">為什麼波動用日線 ATR、取約 60 個交易日？</a></li><li class=""><a href="#為什麼有些研究改用真實區間中位數">為什麼有些研究改用真實區間中位數？</a></li><li class=""><a href="#maeg_mfemfe-差在哪">MAE、G_MFE、MFE 差在哪？</a></li><li class=""><a href="#怎麼看一個策略的報酬和風險">怎麼看一個策略的報酬和風險？</a></li><li class=""><a href="#策略研究怎麼分層">策略研究怎麼分層？</a></li><li class=""><a href="#為什麼回測需要對照組">為什麼回測需要對照組？</a></li><li class=""><a href="#延遲進場的有利和不利指的是什麼">延遲進場的有利和不利指的是什麼？</a></li><li class=""><a href="#停損停利移動停損和保本怎麼運作">停損、停利、移動停損和保本怎麼運作？</a></li><li class=""><a href="#停利要用什麼標準判斷">停利要用什麼標準判斷？</a></li><li class=""><a href="#怎麼確認濾網真的有資訊">怎麼確認濾網真的有資訊？</a></li><li class=""><a href="#怎麼判斷參數不是運氣">怎麼判斷參數不是運氣？</a></li><li class=""><a href="#濾網和市場結構的用語">濾網和市場結構的用語</a></li><li class=""><a href="#策略代號總表">策略代號總表</a></li><li class=""><a href="#部位大小怎麼算">部位大小怎麼算？</a></li><li class=""><a href="#goals-title">這篇研究要回答的問題</a></li><li class=""><a href="#arising-title">研究中衍生的問題</a></li><li class=""><a href="#method">方法與資料</a></li></ol></nav><!--astro:end--></astro-island></div>
+<div class="abstract"><div class="abstract-title">結論</div><p>讀我們的研究，最需要先知道三件事。第一，MFE 只量最大不利偏移（MAE）發生之前的有利走勢，整段持倉的最大有利走勢另稱 G_MFE，這和多數教科書的 MFE 不同。第二，報酬、回撤與 MAE 的單位有三種：百分比（%）、日線 ATR 倍數與真實區間中位數倍數，不同單位的數字不能直接對照。第三，延遲進場只分兩種：有利延遲進場（Buy／Sell Limit，多單在訊號價下方掛限價單等回檔）與不利延遲進場（Buy／Sell Stop，多單在訊號價上方掛觸價單等突破）；有利、不利是從掛單的角度命名，進場持倉後，同一個方向的走勢會換成相反的名字。</p></div><p class="reading-split">以上是結論；以下每一節是一個主張的證據，可以從各節或證據連結進入策略報告，看全部參數組的數據。</p>
+<div class="prose"><h2 id="報酬和回撤的數字是什麼單位">報酬和回撤的數字是什麼單位？</h2>
+<p>報酬、回撤、每筆損益與 MAE 這類數值的單位由計算模式（Analyzer mode）決定；勝率、比率與天數不受影響。文章提供兩種以上模式時，導覽列可以切換。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="報酬和回撤的數字是什麼單位？（表格）"><table class="data-table"><thead><tr><th>計算模式</th><th>怎麼算</th><th>單位</th></tr></thead><tbody><tr><td>百分比（Percentage）</td><td>每筆損益 ÷ 進場價，再加總</td><td><code>%</code></td></tr><tr><td>波動模式（Volatility-normalized）</td><td>每筆損益 ÷ 出場時的波動，再加總；相當於每筆都承擔相同的波動風險</td><td><code>vol</code>（波動的倍數）</td></tr><tr><td>絕對數值（Absolute）</td><td>每單位的價格點數；套用部位大小後為美元</td><td><code>pts</code></td></tr></tbody></table></div>
+<p>所有模式的累積報酬都是單利加總（Simple sum）：直接把每筆結果相加，不考慮部位大小與複利。</p>
+<p>波動模式要選一條波動序列當作單位。我們的研究用過兩種，所以文章裡的報酬實際上有三種單位：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="報酬和回撤的數字是什麼單位？（表格）"><table class="data-table"><thead><tr><th>單位</th><th>每筆損益除以</th><th>使用的研究</th></tr></thead><tbody><tr><td>百分比</td><td>進場價</td><td>各篇都可切換；不作為主要比較單位</td></tr><tr><td>日線 ATR 倍數</td><td>出場時的紐約日線 ATR(72)，約 60 個交易日</td><td>Market Profile 訊號、SuperTrend 狀態、時鐘策略的根與第一棵策略樹</td></tr><tr><td>真實區間中位數倍數</td><td>出場時前 143 根紐約日 K 的真實區間中位數</td><td>星期 × Market Profile 的時鐘組合與它的投資組合</td></tr></tbody></table></div>
+<p>三種單位的數字不能直接對照：</p>
+<ul>
+<li><strong>百分比和波動倍數之間沒有固定換算。</strong> 波動相對於價格的比例每年不同：那斯達克在 30,000 點時每天的點數波動遠大於 15,000 點時，平靜年份與劇烈年份的比例也不一樣。同一批交易換算成百分比，劇烈期的交易份量較重，會改變哪些參數組看起來最好。</li>
+<li><strong>兩種波動倍數的尺度不同。</strong> 143 根日 K 的真實區間中位數大約是日線 ATR(72) 的 0.92 倍，同樣寫「0.5 倍」，中位數版本代表的距離稍短。</li>
+<li><strong>樣本也不同。</strong> 中位數版本的指標要暖機到 2022 年 6 月，統計從 2022 年 6 月 20 日開始；日線 ATR 版本從 2022 年 1 月下旬開始。</li>
+</ul>
+<p>所以比較兩篇文章的數字前，先確認它們的單位與樣本期間（寫在文末「方法與資料」）。</p>
+<p>同一條波動在不同地方取不同時點：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="報酬和回撤的數字是什麼單位？（表格）"><table class="data-table"><thead><tr><th>用途</th><th>取哪個時點的波動</th></tr></thead><tbody><tr><td>波動模式的每筆損益</td><td>出場時（Exit volatility）</td></tr><tr><td>停損、停利、延遲進場的距離</td><td>進場時（Entry volatility）</td></tr><tr><td>波動模式的 MAE、G_MFE、MFE</td><td>該偏移發生當下（Event-time volatility）</td></tr></tbody></table></div>
+<p>日內策略在同一天進出場，這三個時點的日線波動相同。持倉跨日的策略把波動固定在進場訊號那一刻、整筆交易沿用，所以出場與偏移發生當下的波動都等於進場時的波動，不會因為持倉期間波動的變化而失真。</p>
+<p>例如一筆多單賺 2 點、進場價 100、出場時波動 40 點：百分比模式是 +2%，波動模式是 +0.05 vol，絕對數值是 +2 pts。</p>
+<h2 id="為什麼波動用日線-atr取約-60-個交易日">為什麼波動用日線 ATR、取約 60 個交易日？</h2>
+<p>波動（Volatility）是損益、停損、停利與延遲進場共用的單位。平均真實波幅（Average True Range，ATR）是一段期間真實波幅的平均，寫法是「K 線頻率 + ATR(根數)」，例如日線 ATR(72)、1 小時 ATR(460)。選擇波動單位時看三件事：和停損停利同單位、交易前就知道、同一天的每筆交易都一樣。</p>
+<ul>
+<li><strong>ATR 而不是報酬標準差</strong>：ATR 以價格點數表示，可以直接寫成「停損 0.5 倍 ATR」；真實波幅（True Range）包含跳空，隔夜跳空也算進波動。</li>
+<li><strong>日線而不是 15 分鐘</strong>：15 分鐘 ATR 在同一天內隨時段變化，盤前平靜、開盤劇烈，單位會跟著進場時點改變。日線 ATR 取前一根已完成的日 K，當天每一筆交易都用同一個值，開盤前就已知，掛單價格從訊號出現到出場都固定。</li>
+<li><strong>約 60 個交易日</strong>：太短，一週的劇烈波動就讓單位大幅跳動；太長，跟不上 2022 年空頭到之後較平靜年份的變化。</li>
+</ul>
+<p>哪一把尺最穩，我們實際量過。在 26 個 US100 Market Profile 交易設定上（2022 年 1 月下旬到 2026 年 9 月 23 日、週二到週五、立即進場），每個交易設定逐年計算 MAE 的第 90 百分位，再看它跨年的變異係數：越小代表用這把尺量，MAE 每年越一致。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="為什麼波動用日線 ATR、取約 60 個交易日？（表格）"><table class="data-table"><thead><tr><th>尺度</th><th class="num">年度 MAE 第 90 百分位的變異係數（26 個交易設定的中位數）</th></tr></thead><tbody><tr><td>日線 ATR，約 60 個交易日</td><td class="num">0.123</td></tr><tr><td>4 小時 ATR，約 60 個交易日</td><td class="num">0.132</td></tr><tr><td>1 小時 ATR，約 60 個交易日</td><td class="num">0.133</td></tr><tr><td>日線 ATR，約 20 個交易日</td><td class="num">0.164</td></tr><tr><td>15 分鐘 ATR（96 根，約 1 天）</td><td class="num">0.179</td></tr><tr><td>點數</td><td class="num">0.233</td></tr><tr><td>價格百分比</td><td class="num">0.298</td></tr></tbody></table></div>
+<p>回看長度比 K 線週期重要：60 天的日線、4 小時、1 小時 ATR 差不多，20 天就明顯變差；固定點數與價格百分比最不穩。換成約 20、40、120 個交易日的日線 ATR，Market Profile 訊號的排名與首選也大致不變，見〈<a href="/zh-tw/posts/us100-market-profile-signals-volatility/">Market Profile 訊號在價值區兩側都成立嗎？</a>〉。</p>
+<p>日線 ATR(72) 是 72 根紐約日 K。紐約日線把週日晚上的短盤段算成獨立的一根，大約每 6 根有 1 根，所以 72 根約等於 60 個交易日。這根 K 線的波幅約只有平日的三分之一，ATR(72) 因此比只用平日的 ATR 低約 10%；偏差很穩定，不影響排名，但換算點數時要記得：「0.5 倍日線 ATR(72)」約等於平日波動的 0.45 倍。</p>
+<p>其他用途的 ATR 依它要回答的問題取長度：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="為什麼波動用日線 ATR、取約 60 個交易日？（表格）"><table class="data-table"><thead><tr><th>用途</th><th>設定</th><th>寫法</th></tr></thead><tbody><tr><td>波動單位（損益、停損停利、延遲進場）</td><td>日線 ATR(72)，約 60 個交易日</td><td>「0.5 倍日線 ATR」</td></tr><tr><td>波動水準</td><td>日線 ATR(24)（約 20 個交易日）÷ 前一日收盤，在最近 168 根日 K 中的排名，前三分之一為高、後三分之一為低</td><td>「波動水準高」</td></tr><tr><td>波動變化</td><td>日線 ATR(6) ÷ ATR(24)（約 5 天 ÷ 20 天），高於 1.1 進入擴張、低於 0.9 回到收斂</td><td>「波動擴張」</td></tr><tr><td>SuperTrend</td><td>以 SuperTrend 自己的 K 線計算，天數換成根數，例如 1 小時 20 天 = 460 根（每天 23 小時）</td><td>「1 小時 SuperTrend（ATR 460 × 1.5）」</td></tr></tbody></table></div>
+<h2 id="為什麼有些研究改用真實區間中位數">為什麼有些研究改用真實區間中位數？</h2>
+<p>為了讓同一根 K 線的波動不管從哪裡開始算都一樣。Wilder ATR 是遞迴平滑，每個值都帶著視窗起點的影響：起點不同，之後每個值都會差一點點，而且永遠不會歸零。實盤系統每天從不同的起點重算，早已結束的交易算出來的波動也可能每天不一樣。真實區間的滾動中位數只看最近 N 根 K 線，視窗外的歷史完全不影響它。</p>
+<p>時鐘策略的後續研究（星期 × Market Profile 的組合與投資組合）把所有波動都換成中位數：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="為什麼有些研究改用真實區間中位數？（表格）"><table class="data-table"><thead><tr><th>用途</th><th>日線 ATR 版本</th><th>中位數版本</th></tr></thead><tbody><tr><td>損益與距離的單位</td><td>日線 ATR(72)</td><td>前 143 根日 K 的真實區間中位數，約為日線 ATR(72) 的 0.92 倍</td></tr><tr><td>SuperTrend 帶寬</td><td>Wilder ATR N</td><td>2N − 1 根的中位數（平均落後時間相同），倍數乘上實測的「ATR ÷ 中位數」比值：1 小時 1.33、4 小時 1.30、日線 1.07</td></tr><tr><td>日線波動水準</td><td>ATR(24)</td><td>47 根中位數，在 168 天的排名視窗中排名</td></tr><tr><td>日線波動變化</td><td>ATR(6) ÷ ATR(24)</td><td>11 根中位數 ÷ 47 根中位數</td></tr></tbody></table></div>
+<p>換成中位數需要暖機。資料從 2021 年 11 月 4 日開始，最晚完成暖機的是日線波動水準：47 根中位數要先有值，再累積 168 天的排名視窗，到 2022 年 6 月 16 日才完成。所以中位數版本的統計都從 2022 年 6 月 20 日開始，之前的資料只拿來暖機。這也是兩種版本的數字不能直接對照的原因之一。</p>
+<h2 id="maeg_mfemfe-差在哪">MAE、G_MFE、MFE 差在哪？</h2>
+<p>偏移指標（Excursions）描述一筆交易持倉期間價格走了多遠，只在實際成交之後到出場之間量測。以下用同一筆多單說明，進場價 100，第 7 根 K 棒以 102 出場：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="MAE、G_MFE、MFE 差在哪？（表格）"><table class="data-table"><thead><tr><th>K 棒</th><th class="num">1</th><th class="num">2</th><th class="num">3</th><th class="num">4</th><th class="num">5</th><th class="num">6</th><th class="num">7</th></tr></thead><tbody><tr><td>最高價</td><td class="num">100.5</td><td class="num">103</td><td class="num">102</td><td class="num">99</td><td class="num">104</td><td class="num">106</td><td class="num">105</td></tr><tr><td>最低價</td><td class="num">99</td><td class="num">101</td><td class="num">98.5</td><td class="num">97</td><td class="num">99</td><td class="num">103</td><td class="num">101</td></tr></tbody></table></div>
+<h3 id="最大不利偏移maximum-adverse-excursionmae">最大不利偏移（Maximum Adverse Excursion，MAE）</h3>
+<p>持倉期間價格對持倉最不利的距離。多單是進場價減最低價，空單是最高價減進場價；沒有不利走勢時為 0。例子中最低價 97 在第 4 根，MAE = 3。MAE 是設定停損的主要依據。</p>
+<h3 id="整段最大有利偏移global-mfeg_mfe">整段最大有利偏移（Global MFE，G_MFE）</h3>
+<p>整段持倉期間對持倉最有利的距離。多單是最高價減進場價。例子中最高價 106 在第 6 根，G_MFE = 6。G_MFE 和 MAE 各自獨立量測，誰先發生都可以。G_MFE 是設定停利、判斷這筆交易曾經有多少獲利空間的依據。</p>
+<h3 id="mae-前最大有利偏移mfe">MAE 前最大有利偏移（MFE）</h3>
+<p>只量 MAE 發生之前（不含 MAE 那根 K 棒）的最大有利距離；沒有不利走勢時量到出場為止。例子中 MAE 在第 4 根，前三根的最高價是 103，MFE = 3。因為 MFE 的區間是 G_MFE 區間的一部分，MFE 一定不大於 G_MFE。</p>
+<p>多數教科書把整段持倉的最大有利走勢稱為 MFE，對應的是這裡的 G_MFE。兩者差很多時，代表價格先往有利方向走一小段、回檔到 MAE 之後才走出主要的行情。</p>
+<h3 id="mfe-前最大不利偏移mae_lv1">MFE 前最大不利偏移（MAE_LV1）</h3>
+<p>MFE 發生之前的最大不利距離，也就是第一段有利走勢之前的回檔。例子中 MFE 在第 2 根，第 1 根最低 99，MAE_LV1 = 1。</p>
+<h3 id="最大回落maximum-high-lowmhl">最大回落（Maximum High-Low，MHL）</h3>
+<p>持倉期間從任一個高點回落到之後低點的最大深度，空單則是從低點反彈的最大高度。例子中從第 2 根的 103 回落到第 4 根的 97，MHL = 6；第 6 根的 106 回落到第 7 根的 101 只有 5。MHL 不小於 MAE，是設定移動停損寬度的參考。K 線看不出同一根的高點與低點哪個先到，MHL 保守地當成先到高點（空單先到低點），所以它是回落深度的上限。</p>
+<h3 id="其他偏移相關用語">其他偏移相關用語</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="其他偏移相關用語（表格）"><table class="data-table"><thead><tr><th>術語</th><th>定義</th></tr></thead><tbody><tr><td>獲利交易／虧損交易（Winner／Loser）</td><td>損益大於 0／小於 0 的交易；等於 0 另計。兩組合稱獲利組、虧損組</td></tr><tr><td>獲利擷取率（Profit extraction）</td><td>報酬中位數 ÷ G_MFE 中位數：曾經有的獲利空間吃到多少</td></tr><tr><td>獲利回吐率（Profit giveback）</td><td>1 − 獲利擷取率</td></tr><tr><td>MHL 壓力（MHL pressure）</td><td>MHL 中位數 ÷ G_MFE 中位數：回落深度相對獲利空間的比例</td></tr><tr><td>偏移範圍（Excursion range）</td><td>每筆 G_MFE + MAE 的中位數：進場後價格擺動的幅度</td></tr><tr><td>R 倍數（R multiple）</td><td>以一單位風險衡量的結果；每單位停損期望值 = 平均結果 ÷ 停損距離</td></tr><tr><td>分位數 Q1／Q2／Q3</td><td>第 25／50／75 百分位；Q2 就是中位數</td></tr></tbody></table></div>
+<h2 id="怎麼看一個策略的報酬和風險">怎麼看一個策略的報酬和風險？</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="怎麼看一個策略的報酬和風險？（表格）"><table class="data-table"><thead><tr><th>術語</th><th>定義</th></tr></thead><tbody><tr><td>累積報酬（Total return）</td><td>所有交易報酬的單利加總</td></tr><tr><td>每筆期望值（Expectancy）</td><td>平均每筆交易的報酬</td></tr><tr><td>勝率（Win rate）</td><td>損益大於 0 的交易比例</td></tr><tr><td>獲利因子（Profit factor，PF）</td><td>總獲利 ÷ 總虧損；大於 1 代表整體獲利</td></tr><tr><td>最大回撤（Max drawdown）</td><td>已出場交易的累積報酬，從前高往下的最大跌幅</td></tr><tr><td>未實現回撤（Unrealized drawdown）</td><td>另把持倉期間的 MAE 算進回撤，估計帳面上最深跌到哪裡</td></tr><tr><td>最長回撤期間（Longest drawdown duration）</td><td>從前高開始下跌、到回到前高，持續最久的一次有幾天</td></tr><tr><td>恢復因子（Recovery factor，RF）</td><td>累積報酬 ÷ 最大回撤：每承受一單位回撤賺回多少</td></tr><tr><td>Sharpe（日，年化）</td><td>每個交易日的彙總報酬（沒有出場的日子記為 0），平均 ÷ 標準差 × √252</td></tr><tr><td>Sortino（日，年化）</td><td>同上，但分母只計下方波動</td></tr><tr><td>SQN（System Quality Number）</td><td>√min(交易數, 100) × 每筆期望值 ÷ 每筆報酬標準差</td></tr><tr><td>每年為正（Positive years）</td><td>年度報酬大於 0 的年數，寫成「n / N 年」</td></tr><tr><td>最差年度（Worst year）</td><td>年度報酬最低的那一年</td></tr><tr><td>日報酬相關係數（Daily return correlation）</td><td>兩組策略每日損益的相關係數；越高越像同一個策略</td></tr></tbody></table></div>
+<p>策略報告沒有綜合排名，依五個觀察角度並列：時間一致性看每年為正與最差年度，參數穩定看參數鄰域，風險看回撤，報酬看累積報酬與期望值，分散看相關係數。</p>
+<h2 id="策略研究怎麼分層">策略研究怎麼分層？</h2>
+<p>一個策略從根策略開始，一層一層往下長，每一層只在上一層選出的組上改一件事。全站的順序都是：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="策略研究怎麼分層？（表格）"><table class="data-table"><thead><tr><th>層</th><th>改什麼</th><th>回答的問題</th></tr></thead><tbody><tr><td>根策略</td><td>訊號、方向、進場時點，訊號出現就進場、到固定時間出場</td><td>這個訊號本身有沒有優勢？</td></tr><tr><td>延遲進場</td><td>有利或不利延遲進場，與延遲距離</td><td>換個進場價，能不能少挨一點不利波動？</td></tr><tr><td>停損／停利</td><td>停損（SL）、停利（TP）</td><td>停損停利該放在哪？</td></tr><tr><td>保本</td><td>保本停損的觸發點與鎖利</td><td>走對方向之後，能不能不再虧回去？</td></tr><tr><td>移動停損</td><td>移動停損的距離</td><td>怎麼跟著行情保住利潤？</td></tr><tr><td>濾網</td><td>依市場狀態決定哪些天不交易</td><td>擋掉的日子真的比較差嗎？</td></tr><tr><td>組合</td><td>哪些策略一起交易、各承擔多少風險</td><td>放在一起時風險怎麼分配？</td></tr></tbody></table></div>
+<p>濾網放在最後，套在已經完成的策略上：它改變的是「哪些天交易」，太早加入會讓後面每一層都在一批被挑過的日子上選參數。某篇研究實際做的順序不同時，文章照實寫那篇的順序，但用同樣的名稱，需要編號時寫「第 N 層：延遲進場」。完整說明見〈<a href="/zh-tw/posts/strategy-lineage-layers/">研究地圖與分層方法</a>〉。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="策略研究怎麼分層？（表格）"><table class="data-table"><thead><tr><th>術語</th><th>定義</th></tr></thead><tbody><tr><td>策略定義（Definition）</td><td>一組訊號、指標與濾網的設定</td></tr><tr><td>基準策略（Baseline）</td><td>Definition 原本的進出場：訊號出現就進場、訊號結束就出場</td></tr><tr><td>父策略（Parent）</td><td>上一層選出、這一層要在它上面改一件事的那一組；根策略沒有父策略</td></tr><tr><td>兄弟（Siblings）</td><td>同一個父策略底下、同一層的其他組</td></tr><tr><td>研究變數（Research variable）</td><td>兄弟之間有變化的參數</td></tr><tr><td>參數組（Case）</td><td>策略報告裡的一組參數設定與它的回測結果</td></tr><tr><td>交易設定（Setup）</td><td>訊號、方向與進場時點的組合；後續研究沿用同一個名稱</td></tr><tr><td>買進持有（Buy and hold）</td><td>標的每日收盤對收盤的報酬，交代行情背景</td></tr><tr><td>同時段持有（Session hold）</td><td>每天在同一個時段進場、出場，不看任何訊號；用來檢驗訊號是不是只是時段效果</td></tr></tbody></table></div>
+<h2 id="為什麼回測需要對照組">為什麼回測需要對照組？</h2>
+<p>回測結果好，可能來自策略以外的因素，例如進場時段或整段期間的大盤走勢。對照組（Control）只拿掉要檢驗的條件、其他設定都相同，兩者的差距才是條件本身的貢獻。我們的研究依要檢驗的條件，用不同的對照組，每次都寫明是哪一種：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="為什麼回測需要對照組？（表格）"><table class="data-table"><thead><tr><th>要檢驗的條件</th><th>對照組</th><th>訊號要做到什麼</th></tr></thead><tbody><tr><td>訊號本身</td><td>同時點、同方向無條件進場，持有到同一個出場時間</td><td>每筆期望值高於對照；只和 0 比，可能只是搭上那個時段的方向</td></tr><tr><td>訊號是不是 Market Profile 的效果</td><td>鏡像事件：同一條規則翻到價值區另一側</td><td>事件與鏡像都依同一個假設成立；兩者都只有做多（或都只有做空）賺錢，結果就是時段方向</td></tr><tr><td>這一層的設定</td><td>父策略：上一層選出的那一組</td><td>比父策略好，這一層的複雜度才值得加</td></tr><tr><td>濾網</td><td>循環平移對照：擋單天數相同、時點打亂</td><td>勝過大多數平移版本，見下面「怎麼確認濾網真的有資訊？」</td></tr><tr><td>行情背景</td><td>買進持有、同時段持有</td><td>報酬以同時段持有比較；買進持有只交代行情，例如 2022 年空頭</td></tr></tbody></table></div>
+<p>同時段對照的例子：以波動模式計算，2022–2026 年在 US100 上從 06:30–08:30 做空、持有到 16:00 本身就小賺。早盤的訊號若只有做空賺錢，可能只是搭上這個時段的方向，所以 Market Profile 訊號要勝過同時點的無條件進場，才算訊號本身有貢獻。</p>
+<p>讀對照比較時要注意：訊號是從很多組中挑出的最好結果，對照組沒有經過挑選，所以兩者的差距會高估訊號的真實增量。勝過對照是必要條件，不是已證實的優勢。</p>
+<h2 id="延遲進場的有利和不利指的是什麼">延遲進場的有利和不利指的是什麼？</h2>
+<p>延遲進場（Delayed entry）是訊號出現後不立刻進場，而是掛單等價格到某個位置。依掛單方式只有兩種：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="延遲進場的有利和不利指的是什麼？（表格）"><table class="data-table"><thead><tr><th>術語</th><th>掛單</th><th>多單的掛法</th><th>用途</th></tr></thead><tbody><tr><td>立即進場（Immediate entry）</td><td>—</td><td>訊號出現的那根 K 棒開盤進場</td><td>根策略的進場</td></tr><tr><td>有利延遲進場（Favorable delayed entry）</td><td>Buy／Sell Limit（限價單）</td><td>在訊號價下方掛單，價格回檔到才成交</td><td>用更好的價格進場，壓低 MAE</td></tr><tr><td>不利延遲進場（Adverse delayed entry）</td><td>Buy／Sell Stop（觸價單）</td><td>在訊號價上方掛單，價格突破到才成交</td><td>等價格先證明方向，過濾失敗的訊號</td></tr></tbody></table></div>
+<p>空單反過來：有利延遲進場在訊號價上方掛 Sell Limit 等反彈，不利延遲進場在訊號價下方掛 Sell Stop 等跌破。掛單價與訊號價的距離稱為延遲距離（Entry distance），以波動的倍數表示。根策略的訊號中最後有成交的比例稱為成交率（Fill rate）。</p>
+<p>同一件事在其他地方有別的說法，指的都是這兩種，本站只用「有利延遲進場」「不利延遲進場」：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="延遲進場的有利和不利指的是什麼？（表格）"><table class="data-table"><thead><tr><th>有利延遲進場的別名</th><th>不利延遲進場的別名</th></tr></thead><tbody><tr><td>Buy Limit／Sell Limit（掛單種類）</td><td>Buy Stop／Sell Stop</td></tr><tr><td>等回檔、回檔進場</td><td>等確認、突破進場</td></tr><tr><td>順勢進場</td><td>逆勢進場</td></tr><tr><td>報告的參數值 <code>favorable</code></td><td>報告的參數值 <code>adverse</code></td></tr></tbody></table></div>
+<p>「順勢」「逆勢」容易和行情方向混淆（不利延遲進場等的正是價格先往持倉方向走），所以不作為名稱。</p>
+<p>有利與不利描述的是掛單怎麼成交，不是持倉賺或賠：限價單的成交價比掛單時的市價好，所以叫有利；觸價單的成交價比掛單時的市價差，所以叫不利。進場之後改用持倉的角度看。以多單為例，訊號價 100：</p>
+<ul>
+<li>有利延遲進場掛在 98，價格跌到 98 成交。成交後價格如果繼續跌到 96，這段下跌對持倉是不利的，算進 MAE = 2。</li>
+<li>不利延遲進場掛在 102，價格漲到 102 成交。成交後價格如果繼續漲到 105，這段上漲對持倉是有利的，算進 G_MFE = 3。</li>
+</ul>
+<p>同樣是往下的走勢，掛單時讓有利延遲進場成交，持倉後卻是不利偏移。所以讀文章時：延遲進場的有利、不利只描述進場方式；成交之後的走勢一律用 MAE、G_MFE 描述。出場就沒有這個問題：停損、移動停損與保本停損都是不利（成交價對持倉不利的保護性停損），停利是有利，掛單角度和持倉角度一致。</p>
+<h3 id="為什麼掛更好的價格mae-常常壓不下來">為什麼掛更好的價格，MAE 常常壓不下來？</h3>
+<p>因為 MAE 接近「無記憶」：價格已經逆向走了一段之後，接下來還會再走多深，和剛進場時差不多。有利延遲進場只在價格逆向走到掛單價時成交，成交的交易就像重新進場一次，剩下的 MAE 分布沒有變小多少；沒成交的，多半是一進場就走對方向的交易。</p>
+<p>在 26 個 US100 Market Profile 交易設定上（2022 年 1 月下旬到 2026 年 9 月 23 日、週二到週五、MAE 與 G_MFE 都以日線 ATR 計），有利延遲進場拉到 0.36 倍日線 ATR、只剩 42% 的訊號成交時，成交交易的平均 MAE 只降 11.2%（26 個交易設定的中位數），G_MFE 同時降 13.0%；只有 12 個交易設定的 MAE 降得比 G_MFE 多。所以評估有利延遲進場，不能只看 MAE 有沒有下降，要和 G_MFE 的降幅一起看，也要看沒成交的是哪些交易。不利延遲進場則相反：沒走到掛單價的訊號多半是一路虧到出場的交易，它濾掉的主要是虧損交易。</p>
+<h2 id="停損停利移動停損和保本怎麼運作">停損、停利、移動停損和保本怎麼運作？</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="停損、停利、移動停損和保本怎麼運作？（表格）"><table class="data-table"><thead><tr><th>術語</th><th>怎麼出場</th></tr></thead><tbody><tr><td>訊號出場（Signal exit）</td><td>依 Definition 的出場條件出場</td></tr><tr><td>停損（Stop loss，SL）</td><td>價格往不利方向走到進場價外固定距離時出場</td></tr><tr><td>停利（Take profit，TP）</td><td>價格往有利方向走到進場價外固定距離時出場</td></tr><tr><td>停損停利（SL/TP）</td><td>停損／停利這一層同時設定停損與停利的組合</td></tr><tr><td>移動停損（Trailing stop，TS）</td><td>停損價跟著持倉後的最高價（空單為最低價）移動，保持固定距離</td></tr><tr><td>保本停損（Breakeven stop，BE）</td><td>價格先往有利方向走到觸發點（Trigger），停損就移到進場價 ± 鎖利（Lock）</td></tr><tr><td>時間出場（Time exit）</td><td>持有到固定時間或固定 K 棒數後出場；報告的出場原因顯示「逾時」</td></tr></tbody></table></div>
+<p>停損、停利與延遲進場的距離都以進場時波動的倍數設定，例如「停損 0.5 倍日線 ATR(72)」。</p>
+<p>回測的成交規則：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="停損、停利、移動停損和保本怎麼運作？（表格）"><table class="data-table"><thead><tr><th>術語</th><th>規則</th></tr></thead><tbody><tr><td>只用已完成的 K 棒（Completed-bar causality）</td><td>開盤時的決策只能用開盤價與已經走完的 K 棒，不偷看當根的高低收</td></tr><tr><td>觸價即成交（Touch-inclusive）</td><td>價格碰到掛單價就算成交，不必穿越</td></tr><tr><td>跳空開盤成交（Gap-open fill）</td><td>K 棒開盤就已越過掛單價時，以開盤價成交</td></tr><tr><td>點差、滑價（Spread、Slippage）</td><td>交易成本；文章會寫出假設值</td></tr></tbody></table></div>
+<p>一根 K 棒同時碰到停損和停利時，OHLC 看不出哪個先發生，回測一律保守地當成先停損。</p>
+<h2 id="停利要用什麼標準判斷">停利要用什麼標準判斷？</h2>
+<p>看 MAE 分布有沒有往下移，不看報酬。停利讓碰到目標的交易提早出場、避開之後的回吐：一筆先賺到目標、收盤前又跌回來的單，不設停利時 MAE 會一路算到出場，設了停利就停在目標價。所以判斷停利，先看 MAE 分布有沒有往下移，再看回撤；報酬下降是預期中的代價。</p>
+<p>下面兩張表來自 14 個 US100 Market Profile 父策略（延遲進場加 SuperTrend × 波動濾網、持有到 16:00），2022 年 1 月 28 日到 2026 年 9 月 23 日、週二到週五，波動模式，MAE 以日線 ATR 計。停利設在獲利交易 G_MFE 的 Q1、Q2、Q3。</p>
+<p>只設停利、不設停損，和同一個父策略不設停利比較：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="停利要用什麼標準判斷？（表格）"><table class="data-table"><thead><tr><th>停利</th><th>平均 MAE 下降</th><th>MAE Q3 下降</th><th>MAE 第 90 百分位（中位變化）</th><th>最大回撤變淺</th><th>累積報酬下降</th></tr></thead><tbody><tr><td>獲利交易 G_MFE Q1</td><td>14 / 14（中位 −10.6%）</td><td>14 / 14（中位 −11.6%）</td><td>−7.8%</td><td>10 / 14（中位 −27%）</td><td>11 / 14</td></tr><tr><td>獲利交易 G_MFE Q2</td><td>14 / 14（中位 −3.3%）</td><td>12 / 14（中位 −2.3%）</td><td>−1.1%</td><td>7 / 14</td><td>12 / 14</td></tr><tr><td>獲利交易 G_MFE Q3</td><td>12 / 14（中位 −0.7%）</td><td>10 / 14（中位 −0.6%）</td><td>0%</td><td>8 / 14</td><td>10 / 14</td></tr></tbody></table></div>
+<p>近的停利把整個 MAE 分布往下推、回撤多半變淺，累積報酬也多半下降；停利設在 Q3 時，碰到目標的交易太少，MAE 幾乎不變。</p>
+<p>已經有停損時，停利能壓低的只剩平均：停損把 MAE 的尾端截在 SL，停利只影響「先賺、後回吐但沒碰到停損」的單。197 組停損各自加上停利，和同一個停損不設停利比較：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="停利要用什麼標準判斷？（表格）"><table class="data-table"><thead><tr><th>停利</th><th>平均 MAE 下降</th><th>MAE Q3 變化（中位數）</th><th>最大回撤變淺</th><th>回撤變化（中位數）</th><th>累積報酬下降</th></tr></thead><tbody><tr><td>獲利交易 G_MFE Q1</td><td>197 / 197（中位 −7.2%）</td><td>0%</td><td>144 / 197</td><td>−18%</td><td>149 / 197</td></tr><tr><td>獲利交易 G_MFE Q2</td><td>197 / 197（中位 −2.2%）</td><td>0%</td><td>145 / 197</td><td>−10%</td><td>161 / 197</td></tr><tr><td>獲利交易 G_MFE Q3</td><td>167 / 197（中位 −0.3%）</td><td>0%</td><td>114 / 197</td><td>−1%</td><td>132 / 197</td></tr></tbody></table></div>
+<p>所以停利要和停損分開評估：停損決定報酬能不能留下來，停利是用報酬換取更淺的 MAE 與回撤。一個停利若讓 MAE 分布明顯往下移、回撤變淺，即使累積報酬較低，也達成了它的作用；反過來，只因為報酬較高而選的停利，多半只是剛好沒截到少數走得很遠的日子。</p>
+<h2 id="怎麼確認濾網真的有資訊">怎麼確認濾網真的有資訊？</h2>
+<p>和「擋同樣多天、但時間點打亂」比較。濾網擋掉的日子越多，回撤通常越小，只因為交易變少了；濾網擋的日子又會連成一段一段，連續擋掉一段行情也會改變回撤。所以只看「加濾網後回撤變淺」，分不出濾網是有資訊，還是單純少做了。</p>
+<p>循環平移對照（Circular-shift null）這樣做：</p>
+<ol>
+<li>把濾網的擋單時間表排在訊號日上，例如第 3、4、5、17、18 天擋。</li>
+<li>把整份時間表沿著訊號日循環平移，平移量從訊號日數的 5% 到 95% 逐一試過；移出尾端的擋單日接回開頭。</li>
+<li>每個平移版本都重算一次結果。擋掉的天數、每段連續擋單的長度都不變，只有「在哪幾天擋」被打亂。</li>
+<li>「勝過平移」是平移版本中，恢復因子低於原濾網的比例。50% 代表和隨便挑時間擋差不多；真正有資訊的濾網要勝過大多數平移版本。</li>
+</ol>
+<p>比較的指標用恢復因子（累積報酬 ÷ 最大回撤），因為濾網同時影響報酬與回撤，只看其中一個都會偏。</p>
+<h3 id="mae-分數不能拿來挑濾網">MAE 分數不能拿來挑濾網</h3>
+<p>挑延遲進場時，我們用以 MAE 為主的分數（MAE 的權重是 G_MFE 的兩倍），MAE 與 G_MFE 都除以約 60 個交易日的日線 ATR。這把尺在波動突然放大時跟不上，所以高波動日的 MAE 和 G_MFE 會一起變大，但兩者的比值幾乎不變。在 26 個 US100 Market Profile 交易設定上（立即進場，2022 年 1 月 28 日到 2026 年 9 月 23 日、週二到週五，MAE、G_MFE 以日線 ATR 計）：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="MAE 分數不能拿來挑濾網（表格）"><table class="data-table"><thead><tr><th>方向</th><th>波動水準</th><th class="num">交易數</th><th class="num">平均 MAE</th><th class="num">平均 G_MFE</th><th class="num">G_MFE ÷ MAE</th></tr></thead><tbody><tr><td>多單</td><td>高</td><td class="num">1,736</td><td class="num">0.453</td><td class="num">0.428</td><td class="num">0.95</td></tr><tr><td>多單</td><td>低</td><td class="num">1,788</td><td class="num">0.352</td><td class="num">0.346</td><td class="num">0.98</td></tr><tr><td>空單</td><td>高</td><td class="num">2,783</td><td class="num">0.486</td><td class="num">0.533</td><td class="num">1.10</td></tr><tr><td>空單</td><td>低</td><td class="num">2,729</td><td class="num">0.377</td><td class="num">0.419</td><td class="num">1.11</td></tr></tbody></table></div>
+<p>擋掉高波動日，MAE 和 G_MFE 等比例下降，以 R 計的獲利潛力沒有變好；但 MAE 的權重較重，分數會上升。用這個分數同時挑濾網和延遲進場，26 個交易設定有 18 個選了濾網，其中 17 個是「高波動才擋」；改成不受尺度影響的 G_MFE ÷ MAE 重算，只剩 10 個選濾網，而且前段挑出的改善在後段沒有延續。</p>
+<p>所以每一層用自己的標準：延遲進場用 MAE 分數，並且在同一批訊號日上和立即進場比較；濾網用恢復因子，並且要勝過循環平移對照。</p>
+<h2 id="怎麼判斷參數不是運氣">怎麼判斷參數不是運氣？</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="怎麼判斷參數不是運氣？（表格）"><table class="data-table"><thead><tr><th>術語</th><th>定義</th></tr></thead><tbody><tr><td>參數鄰域（Parameter neighborhood）</td><td>同一個父策略底下，相鄰參數值的結果</td></tr><tr><td>平台／孤島（Plateau／Island）</td><td>相鄰的參數也好是平台；只有那一格好、旁邊都差是孤島，多半是運氣</td></tr><tr><td>鄰點平均（Neighbor averaging）</td><td>每個參數值取它和前後格的平均，降低實際下單時價格誤差的影響</td></tr><tr><td>自助重抽（Bootstrap）</td><td>以交易日為單位重複抽樣，看結果在不同樣本下的分布</td></tr><tr><td>信心下限（Lower confidence bound）</td><td>重抽結果的低百分位，例如第 10 百分位是 90% 單側信心下限，用來保守估計</td></tr><tr><td>樣本內（In-sample）</td><td>用來挑選參數的期間</td></tr><tr><td>保留期（Holdout）</td><td>挑選完才拿來檢查的期間，例如 2022–2024 挑選、2025–2026 檢查</td></tr><tr><td>過度擬合（Overfitting）</td><td>參數只是剛好適合這段歷史，換一段資料就失效</td></tr><tr><td>挑選偏誤（Selection bias）</td><td>從很多組中挑出最好的一組，它的表現會被高估</td></tr><tr><td>循環平移對照（Circular-shift null）</td><td>把濾網擋單的日子沿著時間循環平移，頻率與群聚不變、只打亂時點；濾網要勝過平移版本才算有資訊</td></tr><tr><td>年度一致性（Yearly consistency）</td><td>每一年是否都成立：每年為正的年數與最差年度</td></tr></tbody></table></div>
+<p>我們的研究不稱保留期為樣本外（Out-of-sample）：前面幾層已經用過整段資料，嚴格來說每一層都看過保留期。</p>
+<h2 id="濾網和市場結構的用語">濾網和市場結構的用語</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="濾網和市場結構的用語（表格）"><table class="data-table"><thead><tr><th>術語</th><th>定義</th></tr></thead><tbody><tr><td>濾網（Filter）</td><td>決定哪些天不交易的條件；放在完成的策略上，是分層的最後一層</td></tr><tr><td>狀態濾網（Regime filter）</td><td>依市場狀態擋單，依它擋什麼命名，例如「SuperTrend 空頭時擋多單」</td></tr><tr><td>波動水準（Volatility level）</td><td>依波動的滾動排名分成高、中、低</td></tr><tr><td>波動變化（Volatility change）</td><td>波動正在擴張（Expansion）或收斂（Contraction）</td></tr><tr><td>SuperTrend</td><td>以 ATR 乘上乘數在價格上下建立通道，收盤跌破翻空、突破翻多；寫法例如「1 小時 SuperTrend（ATR 460 × 1.5）」</td></tr><tr><td>市場輪廓（Market Profile）</td><td>把一段時間內各價位的交易活動排成分布</td></tr><tr><td>價值區（Value Area，VA）</td><td>活動最集中的 70% 價位區間；上緣 VAH、下緣 VAL</td></tr><tr><td>控制點（Point of Control，POC）</td><td>活動最多的價位</td></tr><tr><td>進場時點（Anchor time）</td><td>判斷訊號並進場的固定紐約時間</td></tr><tr><td>鏡像事件（Mirror event）</td><td>同一條規則沿著 Profile 翻到價值區另一側，例如「收回 VAL」對「跌回 VAH」；事件做多與鏡像做空檢驗同一個假設</td></tr></tbody></table></div>
+</div><a id="strategy-codes"></a>
+<div class="prose"><h2 id="策略代號總表">策略代號總表</h2>
+<p>Market Profile 訊號研究用 G01–G16 稱呼 16 個事件。每個事件都看前一個完整的每日 Market Profile（紐約時間建立、70% 價值區、5 點一格），在進場時點（紐約 06:30–10:30）到 14:00 之間的 15 分鐘 K 線上判斷：第一個出現事件的 K 線進場，持有到 16:00，每天最多一筆。每個事件都做多與做空各測一次，所以文章寫「G05 做空 08:30」代表 G05 事件、做空、進場時點 08:30。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="策略代號總表（表格）"><table class="data-table"><thead><tr><th>代號</th><th>簡稱</th><th>觸發條件（15 分 K）</th><th>價值區位置</th><th>鏡像</th></tr></thead><tbody><tr><td>G01</td><td>開盤在 VAL 之下</td><td>開盤價低於價值區下緣（VAL）</td><td>下方</td><td>G09</td></tr><tr><td>G02</td><td>整根在 VAL 之下</td><td>前一根的最高價低於 VAL</td><td>下方</td><td>G10</td></tr><tr><td>G03</td><td>VAL 假跌破</td><td>前一根最低價跌破 VAL、收盤收回 VAL 之上</td><td>下緣</td><td>G12</td></tr><tr><td>G04 N1／N2</td><td>N 根在 VAL 之下再收回</td><td>恰好 1 根（N1）或連續 2 根（N2）收在 VAL 之下（再前一根不在 VAL 之下），下一根收回 VAL 之上</td><td>下緣</td><td>G13 N1／N2</td></tr><tr><td>G05</td><td>Profile 低點假跌破</td><td>前一根最低價跌破 Profile 最低價、收盤收回其上</td><td>下方</td><td>G14</td></tr><tr><td>G06</td><td>整根在 POC 之下</td><td>前一根的最高價低於控制點（POC）</td><td>POC 下方</td><td>G08</td></tr><tr><td>G07</td><td>跌破 POC 後收回</td><td>前一根最低價跌破 POC、收盤收回 POC 之上</td><td>POC</td><td>G15</td></tr><tr><td>G08</td><td>整根在 POC 之上</td><td>前一根的最低價高於 POC</td><td>POC 上方</td><td>G06</td></tr><tr><td>G09</td><td>開盤在 VAH 之上</td><td>開盤價高於價值區上緣（VAH）</td><td>上方</td><td>G01</td></tr><tr><td>G10</td><td>整根在 VAH 之上</td><td>前一根的最低價高於 VAH</td><td>上方</td><td>G02</td></tr><tr><td>G11</td><td>回測 VAH 守住</td><td>前一根最低價跌破 VAH、收盤收回 VAH 之上</td><td>上緣</td><td>G16</td></tr><tr><td>G12</td><td>VAH 假突破</td><td>前一根最高價突破 VAH、收盤跌回 VAH 之下</td><td>上緣</td><td>G03</td></tr><tr><td>G13 N1／N2</td><td>N 根在 VAH 之上再跌回</td><td>恰好 1 根（N1）或連續 2 根（N2）收在 VAH 之上（再前一根不在 VAH 之上），下一根跌回 VAH 之下</td><td>上緣</td><td>G04 N1／N2</td></tr><tr><td>G14</td><td>Profile 高點假突破</td><td>前一根最高價突破 Profile 最高價、收盤跌回其下</td><td>上方</td><td>G05</td></tr><tr><td>G15</td><td>突破 POC 後跌回</td><td>前一根最高價突破 POC、收盤跌回 POC 之下</td><td>POC</td><td>G07</td></tr><tr><td>G16</td><td>回測 VAL 失守</td><td>前一根最高價突破 VAL、收盤跌回 VAL 之下</td><td>下緣</td><td>G11</td></tr><tr><td>無條件</td><td>對照組</td><td>不看 Market Profile，每天在進場時點直接進場，持有到 16:00</td><td>—</td><td>—</td></tr></tbody></table></div>
+<p>G01–G12 中原本有 4 個事件在價值區另一側沒有對應，G13–G16 就是為它們補上的鏡像：G13 是 G04 的鏡像，G14 是 G05 的鏡像，G15 是 G07 的鏡像，G16 是 G11 的鏡像。其餘的配對 G01／G09、G02／G10、G03／G12、G06／G08 本來就互為鏡像。</p>
+<p>鏡像把同一條規則沿著 Profile 翻過去：VAL 換成 VAH、Profile 低點換成高點、「在 POC 之下」換成「在 POC 之上」。「價格離開價值區會繼續走」的延續假設，預期事件在價值區下方做空、鏡像在上方做多；「假突破會回到價值區」的回歸假設，預期剛好相反。在根策略研究中（2022 年 1 月下旬到 2026 年 9 月 23 日、週二到週五、波動模式），優先保留的 6 個是 G01 做空 07:30、G05 做空 08:30，以及 10:30 做多的 G08、G09、G11、G13 N1；各訊號的分級與首選見〈<a href="/zh-tw/posts/us100-market-profile-signals-volatility/">Market Profile 訊號在價值區兩側都成立嗎？</a>〉。</p>
+<p>時鐘策略的 Market Profile 條件不用代號，直接寫成條件，例如「在前一日全日價值區上方」。</p>
+<h2 id="部位大小怎麼算">部位大小怎麼算？</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="部位大小怎麼算？（表格）"><table class="data-table"><thead><tr><th>術語</th><th>定義</th></tr></thead><tbody><tr><td>風險金額（Risk amount）</td><td>每筆交易預計承擔的美元虧損</td></tr><tr><td>預估虧損（Expected loss）</td><td>每筆交易預估會虧多少點，由過去交易的 MAE 與進場時波動估計，只用進場前已知的資料</td></tr><tr><td>部位大小（Position size）</td><td>風險金額 ÷ 預估虧損點數 ÷ 每點價值</td></tr><tr><td>投資組合（Portfolio）</td><td>一起交易的多個交易設定；組合成員（Portfolio member）是其中一個</td></tr></tbody></table></div>
+<p>完整的配置方法見〈<a href="/zh-tw/posts/ftmo-account-position-sizing/">FTMO 帳戶部位與風險分配</a>〉。</p>
+</div><div class="callout callout--warning"><strong>使用這份用詞表</strong><p>這裡的定義是我們研究與報告目前的計算方式，和其他書籍或平台的同名指標可能不同，比較數字前先確認定義。文中手寫的數字都標明了樣本與期間，只用來說明方法，不能直接和其他研究的數字對照。名詞解釋與回測結果都不構成投資建議。</p></div>
+<section class="question-section" aria-labelledby="goals-title"><h2 class="question-section-title" id="goals-title">這篇研究要回答的問題</h2><div class="question-item"><h3 class="question-item-title">研究文章裡的術語、單位與代號各指什麼？</h3><div class="question-item-answer"><p>每個術語都有固定的中英文名稱與算法，例如 MFE 只量 MAE 之前的有利走勢，整段持倉的最大有利走勢是 G_MFE。報酬有百分比、日線 ATR 倍數與真實區間中位數倍數三種單位；Market Profile 訊號用 G01–G16 稱呼，條件與鏡像見策略代號總表。</p></div></div><div class="question-item"><h3 class="question-item-title">各層的方法用什麼標準判斷有沒有用？</h3><div class="question-item-answer"><p>訊號要勝過同時點無條件進場與自己的鏡像；延遲進場看 MAE 與 G_MFE 一起怎麼變、濾掉的是哪些交易；停利看 MAE 分布有沒有往下移，報酬下降是預期的代價；濾網看恢復因子，並且要勝過循環平移對照。每一層都和父策略比較，好結果要是平台而不是孤島。</p></div></div><div class="question-item"><h3 class="question-item-title">不同研究的數字能不能放在一起比？</h3><div class="question-item-answer"><p>不能直接比。百分比和波動倍數之間沒有固定換算，真實區間中位數約是日線 ATR(72) 的 0.92 倍，兩種版本的樣本起點也不同。比較前先確認文末「方法與資料」裡的單位與期間。</p></div></div></section>
+<section class="question-section" aria-labelledby="arising-title"><h2 class="question-section-title" id="arising-title">研究中衍生的問題</h2><div class="question-item"><h3 class="question-item-title">延遲進場的兩種方式在不同文章有好幾個名字，該用哪一個？</h3><div class="question-item-answer"><p>全站統一為有利延遲進場（Buy／Sell Limit，等回檔）與不利延遲進場（Buy／Sell Stop，等突破）。等回檔／等確認、順勢／逆勢、報告參數值 favorable／adverse 都指同一件事，這篇列出對照，正文只用前者。</p></div></div><div class="question-item"><h3 class="question-item-title">為什麼部分研究把 Wilder ATR 換成真實區間中位數？</h3><div class="question-item-answer"><p>Wilder ATR 的每個值都帶著計算起點的影響，實盤每天從不同起點重算時，同一根 K 線的波動會不一樣；滾動中位數只看自己的視窗。代價是要暖機：中位數版本的統計從 2022 年 6 月 20 日開始，數字也不能和日線 ATR 版本直接對照。</p></div></div><div class="question-item"><h3 class="question-item-title">掛更好的價格為什麼壓不下 MAE？</h3><div class="question-item-answer"><p>因為 MAE 接近無記憶：價格逆向走到掛單價之後，接下來還會走多深，和剛進場時差不多。在 26 個 Market Profile 交易設定上，有利延遲進場到 0.36 倍日線 ATR 時，MAE 只降 11.2%、G_MFE 降 13.0%，所以評估時要把 MAE 和 G_MFE 的變化放在一起看。</p></div></div><div class="question-item"><h3 class="question-item-title">以 MAE 為主的分數為什麼不能用來挑濾網？</h3><div class="question-item-answer"><p>日線 ATR 在波動突然放大時跟不上，高波動日的 MAE 和 G_MFE 一起變大、比值幾乎不變；擋掉這些日子會讓 MAE 分數上升，獲利潛力卻沒有變好。所以濾網改用恢復因子挑選，並且要勝過循環平移對照。</p></div></div></section><div class="section-head"><h2 id="method">方法與資料</h2></div><p class="section-lead">研究設定、資料與計算方式；重現研究用的識別字在資料來源。</p><div class="appendix"><div style="display:contents"><h3>更新紀錄</h3><div>2026-10-08 23:52　首次發布</div></div></div><div class="wide"><section class="related"><h2 class="related-title">相關研究</h2><div class="related-grid"><a class="card card-interactive post-card" href="/zh-tw/posts/sharpe-ratio-sparse-trading/"><div class="article-cover" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div><div class="post-card__body"><span class="eyebrow">Sharpe 比率 · 年化</span><h3 class="post-card__title">交易稀少的策略，<wbr/>為什麼 Sharpe 會被高估：<wbr/>年化要用完整的交易日</h3><span class="post-card__excerpt">常見的 Sharpe 算法只用有交易出場的日子，再乘上 √252 年化。對一個月才交易一次的策略，這會把 Sharpe 高估好幾倍，還會讓它排在更好的策略前面。這篇說明誤差從哪裡來、TradePose 怎麼組成日序列，以及在自己的程式裡怎麼改。</span><span class="post-card__meta"><span>2026-10-24 23:28</span><span>4 分鐘</span></span></div></a><a class="card card-interactive post-card" href="/zh-tw/posts/one-opportunity-many-exit-policies/"><div class="article-cover" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div><div class="post-card__body"><span class="eyebrow">延遲進場 · 停損停利 · 父策略</span><h3 class="post-card__title">一個進場機會，<wbr/>同時計算多種出場：<wbr/>引擎怎麼拆解一個策略</h3><span class="post-card__excerpt">TradePose 把每個策略拆成一個進場機會，和套在它上面的交易政策。進場機會只算一次，每個政策在它之上獨立計算，而且每個政策的交易都能逐筆對回它來自的機會，包括延遲進場沒有成交的那些。這篇說明這個拆法，以及它為什麼讓分層研究做得到。</span><span class="post-card__meta"><span>2026-10-24 22:10</span><span>5 分鐘</span></span></div></a><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">10 組參數 · 累積報酬為正</span><span class="cover-figure__value">9 / 10</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L11.11 8.29L22.22 22.26L33.33 24.96L44.44 27.34L55.56 34.07L66.67 61.32L77.78 68.96L88.89 76.32L100.00 98.00L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 85.62H100"></path><path class="sparkline__line" d="M0.00 2.00L11.11 8.29L22.22 22.26L33.33 24.96L44.44 27.34L55.56 34.07L66.67 61.32L77.78 68.96L88.89 76.32L100.00 98.00"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">US100 · XAUUSD · SuperTrend · 10 組參數 · 4,000 筆交易</span><h3 class="post-card__title"><a class="post-card__link" href="/zh-tw/posts/us100-xauusd-supertrend-state-redo/">SuperTrend 狀態交易：<wbr/>從 768 個候選到 1 個留觀策略（US100 與黃金）</a></h3><span class="post-card__excerpt">照策略挑選方法論，從 US100 與黃金的 768 個 SuperTrend 狀態候選，走完校準、否決清單、進出場樹、葉節點檢查、組合與部位，得到一個 10 策略組合：挑選期（2022-03 到 2025-12）成本後 +70,078 美元、最大回撤 4,723。凍結後讀驗證期（2026-01 到 2026-10-23），組合虧 2,564 美元。拆解發現狀態訊號本身沒有平均優勢，獲利主要來自在同一段資料上挑出的出場參數。組合不上線；驗證期仍一致的 US100 4 小時空頭做空留倉策略（r14）以新候選凍結、留觀。</span><span class="post-card__meta"><span>2026-10-24 22:00</span><span>12 分鐘</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/zh-tw/posts/us100-xauusd-supertrend-state-redo/">讀文章</a><a class="btn btn-ghost btn-sm" href="/zh-tw/posts/us100-xauusd-supertrend-state-redo/?view=report">看報告</a></div></div></article></div></section></div><!-- island 外層加 div：astro-island 為 display: contents，否則引用區塊會被排進格線的側欄 --><div><script>(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value=="object"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event("astro:visible"));})();</script><astro-island uid="o9vAX" prefix="r14" component-url="/_astro/index.Abi5bUu1.js" component-export="Citation" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;引用本文&quot;],&quot;copyLabels&quot;:[0,{&quot;copy&quot;:[0,&quot;複製&quot;],&quot;copied&quot;:[0,&quot;已複製&quot;],&quot;failed&quot;:[0,&quot;無法複製&quot;]}],&quot;text&quot;:[0,&quot;TradePose Research（2026）。〈MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）〉TradePose Research Notes.&quot;],&quot;bibtex&quot;:[0,&quot;@article{tradepose2026quantresearchglossary,\n  title   = {MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）},\n  author  = {TradePose Research},\n  journal = {TradePose Research Notes},\n  year    = {2026}\n}&quot;]}" ssr client="visible" opts="{&quot;name&quot;:&quot;Citation&quot;,&quot;value&quot;:true}" await-children><div class="citation"><div class="citation-title">引用本文</div><p class="citation-text">TradePose Research（2026）。〈MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）〉TradePose Research Notes.</p><div class="citation-code">@article{tradepose2026quantresearchglossary,
+  title   = {MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）},
+  author  = {TradePose Research},
+  journal = {TradePose Research Notes},
+  year    = {2026}
+}<button type="button" class="btn btn-secondary btn-sm">複製</button></div></div><!--astro:end--></astro-island></div></div></main><footer class="site-footer"><div class="container"><div class="site-footer__grid"><div class="site-footer__brand"><span class="site-brand"><span class="site-brand__mark" aria-hidden="true"></span>TradePose</span><p class="site-footer__tagline">量化研究筆記：回測、統計與策略診斷。文中數字皆由文章附帶的回測統計產生。</p></div><div><h2 class="site-footer__title">研究</h2><ul><li><a href="/zh-tw/#research">研究目錄</a></li><li><a href="/zh-tw/#method">資料與計算說明</a></li><li><a href="/zh-tw/rss.xml">RSS</a></li></ul></div></div><div class="site-footer__legal"><span>© 2026 TradePose</span><span>研究內容不構成投資建議</span></div></div></footer><script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BflPKFW9.js"></script></body></html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html><html lang="zh-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>回測怎麼避免偷看未來：K 線的時間標記、shift 與同一根 K 線裡的先後｜TradePose Research</title><meta name="description" content="回測偷看未來最常見的兩種方式很隱蔽：在一根 K 線還沒收完時就讀它的收盤價，以及在同一根 K 線裡假設對自己有利的先後順序。這篇說明 TradePose 在什麼時候做決策、哪些部分由引擎保證、哪些由策略作者負責，以及一根 K 線碰到多個價格時引擎採用的保守規則。"><meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large"><link rel="canonical" href="https://research.tradepose.com/zh-tw/posts/backtest-lookahead-bar-timing/"><link rel="alternate" hreflang="en" href="https://research.tradepose.com/en/posts/backtest-lookahead-bar-timing/"><link rel="alternate" hreflang="zh-TW" href="https://research.tradepose.com/zh-tw/posts/backtest-lookahead-bar-timing/"><link rel="alternate" hreflang="x-default" href="https://research.tradepose.com/en/posts/backtest-lookahead-bar-timing/"><link rel="alternate" type="application/rss+xml" title="TradePose Research" href="/zh-tw/rss.xml"><meta property="og:site_name" content="TradePose Research"><meta property="og:locale" content="zh_TW"><meta property="og:locale:alternate" content="en_US"><meta property="og:type" content="article"><meta property="og:title" content="回測怎麼避免偷看未來：K 線的時間標記、shift 與同一根 K 線裡的先後"><meta property="og:description" content="回測偷看未來最常見的兩種方式很隱蔽：在一根 K 線還沒收完時就讀它的收盤價，以及在同一根 K 線裡假設對自己有利的先後順序。這篇說明 TradePose 在什麼時候做決策、哪些部分由引擎保證、哪些由策略作者負責，以及一根 K 線碰到多個價格時引擎採用的保守規則。"><meta property="og:url" content="https://research.tradepose.com/zh-tw/posts/backtest-lookahead-bar-timing/"><meta property="og:image" content="https://research.tradepose.com/og-default.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="回測怎麼避免偷看未來：K 線的時間標記、shift 與同一根 K 線裡的先後"><meta name="twitter:description" content="回測偷看未來最常見的兩種方式很隱蔽：在一根 K 線還沒收完時就讀它的收盤價，以及在同一根 K 線裡假設對自己有利的先後順序。這篇說明 TradePose 在什麼時候做決策、哪些部分由引擎保證、哪些由策略作者負責，以及一根 K 線碰到多個價格時引擎採用的保守規則。"><meta name="twitter:image" content="https://research.tradepose.com/og-default.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"回測怎麼避免偷看未來：K 線的時間標記、shift 與同一根 K 線裡的先後","description":"回測偷看未來最常見的兩種方式很隱蔽：在一根 K 線還沒收完時就讀它的收盤價，以及在同一根 K 線裡假設對自己有利的先後順序。這篇說明 TradePose 在什麼時候做決策、哪些部分由引擎保證、哪些由策略作者負責，以及一根 K 線碰到多個價格時引擎採用的保守規則。","articleSection":"方法論","keywords":"偷看未來, 前視偏差, look-ahead bias, 回測, 多時框, 較高時框, shift, merge_asof, 同一根 K 線, 停損, 停利, OHLC","inLanguage":"zh-TW","datePublished":"2026-10-24T20:38:00+08:00","dateModified":"2026-10-24T20:38:00+08:00","image":"https://research.tradepose.com/og-default.png","url":"https://research.tradepose.com/zh-tw/posts/backtest-lookahead-bar-timing/","mainEntityOfPage":"https://research.tradepose.com/zh-tw/posts/backtest-lookahead-bar-timing/","author":{"@type":"Organization","name":"TradePose Research"},"publisher":{"@type":"Organization","name":"TradePose","url":"https://tradepose.com"}}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"研究","item":"https://research.tradepose.com/zh-tw/"},{"@type":"ListItem","position":2,"name":"回測怎麼避免偷看未來：K 線的時間標記、shift 與同一根 K 線裡的先後","item":"https://research.tradepose.com/zh-tw/posts/backtest-lookahead-bar-timing/"}]}</script><!-- data-init：第一次繪製前套用主題、計算模式與檢視；頁面轉場換頁後重新執行（<html> 的屬性換成新頁的） --><script data-init>try { const q = new URLSearchParams(location.search).get('theme'); if (q === 'light' || q === 'dark') sessionStorage.setItem('tp-theme', q); } catch {}
+try { const t = sessionStorage.getItem('tp-theme') ?? localStorage.getItem('tp-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; else if (t === 'system') delete document.documentElement.dataset.theme; } catch {}</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CYDbzu1r.js"></script><link rel="stylesheet" href="/_astro/Base.CYCDe2lS.css"><style>html[data-view=report] [data-view-panel=article],html[data-view=case] [data-view-panel=article]{display:none}
+</style></head><body><a class="skip-link" href="#main">跳到主要內容</a><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><header class="site-header"><div class="container site-header__inner"><a class="site-brand" href="/zh-tw/"><span class="site-brand__mark" aria-hidden="true"></span><span class="site-brand__name">TradePose</span><span class="site-brand__sub">Research</span></a><div class="site-header__context"><astro-island uid="1SY1Is" prefix="r18" component-url="/_astro/index.Betv42FV.js" component-export="PageContext" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;回測怎麼避免偷看未來：K 線的時間標記、shift 與同一根 K 線裡的先後&quot;],&quot;followHeading&quot;:[0,true],&quot;labels&quot;:[0,{&quot;open&quot;:[0,&quot;打開目錄&quot;],&quot;contents&quot;:[0,&quot;目錄&quot;],&quot;close&quot;:[0,&quot;關閉&quot;]}]}" ssr client="load" opts="{&quot;name&quot;:&quot;PageContext&quot;,&quot;value&quot;:true}" await-children><div class="page-context"><span class="page-context__heading"><span class="page-context__title" title="回測怎麼避免偷看未來：K 線的時間標記、shift 與同一根 K 線裡的先後">回測怎麼避免偷看未來：K 線的時間標記、shift 與同一根 K 線裡的先後</span></span><span class="page-context__progress" aria-hidden="true" style="--progress:0"></span></div><!--astro:end--></astro-island></div><div class="site-header__actions"><astro-island uid="Z1HzO4Q" prefix="r19" component-url="/_astro/SiteSettings.CBWXpzKJ.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;zh-tw&quot;],&quot;modes&quot;:[1,[]],&quot;languages&quot;:[1,[[0,{&quot;href&quot;:[0,&quot;/en/posts/backtest-lookahead-bar-timing/&quot;],&quot;lang&quot;:[0,&quot;en&quot;],&quot;name&quot;:[0,&quot;English&quot;],&quot;current&quot;:[0,false]}],[0,{&quot;href&quot;:[0,&quot;/zh-tw/posts/backtest-lookahead-bar-timing/&quot;],&quot;lang&quot;:[0,&quot;zh-TW&quot;],&quot;name&quot;:[0,&quot;繁體中文&quot;],&quot;current&quot;:[0,true]}]]],&quot;views&quot;:[1,[]]}" ssr client="load" opts="{&quot;name&quot;:&quot;SiteSettings&quot;,&quot;value&quot;:true}" await-children><button type="button" id="radix-_r19R_0_" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="btn btn-ghost btn-sm settings-menu" aria-label="設定" title="設定"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h6M12 5h1M3 11h1M7 11h6"></path><circle cx="10.5" cy="5" r="1.5"></circle><circle cx="5.5" cy="11" r="1.5"></circle></svg></button><!--astro:end--></astro-island></div></div></header><main id="main"><div class="article" data-view-panel="article"><div class="wide article-banner"><div class="article-cover article-cover--banner" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div></div><header class="article-header"><span class="category-chip">方法論</span><h1 class="article-title visually-hidden">回測怎麼避免偷看未來：<wbr/>K 線的時間標記、<wbr/>shift 與同一根 K 線裡的先後</h1><p class="article-dek"><p>偷看未來的回測，看起來會比任何策略實際交易的結果都好。最常見的兩種方式都很隱蔽：訊號在一根 K 線還沒收完時就讀了它的收盤價，或者回測在同一根 K 線裡假設了對自己有利的先後順序。這篇用不可能有優勢的模擬價格示範這兩種情況，並說明 TradePose 用哪些規則把它們擋在外面。</p></p><dl class="article-meta"><div><dt>發布</dt><dd>2026-10-24 20:38</dd></div><div><dt>閱讀時間</dt><dd>8 分鐘</dd></div></dl></header><div><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value=="object"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};"requestIdleCallback"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event("astro:idle"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="Z2s3sx" prefix="r26" component-url="/_astro/ArticleToc.GohhgC-S.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;zh-tw&quot;],&quot;items&quot;:[1,[[0,{&quot;id&quot;:[0,&quot;決策在什麼時候做&quot;],&quot;label&quot;:[0,&quot;決策在什麼時候做？&quot;]}],[0,{&quot;id&quot;:[0,&quot;k-線用開始時間標記&quot;],&quot;label&quot;:[0,&quot;K 線用開始時間標記&quot;]}],[0,{&quot;id&quot;:[0,&quot;shift-移動的是哪個時框的-k-線&quot;],&quot;label&quot;:[0,&quot;shift 移動的是哪個時框的 K 線？&quot;]}],[0,{&quot;id&quot;:[0,&quot;為什麼引擎不替你判斷因果&quot;],&quot;label&quot;:[0,&quot;為什麼引擎不替你判斷因果&quot;]}],[0,{&quot;id&quot;:[0,&quot;同一根-k-線裡誰先發生&quot;],&quot;label&quot;:[0,&quot;同一根 K 線裡，誰先發生？&quot;]}],[0,{&quot;id&quot;:[0,&quot;偏移統計也用同一個規則&quot;],&quot;label&quot;:[0,&quot;偏移統計也用同一個規則&quot;]}],[0,{&quot;id&quot;:[0,&quot;goals-title&quot;],&quot;label&quot;:[0,&quot;這篇研究要回答的問題&quot;]}],[0,{&quot;id&quot;:[0,&quot;arising-title&quot;],&quot;label&quot;:[0,&quot;研究中衍生的問題&quot;]}],[0,{&quot;id&quot;:[0,&quot;method&quot;],&quot;label&quot;:[0,&quot;方法與資料&quot;]}]]]}" ssr client="idle" opts="{&quot;name&quot;:&quot;ArticleToc&quot;,&quot;value&quot;:true}" await-children><nav class="toc toc--aside" aria-label="目錄"><div class="toc-title" aria-hidden="true">目錄</div><ol class="toc-list"><li class=""><a href="#決策在什麼時候做" aria-current="true">決策在什麼時候做？</a></li><li class=""><a href="#k-線用開始時間標記">K 線用開始時間標記</a></li><li class=""><a href="#shift-移動的是哪個時框的-k-線">shift 移動的是哪個時框的 K 線？</a></li><li class=""><a href="#為什麼引擎不替你判斷因果">為什麼引擎不替你判斷因果</a></li><li class=""><a href="#同一根-k-線裡誰先發生">同一根 K 線裡，誰先發生？</a></li><li class=""><a href="#偏移統計也用同一個規則">偏移統計也用同一個規則</a></li><li class=""><a href="#goals-title">這篇研究要回答的問題</a></li><li class=""><a href="#arising-title">研究中衍生的問題</a></li><li class=""><a href="#method">方法與資料</a></li></ol></nav><!--astro:end--></astro-island></div>
+<div class="abstract"><div class="abstract-title">結論</div><p>TradePose 的每個決策都在一根 K 線開盤時做：當根的開盤價已知，當根的高、低、收、量還不知道。K 線用開始時間標記，其他時框以往回對齊的方式接到主時間軸，引擎不會自動延後；策略要用已收完的較高時框 K 線，就在那個時框自己的 K 線上宣告 <code>shift=1</code>。對齊之後才 shift，只會移動一根主時框的 K 線；在隨機漫步上，這個錯誤會把擲硬幣變成 66.6% 的勝率。引擎不把 shift 當成因果的證明，每個輸入的來源要由作者確認。在同一根 K 線裡，開高低收沒有記錄誰先發生，引擎一律選它能證明的結果：進場當根碰到停損算數，碰到停利不算，停損和停利同時碰到時停損優先。這些規則可能低估策略，但不會憑空製造獲利。</p></div><p class="reading-split">以上是結論；以下每一節是一個主張的證據，可以從各節或證據連結進入策略報告，看全部參數組的數據。</p>
+<div class="prose"><h2 id="決策在什麼時候做">決策在什麼時候做？</h2>
+<p>每個回測都要回答一個簡單的問題：做決策的那一刻，哪些價格已經知道了？</p>
+<p>TradePose 在<strong>每根 K 線開盤時</strong>評估策略。10:00 的時候，10:00 這根 K 線的開盤價已知；它的高、低、收、量還不存在，要到 10:15 收完才知道。後面所有規則都從這條界線出發：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="決策在什麼時候做？（表格）"><table class="data-table"><thead><tr><th>當根 K 線的值</th><th>做決策時知道嗎？</th></tr></thead><tbody><tr><td>開盤價</td><td>知道</td></tr><tr><td>最高、最低、收盤、成交量</td><td>不知道：要等這根收完</td></tr><tr><td>用當根高、低、收、量算出的任何指標</td><td>不知道</td></tr></tbody></table></div>
+<p>所以策略需要收盤價時，用的是已經收完的那一根。</p>
+<h2 id="k-線用開始時間標記">K 線用開始時間標記</h2>
+<p>每根 K 線標記的是它<strong>開始</strong>的時間：標記 10:00 的 15 分鐘 K 線涵蓋 10:00 到 10:15。策略同時用到第二個時框時，例如 15 分鐘 K 線之外再用 1 小時 K 線，每一列 15 分鐘會接上開始時間不晚於自己的最近一根 1 小時 K 線。</p>
+<p>引擎在對齊時<strong>不會額外延後</strong>。下表把模擬的 1 小時收盤價接到 15 分鐘的時間軸上：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="K 線用開始時間標記（表格）"><table class="data-table"><thead><tr><th>15 分鐘的列</th><th class="num">15 分鐘收盤</th><th class="num">1 小時收盤，<code>shift=0</code></th><th class="num">1 小時收盤，<code>shift=1</code></th></tr></thead><tbody><tr><td>00:00</td><td class="num">14,891.2</td><td class="num">14,899.7</td><td class="num">14,891.9</td></tr><tr><td>00:15</td><td class="num">14,887.1</td><td class="num">14,899.7</td><td class="num">14,891.9</td></tr><tr><td>00:30</td><td class="num">14,888.1</td><td class="num">14,899.7</td><td class="num">14,891.9</td></tr><tr><td>00:45</td><td class="num">14,899.7</td><td class="num">14,899.7</td><td class="num">14,891.9</td></tr><tr><td>01:00</td><td class="num">14,890.6</td><td class="num">14,890.8</td><td class="num">14,899.7</td></tr><tr><td>01:15</td><td class="num">14,890.8</td><td class="num">14,890.8</td><td class="num">14,899.7</td></tr></tbody></table></div>
+<p><code>shift=0</code> 時，00:00 那一列就已經看到 14,899.7，也就是 00:00–01:00 這一小時的收盤價，但這個價格要到 01:00 才知道。在 1 小時 K 線上宣告 <code>shift=1</code> 之後，00:00–01:00 的收盤價出現在 01:00 那一列，正好是它第一次可以知道的時刻，不會再晚一小時。</p>
+</div><span class="sidenote">為什麼不自動延後？如果引擎把每根較高時框 K 線都延後到結束時才發布，已經宣告 <code>shift=1</code> 的策略就會被延後兩次。只用一條由作者宣告的規則，直接載入和重新取樣的資料才會一致。</span>
+<div class="prose"><h2 id="shift-移動的是哪個時框的-k-線">shift 移動的是哪個時框的 K 線？</h2>
+<p><code>shift=1</code> 的意思是「<strong>在宣告它的那個時框上</strong>往前一根」。宣告在日 K 上，拿到的是前一天；日 K 的值接到 15 分鐘時間軸之後才 shift，拿到的只是前一根 15 分鐘 K 線，通常還是同一天。</p>
+<h3 id="模擬一同一個規則三種-shift-位置">模擬一：同一個規則，三種 shift 位置</h3>
+<p>測試用 1,500 天的模擬 15 分鐘價格，價格是隨機漫步，任何規則都不可能有真正的優勢。規則是：日 K 收盤高於開盤就在 09:30 做多、16:00 出場，否則做空。三個版本唯一的差別是 shift 套在哪裡。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="模擬一：同一個規則，三種 shift 位置（表格）"><table class="data-table"><thead><tr><th>日 K 訊號的 shift 方式</th><th class="num">交易數</th><th class="num">勝率</th><th class="num">每筆平均</th></tr></thead><tbody><tr><td>不 shift</td><td class="num">1,500</td><td class="num">66.6%</td><td class="num">+16.5 點</td></tr><tr><td>對齊之後才 shift（移動一根 15 分鐘）</td><td class="num">1,500</td><td class="num">66.6%</td><td class="num">+16.5 點</td></tr><tr><td>在日 K 上 <code>shift=1</code></td><td class="num">1,499</td><td class="num">49.0%</td><td class="num">−1.1 點</td></tr></tbody></table></div>
+<p>前兩個版本讀到的是當天的收盤價。09:30–16:00 的走勢本來就是當天走勢的一部分，所以它們三次能「猜中」兩次。對齊之後才 shift 完全沒有幫助：它拿到的 09:15 那一列還是同一天。只有在日 K 上 shift，才得到隨機漫步應有的擲硬幣結果。</p>
+</div><div class="callout"><strong>模擬資料：</strong><p>本文兩個模擬都使用隨機產生的價格，不是市場資料。隨機漫步本來就沒有優勢，所以出現的任何獲利都來自回測，而不是策略。</p></div>
+<div class="prose"><p>在 pandas 裡也很容易犯同樣的錯：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D"># 錯誤：shift() 移動的是一根 15 分鐘，還是同一天</span></span>
+<span class="line"><span style="color:#E1E4E8">m15 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> pd.merge_asof(m15, daily[[</span><span style="color:#9ECBFF">&quot;ts&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">&quot;up&quot;</span><span style="color:#E1E4E8">]], </span><span style="color:#FFAB70">on</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;ts&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">m15[</span><span style="color:#9ECBFF">&quot;up_prev&quot;</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> m15[</span><span style="color:#9ECBFF">&quot;up&quot;</span><span style="color:#E1E4E8">].shift(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 正確：先在日 K 上 shift，再對齊</span></span>
+<span class="line"><span style="color:#E1E4E8">daily[</span><span style="color:#9ECBFF">&quot;up_prev&quot;</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> daily[</span><span style="color:#9ECBFF">&quot;up&quot;</span><span style="color:#E1E4E8">].shift(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">m15 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> pd.merge_asof(m15, daily[[</span><span style="color:#9ECBFF">&quot;ts&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">&quot;up_prev&quot;</span><span style="color:#E1E4E8">]], </span><span style="color:#FFAB70">on</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;ts&quot;</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<p>在 TradePose 裡，shift 宣告在欄位所屬的資料源上，例如在日 K 資料源上宣告 <code>tp.DataColumn(column=&quot;close&quot;, shift=1)</code>；引擎會先移動日 K，再接到主時間軸。對齊之後才寫的 Polars <code>.shift()</code>，移動的仍然是主時間軸的列。</p>
+<h2 id="為什麼引擎不替你判斷因果">為什麼引擎不替你判斷因果</h2>
+<p>shift 只是一個列數。一個值在做決策時知不知道，要看它是從哪些資料算出來的：用當根收盤價算出的指標，只要整條計算鏈上沒有任何一步選到前一根，就會偷看未來；反過來，輸入已經 shift 過的指標，不需要再 shift 一次。引擎無法從欄位名稱或 shift 數字看出這些意圖，所以它不假裝能判斷：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="為什麼引擎不替你判斷因果（表格）"><table class="data-table"><thead><tr><th>引擎保證的</th><th>策略作者負責的</th></tr></thead><tbody><tr><td>K 線用開始時間標記、往回對齊，沒有隱藏的延後</td><td>決定哪些輸入需要 <code>shift=1</code> 才會用到已收完的 K 線</td></tr><tr><td>宣告的 shift 移動的是該資料源自己的 K 線，不是主時間軸的列</td><td>已經不會偷看未來的值，不要再 shift 一次</td></tr><tr><td>Market Profile 在窗口結束後才發布，起算的那根 K 線不在已完成的窗口裡</td><td>檢查自訂欄位與運算式的完整來源</td></tr></tbody></table></div>
+<p>風格檢查會在缺少 shift 或無法判斷時給出警告，但不會靠猜測擋下策略。因為欄位名稱就拒絕一個正確的策略，和因為帶著 <code>shift=1</code> 就放行一個偷看未來的策略，錯誤是一樣的。</p>
+<h2 id="同一根-k-線裡誰先發生">同一根 K 線裡，誰先發生？</h2>
+<p>第二種偷看未來藏在一根 K 線裡。開高低收告訴你這根 K 線碰到了最高價和最低價，但沒有告訴你先後。停損和停利都落在這根 K 線的範圍內時，回測必須選一個；選停利，等於假設價格先往上走。</p>
+<p>TradePose 一律選它能證明的結果：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="同一根 K 線裡，誰先發生？（表格）"><table class="data-table"><thead><tr><th>情況</th><th>引擎的規則</th></tr></thead><tbody><tr><td>立即進場</td><td>以這根 K 線的開盤價成交</td></tr><tr><td>進場當根碰到停損</td><td>當根出場：即使交易只持續一根 K 線，虧損也是真的</td></tr><tr><td>進場當根碰到停利</td><td>當根不成交，最早下一根才成交</td></tr><tr><td>同時碰到好幾張同類掛單，例如多單在 97 和 99 各有一張停損</td><td>價格路徑上最先碰到的那張：99</td></tr><tr><td>同時碰到不同類的掛單</td><td>先處理在開盤執行的出場，再來是停損，最後才是停利：停損和停利同時碰到時停損優先</td></tr><tr><td>延遲進場還在等待，原策略在這根 K 線開盤出場</td><td>延遲進場取消</td></tr></tbody></table></div>
+<h3 id="模擬二三種假設和真正的先後">模擬二：三種假設和真正的先後</h3>
+<p>這次的隨機漫步以每分鐘產生，所以真正的先後順序是已知的，再組成 15 分鐘 K 線，把先後藏起來。多單在 09:30 進場，停損和停利距離相同，兩者都沒碰到就在 16:00 出場，共 3,000 個模擬交易日。「真實」一欄依每分鐘的價格路徑判斷，其他三欄只看得到 15 分鐘 K 線：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="模擬二：三種假設和真正的先後（表格）"><table class="data-table"><thead><tr><th>停損與停利距離</th><th class="num">真實</th><th class="num">假設停利先</th><th class="num">假設停損先</th><th class="num">引擎</th></tr></thead><tbody><tr><td>5 點</td><td class="num">50.5%</td><td class="num">60.8%</td><td class="num">41.1%</td><td class="num">30.7%</td></tr><tr><td>10 點</td><td class="num">51.9%</td><td class="num">52.8%</td><td class="num">51.1%</td><td class="num">45.5%</td></tr><tr><td>20 點</td><td class="num">50.9%</td><td class="num">50.9%</td><td class="num">50.9%</td><td class="num">50.4%</td></tr></tbody></table></div>
+<p>表中是勝率；這個模擬裡，15 分鐘價格變動的標準差約 12 點。有三件事值得注意：</p>
+<ul>
+<li><strong>假設停利先發生會製造獲利。</strong> 距離 5 點時，它把公平的擲硬幣變成 60.8% 勝率的策略。</li>
+<li><strong>引擎的誤差在另一個方向。</strong> 它不會顯示 K 線無法證明的獲利，所以距離很近時會低估策略：真實是 50.5%，引擎是 30.7%。主要原因是進場當根碰到的停利不成交，之後這筆交易又碰到了停損。</li>
+<li><strong>掛單離 K 線範圍越遠，誤差越小。</strong> 距離 20 點時，每一種假設都和真實相同。停損、停利相對 K 線大小太近時，該做的是改用更細的資料，而不是換一個假設。</li>
+</ul>
+<p>引擎的規則刻意只偏向一邊：低估策略的回測，可以用更細的資料再檢查；高估策略的回測，可能讓一個會虧錢的策略上線。</p>
+<h2 id="偏移統計也用同一個規則">偏移統計也用同一個規則</h2>
+<p>最大不利偏移（MAE）和最大有利偏移（MFE）在出場那根 K 線上也用同樣的道理。停損出場時，排除那根 K 線的有利一側，因為價格可能是在停損之後才碰到那裡；停利出場時，排除不利的一側。這些統計的完整定義見<a href="/zh-tw/posts/quant-research-glossary/">量化策略研究用詞表</a>。</p>
+</div><div class="callout callout--warning"><strong>這篇的限制：</strong><p>兩個模擬都使用沒有跳空、點差與滑價的隨機漫步價格；實際市場會有這些因素，跳空時的成交也有它自己的規則。同一根 K 線的比較只用了 15 分鐘 K 線上對稱的一組停損和停利；引擎低估的程度取決於距離相對 K 線範圍的大小，以及進場方式。輸入會不會偷看未來仍由作者負責：引擎保證的是 K 線與 shift 的時間，不是每個自訂欄位的意義。</p></div>
+<section class="question-section" aria-labelledby="goals-title"><h2 class="question-section-title" id="goals-title">這篇研究要回答的問題</h2><div class="question-item"><h3 class="question-item-title">TradePose 怎麼避免策略在一根 K 線收完之前就讀到它的收盤價？</h3><div class="question-item-answer"><p>決策在每根 K 線開盤時做，K 線用開始時間標記、往回對齊，沒有隱藏的延後；策略需要已收完的 K 線時，在那個時框自己的 K 線上宣告 <code>shift=1</code>。每個輸入是否真的不會偷看未來，仍由作者確認，因為 shift 本身無法證明這件事。</p></div></div><div class="question-item"><h3 class="question-item-title">一根 K 線同時碰到停損和停利時，引擎怎麼處理？</h3><div class="question-item-answer"><p>它選能證明的結果：停損優先於停利，進場當根的停損算數，進場當根的停利等到下一根。停損與停利相對 K 線範圍太近時，這會低估策略，而不是高估。</p></div></div></section>
+<section class="question-section" aria-labelledby="arising-title"><h2 class="question-section-title" id="arising-title">研究中衍生的問題</h2><div class="question-item"><h3 class="question-item-title">怎麼檢查自己的回測有沒有這兩個問題？</h3><div class="question-item-answer"><p>在隨機漫步上跑一次，出現的任何優勢都來自回測本身。多時框訊號要確認 shift 套在較高時框的 K 線上、而且在對齊之前；停損停利落在同一根 K 線內時，用更細的 K 線再跑一次比較結果。</p></div></div></section><div class="section-head"><h2 id="method">方法與資料</h2></div><p class="section-lead">研究設定、資料與計算方式；重現研究用的識別字在資料來源。</p><div class="appendix"><div style="display:contents"><h3>更新紀錄</h3><div>2026-10-24 20:38　首次發布</div></div></div><div class="wide"><section class="related"><h2 class="related-title">相關研究</h2><div class="related-grid"><a class="card card-interactive post-card" href="/zh-tw/posts/sharpe-ratio-sparse-trading/"><div class="article-cover" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div><div class="post-card__body"><span class="eyebrow">Sharpe 比率 · 年化</span><h3 class="post-card__title">交易稀少的策略，<wbr/>為什麼 Sharpe 會被高估：<wbr/>年化要用完整的交易日</h3><span class="post-card__excerpt">常見的 Sharpe 算法只用有交易出場的日子，再乘上 √252 年化。對一個月才交易一次的策略，這會把 Sharpe 高估好幾倍，還會讓它排在更好的策略前面。這篇說明誤差從哪裡來、TradePose 怎麼組成日序列，以及在自己的程式裡怎麼改。</span><span class="post-card__meta"><span>2026-10-24 23:28</span><span>4 分鐘</span></span></div></a><a class="card card-interactive post-card" href="/zh-tw/posts/one-opportunity-many-exit-policies/"><div class="article-cover" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div><div class="post-card__body"><span class="eyebrow">延遲進場 · 停損停利 · 父策略</span><h3 class="post-card__title">一個進場機會，<wbr/>同時計算多種出場：<wbr/>引擎怎麼拆解一個策略</h3><span class="post-card__excerpt">TradePose 把每個策略拆成一個進場機會，和套在它上面的交易政策。進場機會只算一次，每個政策在它之上獨立計算，而且每個政策的交易都能逐筆對回它來自的機會，包括延遲進場沒有成交的那些。這篇說明這個拆法，以及它為什麼讓分層研究做得到。</span><span class="post-card__meta"><span>2026-10-24 22:10</span><span>5 分鐘</span></span></div></a><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">10 組參數 · 累積報酬為正</span><span class="cover-figure__value">9 / 10</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L11.11 8.29L22.22 22.26L33.33 24.96L44.44 27.34L55.56 34.07L66.67 61.32L77.78 68.96L88.89 76.32L100.00 98.00L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 85.62H100"></path><path class="sparkline__line" d="M0.00 2.00L11.11 8.29L22.22 22.26L33.33 24.96L44.44 27.34L55.56 34.07L66.67 61.32L77.78 68.96L88.89 76.32L100.00 98.00"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">US100 · XAUUSD · SuperTrend · 10 組參數 · 4,000 筆交易</span><h3 class="post-card__title"><a class="post-card__link" href="/zh-tw/posts/us100-xauusd-supertrend-state-redo/">SuperTrend 狀態交易：<wbr/>從 768 個候選到 1 個留觀策略（US100 與黃金）</a></h3><span class="post-card__excerpt">照策略挑選方法論，從 US100 與黃金的 768 個 SuperTrend 狀態候選，走完校準、否決清單、進出場樹、葉節點檢查、組合與部位，得到一個 10 策略組合：挑選期（2022-03 到 2025-12）成本後 +70,078 美元、最大回撤 4,723。凍結後讀驗證期（2026-01 到 2026-10-23），組合虧 2,564 美元。拆解發現狀態訊號本身沒有平均優勢，獲利主要來自在同一段資料上挑出的出場參數。組合不上線；驗證期仍一致的 US100 4 小時空頭做空留倉策略（r14）以新候選凍結、留觀。</span><span class="post-card__meta"><span>2026-10-24 22:00</span><span>12 分鐘</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/zh-tw/posts/us100-xauusd-supertrend-state-redo/">讀文章</a><a class="btn btn-ghost btn-sm" href="/zh-tw/posts/us100-xauusd-supertrend-state-redo/?view=report">看報告</a></div></div></article></div></section></div><!-- island 外層加 div：astro-island 為 display: contents，否則引用區塊會被排進格線的側欄 --><div><script>(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value=="object"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event("astro:visible"));})();</script><astro-island uid="aTyrB" prefix="r14" component-url="/_astro/index.Abi5bUu1.js" component-export="Citation" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;引用本文&quot;],&quot;copyLabels&quot;:[0,{&quot;copy&quot;:[0,&quot;複製&quot;],&quot;copied&quot;:[0,&quot;已複製&quot;],&quot;failed&quot;:[0,&quot;無法複製&quot;]}],&quot;text&quot;:[0,&quot;TradePose Research（2026）。〈回測怎麼避免偷看未來：K 線的時間標記、shift 與同一根 K 線裡的先後〉TradePose Research Notes.&quot;],&quot;bibtex&quot;:[0,&quot;@article{tradepose2026backtestlookaheadbartiming,\n  title   = {回測怎麼避免偷看未來：K 線的時間標記、shift 與同一根 K 線裡的先後},\n  author  = {TradePose Research},\n  journal = {TradePose Research Notes},\n  year    = {2026}\n}&quot;]}" ssr client="visible" opts="{&quot;name&quot;:&quot;Citation&quot;,&quot;value&quot;:true}" await-children><div class="citation"><div class="citation-title">引用本文</div><p class="citation-text">TradePose Research（2026）。〈回測怎麼避免偷看未來：K 線的時間標記、shift 與同一根 K 線裡的先後〉TradePose Research Notes.</p><div class="citation-code">@article{tradepose2026backtestlookaheadbartiming,
+  title   = {回測怎麼避免偷看未來：K 線的時間標記、shift 與同一根 K 線裡的先後},
+  author  = {TradePose Research},
+  journal = {TradePose Research Notes},
+  year    = {2026}
+}<button type="button" class="btn btn-secondary btn-sm">複製</button></div></div><!--astro:end--></astro-island></div></div></main><footer class="site-footer"><div class="container"><div class="site-footer__grid"><div class="site-footer__brand"><span class="site-brand"><span class="site-brand__mark" aria-hidden="true"></span>TradePose</span><p class="site-footer__tagline">量化研究筆記：回測、統計與策略診斷。文中數字皆由文章附帶的回測統計產生。</p></div><div><h2 class="site-footer__title">研究</h2><ul><li><a href="/zh-tw/#research">研究目錄</a></li><li><a href="/zh-tw/#method">資料與計算說明</a></li><li><a href="/zh-tw/rss.xml">RSS</a></li></ul></div></div><div class="site-footer__legal"><span>© 2026 TradePose</span><span>研究內容不構成投資建議</span></div></div></footer><script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BflPKFW9.js"></script></body></html>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>TradePose Research</title>
+    <link>https://research.tradepose.com/en/</link>
+    <description>Quantitative research notes: backtests, statistics and strategy diagnostics</description>
+    <language>en</language>
+    <item>
+      <title>Why the Sharpe ratio of a sparse strategy gets inflated: annualize over every trading day</title>
+      <link>https://research.tradepose.com/en/posts/sharpe-ratio-sparse-trading/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/sharpe-ratio-sparse-trading/</guid>
+      <description>A common way to compute a strategy's Sharpe ratio uses only the days with a closed trade and multiplies by the square root of 252. For a strategy that trades once a month, that overstates the Sharpe several times and ranks it above better strategies. This post shows where the error comes from, how TradePose builds the daily series instead, and how to fix it in your own code.</description>
+      <category>Methodology</category>
+      <pubDate>Sat, 24 Oct 2026 15:28:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>One entry opportunity, many exit policies: how the engine splits a strategy</title>
+      <link>https://research.tradepose.com/en/posts/one-opportunity-many-exit-policies/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/one-opportunity-many-exit-policies/</guid>
+      <description>TradePose splits every strategy into an entry opportunity and the trade policies applied to it. The opportunity is computed once, every policy runs on top of it in isolation, and each policy's trades line up one by one with the opportunities they came from, including the ones a delayed entry never filled. This post explains that split and why it makes layered research possible.</description>
+      <category>Methodology</category>
+      <pubDate>Sat, 24 Oct 2026 14:10:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>SuperTrend state trades: from 768 candidates to 1 strategy on watch (US100 and gold)</title>
+      <link>https://research.tradepose.com/en/posts/us100-xauusd-supertrend-state-redo/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/us100-xauusd-supertrend-state-redo/</guid>
+      <description>Following the strategy-selection methodology from 768 SuperTrend state candidates on US100 and gold, through calibration, the veto list, the entry and exit tree, leaf checks, combination and sizing, gave a 10-strategy portfolio: +USD 70,078 after cost in the selection period (2022-03 to 2025-12), max drawdown 4,723. Read once after the freeze, the validation period (2026-01 to 2026-10-23) lost USD 2,564. The state signal itself had no mean edge; the profit came mostly from exit parameters chosen on the same data. The portfolio is not deployed; the US100 4h held short in a bearish state (r14), still consistent in the validation period, is frozen as a new candidate and kept on watch.</description>
+      <category>Strategy</category>
+      <pubDate>Sat, 24 Oct 2026 14:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>How a backtest avoids look-ahead bias: bar timestamps, shift, and what happens inside one bar</title>
+      <link>https://research.tradepose.com/en/posts/backtest-lookahead-bar-timing/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/backtest-lookahead-bar-timing/</guid>
+      <description>A backtest can see the future in two quiet ways: by reading a bar's close before the bar has finished, and by assuming a convenient order of events inside a bar. This post explains when TradePose makes each decision, which part of avoiding look-ahead the engine guarantees and which part the strategy author owns, and the conservative rules it applies when one bar reaches several prices.</description>
+      <category>Methodology</category>
+      <pubDate>Sat, 24 Oct 2026 12:38:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>How to build 4-hour bars: daylight saving time makes backtests depend on their start date</title>
+      <link>https://research.tradepose.com/en/posts/resample-daylight-saving-wall-clock/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/resample-daylight-saving-wall-clock/</guid>
+      <description>The same 4-hour strategy on the same prices trades differently when the backtest starts in winter instead of summer. The usual resampling functions align only the first bar to the local clock and then add a fixed 4 hours per bar. This post explains how the problem appears, how to cut bars on the local wall clock, and how to win back the speed without giving up correctness.</description>
+      <category>Methodology</category>
+      <pubDate>Sat, 24 Oct 2026 11:52:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>US100 and gold: an 11-strategy FTMO 100K portfolio, its sizing, full metrics and drawdowns</title>
+      <link>https://research.tradepose.com/en/posts/us100-xauusd-ftmo-11-strategy-portfolio/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/us100-xauusd-ftmo-11-strategy-portfolio/</guid>
+      <description>LU's six live US100 weekday clock × Market Profile strategies and the five 1-hour SuperTrend strategies on US100 and gold, combined into one FTMO 100K portfolio. Every one of the 11 strategies loses the same USD 400 at its stop. From June 2022 to October 2026: 2,898 trades, $111,273 in total, max drawdown $2,791, daily Sharpe 3.83 annualized. The two groups correlate -0.03 day by day, and together the drawdown did not grow.</description>
+      <category>Strategy</category>
+      <pubDate>Thu, 22 Oct 2026 09:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>A 1-hour SuperTrend as a risk switch: a five-strategy portfolio on US100 and gold</title>
+      <link>https://research.tradepose.com/en/posts/us100-xauusd-supertrend-risk-control/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/us100-xauusd-supertrend-risk-control/</guid>
+      <description>A 1-hour SuperTrend did not beat random timing on returns on US100 or gold, but for the same time in the market it kept the drawdown at about half of random timing. Adding exits one layer at a time, each kept only if the backtest drawdown fell, gives five strategies: three intraday strategies held only inside a trading window, and two held strategies whose window gates only the entry and that hold until the flip. Each has a lower drawdown than its market in every year, and their daily correlations are between −0.16 and 0.08. The combination made money every year since March 2022; after reference costs and swaps it totals 126 ATR with a maximum drawdown of 5.9, and with costs 50% higher still 102 and 6.3.</description>
+      <category>Strategy</category>
+      <pubDate>Wed, 21 Oct 2026 10:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>US100 weekday clock × Market Profile under a strict standard: from 41 roots to 6 strategies</title>
+      <link>https://research.tradepose.com/en/posts/us100-clock-market-profile-weekday-strict/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/us100-clock-market-profile-weekday-strict/</guid>
+      <description>The weekday × clock window × Market Profile clock strategies picked again under a stricter standard: shorts must beat holding short through the same window, the random-day null is raised to 90%, and every strategy must hold up both with and against the trend. Exploration keeps only robust finished strategies; costs and correlation come last. Of 84 robust strategies, 6 still have room after costs and correlate below 0.5 with each other, sized for an FTMO 100K account.</description>
+      <category>Strategy</category>
+      <pubDate>Tue, 20 Oct 2026 12:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Can the VIX filter or size US100 clock strategies? A test of the fear index out of sample</title>
+      <link>https://research.tradepose.com/en/posts/us100-clock-vix-filter/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/us100-clock-vix-filter/</guid>
+      <description>A daily SuperTrend on the VIX, read on the previous completed New York day, separates good and bad days for US100 clock strategies: shorts that wait for a rising VIX trend skip days that barely paid, and longs do best on rising-VIX days. But the short filter's gain comes mostly from 2022-2024, and three ways of sizing positions by the VIX state, on raw clock windows and on finished strategies, did not beat ATR-based sizing out of sample. The VIX also did not help as the scale for choosing clock windows or delayed entries.</description>
+      <category>Strategy</category>
+      <pubDate>Tue, 20 Oct 2026 09:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>US100 clock windows by weekday × Market Profile: from 36 roots to a 14-strategy combination</title>
+      <link>https://research.tradepose.com/en/posts/us100-clock-market-profile-weekday-combination/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/us100-clock-market-profile-weekday-combination/</guid>
+      <description>Clock windows paired with a Market Profile gate and traded on one weekday only, grown layer by layer into delayed entries, stops, targets, breakeven and trailing stops. In exploration the only profit-side test is beating the same-window market; parameters are picked on 2022–2024 and confirmed on 2025–2026. 14 strategies remain, sized for an FTMO 100K account with weekday multipliers that rarely change.</description>
+      <category>Strategy</category>
+      <pubDate>Mon, 19 Oct 2026 21:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Position sizing and risk allocation for an FTMO account: how much should each trade of a stopped portfolio risk?</title>
+      <link>https://research.tradepose.com/en/posts/ftmo-account-position-sizing/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/ftmo-account-position-sizing/</guid>
+      <description>Putting a set of intraday strategies with stops on an FTMO 100K account takes three answers: how much each trade risks, how risk is spread across the strategies, and how bad days and losing runs stay within the account limits. This post compares six sizing formulas and six ways to allocate risk, and explains why lots follow the stop distance, why risk parity runs over trading-day clusters, and why the cluster multipliers are estimated once and kept.</description>
+      <category>Methodology</category>
+      <pubDate>Mon, 19 Oct 2026 20:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>US100 clock strategy tree: 14 strategies grown from 2,070 entry/exit windows, stops placed by the MAE distribution, breakevens judged by the MAE they avoid</title>
+      <link>https://research.tradepose.com/en/posts/us100-clock-combination/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/us100-clock-combination/</guid>
+      <description>From the New York clock windows of the Nasdaq US100, connected plateaus give 15 windows; each grows delayed entry, stop-loss and take-profit, and breakeven, with filters applied last. Every layer may keep several branches, each beating its own control. A stop is mandatory and sits outside the winners' MAE cluster; a breakeven is judged by the MAE it avoids and by profit per unit of MAE. Room per trade and correlation are judged only once every strategy is complete, at the portfolio stage. This study shows the 14 strategies that remain, their combined performance, the cost test that keeps three more out, and how large positions should be on an FTMO 100K account.</description>
+      <category>Strategy</category>
+      <pubDate>Mon, 19 Oct 2026 20:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Where should breakeven trigger? 11 US100 Market Profile setups</title>
+      <link>https://research.tradepose.com/en/posts/us100-market-profile-vol-breakeven/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/us100-market-profile-vol-breakeven/</guid>
+      <description>Layer 5 of the Market Profile signals series, the last exit layer: a breakeven stop on the 11 setups with a robust stop loss, triggered only where a trade no longer looks like a loser.</description>
+      <category>Strategy</category>
+      <pubDate>Mon, 19 Oct 2026 19:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Can a delayed entry cut MAE? 36 US100 Market Profile setups</title>
+      <link>https://research.tradepose.com/en/posts/us100-market-profile-vol-delayed-entry/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/us100-market-profile-vol-delayed-entry/</guid>
+      <description>Layer 1 of the Market Profile signals series: instead of entering at once, use a favorable delayed entry (a limit order that waits for a pullback) or an adverse delayed entry (a stop order that waits for a breakout), scored by how much it cuts the adverse excursion.</description>
+      <category>Strategy</category>
+      <pubDate>Mon, 19 Oct 2026 19:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Where is the information in a trend filter? SuperTrend, ATR alone and the joint pick on 36 US100 Market Profile setups</title>
+      <link>https://research.tradepose.com/en/posts/us100-market-profile-vol-filter-attribution/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/us100-market-profile-vol-filter-attribution/</guid>
+      <description>Layer 3 of the Market Profile signals series: combine the veto with the delayed entry, compare SuperTrend × volatility with the volatility state alone, and pick the parents for the stop-loss layer.</description>
+      <category>Strategy</category>
+      <pubDate>Mon, 19 Oct 2026 19:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>From signal to final strategy: 11 US100 Market Profile setups, layer by layer</title>
+      <link>https://research.tradepose.com/en/posts/us100-market-profile-vol-final/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/us100-market-profile-vol-final/</guid>
+      <description>The conclusion of the Market Profile signals series: the 11 setups that survived every layer, each stage measured on its own, with and without the veto, and split into Mondays and the other weekdays.</description>
+      <category>Strategy</category>
+      <pubDate>Mon, 19 Oct 2026 19:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Portfolio and position size: 8 US100 Market Profile strategies on a 100k FTMO account, with spread and slippage</title>
+      <link>https://research.tradepose.com/en/posts/us100-market-profile-vol-portfolio/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/us100-market-profile-vol-portfolio/</guid>
+      <description>The portfolio article of the Market Profile signals series: combine the final strategies, drop the ones that move together, add spread and slippage, and size each trade so a 100k prop-firm account survives a bad year.</description>
+      <category>Strategy</category>
+      <pubDate>Mon, 19 Oct 2026 19:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Where to put the stop and the target? SL/TP on 19 US100 Market Profile parents</title>
+      <link>https://research.tradepose.com/en/posts/us100-market-profile-vol-sl-tp/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/us100-market-profile-vol-sl-tp/</guid>
+      <description>Layer 4 of the Market Profile signals series: stop loss and take profit on the 19 parents that survived the entry and filter layers, set from each parent's own MAE and G_MFE and kept only on a plateau.</description>
+      <category>Strategy</category>
+      <pubDate>Mon, 19 Oct 2026 19:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Which SuperTrend filter, in which volatility? 36 US100 Market Profile setups</title>
+      <link>https://research.tradepose.com/en/posts/us100-market-profile-vol-supertrend-filter/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/us100-market-profile-vol-supertrend-filter/</guid>
+      <description>Layer 2 of the Market Profile signals series: skip a day when the SuperTrend opposes the trade, in every volatility state or only in one, chosen by a rule that counts setups beating random timing.</description>
+      <category>Strategy</category>
+      <pubDate>Mon, 19 Oct 2026 19:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Do Market Profile signals work on both sides of value? 16 US100 events and their mirrors</title>
+      <link>https://research.tradepose.com/en/posts/us100-market-profile-signals-volatility/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/us100-market-profile-signals-volatility/</guid>
+      <description>We pair every Market Profile event with its mirror across the value area and test both, in volatility mode, to separate a real Profile effect from a session-direction bias on US100.</description>
+      <category>Strategy</category>
+      <pubDate>Mon, 19 Oct 2026 18:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Best time to trade US100? 2,070 entry/exit windows tested</title>
+      <link>https://research.tradepose.com/en/posts/us100-intraday-clock-windows/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/us100-intraday-clock-windows/</guid>
+      <description>US100 entered and exited at fixed New York times across the full session, from the 18:00 open to the next afternoon, long and short. Which windows have an edge?</description>
+      <category>Strategy</category>
+      <pubDate>Mon, 19 Oct 2026 18:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Pepperstone NAS100 clock windows by weekday × Market Profile: from 112 roots to 12 strategies and their sizing</title>
+      <link>https://research.tradepose.com/en/posts/pepperstone-nas100-clock-market-profile-weekday/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/pepperstone-nas100-clock-market-profile-weekday/</guid>
+      <description>The research process behind the FTMO US100 weekday clock portfolio, moved unchanged to Pepperstone's NAS100: first a check of whether the 14 existing strategies survive the change of broker, then the whole entry and exit tree regrown from the clock scan. 308 finished strategies beat the same-window market over the full sample and both halves; after removing duplicates with a 0.4 correlation measured on shared trading days checking the profit room net of a high cost and a regime review, 12 remain, sized for a USD 10,000 loss budget and a USD 300 account.</description>
+      <category>Strategy</category>
+      <pubDate>Sun, 18 Oct 2026 14:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>US100 weekday clock portfolio: backtest performance, drawdown analysis and parameter choices of 14 rule-based strategies</title>
+      <link>https://research.tradepose.com/en/posts/us100-weekday-clock-portfolio/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/us100-weekday-clock-portfolio/</guid>
+      <description>A published US100 portfolio of 14 rule-based strategies that run on fixed weekdays at fixed times and only when the open sits at a given place relative to a Market Profile value area. This page shows each strategy's and the portfolio's metrics (win rate, PF, MDD, Sharpe, Sortino), the five deepest drawdowns and a strategy-by-strategy breakdown of the deepest, all from the Trades Analyzer, and explains why each parameter was chosen.</description>
+      <category>Strategy</category>
+      <pubDate>Thu, 15 Oct 2026 09:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Does US100 fall after SuperTrend turns bearish? A backtest of 71 settings over bearish spells</title>
+      <link>https://research.tradepose.com/en/posts/us100-supertrend-short-volatility/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/us100-supertrend-short-volatility/</guid>
+      <description>One short per SuperTrend bearish period on US100, across five timeframes, three ATR lengths and several multipliers, measured in volatility mode with the volatility fixed at entry.</description>
+      <category>Strategy</category>
+      <pubDate>Tue, 13 Oct 2026 09:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Does the SuperTrend state carry information on US100? Robustness across 1h, 4h and daily</title>
+      <link>https://research.tradepose.com/en/posts/us100-supertrend-state-robustness/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/us100-supertrend-state-robustness/</guid>
+      <description>We hold US100 only while a SuperTrend is bullish or bearish, across four uses, three timeframes and 42 ATR × multiplier settings each (504 parameter sets), find the plateaus that hold up every year, then add delayed entry, stop loss, take profit, breakeven and trailing stop one layer at a time to see which ones lower drawdown without costing robustness.</description>
+      <category>Strategy</category>
+      <pubDate>Tue, 13 Oct 2026 06:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>MAE, G_MFE and profit factor: a quant research glossary</title>
+      <link>https://research.tradepose.com/en/posts/quant-research-glossary/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/quant-research-glossary/</guid>
+      <description>Terms and methods shared by our research and strategy reports: the three units and why they don't compare directly, MAE/G_MFE/MFE, performance and drawdown, the layer order, controls, favorable and adverse delayed entry, SL/TP and BE, how filters are tested, and the G01–G16 Market Profile signal codes.</description>
+      <category>Methodology</category>
+      <pubDate>Thu, 08 Oct 2026 15:52:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Research map and layered method: how a strategy grows from its root to a portfolio</title>
+      <link>https://research.tradepose.com/en/posts/strategy-lineage-layers/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/en/posts/strategy-lineage-layers/</guid>
+      <description>The entry point to all our research: how a strategy grows layer by layer, from root to delayed entry, exits, filter and portfolio, and the current articles of each series in reading order.</description>
+      <category>Methodology</category>
+      <pubDate>Thu, 08 Oct 2026 10:52:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

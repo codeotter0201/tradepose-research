@@ -1,0 +1,301 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>How to build 4-hour bars: daylight saving time makes backtests depend on their start date | TradePose Research</title><meta name="description" content="The same 4-hour strategy on the same prices trades differently when the backtest starts in winter instead of summer. The usual resampling functions align only the first bar to the local clock and then add a fixed 4 hours per bar. This post explains how the problem appears, how to cut bars on the local wall clock, and how to win back the speed without giving up correctness."><meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large"><link rel="canonical" href="https://research.tradepose.com/en/posts/resample-daylight-saving-wall-clock/"><link rel="alternate" hreflang="en" href="https://research.tradepose.com/en/posts/resample-daylight-saving-wall-clock/"><link rel="alternate" hreflang="zh-TW" href="https://research.tradepose.com/zh-tw/posts/resample-daylight-saving-wall-clock/"><link rel="alternate" hreflang="x-default" href="https://research.tradepose.com/en/posts/resample-daylight-saving-wall-clock/"><link rel="alternate" type="application/rss+xml" title="TradePose Research" href="/en/rss.xml"><meta property="og:site_name" content="TradePose Research"><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_TW"><meta property="og:type" content="article"><meta property="og:title" content="How to build 4-hour bars: daylight saving time makes backtests depend on their start date"><meta property="og:description" content="The same 4-hour strategy on the same prices trades differently when the backtest starts in winter instead of summer. The usual resampling functions align only the first bar to the local clock and then add a fixed 4 hours per bar. This post explains how the problem appears, how to cut bars on the local wall clock, and how to win back the speed without giving up correctness."><meta property="og:url" content="https://research.tradepose.com/en/posts/resample-daylight-saving-wall-clock/"><meta property="og:image" content="https://research.tradepose.com/og-default.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="How to build 4-hour bars: daylight saving time makes backtests depend on their start date"><meta name="twitter:description" content="The same 4-hour strategy on the same prices trades differently when the backtest starts in winter instead of summer. The usual resampling functions align only the first bar to the local clock and then add a fixed 4 hours per bar. This post explains how the problem appears, how to cut bars on the local wall clock, and how to win back the speed without giving up correctness."><meta name="twitter:image" content="https://research.tradepose.com/og-default.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to build 4-hour bars: daylight saving time makes backtests depend on their start date","description":"The same 4-hour strategy on the same prices trades differently when the backtest starts in winter instead of summer. The usual resampling functions align only the first bar to the local clock and then add a fixed 4 hours per bar. This post explains how the problem appears, how to cut bars on the local wall clock, and how to win back the speed without giving up correctness.","articleSection":"Methodology","keywords":"daylight saving time, DST, resample, timeframe, higher timeframe, backtest reproducibility, wall clock, Polars, pandas, group_by_dynamic, timezone","inLanguage":"en","datePublished":"2026-10-24T19:52:00+08:00","dateModified":"2026-10-24T19:52:00+08:00","image":"https://research.tradepose.com/og-default.png","url":"https://research.tradepose.com/en/posts/resample-daylight-saving-wall-clock/","mainEntityOfPage":"https://research.tradepose.com/en/posts/resample-daylight-saving-wall-clock/","author":{"@type":"Organization","name":"TradePose Research"},"publisher":{"@type":"Organization","name":"TradePose","url":"https://tradepose.com"}}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Research","item":"https://research.tradepose.com/en/"},{"@type":"ListItem","position":2,"name":"How to build 4-hour bars: daylight saving time makes backtests depend on their start date","item":"https://research.tradepose.com/en/posts/resample-daylight-saving-wall-clock/"}]}</script><!-- data-init：第一次繪製前套用主題、計算模式與檢視；頁面轉場換頁後重新執行（<html> 的屬性換成新頁的） --><script data-init>try { const q = new URLSearchParams(location.search).get('theme'); if (q === 'light' || q === 'dark') sessionStorage.setItem('tp-theme', q); } catch {}
+try { const t = sessionStorage.getItem('tp-theme') ?? localStorage.getItem('tp-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; else if (t === 'system') delete document.documentElement.dataset.theme; } catch {}</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CYDbzu1r.js"></script><link rel="stylesheet" href="/_astro/Base.CYCDe2lS.css"><style>html[data-view=report] [data-view-panel=article],html[data-view=case] [data-view-panel=article]{display:none}
+</style></head><body><a class="skip-link" href="#main">Skip to main content</a><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><header class="site-header"><div class="container site-header__inner"><a class="site-brand" href="/en/"><span class="site-brand__mark" aria-hidden="true"></span><span class="site-brand__name">TradePose</span><span class="site-brand__sub">Research</span></a><div class="site-header__context"><astro-island uid="1JWa42" prefix="r18" component-url="/_astro/index.Betv42FV.js" component-export="PageContext" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;How to build 4-hour bars: daylight saving time makes backtests depend on their start date&quot;],&quot;followHeading&quot;:[0,true],&quot;labels&quot;:[0,{&quot;open&quot;:[0,&quot;Open contents&quot;],&quot;contents&quot;:[0,&quot;Contents&quot;],&quot;close&quot;:[0,&quot;Close&quot;]}]}" ssr client="load" opts="{&quot;name&quot;:&quot;PageContext&quot;,&quot;value&quot;:true}" await-children><div class="page-context"><span class="page-context__heading"><span class="page-context__title" title="How to build 4-hour bars: daylight saving time makes backtests depend on their start date">How to build 4-hour bars: daylight saving time makes backtests depend on their start date</span></span><span class="page-context__progress" aria-hidden="true" style="--progress:0"></span></div><!--astro:end--></astro-island></div><div class="site-header__actions"><astro-island uid="Z7oTnj" prefix="r19" component-url="/_astro/SiteSettings.CBWXpzKJ.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;en&quot;],&quot;modes&quot;:[1,[]],&quot;languages&quot;:[1,[[0,{&quot;href&quot;:[0,&quot;/en/posts/resample-daylight-saving-wall-clock/&quot;],&quot;lang&quot;:[0,&quot;en&quot;],&quot;name&quot;:[0,&quot;English&quot;],&quot;current&quot;:[0,true]}],[0,{&quot;href&quot;:[0,&quot;/zh-tw/posts/resample-daylight-saving-wall-clock/&quot;],&quot;lang&quot;:[0,&quot;zh-TW&quot;],&quot;name&quot;:[0,&quot;繁體中文&quot;],&quot;current&quot;:[0,false]}]]],&quot;views&quot;:[1,[]]}" ssr client="load" opts="{&quot;name&quot;:&quot;SiteSettings&quot;,&quot;value&quot;:true}" await-children><button type="button" id="radix-_r19R_0_" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="btn btn-ghost btn-sm settings-menu" aria-label="Settings" title="Settings"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h6M12 5h1M3 11h1M7 11h6"></path><circle cx="10.5" cy="5" r="1.5"></circle><circle cx="5.5" cy="11" r="1.5"></circle></svg></button><!--astro:end--></astro-island></div></div></header><main id="main"><div class="article" data-view-panel="article"><div class="wide article-banner"><div class="article-cover article-cover--banner" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div></div><header class="article-header"><span class="category-chip">Methodology</span><h1 class="article-title visually-hidden">How to build 4-hour bars: daylight saving time makes backtests depend on their start date</h1><p class="article-dek"><p>Run the same 4-hour SuperTrend strategy on the same prices twice, once starting in November and once in August, and the trades in the overlapping period should be identical. They are not. This post explains what the problem is, why the default calls in both Polars and pandas run into it, and what the correct way to cut the bars costs in speed.</p></p><dl class="article-meta"><div><dt>Published</dt><dd>2026-10-24 19:52</dd></div><div><dt>Reading time</dt><dd>13 min read</dd></div></dl></header><div><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value=="object"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};"requestIdleCallback"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event("astro:idle"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="Z9N9SW" prefix="r30" component-url="/_astro/ArticleToc.GohhgC-S.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;en&quot;],&quot;items&quot;:[1,[[0,{&quot;id&quot;:[0,&quot;the-problem-a-different-start-date-gives-a-different-strategy&quot;],&quot;label&quot;:[0,&quot;The problem: a different start date gives a different strategy&quot;]}],[0,{&quot;id&quot;:[0,&quot;the-cause-only-the-first-bucket-follows-the-local-clock&quot;],&quot;label&quot;:[0,&quot;The cause: only the first bucket follows the local clock&quot;]}],[0,{&quot;id&quot;:[0,&quot;the-fix-cut-buckets-on-the-evaluation-timezones-wall-clock&quot;],&quot;label&quot;:[0,&quot;The fix: cut buckets on the evaluation timezone’s wall clock&quot;]}],[0,{&quot;id&quot;:[0,&quot;performance-winning-back-the-speed&quot;],&quot;label&quot;:[0,&quot;Performance: winning back the speed&quot;]}],[0,{&quot;id&quot;:[0,&quot;goals-title&quot;],&quot;label&quot;:[0,&quot;Questions this study answers&quot;]}],[0,{&quot;id&quot;:[0,&quot;arising-title&quot;],&quot;label&quot;:[0,&quot;Questions raised along the way&quot;]}],[0,{&quot;id&quot;:[0,&quot;method&quot;],&quot;label&quot;:[0,&quot;Method and data&quot;]}]]]}" ssr client="idle" opts="{&quot;name&quot;:&quot;ArticleToc&quot;,&quot;value&quot;:true}" await-children><nav class="toc toc--aside" aria-label="Contents"><div class="toc-title" aria-hidden="true">Contents</div><ol class="toc-list"><li class=""><a href="#the-problem-a-different-start-date-gives-a-different-strategy" aria-current="true">The problem: a different start date gives a different strategy</a></li><li class=""><a href="#the-cause-only-the-first-bucket-follows-the-local-clock">The cause: only the first bucket follows the local clock</a></li><li class=""><a href="#the-fix-cut-buckets-on-the-evaluation-timezones-wall-clock">The fix: cut buckets on the evaluation timezone’s wall clock</a></li><li class=""><a href="#performance-winning-back-the-speed">Performance: winning back the speed</a></li><li class=""><a href="#goals-title">Questions this study answers</a></li><li class=""><a href="#arising-title">Questions raised along the way</a></li><li class=""><a href="#method">Method and data</a></li></ol></nav><!--astro:end--></astro-island></div>
+<div class="abstract"><div class="abstract-title">Conclusion</div><p>When 1-minute or 15-minute data is combined into 4-hour bars, the usual resampling functions align only the first bar to the local clock and then add 4 elapsed hours for each bar after it. When daylight saving time switches, the local clock moves by 1 hour, so every later 4-hour bar is shifted by 1 hour; which way it is shifted depends on whether the first row of the data was in winter or summer time. In a simulated 4-hour SuperTrend strategy, the two start dates differ in 32 entries. The fix is to let each row pick its bucket from its own time on the evaluation timezone’s wall clock, and then the two start dates produce identical trades. This needs a timezone conversion on every row, but because consecutive rows fall into the same bucket, 10 years of 1-minute data resample into 4-hour bars in 178 milliseconds, bit-identical to Polars.</p></div><p class="reading-split">That is the conclusion. Each section below is the evidence for one claim; follow the sections or the evidence links into the strategy report for the data on every parameter set.</p>
+<div class="prose"><h2 id="the-problem-a-different-start-date-gives-a-different-strategy">The problem: a different start date gives a different strategy</h2>
+<p>Research often runs the same strategy twice: once over the whole selection and validation periods, and once with a warmup that starts just before the validation period. Both runs agree on the selection period, but the validation trades differ, by enough to change the conclusion.</p>
+<p>Narrowing it down step by step:</p>
+<ol>
+<li><strong>Only the 4-hour strategies diverge.</strong> The 1-hour and daily strategies in the same study are identical trade by trade in both runs.</li>
+<li><strong>It is not the hour the run starts.</strong> Starting at 22:00 or 23:00 on the same day, or a week later, gives the same result.</li>
+<li><strong>It is not the length of history.</strong> SuperTrend’s bands are recursive, so history length could matter. But runs with start dates spread over four years fall into two groups: the ones starting in winter time agree with each other, the ones starting in summer time agree with each other, and the two groups differ.</li>
+</ol>
+<p>The dividing line is <strong>whether the start date was in winter time or summer time</strong>.</p>
+</div><span class="sidenote">In this post, New York winter time is EST (Eastern Standard Time, UTC−5) and summer time is EDT (Eastern Daylight Time, UTC−4).</span>
+<div class="prose"><h3 id="simulation-one-strategy-two-start-dates">Simulation: one strategy, two start dates</h3>
+<p>The following simulation uses synthetic 15-minute prices. The strategy is a 4-hour SuperTrend (ATR 6 bars × 3.5) that reads the last completed 4-hour bar and goes short during New York 09:30–16:00 while the trend is up, exiting at a flip or at 16:00. The two runs differ only in the start date; we compare their 2026 trades:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Simulation: one strategy, two start dates (table)"><table class="data-table"><thead><tr><th>How the 4-hour bars are cut</th><th class="num">Start 2021-11-14 (winter)</th><th class="num">Start 2025-08-03 (summer)</th><th class="num">Entries found on only one side</th><th class="num">Identical trades</th></tr></thead><tbody><tr><td>First bucket aligned, then +4 hours each</td><td class="num">160 trades</td><td class="num">176 trades</td><td class="num">8 + 24</td><td class="num">148</td></tr><tr><td>Local wall clock</td><td class="num">169 trades</td><td class="num">169 trades</td><td class="num">0</td><td class="num">169</td></tr></tbody></table></div>
+<p>Trades on the same day show the difference directly:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Simulation: one strategy, two start dates (table)"><table class="data-table"><thead><tr><th>Date</th><th>Winter start</th><th>Summer start</th></tr></thead><tbody><tr><td>2026-01-13</td><td>Enter 09:30 → exit on the 12:00 flip</td><td>Enter 09:30 → exit on the 15:00 flip</td></tr><tr><td>2026-01-20</td><td>Enter 09:30 → exit 16:00</td><td>Enter 11:00 → exit 16:00</td></tr><tr><td>2026-03-02</td><td>No trade</td><td>Enter 09:30 → exit 16:00</td></tr></tbody></table></div>
+<p>The winter-start run flips at 12:00, the summer-start run at 11:00 or 15:00. A flip can only happen when a 4-hour bar closes, so these times reveal that the two sets of buckets are 1 hour apart.</p>
+</div><div class="callout"><strong>Simulated data:</strong><p>Both tables are computed on randomly generated 15-minute prices, not on actual US100 prices. The numbers only show the shape of the difference.</p></div>
+<div class="prose"><h2 id="the-cause-only-the-first-bucket-follows-the-local-clock">The cause: only the first bucket follows the local clock</h2>
+<p>The data is already converted to New York time, so why does this happen? Because <strong>a timezone conversion changes the label of a timestamp, not the instant it refers to</strong>. The 15-minute bars are correct; the problem is the rule that combines them.</p>
+<p>Polars’ <code>group_by_dynamic(every=&quot;4h&quot;)</code> and pandas’ <code>resample(&quot;4h&quot;)</code> both work like this:</p>
+<ol>
+<li>First bucket: the first row is truncated to a 4-hour boundary in local time. This step does use the timezone.</li>
+<li>Every bucket after it: add <strong>4 elapsed hours</strong>.</li>
+</ol>
+<p>When daylight saving time switches, the local clock moves by 1 hour but elapsed time does not, so every bucket after the switch is 1 hour off on the local clock:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> datetime </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> datetime, date</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> polars </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> DataFrame, col, datetime_range, </span><span style="color:#79B8FF">len</span><span style="color:#F97583"> as</span><span style="color:#E1E4E8"> count</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> bars</span><span style="color:#E1E4E8">(start):</span></span>
+<span class="line"><span style="color:#E1E4E8">    ts </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> datetime_range(start, datetime(</span><span style="color:#79B8FF">2026</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">7</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">), </span><span style="color:#9ECBFF">&quot;15m&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#FFAB70">                        time_zone</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;America/New_York&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">eager</span><span style="color:#F97583">=</span><span style="color:#79B8FF">True</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> DataFrame({</span><span style="color:#9ECBFF">&quot;ts&quot;</span><span style="color:#E1E4E8">: ts})</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">def</span><span style="color:#B392F0"> starts</span><span style="color:#E1E4E8">(df, day):</span></span>
+<span class="line"><span style="color:#E1E4E8">    g </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> df.group_by_dynamic(</span><span style="color:#9ECBFF">&quot;ts&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">every</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;4h&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">start_by</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;window&quot;</span><span style="color:#E1E4E8">).agg(count())</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> [t.strftime(</span><span style="color:#9ECBFF">&quot;%H:%M&quot;</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> t </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> g.filter(col(</span><span style="color:#9ECBFF">&quot;ts&quot;</span><span style="color:#E1E4E8">).dt.date() </span><span style="color:#F97583">==</span><span style="color:#E1E4E8"> day)[</span><span style="color:#9ECBFF">&quot;ts&quot;</span><span style="color:#E1E4E8">]]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">winter </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> bars(datetime(</span><span style="color:#79B8FF">2025</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">11</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">16</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">18</span><span style="color:#E1E4E8">))  </span><span style="color:#6A737D"># first row in winter time</span></span>
+<span class="line"><span style="color:#E1E4E8">summer </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> bars(datetime(</span><span style="color:#79B8FF">2025</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">8</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">18</span><span style="color:#E1E4E8">))    </span><span style="color:#6A737D"># first row in summer time</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(starts(winter, date(</span><span style="color:#79B8FF">2026</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">8</span><span style="color:#E1E4E8">)), starts(summer, date(</span><span style="color:#79B8FF">2026</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">8</span><span style="color:#E1E4E8">)))</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(starts(winter, date(</span><span style="color:#79B8FF">2026</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">6</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">10</span><span style="color:#E1E4E8">)), starts(summer, date(</span><span style="color:#79B8FF">2026</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">6</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">10</span><span style="color:#E1E4E8">)))</span></span></code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="The cause: only the first bucket follows the local clock (table)"><table class="data-table"><thead><tr><th>Date</th><th>Counted from winter</th><th>Counted from summer</th></tr></thead><tbody><tr><td>2026-01-08 (winter)</td><td>00:00, 04:00, 08:00, 12:00…</td><td>03:00, 07:00, 11:00, 15:00…</td></tr><tr><td>2026-06-10 (summer)</td><td>01:00, 05:00, 09:00, 13:00…</td><td>00:00, 04:00, 08:00, 12:00…</td></tr></tbody></table></div>
+<p>Each start date is aligned with the local clock for only half the year, and not a single 4-hour bar in the overlapping period is the same. pandas’ <code>Series.resample(&quot;4h&quot;)</code> gives the same result on the same data.</p>
+</div><span class="sidenote">Daily bars are not affected: <code>1d</code> is a calendar unit in both Polars and pandas, and every bucket starts at local midnight. Timeframes of 1 hour and below are not affected either: shifted by 1 hour, they still land on the hour. The affected timeframes are 2, 3, 4, 6, 8 and 12 hours.</span>
+<div class="prose"><h3 id="what-this-affects">What this affects</h3>
+<ul>
+<li><strong>Backtests cannot be reproduced.</strong> The same strategy’s result depends on the season its backtest starts in. When the selection and validation runs start on different dates, you are comparing two different strategies.</li>
+<li><strong>Live trading drifts away from the research.</strong> Each live computation only loads a recent stretch of history as warmup, so its start date keeps moving forward. The way 4-hour bars are cut therefore changes twice a year, and the live strategy is not the one the research validated.</li>
+<li><strong>A 4-hour bar loses its fixed meaning.</strong> “The 4-hour bar that closes at 12:00 New York time” becomes 11:00 or 13:00 for half the year, and rules written in terms of the session (the first bar after the open, the last bar before the close) fall out of place with it.</li>
+</ul>
+<h2 id="the-fix-cut-buckets-on-the-evaluation-timezones-wall-clock">The fix: cut buckets on the evaluation timezone’s wall clock</h2>
+<p>The rule fits in one sentence: <strong>each row picks its bucket from its own time on the local clock.</strong> 4-hour bars always start at local 00:00, 04:00, 08:00, 12:00, 16:00 and 20:00, in winter and in summer. The timezone database handles the daylight saving rules; there is no need to work out the switch dates yourself.</p>
+<p>We also compared another approach: cutting every sub-day bar in UTC. It also makes the result independent of the start date, but the start of a 4-hour bar in New York then moves by 1 hour with the seasons, which contradicts the purpose of writing strategy rules in local time. So we cut on the wall clock.</p>
+<h3 id="with-polars">With Polars</h3>
+<p>Replace <code>group_by_dynamic</code> with <code>dt.truncate</code> plus <code>group_by</code>. On timezone-aware timestamps, <code>dt.truncate</code> already truncates in local time:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> polars </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> col</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">bars_4h </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">    df.group_by(col(</span><span style="color:#9ECBFF">&quot;ts&quot;</span><span style="color:#E1E4E8">).dt.truncate(</span><span style="color:#9ECBFF">&quot;4h&quot;</span><span style="color:#E1E4E8">))</span></span>
+<span class="line"><span style="color:#E1E4E8">      .agg(col(</span><span style="color:#9ECBFF">&quot;open&quot;</span><span style="color:#E1E4E8">).first(), col(</span><span style="color:#9ECBFF">&quot;high&quot;</span><span style="color:#E1E4E8">).max(),</span></span>
+<span class="line"><span style="color:#E1E4E8">           col(</span><span style="color:#9ECBFF">&quot;low&quot;</span><span style="color:#E1E4E8">).min(), col(</span><span style="color:#9ECBFF">&quot;close&quot;</span><span style="color:#E1E4E8">).last(),</span></span>
+<span class="line"><span style="color:#E1E4E8">           col(</span><span style="color:#9ECBFF">&quot;volume&quot;</span><span style="color:#E1E4E8">).sum())</span></span>
+<span class="line"><span style="color:#E1E4E8">      .sort(</span><span style="color:#9ECBFF">&quot;ts&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">)</span></span></code></pre>
+<h3 id="with-pandas-or-other-tools">With pandas or other tools</h3>
+<p>Without Polars the idea is the same: compute the group key yourself, and make the key <strong>keep its timezone</strong>:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> numpy </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> array</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> pandas </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> Timedelta</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">is_dst </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> array([t.dst() </span><span style="color:#F97583">!=</span><span style="color:#E1E4E8"> Timedelta(</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">for</span><span style="color:#E1E4E8"> t </span><span style="color:#F97583">in</span><span style="color:#E1E4E8"> df.index])</span></span>
+<span class="line"><span style="color:#E1E4E8">key </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> df.index.floor(</span><span style="color:#9ECBFF">&quot;4h&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">ambiguous</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">is_dst, </span><span style="color:#FFAB70">nonexistent</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;shift_forward&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">bars_4h </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> df.groupby(key).agg(</span></span>
+<span class="line"><span style="color:#E1E4E8">    {</span><span style="color:#9ECBFF">&quot;open&quot;</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;first&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">&quot;high&quot;</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;max&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">&quot;low&quot;</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;min&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">&quot;close&quot;</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;last&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">&quot;volume&quot;</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;sum&quot;</span><span style="color:#E1E4E8">})</span></span></code></pre>
+<p>In any language, check your own code against these four points:</p>
+<ol>
+<li><strong>Truncate the group key in local time</strong>; do not step forward from the first bucket by a fixed length.</li>
+<li><strong>Keep the timezone or UTC offset in the group key.</strong> Truncating the local time with the timezone stripped looks right too, but on the fall-back day 01:00–02:00 happens twice, and a 1-hour bar would merge both into one bar of eight 15-minute bars.</li>
+<li><strong>Publish a higher-timeframe value only when the next bucket starts</strong>; do not compute the completion time as “bucket label + 4 hours”. On switch days the bucket is not 4 hours long: a fixed length makes the value arrive 1 hour late on the spring-forward day, and on the fall-back day it is read before the bucket has closed, which is a look at the future.</li>
+<li><strong>A sub-day timeframe must divide 24 hours</strong>, so that buckets restart at midnight every day. Reject timeframes such as 5 hours outright.</li>
+</ol>
+<h3 id="buckets-on-switch-days">Buckets on switch days</h3>
+<p>A direct consequence of cutting on the wall clock: the bucket that contains the switch is not 4 hours long.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Buckets on switch days (table)"><table class="data-table"><thead><tr><th>Day (New York)</th><th class="num">The 00:00 bucket</th><th class="num">15-minute bars inside</th></tr></thead><tbody><tr><td>Normal day</td><td class="num">4 hours</td><td class="num">16</td></tr><tr><td>Spring forward (second Sunday of March)</td><td class="num">3 hours</td><td class="num">12</td></tr><tr><td>Fall back (first Sunday of November)</td><td class="num">5 hours</td><td class="num">20</td></tr></tbody></table></div>
+<p>US switches happen at 2 a.m. on a Sunday, when indices and gold are closed, so in practice these markets never see them; only instruments that trade around the clock get these two bars of a different length.</p>
+<h3 id="the-invariant-a-source-bar-must-not-straddle-buckets">The invariant: a source bar must not straddle buckets</h3>
+<p>With the new cut comes one more rule: <strong>every source bar’s full interval must fall inside a single target bucket.</strong> A source bar that crosses a bucket boundary has no correct answer: counted in the earlier bucket, it lets that bucket see prices from the next one; counted in the later bucket, it leaves the earlier bucket missing part of its prices. So the resampling must stop with an error instead of quietly assigning the bar to one side.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="The invariant: a source bar must not straddle buckets (table)"><table class="data-table"><thead><tr><th>Source data</th><th>Evaluation timezone</th><th>Target</th><th>Result</th></tr></thead><tbody><tr><td>1, 5, 15, 30 minutes</td><td>New York, London, Sydney, Tokyo</td><td>4 hours</td><td>Works</td></tr><tr><td>15 minutes</td><td>India (UTC+5:30), Adelaide (UTC+9:30/+10:30)</td><td>4 hours</td><td>Works</td></tr><tr><td>1 hour cut on UTC hours</td><td>India (UTC+5:30)</td><td>4 hours</td><td><strong>Error</strong>: local 00:00 is 18:30 UTC, so every 1-hour bar straddles a boundary</td></tr><tr><td>30 minutes cut on UTC</td><td>Nepal (UTC+5:45)</td><td>4 hours</td><td><strong>Error</strong>: 30-minute bars straddle the local hour</td></tr><tr><td>2 hours cut on UTC</td><td>New York in winter</td><td>4 hours</td><td><strong>Error</strong>; in New York summer time they happen to align and work</td></tr><tr><td>15 minutes</td><td>Lord Howe Island (summer time shifts only 30 minutes)</td><td>4 hours</td><td>Works; the switch bucket is 3.5 or 4.5 hours</td></tr></tbody></table></div>
+<p>When the error appears, the remedy is <strong>to use finer source data</strong>. The timezone conversion itself is not the problem; the error means the source data is too coarse to cut bars in this timezone without looking ahead. With 1-minute or 15-minute data in New York time, you will never hit it.</p>
+<h2 id="performance-winning-back-the-speed">Performance: winning back the speed</h2>
+<p>The old code was fast precisely because it was wrong: only the first row needed a timezone conversion, and every later bucket was an integer addition. The correct cut has to place every row on the local clock.</p>
+<p>10 years of 1-minute data (5,258,880 rows), New York time, Apple M2, median of 5 runs:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Performance: winning back the speed (table)"><table class="data-table"><thead><tr><th>Target</th><th class="num">First bucket aligned, then fixed steps (wrong)</th><th class="num">Polars <code>dt.truncate</code></th><th class="num">One conversion per bucket</th></tr></thead><tbody><tr><td>4 hours</td><td class="num">36 ms</td><td class="num">421 ms</td><td class="num">178 ms</td></tr><tr><td>5 minutes</td><td class="num">263 ms</td><td class="num">625 ms</td><td class="num">346 ms</td></tr><tr><td>1 day</td><td class="num">34 ms</td><td class="num">409 ms</td><td class="num">174 ms</td></tr><tr><td>4 hours (UTC, no daylight saving)</td><td class="num">38 ms</td><td class="num">—</td><td class="num">41 ms</td></tr></tbody></table></div>
+<p><code>dt.truncate</code> converts every row twice: from UTC to local time, truncate, and then the bucket start from local time back to UTC. The second conversion is the expensive one, because a local time may not exist (spring forward) or may map to two instants (fall back).</p>
+<p>The optimization rests on one observation: <strong>consecutive rows almost always fall into the same bucket with the same UTC offset.</strong> It works in two steps:</p>
+<ol>
+<li>Look up the UTC offset once per row (a binary search on the timezone’s transition table), and compute the local time and its bucket with integer arithmetic.</li>
+<li>The bucket’s start instant depends only on “local bucket + this row’s offset”. When both match the previous row, reuse the previous result, so the expensive local-to-UTC conversion runs about once per bucket. Nonexistent and ambiguous times are resolved by the same rules as Polars.</li>
+</ol>
+<p>What remains is mostly the per-row offset lookup. Splitting the data into chunks and processing them on multiple threads would make it faster still; that has not been done yet.</p>
+<h3 id="making-sure-the-optimized-result-did-not-change">Making sure the optimized result did not change</h3>
+<p>Hand-written conversions are most likely to break on rare timezone rules, so we compared against Polars <code>dt.truncate</code> as an independent reference:</p>
+<ul>
+<li><strong>Fixed tests</strong>: 11 timezones (including Lord Howe’s half-hour daylight saving, the midnight switches of Santiago and Havana, and the historical offset changes of Tehran, Casablanca and Moscow) × 15 minutes up to 1 day × millisecond, microsecond and nanosecond precision, bit-identical; inputs on which Polars raises an error raise on both sides.</li>
+<li><strong>Full timezone sweep</strong>: <strong>every timezone</strong> in the timezone database, every minute within two days of <strong>every offset change</strong> from 1900 to 2040, × 11 timeframes from 15 minutes to 1 day: 0 differences.</li>
+<li><strong>An edge case the sweep found</strong>: Casey Station in Antarctica jumped straight from UTC+8 to UTC+11 on 2016-10-22, so the hour after the spring-forward gap still does not exist. Normal timezones never reach this branch; after the sweep it became a fixed test.</li>
+</ul>
+<p>Two more checks make sure nothing else changed:</p>
+<ul>
+<li><strong>Other timeframes are unchanged</strong>: before the change, digests of the old output were recorded for 1, 5, 15 and 30 minutes, 1 hour and 1 day across several timezones; after the change they are bit-identical. Temporarily switching the grouping back to the old code makes the wall-clock tests fail while the digests still pass, which confirms the digests recorded the output from before the change.</li>
+<li><strong>Live warmup is reproducible</strong>: at many random computation times (including around the switches), resampling only the most recent 20 to 120 days of history gives every complete 4-hour bar, and the previous bar’s close, exactly as the full history does.</li>
+</ul>
+</div><div class="callout callout--warning"><strong>Limitations of this post:</strong><p>The trade tables are computed on randomly generated prices; they show the shape of the difference, not actual US100 trades. The performance numbers were measured on a single machine (Apple M2) with single-threaded timezone conversion, and will differ on other machines and data sizes. In timezones where the switch happens at midnight itself (for example Santiago, Chile), local 00:00 does not exist on the switch day and that bucket starts at the first moment after the gap.</p></div>
+<section class="question-section" aria-labelledby="goals-title"><h2 class="question-section-title" id="goals-title">Questions this study answers</h2><div class="question-item"><h3 class="question-item-title">Should the same strategy give the same result when the backtest starts on a different date?</h3><div class="question-item-answer"><p>It should. When bars are cut as “first bucket aligned, then fixed 4-hour steps”, the result depends on whether the start date is in winter or summer time; once buckets are cut on the evaluation timezone’s wall clock, each bar’s start depends only on its own timestamp, and the two start dates produce identical trades.</p></div></div><div class="question-item"><h3 class="question-item-title">How can I check whether my own backtest code has this problem?</h3><div class="question-item-answer"><p>Take a strategy on a 2- to 12-hour timeframe, backtest it once from January and once from July, and compare the bar starts and the trades in the overlapping period. The fix is to use a timezone-aware local truncation as the group key, and to publish higher-timeframe values only when the next bucket starts.</p></div></div></section>
+<section class="question-section" aria-labelledby="arising-title"><h2 class="question-section-title" id="arising-title">Questions raised along the way</h2><div class="question-item"><h3 class="question-item-title">The correct cut is much slower than the wrong one. Is it worth it?</h3><div class="question-item-answer"><p>It is, and the gap can be narrowed. A timezone conversion per row is the price of correctness; by using the fact that consecutive rows share a bucket, 10 years of 1-minute data resample into 4-hour bars in 178 milliseconds instead of 421, bit-identical to Polars.</p></div></div><div class="question-item"><h3 class="question-item-title">I only have 1-hour data and want a 4-hour strategy in Indian time. What can I do?</h3><div class="question-item-answer"><p>1-hour bars cut on UTC hours all straddle Indian local hours, so they cannot form 4-hour bars without looking ahead. Use 30-minute or finer data instead.</p></div></div></section><div class="section-head"><h2 id="method">Method and data</h2></div><p class="section-lead">Research setup, data and calculations; the identifiers needed to reproduce the study are under data sources.</p><div class="appendix"><div style="display:contents"><h3>Changelog</h3><div>2026-10-24 19:52 first published</div></div></div><div class="wide"><section class="related"><h2 class="related-title">Related research</h2><div class="related-grid"><a class="card card-interactive post-card" href="/en/posts/sharpe-ratio-sparse-trading/"><div class="article-cover" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div><div class="post-card__body"><span class="eyebrow">Sharpe ratio · Annualization</span><h3 class="post-card__title">Why the Sharpe ratio of a sparse strategy gets inflated: annualize over every trading day</h3><span class="post-card__excerpt">A common way to compute a strategy&#x27;s Sharpe ratio uses only the days with a closed trade and multiplies by the square root of 252. For a strategy that trades once a month, that overstates the Sharpe several times and ranks it above better strategies. This post shows where the error comes from, how TradePose builds the daily series instead, and how to fix it in your own code.</span><span class="post-card__meta"><span>2026-10-24 23:28</span><span>5 min read</span></span></div></a><a class="card card-interactive post-card" href="/en/posts/one-opportunity-many-exit-policies/"><div class="article-cover" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div><div class="post-card__body"><span class="eyebrow">Delayed entry · Stop loss &amp; take profit · Parent strategy</span><h3 class="post-card__title">One entry opportunity, many exit policies: how the engine splits a strategy</h3><span class="post-card__excerpt">TradePose splits every strategy into an entry opportunity and the trade policies applied to it. The opportunity is computed once, every policy runs on top of it in isolation, and each policy&#x27;s trades line up one by one with the opportunities they came from, including the ones a delayed entry never filled. This post explains that split and why it makes layered research possible.</span><span class="post-card__meta"><span>2026-10-24 22:10</span><span>6 min read</span></span></div></a><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">10 parameter sets · Total return above 0</span><span class="cover-figure__value">9 / 10</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L11.11 8.29L22.22 22.26L33.33 24.96L44.44 27.34L55.56 34.07L66.67 61.32L77.78 68.96L88.89 76.32L100.00 98.00L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 85.62H100"></path><path class="sparkline__line" d="M0.00 2.00L11.11 8.29L22.22 22.26L33.33 24.96L44.44 27.34L55.56 34.07L66.67 61.32L77.78 68.96L88.89 76.32L100.00 98.00"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">US100 · XAUUSD · SuperTrend · 10 parameter sets · 4,000 trades</span><h3 class="post-card__title"><a class="post-card__link" href="/en/posts/us100-xauusd-supertrend-state-redo/">SuperTrend state trades: from 768 candidates to 1 strategy on watch (US100 and gold)</a></h3><span class="post-card__excerpt">Following the strategy-selection methodology from 768 SuperTrend state candidates on US100 and gold, through calibration, the veto list, the entry and exit tree, leaf checks, combination and sizing, gave a 10-strategy portfolio: +USD 70,078 after cost in the selection period (2022-03 to 2025-12), max drawdown 4,723. Read once after the freeze, the validation period (2026-01 to 2026-10-23) lost USD 2,564. The state signal itself had no mean edge; the profit came mostly from exit parameters chosen on the same data. The portfolio is not deployed; the US100 4h held short in a bearish state (r14), still consistent in the validation period, is frozen as a new candidate and kept on watch.</span><span class="post-card__meta"><span>2026-10-24 22:00</span><span>13 min read</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/en/posts/us100-xauusd-supertrend-state-redo/">Read article</a><a class="btn btn-ghost btn-sm" href="/en/posts/us100-xauusd-supertrend-state-redo/?view=report">View report</a></div></div></article></div></section></div><!-- island 外層加 div：astro-island 為 display: contents，否則引用區塊會被排進格線的側欄 --><div><script>(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value=="object"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event("astro:visible"));})();</script><astro-island uid="Z22aJLU" prefix="r14" component-url="/_astro/index.Abi5bUu1.js" component-export="Citation" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;Cite this article&quot;],&quot;copyLabels&quot;:[0,{&quot;copy&quot;:[0,&quot;Copy&quot;],&quot;copied&quot;:[0,&quot;Copied&quot;],&quot;failed&quot;:[0,&quot;Couldn&#39;t copy&quot;]}],&quot;text&quot;:[0,&quot;TradePose Research (2026). \&quot;How to build 4-hour bars: daylight saving time makes backtests depend on their start date.\&quot; TradePose Research Notes.&quot;],&quot;bibtex&quot;:[0,&quot;@article{tradepose2026resampledaylightsavingwallclock,\n  title   = {How to build 4-hour bars: daylight saving time makes backtests depend on their start date},\n  author  = {TradePose Research},\n  journal = {TradePose Research Notes},\n  year    = {2026}\n}&quot;]}" ssr client="visible" opts="{&quot;name&quot;:&quot;Citation&quot;,&quot;value&quot;:true}" await-children><div class="citation"><div class="citation-title">Cite this article</div><p class="citation-text">TradePose Research (2026). &quot;How to build 4-hour bars: daylight saving time makes backtests depend on their start date.&quot; TradePose Research Notes.</p><div class="citation-code">@article{tradepose2026resampledaylightsavingwallclock,
+  title   = {How to build 4-hour bars: daylight saving time makes backtests depend on their start date},
+  author  = {TradePose Research},
+  journal = {TradePose Research Notes},
+  year    = {2026}
+}<button type="button" class="btn btn-secondary btn-sm">Copy</button></div></div><!--astro:end--></astro-island></div></div></main><footer class="site-footer"><div class="container"><div class="site-footer__grid"><div class="site-footer__brand"><span class="site-brand"><span class="site-brand__mark" aria-hidden="true"></span>TradePose</span><p class="site-footer__tagline">Quantitative research notes: backtests, statistics and strategy diagnostics. Every number comes from the backtest statistics published with the article.</p></div><div><h2 class="site-footer__title">Research</h2><ul><li><a href="/en/#research">Research index</a></li><li><a href="/en/#method">Data and methodology</a></li><li><a href="/en/rss.xml">RSS</a></li></ul></div></div><div class="site-footer__legal"><span>© 2026 TradePose</span><span>Research is not investment advice</span></div></div></footer><script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BflPKFW9.js"></script></body></html>
