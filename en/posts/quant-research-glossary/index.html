@@ -1,0 +1,1060 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>MAE, G_MFE and profit factor: a quant research glossary | TradePose Research</title><meta name="description" content="Terms and methods shared by our research and strategy reports: the three units and why they don't compare directly, MAE/G_MFE/MFE, performance and drawdown, the layer order, controls, favorable and adverse delayed entry, SL/TP and BE, how filters are tested, and the G01–G16 Market Profile signal codes."><meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large"><link rel="canonical" href="https://research.tradepose.com/en/posts/quant-research-glossary/"><link rel="alternate" hreflang="en" href="https://research.tradepose.com/en/posts/quant-research-glossary/"><link rel="alternate" hreflang="zh-TW" href="https://research.tradepose.com/zh-tw/posts/quant-research-glossary/"><link rel="alternate" hreflang="x-default" href="https://research.tradepose.com/en/posts/quant-research-glossary/"><link rel="alternate" type="application/rss+xml" title="TradePose Research" href="/en/rss.xml"><meta property="og:site_name" content="TradePose Research"><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_TW"><meta property="og:type" content="article"><meta property="og:title" content="MAE, G_MFE and profit factor: a quant research glossary"><meta property="og:description" content="Terms and methods shared by our research and strategy reports: the three units and why they don't compare directly, MAE/G_MFE/MFE, performance and drawdown, the layer order, controls, favorable and adverse delayed entry, SL/TP and BE, how filters are tested, and the G01–G16 Market Profile signal codes."><meta property="og:url" content="https://research.tradepose.com/en/posts/quant-research-glossary/"><meta property="og:image" content="https://research.tradepose.com/og-default.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="MAE, G_MFE and profit factor: a quant research glossary"><meta name="twitter:description" content="Terms and methods shared by our research and strategy reports: the three units and why they don't compare directly, MAE/G_MFE/MFE, performance and drawdown, the layer order, controls, favorable and adverse delayed entry, SL/TP and BE, how filters are tested, and the G01–G16 Market Profile signal codes."><meta name="twitter:image" content="https://research.tradepose.com/og-default.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"MAE, G_MFE and profit factor: a quant research glossary","description":"Terms and methods shared by our research and strategy reports: the three units and why they don't compare directly, MAE/G_MFE/MFE, performance and drawdown, the layer order, controls, favorable and adverse delayed entry, SL/TP and BE, how filters are tested, and the G01–G16 Market Profile signal codes.","articleSection":"Methodology","keywords":"quant trading glossary, MAE MFE, G_MFE, profit factor, recovery factor, max drawdown, delayed entry, buy limit, buy stop, stop loss, trailing stop, breakeven stop, Market Profile, circular-shift null, control group","inLanguage":"en","datePublished":"2026-10-08T23:52:00+08:00","dateModified":"2026-10-08T23:52:00+08:00","image":"https://research.tradepose.com/og-default.png","url":"https://research.tradepose.com/en/posts/quant-research-glossary/","mainEntityOfPage":"https://research.tradepose.com/en/posts/quant-research-glossary/","author":{"@type":"Organization","name":"TradePose Research"},"publisher":{"@type":"Organization","name":"TradePose","url":"https://tradepose.com"}}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Research","item":"https://research.tradepose.com/en/"},{"@type":"ListItem","position":2,"name":"MAE, G_MFE and profit factor: a quant research glossary","item":"https://research.tradepose.com/en/posts/quant-research-glossary/"}]}</script><!-- data-init：第一次繪製前套用主題、計算模式與檢視；頁面轉場換頁後重新執行（<html> 的屬性換成新頁的） --><script data-init>try { const q = new URLSearchParams(location.search).get('theme'); if (q === 'light' || q === 'dark') sessionStorage.setItem('tp-theme', q); } catch {}
+try { const t = sessionStorage.getItem('tp-theme') ?? localStorage.getItem('tp-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; else if (t === 'system') delete document.documentElement.dataset.theme; } catch {}</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CYDbzu1r.js"></script><link rel="stylesheet" href="/_astro/Base.OLjrjMpp.css"><style>html[data-view=report] [data-view-panel=article],html[data-view=case] [data-view-panel=article]{display:none}
+</style></head><body><a class="skip-link" href="#main">Skip to main content</a><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><header class="site-header site-header--article"><div class="container site-header__inner"><a class="site-brand" href="/en/"><span class="site-brand__mark" aria-hidden="true"></span><span class="site-brand__name">TradePose</span><span class="site-brand__sub">Research</span></a><div class="site-header__context"><astro-island uid="20Qq0P" prefix="r18" component-url="/_astro/index.i-83YKa-.js" component-export="PageContext" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;MAE, G_MFE and profit factor: a quant research glossary&quot;],&quot;followHeading&quot;:[0,true],&quot;labels&quot;:[0,{&quot;open&quot;:[0,&quot;Open contents&quot;],&quot;contents&quot;:[0,&quot;Contents&quot;],&quot;close&quot;:[0,&quot;Close&quot;]}]}" ssr client="load" opts="{&quot;name&quot;:&quot;PageContext&quot;,&quot;value&quot;:true}" await-children><div class="page-context"><span class="page-context__heading"><span class="page-context__title" title="MAE, G_MFE and profit factor: a quant research glossary">MAE, G_MFE and profit factor: a quant research glossary</span></span><span class="page-context__progress" aria-hidden="true" style="--progress:0"></span></div><!--astro:end--></astro-island></div><div class="site-header__actions"><astro-island uid="dOK6x" prefix="r19" component-url="/_astro/SiteSettings.DX80NSQG.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;en&quot;],&quot;modes&quot;:[1,[]],&quot;languages&quot;:[1,[[0,{&quot;href&quot;:[0,&quot;/en/posts/quant-research-glossary/&quot;],&quot;lang&quot;:[0,&quot;en&quot;],&quot;name&quot;:[0,&quot;English&quot;],&quot;short&quot;:[0,&quot;EN&quot;],&quot;current&quot;:[0,true]}],[0,{&quot;href&quot;:[0,&quot;/zh-tw/posts/quant-research-glossary/&quot;],&quot;lang&quot;:[0,&quot;zh-TW&quot;],&quot;name&quot;:[0,&quot;繁體中文&quot;],&quot;short&quot;:[0,&quot;中文&quot;],&quot;current&quot;:[0,false]}]]],&quot;views&quot;:[1,[]]}" ssr client="load" opts="{&quot;name&quot;:&quot;SiteSettings&quot;,&quot;value&quot;:true}" await-children><div class="settings-bar"><nav class="segmented settings-bar__item settings-bar__item--secondary" aria-label="Language"><a href="/en/posts/quant-research-glossary/" lang="en" hrefLang="en" title="English" aria-current="page">EN</a><a href="/zh-tw/posts/quant-research-glossary/" lang="zh-TW" hrefLang="zh-TW" title="繁體中文">中文</a></nav><button type="button" class="btn btn-ghost btn-sm btn-icon settings-bar__item settings-bar__item--secondary" aria-label="Theme: System" title="Theme: System → Light"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="12" height="8.5" rx="1.25"></rect><path d="M5.5 14h5M8 11.5V14"></path></svg></button><button type="button" id="radix-_r19R_5_" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="btn btn-ghost btn-sm settings-menu" aria-label="Settings" title="Settings"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h6M12 5h1M3 11h1M7 11h6"></path><circle cx="10.5" cy="5" r="1.5"></circle><circle cx="5.5" cy="11" r="1.5"></circle></svg></button></div><!--astro:end--></astro-island></div></div></header><main id="main"><div class="article" data-view-panel="article"><div class="wide article-banner"><div class="article-cover article-cover--banner" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div></div><header class="article-header"><span class="category-chip">Methodology</span><h1 class="article-title visually-hidden">MAE, G_MFE and profit factor: a quant research glossary</h1><p class="article-dek"><p>The same concept often goes by several names among traders, and the same term can be calculated differently from one book to the next. This post pins down what every term in our research articles and strategy reports means: the English term, how it is calculated, and which term it is easily confused with. It also collects the methods our studies share, such as controls, the choice of volatility unit, and how take profits and filters are judged, and lists the Market Profile signal codes. All our articles follow the definitions here.</p></p><dl class="article-meta"><div><dt>Published</dt><dd>2026-10-08 23:52</dd></div><div><dt>Reading time</dt><dd>32 min read</dd></div></dl></header><div><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value=="object"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};"requestIdleCallback"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event("astro:idle"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="fNQ8E" prefix="r31" component-url="/_astro/ArticleToc.VhlXB6WE.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;en&quot;],&quot;items&quot;:[1,[[0,{&quot;id&quot;:[0,&quot;what-units-are-returns-and-drawdowns-in&quot;],&quot;label&quot;:[0,&quot;What units are returns and drawdowns in?&quot;]}],[0,{&quot;id&quot;:[0,&quot;why-a-daily-atr-over-about-60-trading-days&quot;],&quot;label&quot;:[0,&quot;Why a daily ATR over about 60 trading days?&quot;]}],[0,{&quot;id&quot;:[0,&quot;why-do-some-studies-use-a-median-true-range&quot;],&quot;label&quot;:[0,&quot;Why do some studies use a median True Range?&quot;]}],[0,{&quot;id&quot;:[0,&quot;how-do-mae-g_mfe-and-mfe-differ&quot;],&quot;label&quot;:[0,&quot;How do MAE, G_MFE and MFE differ?&quot;]}],[0,{&quot;id&quot;:[0,&quot;how-do-you-read-a-strategys-return-and-risk&quot;],&quot;label&quot;:[0,&quot;How do you read a strategy’s return and risk?&quot;]}],[0,{&quot;id&quot;:[0,&quot;how-is-strategy-research-layered&quot;],&quot;label&quot;:[0,&quot;How is strategy research layered?&quot;]}],[0,{&quot;id&quot;:[0,&quot;why-does-a-backtest-need-a-control&quot;],&quot;label&quot;:[0,&quot;Why does a backtest need a control?&quot;]}],[0,{&quot;id&quot;:[0,&quot;what-do-favorable-and-adverse-delayed-entry-mean&quot;],&quot;label&quot;:[0,&quot;What do favorable and adverse delayed entry mean?&quot;]}],[0,{&quot;id&quot;:[0,&quot;how-do-stop-loss-take-profit-trailing-stop-and-breakeven-work&quot;],&quot;label&quot;:[0,&quot;How do stop loss, take profit, trailing stop and breakeven work?&quot;]}],[0,{&quot;id&quot;:[0,&quot;how-should-a-take-profit-be-judged&quot;],&quot;label&quot;:[0,&quot;How should a take profit be judged?&quot;]}],[0,{&quot;id&quot;:[0,&quot;how-do-you-tell-a-filter-carries-information&quot;],&quot;label&quot;:[0,&quot;How do you tell a filter carries information?&quot;]}],[0,{&quot;id&quot;:[0,&quot;how-do-you-tell-a-parameter-isnt-just-luck&quot;],&quot;label&quot;:[0,&quot;How do you tell a parameter isn’t just luck?&quot;]}],[0,{&quot;id&quot;:[0,&quot;filter-and-market-structure-terms&quot;],&quot;label&quot;:[0,&quot;Filter and market structure terms&quot;]}],[0,{&quot;id&quot;:[0,&quot;strategy-codes&quot;],&quot;label&quot;:[0,&quot;Strategy codes&quot;]}],[0,{&quot;id&quot;:[0,&quot;how-is-position-size-calculated&quot;],&quot;label&quot;:[0,&quot;How is position size calculated?&quot;]}],[0,{&quot;id&quot;:[0,&quot;goals-title&quot;],&quot;label&quot;:[0,&quot;Questions this study answers&quot;]}],[0,{&quot;id&quot;:[0,&quot;arising-title&quot;],&quot;label&quot;:[0,&quot;Questions raised along the way&quot;]}],[0,{&quot;id&quot;:[0,&quot;method&quot;],&quot;label&quot;:[0,&quot;Method and data&quot;]}]]]}" ssr client="idle" opts="{&quot;name&quot;:&quot;ArticleToc&quot;,&quot;value&quot;:true}" await-children><nav class="toc toc--aside" aria-label="Contents"><div class="toc-title" aria-hidden="true">Contents</div><ol class="toc-list"><li class=""><a href="#what-units-are-returns-and-drawdowns-in" aria-current="true">What units are returns and drawdowns in?</a></li><li class=""><a href="#why-a-daily-atr-over-about-60-trading-days">Why a daily ATR over about 60 trading days?</a></li><li class=""><a href="#why-do-some-studies-use-a-median-true-range">Why do some studies use a median True Range?</a></li><li class=""><a href="#how-do-mae-g_mfe-and-mfe-differ">How do MAE, G_MFE and MFE differ?</a></li><li class=""><a href="#how-do-you-read-a-strategys-return-and-risk">How do you read a strategy’s return and risk?</a></li><li class=""><a href="#how-is-strategy-research-layered">How is strategy research layered?</a></li><li class=""><a href="#why-does-a-backtest-need-a-control">Why does a backtest need a control?</a></li><li class=""><a href="#what-do-favorable-and-adverse-delayed-entry-mean">What do favorable and adverse delayed entry mean?</a></li><li class=""><a href="#how-do-stop-loss-take-profit-trailing-stop-and-breakeven-work">How do stop loss, take profit, trailing stop and breakeven work?</a></li><li class=""><a href="#how-should-a-take-profit-be-judged">How should a take profit be judged?</a></li><li class=""><a href="#how-do-you-tell-a-filter-carries-information">How do you tell a filter carries information?</a></li><li class=""><a href="#how-do-you-tell-a-parameter-isnt-just-luck">How do you tell a parameter isn’t just luck?</a></li><li class=""><a href="#filter-and-market-structure-terms">Filter and market structure terms</a></li><li class=""><a href="#strategy-codes">Strategy codes</a></li><li class=""><a href="#how-is-position-size-calculated">How is position size calculated?</a></li><li class=""><a href="#goals-title">Questions this study answers</a></li><li class=""><a href="#arising-title">Questions raised along the way</a></li><li class=""><a href="#method">Method and data</a></li></ol></nav><!--astro:end--></astro-island></div>
+<div class="abstract"><div class="abstract-title">Conclusion</div><p>Before reading our research, there are three things you most need to know. First, MFE only measures the favorable move before the Maximum Adverse Excursion (MAE) occurs; the largest favorable move over the whole holding period is called G_MFE, which differs from the MFE in most textbooks. Second, returns, drawdowns and MAE come in three units: percentage (%), multiples of the daily ATR, and multiples of the median True Range, and numbers in different units do not compare directly. Third, there are only two kinds of delayed entry: favorable delayed entry (Buy/Sell Limit: a long rests a limit order below the signal price and waits for a pullback) and adverse delayed entry (Buy/Sell Stop: a long rests a stop order above the signal price and waits for a breakout). Favorable and adverse are named from the order’s point of view; once the position is open, a move in the same direction gets the opposite name.</p></div><p class="reading-split">That is the conclusion. Each section below is the evidence for one claim; follow the sections or the evidence links into the strategy report for the data on every parameter set.</p>
+<div class="prose"><h2 id="what-units-are-returns-and-drawdowns-in">What units are returns and drawdowns in?</h2>
+<p>The units of returns, drawdowns, per-trade P&amp;L, MAE and similar values are set by the calculation mode (Analyzer mode); win rate, ratios and day counts are not affected. When an article offers two or more modes, you can switch between them in the navigation bar.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="What units are returns and drawdowns in? (table)"><table class="data-table"><thead><tr><th>Calculation mode</th><th>How it is calculated</th><th>Unit</th></tr></thead><tbody><tr><td>Percentage</td><td>Each trade’s P&amp;L ÷ entry price, then summed</td><td><code>%</code></td></tr><tr><td>Volatility-normalized</td><td>Each trade’s P&amp;L ÷ volatility at exit, then summed; equivalent to every trade taking the same volatility risk</td><td><code>vol</code> (multiples of volatility)</td></tr><tr><td>Absolute</td><td>Price points per unit; in US dollars once position size is applied</td><td><code>pts</code></td></tr></tbody></table></div>
+<p>In every mode, total return is a simple sum: each trade’s result is added directly, ignoring position size and compounding.</p>
+<p>Volatility-normalized mode needs a volatility series as its unit. Our research has used two, so returns in our articles actually come in three units:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="What units are returns and drawdowns in? (table)"><table class="data-table"><thead><tr><th>Unit</th><th>Each trade’s P&amp;L divided by</th><th>Used in</th></tr></thead><tbody><tr><td>Percentage</td><td>Entry price</td><td>Switchable in every article; not the main unit of comparison</td></tr><tr><td>Multiples of the daily ATR</td><td>The New York daily ATR(72) at exit, about 60 trading days</td><td>Market Profile signals, SuperTrend state, the clock root and the first clock strategy tree</td></tr><tr><td>Multiples of the median True Range</td><td>The median True Range of the previous 143 New York daily bars at exit</td><td>The weekday × Market Profile clock combination and its portfolio</td></tr></tbody></table></div>
+<p>Numbers in the three units do not compare directly:</p>
+<ul>
+<li><strong>There is no fixed conversion between percentage and volatility multiples.</strong> Volatility relative to price changes every year: the Nasdaq’s daily point range at 30,000 is far larger than at 15,000, and calm and volatile years have different ratios. Converted to percentage, the same trades give more weight to volatile periods, which changes which parameter sets look best.</li>
+<li><strong>The two volatility multiples have different scales.</strong> The median True Range of 143 daily bars is about 0.92 times the daily ATR(72), so the same “0.5 ×” stands for a slightly shorter distance in the median version.</li>
+<li><strong>The samples differ too.</strong> The median version’s indicators warm up until June 2022, so its statistics start on June 20, 2022; the daily ATR version starts in late January 2022.</li>
+</ul>
+<p>So before comparing numbers from two articles, check their unit and sample period (listed under “Method and data” at the end of each article).</p>
+<p>The same volatility series is sampled at different times for different purposes:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="What units are returns and drawdowns in? (table)"><table class="data-table"><thead><tr><th>Purpose</th><th>Which volatility is used</th></tr></thead><tbody><tr><td>Per-trade P&amp;L in volatility-normalized mode</td><td>At exit (exit volatility)</td></tr><tr><td>Stop loss, take profit and delayed entry distances</td><td>At entry (entry volatility)</td></tr><tr><td>MAE, G_MFE and MFE in volatility-normalized mode</td><td>When the excursion occurs (event-time volatility)</td></tr></tbody></table></div>
+<p>Intraday strategies enter and exit on the same day, so the daily volatility is the same at all three times. Strategies that hold across days fix the volatility at the entry signal and keep it for the whole trade, so exit and event-time volatility equal the entry volatility and are not distorted by how volatility changed during the trade.</p>
+<p>For example, a long that makes 2 points with an entry price of 100 and exit volatility of 40 points is +2% in percentage mode, +0.05 vol in volatility-normalized mode and +2 pts in absolute mode.</p>
+<h2 id="why-a-daily-atr-over-about-60-trading-days">Why a daily ATR over about 60 trading days?</h2>
+<p>Volatility is the unit shared by P&amp;L, stop loss, take profit and delayed entry. Average True Range (ATR) is the average true range over a period, written as “bar frequency + ATR(bars)”, for example daily ATR(72) or 1-hour ATR(460). We choose the volatility unit by three requirements: the same unit as stops and targets, known before the trade, and the same for every trade on a given day.</p>
+<ul>
+<li><strong>ATR rather than the standard deviation of returns</strong>: ATR is in price points, so it can be written directly as “stop loss 0.5 × ATR”, and the true range includes gaps, so overnight gaps count as volatility.</li>
+<li><strong>Daily rather than 15-minute</strong>: a 15-minute ATR changes within the day with the session, quiet before the open and wild after it, so the unit would depend on the entry time. The daily ATR is taken from the previous completed daily bar: every trade that day uses the same value, known before the open, and a resting order’s price stays fixed from the signal to the exit.</li>
+<li><strong>About 60 trading days</strong>: too short, and one volatile week swings the unit; too long, and it cannot follow the move from the 2022 bear market to the calmer years after it.</li>
+</ul>
+<p>We measured which ruler is most stable. On 26 US100 Market Profile setups (late January 2022 to September 23, 2026, Tuesday to Friday, immediate entry), we computed each setup’s 90th percentile of MAE year by year and looked at its coefficient of variation across years: the smaller it is, the more consistent MAE is from year to year when measured with that ruler.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Why a daily ATR over about 60 trading days? (table)"><table class="data-table"><thead><tr><th>Scale</th><th class="num">Coefficient of variation of the yearly MAE 90th percentile (median of 26 setups)</th></tr></thead><tbody><tr><td>Daily ATR, about 60 trading days</td><td class="num">0.123</td></tr><tr><td>4-hour ATR, about 60 trading days</td><td class="num">0.132</td></tr><tr><td>1-hour ATR, about 60 trading days</td><td class="num">0.133</td></tr><tr><td>Daily ATR, about 20 trading days</td><td class="num">0.164</td></tr><tr><td>15-minute ATR (96 bars, about 1 day)</td><td class="num">0.179</td></tr><tr><td>Points</td><td class="num">0.233</td></tr><tr><td>Percent of price</td><td class="num">0.298</td></tr></tbody></table></div>
+<p>Lookback length matters more than bar timeframe: 60-day daily, 4-hour and 1-hour ATR are about the same, while 20 days is clearly worse; fixed points and percent of price are the least stable. With a daily ATR of about 20, 40 or 120 trading days instead, the rankings and first choices of the Market Profile signals also stay largely the same; see <a href="/en/posts/us100-market-profile-signals-volatility/">Do Market Profile signals work on both sides of value?</a>.</p>
+<p>Daily ATR(72) averages 72 New York daily bars. The New York daily series counts Sunday evening’s short session as its own bar, about one bar in six, so 72 bars is about 60 trading days. That bar’s range is only about a third of a weekday’s, so ATR(72) is about 10% below an ATR of weekdays only. The offset is steady and does not change rankings, but keep it in mind when converting to points: “0.5 × daily ATR(72)” is about 0.45 times the weekday volatility.</p>
+<p>ATRs used for other purposes take the length that fits their question:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Why a daily ATR over about 60 trading days? (table)"><table class="data-table"><thead><tr><th>Purpose</th><th>Setting</th><th>Written as</th></tr></thead><tbody><tr><td>Volatility unit (P&amp;L, SL/TP, delayed entry)</td><td>Daily ATR(72), about 60 trading days</td><td>“0.5 × daily ATR”</td></tr><tr><td>Volatility level</td><td>Daily ATR(24) (about 20 trading days) ÷ previous close, ranked over the last 168 daily bars; top third high, bottom third low</td><td>“high volatility level”</td></tr><tr><td>Volatility change</td><td>Daily ATR(6) ÷ ATR(24) (about 5 days ÷ 20 days); expansion above 1.1, back to contraction below 0.9</td><td>“volatility expanding”</td></tr><tr><td>SuperTrend</td><td>On SuperTrend’s own bars, days converted to bars, for example 1-hour 20 days = 460 bars (23 hours a day)</td><td>“1-hour SuperTrend (ATR 460 × 1.5)”</td></tr></tbody></table></div>
+<h2 id="why-do-some-studies-use-a-median-true-range">Why do some studies use a median True Range?</h2>
+<p>So that a bar’s volatility is the same no matter where the calculation starts. The Wilder ATR is a recursive average whose every value carries the start of its window: move the start and every later value differs a little, never reaching zero. A live system that recomputes from a different start every day can compute a different volatility each day, even for a trade that closed long ago. A rolling median of the True Range looks only at the last N bars, and history outside the window has no effect on it.</p>
+<p>The later clock strategy studies (the weekday × Market Profile combination and its portfolio) replace every volatility measure with a median:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Why do some studies use a median True Range? (table)"><table class="data-table"><thead><tr><th>Purpose</th><th>Daily ATR version</th><th>Median version</th></tr></thead><tbody><tr><td>Unit of P&amp;L and distances</td><td>Daily ATR(72)</td><td>Median True Range of the previous 143 daily bars, about 0.92 times the daily ATR(72)</td></tr><tr><td>SuperTrend band</td><td>Wilder ATR N</td><td>Median of 2N − 1 bars (the same average lag), multiplier scaled by the measured ATR ÷ median ratio: 1.33 on 1 hour, 1.30 on 4 hours, 1.07 daily</td></tr><tr><td>Daily volatility level</td><td>ATR(24)</td><td>47-bar median, ranked over a 168-day window</td></tr><tr><td>Daily volatility change</td><td>ATR(6) ÷ ATR(24)</td><td>11-bar median ÷ 47-bar median</td></tr></tbody></table></div>
+<p>A median needs a warm-up. The data starts on November 4, 2021, and the last indicator to complete its warm-up is the daily volatility level: the 47-bar median needs its first value and then a full 168-day rank window, complete on June 16, 2022. Every statistic in the median version therefore starts on June 20, 2022; the earlier data only warms the indicators up. This is one more reason numbers from the two versions do not compare directly.</p>
+<h2 id="how-do-mae-g_mfe-and-mfe-differ">How do MAE, G_MFE and MFE differ?</h2>
+<p>Excursions describe how far price moved while a trade was held, measured only from the actual fill to the exit. The examples below all use the same long trade, entered at 100 and exited at 102 on bar 7:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="How do MAE, G_MFE and MFE differ? (table)"><table class="data-table"><thead><tr><th>Bar</th><th class="num">1</th><th class="num">2</th><th class="num">3</th><th class="num">4</th><th class="num">5</th><th class="num">6</th><th class="num">7</th></tr></thead><tbody><tr><td>High</td><td class="num">100.5</td><td class="num">103</td><td class="num">102</td><td class="num">99</td><td class="num">104</td><td class="num">106</td><td class="num">105</td></tr><tr><td>Low</td><td class="num">99</td><td class="num">101</td><td class="num">98.5</td><td class="num">97</td><td class="num">99</td><td class="num">103</td><td class="num">101</td></tr></tbody></table></div>
+<h3 id="maximum-adverse-excursion-mae">Maximum Adverse Excursion (MAE)</h3>
+<p>The furthest price moved against the position while it was held. For a long it is entry price minus low; for a short, high minus entry price; it is 0 if there was no adverse move. In the example the low of 97 is on bar 4, so MAE = 3. MAE is the main basis for setting a stop loss.</p>
+<h3 id="global-mfe-g_mfe">Global MFE (G_MFE)</h3>
+<p>The furthest price moved in the position’s favor over the whole holding period. For a long it is high minus entry price. In the example the high of 106 is on bar 6, so G_MFE = 6. G_MFE and MAE are measured independently, and either can come first. G_MFE is the basis for setting take profit and for judging how much profit potential a trade once had.</p>
+<h3 id="mfe-before-mae-mfe">MFE before MAE (MFE)</h3>
+<p>Measures only the largest favorable move before MAE occurs (excluding the MAE bar itself); if there is no adverse move, it is measured until exit. In the example MAE is on bar 4, and the highest high of the first three bars is 103, so MFE = 3. Because MFE’s window is part of G_MFE’s window, MFE is never larger than G_MFE.</p>
+<p>Most textbooks call the largest favorable move over the whole holding period MFE, which corresponds to G_MFE here. When the two differ a lot, price first moved a little in the favorable direction, pulled back to the MAE, and only then made its main move.</p>
+<h3 id="mae-before-mfe-mae_lv1">MAE before MFE (MAE_LV1)</h3>
+<p>The largest adverse move before MFE occurs, that is, the pullback before the first favorable leg. In the example MFE is on bar 2 and bar 1’s low is 99, so MAE_LV1 = 1.</p>
+<h3 id="maximum-high-low-mhl">Maximum High-Low (MHL)</h3>
+<p>The deepest drop from any high to a later low while the position is held; for a short, the highest bounce from a low. In the example, the drop from 103 on bar 2 to 97 on bar 4 gives MHL = 6; the drop from 106 on bar 6 to 101 on bar 7 is only 5. MHL is never smaller than MAE and is a reference for setting trailing stop width. A bar does not show whether its high or its low came first, so MHL conservatively assumes the high came first (the low for a short), which makes it an upper bound on the pullback depth.</p>
+<h3 id="other-excursion-terms">Other excursion terms</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Other excursion terms (table)"><table class="data-table"><thead><tr><th>Term</th><th>Definition</th></tr></thead><tbody><tr><td>Winner / Loser</td><td>Trades with P&amp;L above 0 / below 0; trades at exactly 0 are counted separately. Together they are called the winner group and loser group</td></tr><tr><td>Profit extraction</td><td>Median return ÷ median G_MFE: how much of the available profit was captured</td></tr><tr><td>Profit giveback</td><td>1 − profit extraction</td></tr><tr><td>MHL pressure</td><td>Median MHL ÷ median G_MFE: pullback depth relative to profit potential</td></tr><tr><td>Excursion range</td><td>Median of each trade’s G_MFE + MAE: how far price swings after entry</td></tr><tr><td>R multiple</td><td>Result measured in units of risk; expectancy per unit of stop = average result ÷ stop distance</td></tr><tr><td>Quartiles Q1 / Q2 / Q3</td><td>The 25th / 50th / 75th percentiles; Q2 is the median</td></tr></tbody></table></div>
+<h2 id="how-do-you-read-a-strategys-return-and-risk">How do you read a strategy’s return and risk?</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="How do you read a strategy’s return and risk? (table)"><table class="data-table"><thead><tr><th>Term</th><th>Definition</th></tr></thead><tbody><tr><td>Total return</td><td>Simple sum of all trade returns</td></tr><tr><td>Expectancy</td><td>Average return per trade</td></tr><tr><td>Win rate</td><td>Share of trades with P&amp;L above 0</td></tr><tr><td>Profit factor (PF)</td><td>Gross profit ÷ gross loss; above 1 means profitable overall</td></tr><tr><td>Max drawdown</td><td>Largest decline from a prior peak in the cumulative return of closed trades</td></tr><tr><td>Unrealized drawdown</td><td>Also counts MAE during open positions in the drawdown, estimating how deep the account fell on paper</td></tr><tr><td>Longest drawdown duration</td><td>Days from a prior peak, through the decline, back to that peak, for the longest such episode</td></tr><tr><td>Recovery factor (RF)</td><td>Total return ÷ max drawdown: how much is earned per unit of drawdown endured</td></tr><tr><td>Sharpe (daily, annualized)</td><td>Aggregated return per trading day (days with no exit count as 0), mean ÷ standard deviation × √252</td></tr><tr><td>Sortino (daily, annualized)</td><td>Same as above, but the denominator counts only downside volatility</td></tr><tr><td>SQN (System Quality Number)</td><td>√min(trade count, 100) × expectancy ÷ standard deviation of per-trade returns</td></tr><tr><td>Positive years</td><td>Number of years with a yearly return above 0, written as “n / N years”</td></tr><tr><td>Worst year</td><td>The year with the lowest yearly return</td></tr><tr><td>Daily return correlation</td><td>Correlation of two strategies’ daily P&amp;L; the higher it is, the more they behave like the same strategy</td></tr></tbody></table></div>
+<p>The strategy report has no overall ranking; it lays results side by side from five angles: yearly consistency looks at positive years and the worst year, parameter stability at the parameter neighborhood, risk at drawdowns, returns at total return and expectancy, and diversification at correlation.</p>
+<h2 id="how-is-strategy-research-layered">How is strategy research layered?</h2>
+<p>A strategy starts from a root strategy and grows one layer at a time; each layer changes only one thing on top of the parameter set picked at the previous layer. The order is the same across the site:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="How is strategy research layered? (table)"><table class="data-table"><thead><tr><th>Layer</th><th>What changes</th><th>Question it answers</th></tr></thead><tbody><tr><td>Root strategy</td><td>Signal, direction and anchor time; enter when the signal appears, exit at a fixed time</td><td>Does the signal itself have an edge?</td></tr><tr><td>Delayed entry</td><td>Favorable or adverse delayed entry, and the entry distance</td><td>Can a different entry price take less adverse movement?</td></tr><tr><td>Stop loss / take profit</td><td>Stop loss (SL), take profit (TP)</td><td>Where should the stop and the target go?</td></tr><tr><td>Breakeven</td><td>The breakeven stop’s trigger and lock</td><td>Once the trade moves the right way, can it avoid losing again?</td></tr><tr><td>Trailing stop</td><td>The trailing stop distance</td><td>How do you follow the move and keep the profit?</td></tr><tr><td>Filter</td><td>Market-state conditions that decide which days not to trade</td><td>Are the blocked days really worse?</td></tr><tr><td>Portfolio</td><td>Which strategies trade together and how much risk each takes</td><td>How is risk shared when they run together?</td></tr></tbody></table></div>
+<p>The filter comes last and is applied to a finished strategy: it changes which days are traded, and adding it early would make every later layer pick its parameters on a hand-picked set of days. When a study actually ran its layers in a different order, the article describes that order as it was, using the same names; where a number is needed it writes “layer N: delayed entry”. For the full explanation, see <a href="/en/posts/strategy-lineage-layers/">Research map and layered method</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="How is strategy research layered? (table)"><table class="data-table"><thead><tr><th>Term</th><th>Definition</th></tr></thead><tbody><tr><td>Definition</td><td>A configuration of signals, indicators and filters</td></tr><tr><td>Baseline</td><td>The Definition’s original entry and exit: enter when the signal appears, exit when the signal ends</td></tr><tr><td>Parent</td><td>The parameter set picked at the previous layer, on which this layer changes one thing; a root strategy has no parent</td></tr><tr><td>Siblings</td><td>Other parameter sets under the same parent at the same layer</td></tr><tr><td>Research variable</td><td>The parameter that varies among siblings</td></tr><tr><td>Parameter set (Case)</td><td>One parameter configuration in the strategy report and its backtest result</td></tr><tr><td>Setup</td><td>The combination of signal, direction and anchor time; later research keeps the same name</td></tr><tr><td>Buy and hold</td><td>The instrument’s daily close-to-close return, giving market context</td></tr><tr><td>Session hold</td><td>Enter and exit in the same session window every day without looking at any signal; used to test whether a signal is just a time-of-day effect</td></tr></tbody></table></div>
+<h2 id="why-does-a-backtest-need-a-control">Why does a backtest need a control?</h2>
+<p>A good backtest result can come from factors outside the strategy, such as the entry time or the market’s trend over the whole period. A control removes only the condition being tested and keeps everything else the same, so the difference between the two is the contribution of the condition itself. Our studies use a different control depending on the condition being tested, and always say which one:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Why does a backtest need a control? (table)"><table class="data-table"><thead><tr><th>Condition tested</th><th>Control</th><th>What the signal has to do</th></tr></thead><tbody><tr><td>The signal itself</td><td>Unconditional entry at the same time in the same direction, held to the same exit time</td><td>Beat the control’s expectancy; comparing only against 0 may just ride that session’s direction</td></tr><tr><td>Whether it is a Market Profile effect</td><td>The mirror event: the same rule flipped to the other side of value</td><td>Event and mirror both hold under the same hypothesis; if both only make money long (or both only short), the result is the session’s direction</td></tr><tr><td>This layer’s setting</td><td>The parent: the parameter set picked at the previous layer</td><td>Beat the parent, so the added complexity of this layer is worth it</td></tr><tr><td>A filter</td><td>Circular-shift null: the same number of blocked days at scrambled times</td><td>Beat most shifted versions; see “How do you tell a filter carries information?” below</td></tr><tr><td>Market context</td><td>Buy and hold, session hold</td><td>Returns are compared with session hold; buy and hold only gives market context, such as the 2022 bear market</td></tr></tbody></table></div>
+<p>An example of the session control: in volatility-normalized mode, shorting US100 from 06:30–08:30 and holding to 16:00 made a small profit on its own over 2022–2026. An early-session signal that only makes money short may just ride that session’s direction, so a Market Profile signal has to beat unconditional entry at the same time before the signal itself counts as contributing.</p>
+<p>When reading a control comparison, note that the signals are the best results picked from many parameter sets while the control is not picked at all, so the gap overstates the signal’s true increment. Beating the control is necessary, not a proven edge.</p>
+<h2 id="what-do-favorable-and-adverse-delayed-entry-mean">What do favorable and adverse delayed entry mean?</h2>
+<p>Delayed entry means not entering as soon as the signal appears, but resting an order and waiting for price to reach a certain level. There are only two kinds, depending on the order:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="What do favorable and adverse delayed entry mean? (table)"><table class="data-table"><thead><tr><th>Term</th><th>Order</th><th>How a long order is placed</th><th>Purpose</th></tr></thead><tbody><tr><td>Immediate entry</td><td>—</td><td>Enter at the open of the bar where the signal appears</td><td>The root strategy’s entry</td></tr><tr><td>Favorable delayed entry</td><td>Buy/Sell Limit (limit order)</td><td>Below the signal price, filled only if price pulls back to it</td><td>Enter at a better price to reduce MAE</td></tr><tr><td>Adverse delayed entry</td><td>Buy/Sell Stop (stop order)</td><td>Above the signal price, filled only if price breaks out to it</td><td>Wait for price to confirm direction and filter out failed signals</td></tr></tbody></table></div>
+<p>Shorts are the reverse: favorable delayed entry rests a Sell Limit above the signal price and waits for a bounce, and adverse delayed entry rests a Sell Stop below it and waits for a breakdown. The distance between the order price and the signal price is called the entry distance, expressed as a multiple of volatility. The share of the root strategy’s signals that end up filled is called the fill rate.</p>
+<p>The same two methods go by other names elsewhere; they all mean these two, and this site uses only “favorable delayed entry” and “adverse delayed entry”:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="What do favorable and adverse delayed entry mean? (table)"><table class="data-table"><thead><tr><th>Other names for favorable delayed entry</th><th>Other names for adverse delayed entry</th></tr></thead><tbody><tr><td>Buy Limit / Sell Limit (order type)</td><td>Buy Stop / Sell Stop</td></tr><tr><td>Pullback entry</td><td>Confirmation entry, breakout entry</td></tr><tr><td>With-trend entry</td><td>Counter-trend entry</td></tr><tr><td>Report parameter value <code>favorable</code></td><td>Report parameter value <code>adverse</code></td></tr></tbody></table></div>
+<p>“With-trend” and “counter-trend” are easily confused with the market’s direction (adverse delayed entry is exactly the one that waits for price to move the position’s way first), so they are not used as names.</p>
+<p>Favorable and adverse describe how the order is filled, not whether the position makes or loses money: a limit order fills at a better price than the market when the order was placed, so it is favorable; a stop order fills at a worse price than the market when the order was placed, so it is adverse. Once in the trade, the view switches to the position’s. Take a long with a signal price of 100:</p>
+<ul>
+<li>Favorable delayed entry is placed at 98 and fills when price drops to 98. If price then keeps falling to 96, that drop is adverse to the position and counts as MAE = 2.</li>
+<li>Adverse delayed entry is placed at 102 and fills when price rises to 102. If price then keeps rising to 105, that rise is favorable to the position and counts as G_MFE = 3.</li>
+</ul>
+<p>The same downward move fills a favorable delayed entry while the order is working, but is an adverse excursion once the position is open. So when reading our articles: favorable and adverse in delayed entry describe only how you enter; the move after the fill is always described with MAE and G_MFE. Exits don’t have this problem: stop loss, trailing stop and breakeven stop are all adverse (protective stops that fill at a price unfavorable to the position), and take profit is favorable, so the order’s view and the position’s view agree.</p>
+<h3 id="why-does-resting-a-better-price-often-fail-to-lower-mae">Why does resting a better price often fail to lower MAE?</h3>
+<p>Because MAE is close to “memoryless”: once price has already moved against you by some amount, how much further it goes is about the same as right after entry. A favorable delayed entry only fills when price moves against you to the order price, so a filled trade is like entering afresh, and the remaining MAE distribution doesn’t shrink much; the ones that don’t fill are mostly trades that went the right way right after entry.</p>
+<p>On 26 US100 Market Profile setups (late January 2022 to September 23, 2026, Tuesday to Friday, MAE and G_MFE in daily ATR), pushing favorable delayed entry out to 0.36 × daily ATR, where only 42% of signals fill, lowers the filled trades’ average MAE by only 11.2% (median of the 26 setups), while G_MFE falls 13.0%; only 12 setups lower MAE more than G_MFE. So a favorable delayed entry cannot be judged by whether MAE falls alone; read it together with the fall in G_MFE and look at which trades did not fill. Adverse delayed entry works the other way: signals that never reach the order price are mostly trades that lose all the way to the exit, so what it filters out is mainly losers.</p>
+<h2 id="how-do-stop-loss-take-profit-trailing-stop-and-breakeven-work">How do stop loss, take profit, trailing stop and breakeven work?</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="How do stop loss, take profit, trailing stop and breakeven work? (table)"><table class="data-table"><thead><tr><th>Term</th><th>How it exits</th></tr></thead><tbody><tr><td>Signal exit</td><td>Exits on the Definition’s exit condition</td></tr><tr><td>Stop loss (SL)</td><td>Exits when price moves a fixed distance against the entry price</td></tr><tr><td>Take profit (TP)</td><td>Exits when price moves a fixed distance in favor of the entry price</td></tr><tr><td>SL/TP</td><td>A combination in the stop loss / take profit layer that sets both stop loss and take profit</td></tr><tr><td>Trailing stop (TS)</td><td>The stop price follows the highest price since entry (lowest for shorts), keeping a fixed distance</td></tr><tr><td>Breakeven stop (BE)</td><td>Once price first moves in the favorable direction to the trigger, the stop moves to entry price ± lock</td></tr><tr><td>Time exit</td><td>Exits after holding until a fixed time or a fixed number of bars; the report shows the exit reason as “timeout”</td></tr></tbody></table></div>
+<p>Stop loss, take profit and delayed entry distances are all set as multiples of entry volatility, for example “stop loss at 0.5 × daily ATR(72)”.</p>
+<p>Backtest execution rules:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="How do stop loss, take profit, trailing stop and breakeven work? (table)"><table class="data-table"><thead><tr><th>Term</th><th>Rule</th></tr></thead><tbody><tr><td>Completed-bar causality</td><td>A decision at the open may only use the open price and bars that have already completed, never peeking at the current bar’s high, low or close</td></tr><tr><td>Touch-inclusive</td><td>Touching the order price counts as a fill; price does not need to trade through it</td></tr><tr><td>Gap-open fill</td><td>When a bar opens beyond the order price, the order fills at the open</td></tr><tr><td>Spread, slippage</td><td>Trading costs; articles state the assumed values</td></tr></tbody></table></div>
+<p>When a single bar hits both the stop loss and the take profit, OHLC data can’t show which came first, so the backtest always conservatively assumes the stop loss hit first.</p>
+<h2 id="how-should-a-take-profit-be-judged">How should a take profit be judged?</h2>
+<p>By whether the MAE distribution moves down, not by return. A take profit lets trades that hit the target exit early and avoid giving the gain back: for a trade that reaches the target first and then falls back before the close, MAE keeps counting until the exit without a take profit, while with one it stops at the target price. So to judge a take profit, first check whether the MAE distribution shifts down, then the drawdown; a lower return is an expected cost.</p>
+<p>The two tables below come from 14 US100 Market Profile parents (delayed entry plus the SuperTrend × volatility filter, held to 16:00), January 28, 2022 to September 23, 2026, Tuesday to Friday, volatility-normalized mode with MAE in daily ATR. The take profit sits at the winners’ G_MFE Q1, Q2 or Q3.</p>
+<p>Take profit only, no stop loss, each compared with the same parent without a take profit:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="How should a take profit be judged? (table)"><table class="data-table"><thead><tr><th>TP</th><th>Average MAE lower</th><th>MAE Q3 lower</th><th>MAE 90th percentile (median change)</th><th>Shallower max drawdown</th><th>Lower total return</th></tr></thead><tbody><tr><td>Winner G_MFE Q1</td><td>14 / 14 (median −10.6%)</td><td>14 / 14 (median −11.6%)</td><td>−7.8%</td><td>10 / 14 (median −27%)</td><td>11 / 14</td></tr><tr><td>Winner G_MFE Q2</td><td>14 / 14 (median −3.3%)</td><td>12 / 14 (median −2.3%)</td><td>−1.1%</td><td>7 / 14</td><td>12 / 14</td></tr><tr><td>Winner G_MFE Q3</td><td>12 / 14 (median −0.7%)</td><td>10 / 14 (median −0.6%)</td><td>0%</td><td>8 / 14</td><td>10 / 14</td></tr></tbody></table></div>
+<p>A near take profit pushes the whole MAE distribution down and mostly makes the drawdown shallower, while total return mostly falls; with the take profit at Q3, too few trades reach the target and MAE barely changes.</p>
+<p>Once a stop loss is in place, the take profit can only lower the average: the stop cuts the MAE tail at the SL, and the take profit only affects trades that “gain first, then give it back without touching the stop.” Each of 197 stop losses with a take profit added, compared with the same stop loss without a take profit:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="How should a take profit be judged? (table)"><table class="data-table"><thead><tr><th>TP</th><th>Average MAE lower</th><th>MAE Q3 change (median)</th><th>Shallower max drawdown</th><th>Drawdown change (median)</th><th>Lower total return</th></tr></thead><tbody><tr><td>Winner G_MFE Q1</td><td>197 / 197 (median −7.2%)</td><td>0%</td><td>144 / 197</td><td>−18%</td><td>149 / 197</td></tr><tr><td>Winner G_MFE Q2</td><td>197 / 197 (median −2.2%)</td><td>0%</td><td>145 / 197</td><td>−10%</td><td>161 / 197</td></tr><tr><td>Winner G_MFE Q3</td><td>167 / 197 (median −0.3%)</td><td>0%</td><td>114 / 197</td><td>−1%</td><td>132 / 197</td></tr></tbody></table></div>
+<p>So a take profit is evaluated separately from the stop loss: the stop decides whether the return is kept, and the take profit trades return for shallower MAE and drawdown. A take profit that clearly shifts the MAE distribution down and makes the drawdown shallower has done its job even with a lower total return; conversely, a take profit picked only for a higher return has mostly just avoided cutting the few days that ran far.</p>
+<h2 id="how-do-you-tell-a-filter-carries-information">How do you tell a filter carries information?</h2>
+<p>Compare it with blocking the same number of days at scrambled times. The more days a filter blocks, the smaller the drawdown usually gets, simply because there are fewer trades; blocked days also come in streaks, and blocking a whole stretch of the market changes the drawdown too. So “the drawdown got shallower with the filter” alone cannot tell a filter with information from one that just trades less.</p>
+<p>The circular-shift null works like this:</p>
+<ol>
+<li>Lay the filter’s blocking schedule over the signal days, for example blocking days 3, 4, 5, 17 and 18.</li>
+<li>Shift the whole schedule circularly along the signal days, trying every shift from 5% to 95% of the number of signal days; blocked days that fall off the end wrap around to the start.</li>
+<li>Recompute the result for each shifted version. The number of blocked days and the length of each blocked streak stay the same; only which days get blocked is scrambled.</li>
+<li>“Beats shifts” is the share of shifted versions whose recovery factor is below the real filter’s. 50% means it is no better than blocking at random times; a filter with real information has to beat most of the shifted versions.</li>
+</ol>
+<p>The comparison uses the recovery factor (total return ÷ max drawdown) because a filter changes both return and drawdown, and looking at either alone is biased.</p>
+<h3 id="an-mae-score-cannot-pick-filters">An MAE score cannot pick filters</h3>
+<p>To pick delayed entries we use a score driven mainly by MAE (MAE weighted twice as heavily as G_MFE), with both MAE and G_MFE divided by a daily ATR of about 60 trading days. That ruler cannot keep up when volatility suddenly expands, so on high-volatility days MAE and G_MFE both grow while their ratio barely changes. On 26 US100 Market Profile setups (immediate entry, January 28, 2022 to September 23, 2026, Tuesday to Friday, MAE and G_MFE in daily ATR):</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="An MAE score cannot pick filters (table)"><table class="data-table"><thead><tr><th>Direction</th><th>Volatility level</th><th class="num">Trades</th><th class="num">Mean MAE</th><th class="num">Mean G_MFE</th><th class="num">G_MFE ÷ MAE</th></tr></thead><tbody><tr><td>Long</td><td>High</td><td class="num">1,736</td><td class="num">0.453</td><td class="num">0.428</td><td class="num">0.95</td></tr><tr><td>Long</td><td>Low</td><td class="num">1,788</td><td class="num">0.352</td><td class="num">0.346</td><td class="num">0.98</td></tr><tr><td>Short</td><td>High</td><td class="num">2,783</td><td class="num">0.486</td><td class="num">0.533</td><td class="num">1.10</td></tr><tr><td>Short</td><td>Low</td><td class="num">2,729</td><td class="num">0.377</td><td class="num">0.419</td><td class="num">1.11</td></tr></tbody></table></div>
+<p>Blocking high-volatility days lowers MAE and G_MFE in proportion, so the profit potential in R does not improve; but because MAE carries more weight, the score goes up. Using this score to pick the filter and the delayed entry together, 18 of 26 setups chose a filter, 17 of them “blocks only in high volatility”; recomputed with the scale-free G_MFE ÷ MAE, only 10 chose a filter, and the improvement picked on the early period did not carry into the later period.</p>
+<p>So each layer uses its own criterion: the delayed entry uses the MAE score, compared with immediate entry on the same signal days; the filter uses the recovery factor and has to beat the circular-shift null.</p>
+<h2 id="how-do-you-tell-a-parameter-isnt-just-luck">How do you tell a parameter isn’t just luck?</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="How do you tell a parameter isn’t just luck? (table)"><table class="data-table"><thead><tr><th>Term</th><th>Definition</th></tr></thead><tbody><tr><td>Parameter neighborhood</td><td>Results of neighboring parameter values under the same parent</td></tr><tr><td>Plateau / Island</td><td>If neighboring parameters are also good, it is a plateau; if only that one cell is good and its neighbors are poor, it is an island and mostly luck</td></tr><tr><td>Neighbor averaging</td><td>Each parameter value is averaged with the cells before and after it, reducing the impact of price errors in live order execution</td></tr><tr><td>Bootstrap</td><td>Resampling repeatedly by trading day to see the distribution of results across different samples</td></tr><tr><td>Lower confidence bound</td><td>A low percentile of the resampled results, for example the 10th percentile as a 90% one-sided lower confidence bound, used as a conservative estimate</td></tr><tr><td>In-sample</td><td>The period used to pick parameters</td></tr><tr><td>Holdout</td><td>The period checked only after picking, for example picking on 2022–2024 and checking on 2025–2026</td></tr><tr><td>Overfitting</td><td>The parameters just happen to fit this stretch of history and fail on other data</td></tr><tr><td>Selection bias</td><td>Picking the best of many parameter sets overstates its performance</td></tr><tr><td>Circular-shift null</td><td>Circularly shifts the days the filter blocks along the timeline, keeping frequency and clustering but scrambling timing; the filter carries information only if it beats the shifted versions</td></tr><tr><td>Yearly consistency</td><td>Whether it holds every year: the number of positive years and the worst year</td></tr></tbody></table></div>
+<p>Our research does not call the holdout out-of-sample: earlier layers already used the full data, so strictly speaking every layer has seen the holdout.</p>
+<h2 id="filter-and-market-structure-terms">Filter and market structure terms</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Filter and market structure terms (table)"><table class="data-table"><thead><tr><th>Term</th><th>Definition</th></tr></thead><tbody><tr><td>Filter</td><td>A condition that decides which days not to trade; applied to a finished strategy as the last layer</td></tr><tr><td>Regime filter</td><td>Blocks trades based on market regime, named by what it blocks, for example “block longs when SuperTrend is bearish”</td></tr><tr><td>Volatility level</td><td>Volatility split into high, medium and low by its rolling rank</td></tr><tr><td>Volatility change</td><td>Whether volatility is expanding (expansion) or contracting (contraction)</td></tr><tr><td>SuperTrend</td><td>Builds a band above and below price from ATR times a multiplier; a close below the band flips it bearish and a close above flips it bullish; written for example as “1-hour SuperTrend (ATR 460 × 1.5)”</td></tr><tr><td>Market Profile</td><td>Arranges trading activity at each price over a period into a distribution</td></tr><tr><td>Value area (VA)</td><td>The price range where the most concentrated 70% of activity occurs; upper edge VAH, lower edge VAL</td></tr><tr><td>Point of control (POC)</td><td>The price with the most activity</td></tr><tr><td>Anchor time</td><td>The fixed New York time at which the signal is evaluated and the trade entered</td></tr><tr><td>Mirror event</td><td>The same rule flipped across the Profile to the other side of the value area, for example “reclaims VAL” against “falls back below VAH”; a long on an event and a short on its mirror test one hypothesis</td></tr></tbody></table></div>
+</div><a id="strategy-codes"></a>
+<div class="prose"><h2 id="strategy-codes">Strategy codes</h2>
+<p>The Market Profile signal studies call their 16 events G01–G16. Every event reads the previous complete daily Market Profile (built on New York time, 70% value area, 5-point bins) and is evaluated on 15-minute bars from the anchor time (New York 06:30–10:30) to 14:00: the trade enters on the first bar where the event appears, is held to 16:00, and there is at most one trade a day. Every event is tested both long and short, so “G05 Short 08:30” means the G05 event, short, anchor time 08:30.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Strategy codes (table)"><table class="data-table"><thead><tr><th>Code</th><th>Short name</th><th>Trigger (15-minute bar)</th><th>Side of value</th><th>Mirror</th></tr></thead><tbody><tr><td>G01</td><td>Open below VAL</td><td>The bar opens below the value area low (VAL)</td><td>Below</td><td>G09</td></tr><tr><td>G02</td><td>Whole bar below VAL</td><td>The previous bar’s high is below VAL</td><td>Below</td><td>G10</td></tr><tr><td>G03</td><td>False break below VAL</td><td>The previous bar’s low breaks below VAL and it closes back above VAL</td><td>Lower edge</td><td>G12</td></tr><tr><td>G04 N1 / N2</td><td>N bars below VAL, then back</td><td>Exactly 1 bar (N1) or 2 consecutive bars (N2) close below VAL (the bar before them does not), and the next bar closes back above VAL</td><td>Lower edge</td><td>G13 N1 / N2</td></tr><tr><td>G05</td><td>False break below the profile low</td><td>The previous bar’s low breaks below the profile low and it closes back above it</td><td>Below</td><td>G14</td></tr><tr><td>G06</td><td>Whole bar below POC</td><td>The previous bar’s high is below the point of control (POC)</td><td>Below POC</td><td>G08</td></tr><tr><td>G07</td><td>Breaks below POC, closes back above</td><td>The previous bar’s low breaks below the POC and it closes back above the POC</td><td>POC</td><td>G15</td></tr><tr><td>G08</td><td>Whole bar above POC</td><td>The previous bar’s low is above the POC</td><td>Above POC</td><td>G06</td></tr><tr><td>G09</td><td>Open above VAH</td><td>The bar opens above the value area high (VAH)</td><td>Above</td><td>G01</td></tr><tr><td>G10</td><td>Whole bar above VAH</td><td>The previous bar’s low is above VAH</td><td>Above</td><td>G02</td></tr><tr><td>G11</td><td>VAH retest holds</td><td>The previous bar’s low breaks below VAH and it closes back above VAH</td><td>Upper edge</td><td>G16</td></tr><tr><td>G12</td><td>False break above VAH</td><td>The previous bar’s high breaks above VAH and it closes back below VAH</td><td>Upper edge</td><td>G03</td></tr><tr><td>G13 N1 / N2</td><td>N bars above VAH, then back</td><td>Exactly 1 bar (N1) or 2 consecutive bars (N2) close above VAH (the bar before them does not), and the next bar closes back below VAH</td><td>Upper edge</td><td>G04 N1 / N2</td></tr><tr><td>G14</td><td>False break above the profile high</td><td>The previous bar’s high breaks above the profile high and it closes back below it</td><td>Above</td><td>G05</td></tr><tr><td>G15</td><td>Breaks above POC, closes back below</td><td>The previous bar’s high breaks above the POC and it closes back below the POC</td><td>POC</td><td>G07</td></tr><tr><td>G16</td><td>VAL retest fails</td><td>The previous bar’s high breaks above VAL and it closes back below VAL</td><td>Lower edge</td><td>G11</td></tr><tr><td>Control</td><td>Control</td><td>No Market Profile condition; enter at the anchor time every day and hold to 16:00</td><td>—</td><td>—</td></tr></tbody></table></div>
+<p>Among G01–G12, four events had no counterpart on the other side of value, and G13–G16 are the mirrors added for them: G13 mirrors G04, G14 mirrors G05, G15 mirrors G07 and G16 mirrors G11. The other pairs, G01/G09, G02/G10, G03/G12 and G06/G08, were already mirrors of each other.</p>
+<p>A mirror flips the same rule across the Profile: VAL becomes VAH, the profile low becomes the high, “below the POC” becomes “above the POC”. The continuation hypothesis, “price that leaves value keeps going”, expects shorts on the event below value and longs on the mirror above it; the reversion hypothesis, “a false break returns to value”, expects the opposite. In the root strategy study (late January 2022 to September 23, 2026, Tuesday to Friday, volatility-normalized mode), the six kept with priority are G01 Short 07:30, G05 Short 08:30, and the 10:30 longs on G08, G09, G11 and G13 N1; for every signal’s grade and first choice, see <a href="/en/posts/us100-market-profile-signals-volatility/">Do Market Profile signals work on both sides of value?</a>.</p>
+<p>The clock strategies’ Market Profile conditions use no codes and are written out as conditions, for example “above the previous day’s full-session value area”.</p>
+<h2 id="how-is-position-size-calculated">How is position size calculated?</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="How is position size calculated? (table)"><table class="data-table"><thead><tr><th>Term</th><th>Definition</th></tr></thead><tbody><tr><td>Risk amount</td><td>The USD loss each trade is expected to take</td></tr><tr><td>Expected loss</td><td>How many points each trade is expected to lose, estimated from past trades’ MAE and entry volatility, using only data known before entry</td></tr><tr><td>Position size</td><td>Risk amount ÷ expected loss in points ÷ value per point</td></tr><tr><td>Portfolio</td><td>Multiple setups traded together; a portfolio member is one of them</td></tr></tbody></table></div>
+<p>For the full allocation method, see <a href="/en/posts/ftmo-account-position-sizing/">Position sizing and risk allocation for an FTMO account</a>.</p>
+</div><div class="callout callout--warning"><strong>Using this glossary</strong><p>These definitions reflect how our research and reports currently calculate each metric, and may differ from metrics with the same name in other books or platforms, so confirm the definition before comparing numbers. The hand-written numbers in this post each state their sample and period; they only illustrate the methods and do not compare directly with numbers from other studies. Neither the definitions nor the backtest results constitute investment advice.</p></div>
+<section class="question-section" aria-labelledby="goals-title"><h2 class="question-section-title" id="goals-title">Questions this study answers</h2><div class="question-item"><h3 class="question-item-title">What do the terms, units and codes in our research articles mean?</h3><div class="question-item-answer"><p>Every term has a fixed name and calculation; for example, MFE measures only the favorable move before MAE, and the largest favorable move over the whole holding period is G_MFE. Returns come in three units: percentage, multiples of the daily ATR and multiples of the median True Range. Market Profile signals are called G01–G16, with their conditions and mirrors in the strategy code table.</p></div></div><div class="question-item"><h3 class="question-item-title">By what standard is each layer&#x27;s method judged?</h3><div class="question-item-answer"><p>A signal has to beat unconditional entry at the same time and its own mirror; a delayed entry is judged by how MAE and G_MFE move together and which trades it filters out; a take profit by whether the MAE distribution moves down, with a lower return as the expected cost; a filter by the recovery factor, and it has to beat the circular-shift null. Every layer is compared with its parent, and a good result has to be a plateau rather than an island.</p></div></div><div class="question-item"><h3 class="question-item-title">Can numbers from different studies be compared?</h3><div class="question-item-answer"><p>Not directly. There is no fixed conversion between percentage and volatility multiples, the median True Range is about 0.92 times the daily ATR(72), and the two versions start their samples at different dates. Check the unit and period under “Method and data” before comparing.</p></div></div></section>
+<section class="question-section" aria-labelledby="arising-title"><h2 class="question-section-title" id="arising-title">Questions raised along the way</h2><div class="question-item"><h3 class="question-item-title">The two kinds of delayed entry go by several names across articles. Which one is used?</h3><div class="question-item-answer"><p>The site uses favorable delayed entry (Buy/Sell Limit, waiting for a pullback) and adverse delayed entry (Buy/Sell Stop, waiting for a breakout). Pullback/confirmation entry, with-trend/counter-trend entry and the report parameter values favorable/adverse all mean the same two methods; this post lists them side by side, and articles use only the first pair of names.</p></div></div><div class="question-item"><h3 class="question-item-title">Why do some studies replace the Wilder ATR with a median True Range?</h3><div class="question-item-answer"><p>Every Wilder ATR value carries the effect of where the calculation started, so a live system recomputing from a different start each day gets a different volatility for the same bar; a rolling median reads only its own window. The cost is a warm-up: the median version’s statistics start on June 20, 2022, and its numbers do not compare directly with the daily ATR version.</p></div></div><div class="question-item"><h3 class="question-item-title">Why does resting a better price fail to lower MAE?</h3><div class="question-item-answer"><p>Because MAE is close to memoryless: once price has moved against you to the order price, how much further it goes is about the same as right after entry. On 26 Market Profile setups, favorable delayed entry at 0.36 × daily ATR lowers MAE by only 11.2% while G_MFE falls 13.0%, so the two have to be read together.</p></div></div><div class="question-item"><h3 class="question-item-title">Why can&#x27;t an MAE-driven score pick filters?</h3><div class="question-item-answer"><p>The daily ATR cannot keep up when volatility suddenly expands, so on high-volatility days MAE and G_MFE grow together and their ratio barely changes; blocking those days raises the MAE score without improving the profit potential. So filters are picked by the recovery factor instead, and they have to beat the circular-shift null.</p></div></div></section><div class="section-head"><h2 id="method">Method and data</h2></div><p class="section-lead">Research setup, data and calculations; the identifiers needed to reproduce the study are under data sources.</p><div class="appendix"><div style="display:contents"><h3>Changelog</h3><div>2026-10-08 23:52 first published</div></div></div><div class="wide"><section class="related"><h2 class="related-title">Related research</h2><div class="related-grid"><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">136 parameter sets · Total return above 0</span><span class="cover-figure__value">75 / 136</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L0.74 12.61L1.48 14.31L2.22 18.68L2.96 19.51L3.70 20.87L4.44 21.47L5.19 22.14L5.93 22.21L6.67 23.32L7.41 24.29L8.15 25.34L8.89 26.50L9.63 27.00L10.37 28.97L11.11 29.85L11.85 31.23L12.59 31.23L13.33 31.74L14.07 31.84L14.81 32.10L15.56 32.33L16.30 32.38L17.04 32.68L17.78 33.26L18.52 33.50L19.26 34.05L20.00 35.07L20.74 36.61L21.48 37.48L22.22 37.82L22.96 38.78L23.70 40.10L24.44 40.67L25.19 41.43L25.93 41.50L26.67 41.58L27.41 41.62L28.15 42.10L28.89 42.99L29.63 43.03L30.37 43.03L31.11 43.21L31.85 43.63L32.59 43.76L33.33 44.17L34.07 44.55L34.81 44.67L35.56 45.35L36.30 45.50L37.04 45.79L37.78 46.62L38.52 46.73L39.26 47.03L40.00 47.26L40.74 47.31L41.48 47.34L42.22 47.45L42.96 48.41L43.70 49.00L44.44 50.05L45.19 50.62L45.93 51.07L46.67 51.17L47.41 51.59L48.15 51.85L48.89 52.57L49.63 52.61L50.37 52.66L51.11 52.68L51.85 52.73L52.59 53.40L53.33 53.62L54.07 53.64L54.81 53.72L55.56 53.91L56.30 54.03L57.04 54.43L57.78 54.62L58.52 54.92L59.26 55.17L60.00 55.24L60.74 55.53L61.48 56.06L62.22 56.09L62.96 56.51L63.70 56.83L64.44 57.08L65.19 57.46L65.93 57.56L66.67 57.78L67.41 57.84L68.15 58.09L68.89 58.34L69.63 58.41L70.37 58.83L71.11 59.60L71.85 59.79L72.59 59.80L73.33 60.14L74.07 60.39L74.81 60.84L75.56 60.93L76.30 60.94L77.04 61.21L77.78 61.25L78.52 61.28L79.26 61.30L80.00 61.50L80.74 61.79L81.48 61.81L82.22 62.18L82.96 64.46L83.70 64.49L84.44 64.56L85.19 64.73L85.93 64.75L86.67 65.18L87.41 65.36L88.15 65.48L88.89 66.94L89.63 69.12L90.37 74.19L91.11 76.07L91.85 76.96L92.59 77.45L93.33 80.89L94.07 82.55L94.81 82.91L95.56 84.45L96.30 84.73L97.04 86.56L97.78 91.89L98.52 93.64L99.26 95.26L100.00 98.00L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 53.79H100"></path><path class="sparkline__line" d="M0.00 2.00L0.74 12.61L1.48 14.31L2.22 18.68L2.96 19.51L3.70 20.87L4.44 21.47L5.19 22.14L5.93 22.21L6.67 23.32L7.41 24.29L8.15 25.34L8.89 26.50L9.63 27.00L10.37 28.97L11.11 29.85L11.85 31.23L12.59 31.23L13.33 31.74L14.07 31.84L14.81 32.10L15.56 32.33L16.30 32.38L17.04 32.68L17.78 33.26L18.52 33.50L19.26 34.05L20.00 35.07L20.74 36.61L21.48 37.48L22.22 37.82L22.96 38.78L23.70 40.10L24.44 40.67L25.19 41.43L25.93 41.50L26.67 41.58L27.41 41.62L28.15 42.10L28.89 42.99L29.63 43.03L30.37 43.03L31.11 43.21L31.85 43.63L32.59 43.76L33.33 44.17L34.07 44.55L34.81 44.67L35.56 45.35L36.30 45.50L37.04 45.79L37.78 46.62L38.52 46.73L39.26 47.03L40.00 47.26L40.74 47.31L41.48 47.34L42.22 47.45L42.96 48.41L43.70 49.00L44.44 50.05L45.19 50.62L45.93 51.07L46.67 51.17L47.41 51.59L48.15 51.85L48.89 52.57L49.63 52.61L50.37 52.66L51.11 52.68L51.85 52.73L52.59 53.40L53.33 53.62L54.07 53.64L54.81 53.72L55.56 53.91L56.30 54.03L57.04 54.43L57.78 54.62L58.52 54.92L59.26 55.17L60.00 55.24L60.74 55.53L61.48 56.06L62.22 56.09L62.96 56.51L63.70 56.83L64.44 57.08L65.19 57.46L65.93 57.56L66.67 57.78L67.41 57.84L68.15 58.09L68.89 58.34L69.63 58.41L70.37 58.83L71.11 59.60L71.85 59.79L72.59 59.80L73.33 60.14L74.07 60.39L74.81 60.84L75.56 60.93L76.30 60.94L77.04 61.21L77.78 61.25L78.52 61.28L79.26 61.30L80.00 61.50L80.74 61.79L81.48 61.81L82.22 62.18L82.96 64.46L83.70 64.49L84.44 64.56L85.19 64.73L85.93 64.75L86.67 65.18L87.41 65.36L88.15 65.48L88.89 66.94L89.63 69.12L90.37 74.19L91.11 76.07L91.85 76.96L92.59 77.45L93.33 80.89L94.07 82.55L94.81 82.91L95.56 84.45L96.30 84.73L97.04 86.56L97.78 91.89L98.52 93.64L99.26 95.26L100.00 98.00"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">US100.cash · NAS100 · Moving-average cross · 136 parameter sets · 148,290 trades</span><h3 class="post-card__title"><a class="post-card__link" href="/en/posts/popular-indicator-signals/">Do popular indicator signals have an edge? 34 default-parameter signals on NAS100: path asymmetry and delayed limit orders, 2018–2025</a></h3><span class="post-card__excerpt">The platform-default signals of the 17 most common technical-indicator families (moving-average crosses, MACD, RSI, Stochastic, CCI, Bollinger, Donchian, SuperTrend, Ichimoku, prior-day levels, opening range, round numbers), long and short, 34 in all, on 1-hour and 30-minute bars of Pepperstone NAS100 and FTMO US100: is the path after a signal asymmetric, do delayed limit orders around it earn anything, and how does holding each signal for 16 fifteen-minute bars compare with the market.</span><span class="post-card__meta"><span>2026-10-28 23:00</span><span>53 min read</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/en/posts/popular-indicator-signals/">Read article</a><a class="btn btn-ghost btn-sm" href="/en/posts/popular-indicator-signals/?view=report">View report</a></div></div></article><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">8 parameter sets · Total return above 0</span><span class="cover-figure__value">8 / 8</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L14.29 33.00L28.57 40.76L42.86 40.78L57.14 42.15L71.43 68.54L85.71 68.91L100.00 70.08L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 98.00H100"></path><path class="sparkline__line" d="M0.00 2.00L14.29 33.00L28.57 40.76L42.86 40.78L57.14 42.15L71.43 68.54L85.71 68.91L100.00 70.08"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">US100.cash · NAS100 · Option expiration · 8 parameter sets · 538 trades</span><h3 class="post-card__title"><a class="post-card__link" href="/en/posts/nas100-opex-day-short/">Shorting NAS100 at the open on option expiration day: the one survivor of 45 pre-registered hypotheses</a></h3><span class="post-card__excerpt">Two rounds of pre-registered structural-flow hypotheses on US index CFDs (45 in all: closing rebalancing, month end, FOMC, earnings nights, fixing times, rebalance days) left one signal standing at the family level: shorting NAS100 at 09:30 New York on monthly option expiration day for one hour. This post records the base signal on Pepperstone NAS100 since 2018 and FTMO US100 since 2022, the delayed entry, the stop and the take profit that followed, the cost, the sizing, and the one read of 2026.</span><span class="post-card__meta"><span>2026-10-28 20:00</span><span>8 min read</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/en/posts/nas100-opex-day-short/">Read article</a><a class="btn btn-ghost btn-sm" href="/en/posts/nas100-opex-day-short/?view=report">View report</a></div></div></article><a class="card card-interactive post-card" href="/en/posts/backtest-signal-deduplication/"><div class="article-cover" style="--c1:var(--chart-3);--c2:var(--chart-1)"></div><div class="post-card__body"><h3 class="post-card__title">When a signal stays true, the engine enters once: how entry and exit signals are cleaned, and why scaling in is several strategies</h3><span class="post-card__excerpt">The entry and exit conditions a strategy author hands to TradePose are booleans per bar, and they are often true for many bars in a row. The engine does not open a position on every bar. It cleans them into a strictly alternating sequence of entries and exits, so every position has one entry and one exit. This post explains the three cleaning stages, which signals are ignored, why the engine is built this way, and why scaling in or out should be written as several independent strategies combined in a portfolio.</span><span class="post-card__meta"><span>2026-10-28 17:24</span><span>10 min read</span></span></div></a></div></section></div><!-- island 外層加 div：astro-island 為 display: contents，否則引用區塊會被排進格線的側欄 --><div><script>(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value=="object"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event("astro:visible"));})();</script><astro-island uid="ZP5zDu" prefix="r14" component-url="/_astro/index.DKisFm5J.js" component-export="Citation" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;Cite this article&quot;],&quot;copyLabels&quot;:[0,{&quot;copy&quot;:[0,&quot;Copy&quot;],&quot;copied&quot;:[0,&quot;Copied&quot;],&quot;failed&quot;:[0,&quot;Couldn&#39;t copy&quot;]}],&quot;text&quot;:[0,&quot;TradePose Research (2026). \&quot;MAE, G_MFE and profit factor: a quant research glossary.\&quot; TradePose Research Notes.&quot;],&quot;bibtex&quot;:[0,&quot;@article{tradepose2026quantresearchglossary,\n  title   = {MAE, G_MFE and profit factor: a quant research glossary},\n  author  = {TradePose Research},\n  journal = {TradePose Research Notes},\n  year    = {2026}\n}&quot;]}" ssr client="visible" opts="{&quot;name&quot;:&quot;Citation&quot;,&quot;value&quot;:true}" await-children><div class="citation"><div class="citation-title">Cite this article</div><p class="citation-text">TradePose Research (2026). &quot;MAE, G_MFE and profit factor: a quant research glossary.&quot; TradePose Research Notes.</p><div class="citation-code">@article{tradepose2026quantresearchglossary,
+  title   = {MAE, G_MFE and profit factor: a quant research glossary},
+  author  = {TradePose Research},
+  journal = {TradePose Research Notes},
+  year    = {2026}
+}<button type="button" class="btn btn-secondary btn-sm">Copy</button></div></div><!--astro:end--></astro-island></div></div></main><footer class="site-footer"><div class="container"><div class="site-footer__grid"><div class="site-footer__brand"><span class="site-brand"><span class="site-brand__mark" aria-hidden="true"></span>TradePose</span><p class="site-footer__tagline">Quantitative research notes: backtests, statistics and strategy diagnostics. Every number comes from the backtest statistics published with the article.</p></div><div><h2 class="site-footer__title">Research</h2><ul><li><a href="/en/#research">Research index</a></li><li><a href="/en/#method">Data and methodology</a></li><li><a href="/en/rss.xml">RSS</a></li></ul></div></div><div class="site-footer__legal"><span>© 2026 TradePose</span><span>Research is not investment advice</span></div></div></footer><script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BflPKFW9.js"></script></body></html>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>TradePose Research</title>
+    <link>https://research.tradepose.com/zh-tw/</link>
+    <description>量化研究筆記：回測、統計與策略診斷</description>
+    <language>zh-TW</language>
+    <item>
+      <title>熱門技術指標的預設訊號有優勢嗎？34 個訊號在 NAS100 的路徑與延遲限價單檢定（2018–2025）</title>
+      <link>https://research.tradepose.com/zh-tw/posts/popular-indicator-signals/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/popular-indicator-signals/</guid>
+      <description>把 17 個最常見技術指標家族的平台預設訊號（均線交叉、MACD、RSI、Stochastic、CCI、Bollinger、Donchian、SuperTrend、Ichimoku、前日高低、開盤區間、整數關卡）做多做空共 34 個，在 Pepperstone NAS100 與 FTMO US100 的 1 小時與 30 分鐘 K 線上，檢定訊號後四小時的路徑有沒有可交易的不對稱、在訊號附近掛延遲限價單有沒有期望值，並把每個訊號直接持有 16 根 15 分鐘 K 線的回測與同期大盤比較。</description>
+      <category>策略研究</category>
+      <pubDate>Wed, 28 Oct 2026 15:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>選擇權到期日開盤放空 NAS100：45 條預註冊假設裡唯一站住的訊號（OPEX day short）</title>
+      <link>https://research.tradepose.com/zh-tw/posts/nas100-opex-day-short/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/nas100-opex-day-short/</guid>
+      <description>兩輪共 45 條事前登錄的結構性流量假設（收盤再平衡、月底、FOMC、財報夜、黃金與外匯定價、指數重組日）在美股指數 CFD 上只剩一條在家族層級站住：每月選擇權到期日（OPEX）紐約 09:30 放空 NAS100、持有一小時。本文記錄這個基本訊號在 Pepperstone NAS100（2018 起）與 FTMO US100（2022 起）的表現、之後的延遲進場、停損與停利、成本、部位，以及凍結後對 2026 的一次讀取。</description>
+      <category>策略研究</category>
+      <pubDate>Wed, 28 Oct 2026 12:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>訊號連續成立時，引擎只進一次場：進出場訊號的清洗規則，以及加碼為什麼要拆成多個策略</title>
+      <link>https://research.tradepose.com/zh-tw/posts/backtest-signal-deduplication/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/backtest-signal-deduplication/</guid>
+      <description>策略作者交給 TradePose 的進場與出場條件是逐根 K 線的布林值，常常會連續好幾根都成立。引擎不會每一根都開一個部位，而是把它們清洗成嚴格交替的進場、出場序列，每個部位只有一個進場點和一個出場點。這篇說明清洗的三個關卡、哪些訊號會被忽略、為什麼這樣設計，以及想加碼或減碼時，為什麼該寫成幾個獨立策略再組合。</description>
+      <category>回測機制</category>
+      <pubDate>Wed, 28 Oct 2026 09:24:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>大盤基準：22 個商品每日、每週、每月單純持有賺多少？</title>
+      <link>https://research.tradepose.com/zh-tw/posts/market-benchmarks/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/market-benchmarks/</guid>
+      <description>單純持有一個商品能賺多少？22 個股價指數、貴金屬、原物料與外匯，做多與做空各自每日、每週、每月持有，跳空都包含在交易裡，當作評估策略的大盤基準。</description>
+      <category>研究方法</category>
+      <pubDate>Mon, 26 Oct 2026 18:05:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>交易稀少的策略，為什麼 Sharpe 會被高估：年化要用完整的交易日</title>
+      <link>https://research.tradepose.com/zh-tw/posts/sharpe-ratio-sparse-trading/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/sharpe-ratio-sparse-trading/</guid>
+      <description>常見的 Sharpe 算法只用有交易出場的日子，再乘上 √252 年化。對一個月才交易一次的策略，這會把 Sharpe 高估好幾倍，還會讓它排在更好的策略前面。這篇說明誤差從哪裡來、TradePose 怎麼組成日序列，以及在自己的程式裡怎麼改。</description>
+      <category>研究方法</category>
+      <pubDate>Sat, 24 Oct 2026 15:28:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>一個進場機會，同時計算多種出場：引擎怎麼拆解一個策略</title>
+      <link>https://research.tradepose.com/zh-tw/posts/one-opportunity-many-exit-policies/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/one-opportunity-many-exit-policies/</guid>
+      <description>TradePose 把每個策略拆成一個進場機會，和套在它上面的交易政策。進場機會只算一次，每個政策在它之上獨立計算，而且每個政策的交易都能逐筆對回它來自的機會，包括延遲進場沒有成交的那些。這篇說明這個拆法，以及它為什麼讓分層研究做得到。</description>
+      <category>研究方法</category>
+      <pubDate>Sat, 24 Oct 2026 14:10:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>SuperTrend 狀態交易：從 768 個候選到 1 個留觀策略（US100 與黃金）</title>
+      <link>https://research.tradepose.com/zh-tw/posts/us100-xauusd-supertrend-state-redo/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-xauusd-supertrend-state-redo/</guid>
+      <description>照策略挑選方法論，從 US100 與黃金的 768 個 SuperTrend 狀態候選，走完校準、否決清單、進出場樹、葉節點檢查、組合與部位，得到一個 10 策略組合：挑選期（2022-03 到 2025-12）成本後 +70,078 美元、最大回撤 4,723。凍結後讀驗證期（2026-01 到 2026-10-23），組合虧 2,564 美元。拆解發現狀態訊號本身沒有平均優勢，獲利主要來自在同一段資料上挑出的出場參數。組合不上線；驗證期仍一致的 US100 4 小時空頭做空留倉策略（r14）以新候選凍結、留觀。</description>
+      <category>策略研究</category>
+      <pubDate>Sat, 24 Oct 2026 14:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>回測怎麼避免偷看未來：K 線的時間標記、shift 與同一根 K 線裡的先後</title>
+      <link>https://research.tradepose.com/zh-tw/posts/backtest-lookahead-bar-timing/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/backtest-lookahead-bar-timing/</guid>
+      <description>回測偷看未來最常見的兩種方式很隱蔽：在一根 K 線還沒收完時就讀它的收盤價，以及在同一根 K 線裡假設對自己有利的先後順序。這篇說明 TradePose 在什麼時候做決策、哪些部分由引擎保證、哪些由策略作者負責，以及一根 K 線碰到多個價格時引擎採用的保守規則。</description>
+      <category>回測機制</category>
+      <pubDate>Sat, 24 Oct 2026 12:38:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>4 小時 K 怎麼切：夏令時間讓回測結果取決於起點</title>
+      <link>https://research.tradepose.com/zh-tw/posts/resample-daylight-saving-wall-clock/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/resample-daylight-saving-wall-clock/</guid>
+      <description>同一個 4 小時策略、同一段行情，回測從冬天開始和從夏天開始，交易就不一樣。原因是常見的重新取樣函式只讓第一根 K 對齊當地時鐘，之後每格加固定的 4 小時。這篇說明問題怎麼出現、怎麼依當地牆上時鐘切 K，以及怎麼在不犧牲正確性的前提下把速度追回來。</description>
+      <category>回測機制</category>
+      <pubDate>Sat, 24 Oct 2026 11:52:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>VIX 能過濾或調整 US100 時鐘策略的部位嗎？恐慌指數的樣本外檢驗</title>
+      <link>https://research.tradepose.com/zh-tw/posts/us100-clock-vix-filter/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-clock-vix-filter/</guid>
+      <description>用 VIX 日線 SuperTrend 的方向（前一個已收完的紐約交易日），可以分出 US100 時鐘策略的好日子和壞日子：做空等 VIX 趨勢向上，跳過的是幾乎不賺的日子；做多則在 VIX 向上的日子表現最好。但做空濾網的改善主要來自 2022–2024 年，三種用 VIX 狀態調整部位的方法，不論用在原始時鐘時段或已完成的策略，樣本外都沒有勝過用 ATR 定部位。VIX 也不適合當挑選時鐘時段和延遲進場的尺度。</description>
+      <category>策略研究</category>
+      <pubDate>Tue, 20 Oct 2026 09:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>FTMO 帳戶部位與風險分配：有停損的策略組合，每筆該押多少？</title>
+      <link>https://research.tradepose.com/zh-tw/posts/ftmo-account-position-sizing/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/ftmo-account-position-sizing/</guid>
+      <description>把一組有停損的日內策略放進 FTMO 100K 帳戶，要回答三件事：每筆押多少、風險怎麼在策略之間分配、壞日子與連續虧損怎麼不超過帳戶限制。這篇比較六種部位公式與六種風險分配方式，說明為什麼用停損距離定口數、依交易日分群做風險平價，以及群倍數為什麼估一次就固定。</description>
+      <category>組合研究</category>
+      <pubDate>Mon, 19 Oct 2026 20:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>保本停損該在哪裡觸發？US100 Market Profile 11 個 setup</title>
+      <link>https://research.tradepose.com/zh-tw/posts/us100-market-profile-vol-breakeven/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-market-profile-vol-breakeven/</guid>
+      <description>Market Profile 訊號系列的第 5 層，也是最後一層出場：在 11 個有穩健停損的 setup 上測試保本停損，觸發點只放在交易不再像虧損交易的地方。</description>
+      <category>策略研究</category>
+      <pubDate>Mon, 19 Oct 2026 19:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>延遲進場能壓低 MAE 嗎？US100 Market Profile 36 個 setup</title>
+      <link>https://research.tradepose.com/zh-tw/posts/us100-market-profile-vol-delayed-entry/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-market-profile-vol-delayed-entry/</guid>
+      <description>Market Profile 訊號系列的第 1 層：不立即進場，改用有利延遲進場（限價單等回檔）或不利延遲進場（觸價單等突破），依它壓低不利偏移的程度評分。</description>
+      <category>策略研究</category>
+      <pubDate>Mon, 19 Oct 2026 19:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>趨勢濾網的資訊在哪裡？SuperTrend、只用 ATR 與聯合挑選，US100 Market Profile 36 個 setup</title>
+      <link>https://research.tradepose.com/zh-tw/posts/us100-market-profile-vol-filter-attribution/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-market-profile-vol-filter-attribution/</guid>
+      <description>Market Profile 訊號系列的第 3 層：把濾網和延遲進場一起看，比較 SuperTrend × 波動與只用波動狀態，並選出進入停損層的父策略。</description>
+      <category>策略研究</category>
+      <pubDate>Mon, 19 Oct 2026 19:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>從訊號到最終策略：US100 Market Profile 11 個 setup 的各階段結果</title>
+      <link>https://research.tradepose.com/zh-tw/posts/us100-market-profile-vol-final/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-market-profile-vol-final/</guid>
+      <description>Market Profile 訊號系列的結論篇：通過每一層的 11 個 setup，逐階段分開衡量，比較加不加濾網，並把週一與其他日子分開。</description>
+      <category>策略研究</category>
+      <pubDate>Mon, 19 Oct 2026 19:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>組合與部位大小：8 個 US100 Market Profile 策略放進 FTMO 10 萬帳戶，含點差與滑價</title>
+      <link>https://research.tradepose.com/zh-tw/posts/us100-market-profile-vol-portfolio/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-market-profile-vol-portfolio/</guid>
+      <description>Market Profile 訊號系列的組合篇：把最終策略組合起來，刪掉同步的策略，加入點差與滑價，並決定每筆部位，讓 10 萬的自營商帳戶撐過不好的一年。</description>
+      <category>組合研究</category>
+      <pubDate>Mon, 19 Oct 2026 19:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>停損停利該設在哪？US100 Market Profile 19 個父策略</title>
+      <link>https://research.tradepose.com/zh-tw/posts/us100-market-profile-vol-sl-tp/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-market-profile-vol-sl-tp/</guid>
+      <description>Market Profile 訊號系列的第 4 層：在通過進場與濾網層的 19 個父策略上設停損停利，距離由各父策略自己的 MAE 與 G_MFE 決定，只保留落在平台上的設定。</description>
+      <category>策略研究</category>
+      <pubDate>Mon, 19 Oct 2026 19:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>SuperTrend 濾網該用哪個時框、在什麼波動下擋？US100 Market Profile 36 個 setup</title>
+      <link>https://research.tradepose.com/zh-tw/posts/us100-market-profile-vol-supertrend-filter/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-market-profile-vol-supertrend-filter/</guid>
+      <description>Market Profile 訊號系列的第 2 層：SuperTrend 和交易方向相反時跳過當天，不分波動狀態都擋或只在某一種波動狀態下擋；選擇規則是計算勝過隨機時機的 setup 數。</description>
+      <category>策略研究</category>
+      <pubDate>Mon, 19 Oct 2026 19:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Market Profile 訊號在價值區兩側都成立嗎？US100 16 個事件與它們的鏡像</title>
+      <link>https://research.tradepose.com/zh-tw/posts/us100-market-profile-signals-volatility/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-market-profile-signals-volatility/</guid>
+      <description>把每個 Market Profile 事件和它在價值區另一側的鏡像放在一起，以波動模式回測，分辨真正的 Profile 效果與時段的方向偏差。</description>
+      <category>策略研究</category>
+      <pubDate>Mon, 19 Oct 2026 18:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>US100 幾點進場、幾點出場？ 全交易時段 2,070 組進出場時間多空回測</title>
+      <link>https://research.tradepose.com/zh-tw/posts/us100-intraday-clock-windows/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-intraday-clock-windows/</guid>
+      <description>那斯達克 US100 在固定的紐約時間進場、固定時間出場，涵蓋晚上 18:00 開盤到隔天下午的整個交易時段，可以跨午夜（例如 22:00 進、06:00 出），每 30 分鐘一格，多空共 2,070 組。這篇看哪些時段有優勢、好結果是平台還是孤島，以及做多與做空的差別。</description>
+      <category>策略研究</category>
+      <pubDate>Mon, 19 Oct 2026 18:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）</title>
+      <link>https://research.tradepose.com/zh-tw/posts/quant-research-glossary/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/quant-research-glossary/</guid>
+      <description>研究文章與策略報告共用的術語與方法：三種單位與它們為什麼不能直接對照、MAE／G_MFE／MFE 等偏移指標、績效與回撤、研究分層的順序、對照組、有利與不利延遲進場、停損停利與保本、濾網的檢驗方法，以及 Market Profile 訊號 G01–G16 的代號總表。</description>
+      <category>研究方法</category>
+      <pubDate>Thu, 08 Oct 2026 15:52:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>研究地圖與分層方法：一個策略怎麼從根策略一層一層長到組合</title>
+      <link>https://research.tradepose.com/zh-tw/posts/strategy-lineage-layers/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/strategy-lineage-layers/</guid>
+      <description>全站研究的入口。先說明我們怎麼研究一個策略：從根策略開始，依序加延遲進場、停損停利、保本、移動停損，最後才加濾網與組合，每一層只改一件事、只跟父策略比。再依研究系列列出目前的文章與閱讀順序，每篇一句話說它回答什麼。</description>
+      <category>研究方法</category>
+      <pubDate>Thu, 08 Oct 2026 10:52:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

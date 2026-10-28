@@ -1,0 +1,243 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>How a backtest avoids look-ahead bias: bar timestamps, shift, and what happens inside one bar | TradePose Research</title><meta name="description" content="A backtest can see the future in two quiet ways: by reading a bar's close before the bar has finished, and by assuming a convenient order of events inside a bar. This post explains when TradePose makes each decision, which part of avoiding look-ahead the engine guarantees and which part the strategy author owns, and the conservative rules it applies when one bar reaches several prices."><meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large"><link rel="canonical" href="https://research.tradepose.com/en/posts/backtest-lookahead-bar-timing/"><link rel="alternate" hreflang="en" href="https://research.tradepose.com/en/posts/backtest-lookahead-bar-timing/"><link rel="alternate" hreflang="zh-TW" href="https://research.tradepose.com/zh-tw/posts/backtest-lookahead-bar-timing/"><link rel="alternate" hreflang="x-default" href="https://research.tradepose.com/en/posts/backtest-lookahead-bar-timing/"><link rel="alternate" type="application/rss+xml" title="TradePose Research" href="/en/rss.xml"><meta property="og:site_name" content="TradePose Research"><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_TW"><meta property="og:type" content="article"><meta property="og:title" content="How a backtest avoids look-ahead bias: bar timestamps, shift, and what happens inside one bar"><meta property="og:description" content="A backtest can see the future in two quiet ways: by reading a bar's close before the bar has finished, and by assuming a convenient order of events inside a bar. This post explains when TradePose makes each decision, which part of avoiding look-ahead the engine guarantees and which part the strategy author owns, and the conservative rules it applies when one bar reaches several prices."><meta property="og:url" content="https://research.tradepose.com/en/posts/backtest-lookahead-bar-timing/"><meta property="og:image" content="https://research.tradepose.com/og-default.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="How a backtest avoids look-ahead bias: bar timestamps, shift, and what happens inside one bar"><meta name="twitter:description" content="A backtest can see the future in two quiet ways: by reading a bar's close before the bar has finished, and by assuming a convenient order of events inside a bar. This post explains when TradePose makes each decision, which part of avoiding look-ahead the engine guarantees and which part the strategy author owns, and the conservative rules it applies when one bar reaches several prices."><meta name="twitter:image" content="https://research.tradepose.com/og-default.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How a backtest avoids look-ahead bias: bar timestamps, shift, and what happens inside one bar","description":"A backtest can see the future in two quiet ways: by reading a bar's close before the bar has finished, and by assuming a convenient order of events inside a bar. This post explains when TradePose makes each decision, which part of avoiding look-ahead the engine guarantees and which part the strategy author owns, and the conservative rules it applies when one bar reaches several prices.","articleSection":"Backtest mechanics","keywords":"look-ahead bias, lookahead bias, backtest, higher timeframe, multi-timeframe, shift, merge_asof, intrabar, same-bar execution, stop loss, take profit, OHLC","inLanguage":"en","datePublished":"2026-10-24T20:38:00+08:00","dateModified":"2026-10-24T20:38:00+08:00","image":"https://research.tradepose.com/og-default.png","url":"https://research.tradepose.com/en/posts/backtest-lookahead-bar-timing/","mainEntityOfPage":"https://research.tradepose.com/en/posts/backtest-lookahead-bar-timing/","author":{"@type":"Organization","name":"TradePose Research"},"publisher":{"@type":"Organization","name":"TradePose","url":"https://tradepose.com"}}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Research","item":"https://research.tradepose.com/en/"},{"@type":"ListItem","position":2,"name":"How a backtest avoids look-ahead bias: bar timestamps, shift, and what happens inside one bar","item":"https://research.tradepose.com/en/posts/backtest-lookahead-bar-timing/"}]}</script><!-- data-init：第一次繪製前套用主題、計算模式與檢視；頁面轉場換頁後重新執行（<html> 的屬性換成新頁的） --><script data-init>try { const q = new URLSearchParams(location.search).get('theme'); if (q === 'light' || q === 'dark') sessionStorage.setItem('tp-theme', q); } catch {}
+try { const t = sessionStorage.getItem('tp-theme') ?? localStorage.getItem('tp-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; else if (t === 'system') delete document.documentElement.dataset.theme; } catch {}</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CYDbzu1r.js"></script><link rel="stylesheet" href="/_astro/Base.OLjrjMpp.css"><style>html[data-view=report] [data-view-panel=article],html[data-view=case] [data-view-panel=article]{display:none}
+</style></head><body><a class="skip-link" href="#main">Skip to main content</a><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><header class="site-header site-header--article"><div class="container site-header__inner"><a class="site-brand" href="/en/"><span class="site-brand__mark" aria-hidden="true"></span><span class="site-brand__name">TradePose</span><span class="site-brand__sub">Research</span></a><div class="site-header__context"><astro-island uid="Z17V3Sq" prefix="r18" component-url="/_astro/index.i-83YKa-.js" component-export="PageContext" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;How a backtest avoids look-ahead bias: bar timestamps, shift, and what happens inside one bar&quot;],&quot;followHeading&quot;:[0,true],&quot;labels&quot;:[0,{&quot;open&quot;:[0,&quot;Open contents&quot;],&quot;contents&quot;:[0,&quot;Contents&quot;],&quot;close&quot;:[0,&quot;Close&quot;]}]}" ssr client="load" opts="{&quot;name&quot;:&quot;PageContext&quot;,&quot;value&quot;:true}" await-children><div class="page-context"><span class="page-context__heading"><span class="page-context__title" title="How a backtest avoids look-ahead bias: bar timestamps, shift, and what happens inside one bar">How a backtest avoids look-ahead bias: bar timestamps, shift, and what happens inside one bar</span></span><span class="page-context__progress" aria-hidden="true" style="--progress:0"></span></div><!--astro:end--></astro-island></div><div class="site-header__actions"><astro-island uid="nKCto" prefix="r19" component-url="/_astro/SiteSettings.DX80NSQG.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;en&quot;],&quot;modes&quot;:[1,[]],&quot;languages&quot;:[1,[[0,{&quot;href&quot;:[0,&quot;/en/posts/backtest-lookahead-bar-timing/&quot;],&quot;lang&quot;:[0,&quot;en&quot;],&quot;name&quot;:[0,&quot;English&quot;],&quot;short&quot;:[0,&quot;EN&quot;],&quot;current&quot;:[0,true]}],[0,{&quot;href&quot;:[0,&quot;/zh-tw/posts/backtest-lookahead-bar-timing/&quot;],&quot;lang&quot;:[0,&quot;zh-TW&quot;],&quot;name&quot;:[0,&quot;繁體中文&quot;],&quot;short&quot;:[0,&quot;中文&quot;],&quot;current&quot;:[0,false]}]]],&quot;views&quot;:[1,[]]}" ssr client="load" opts="{&quot;name&quot;:&quot;SiteSettings&quot;,&quot;value&quot;:true}" await-children><div class="settings-bar"><nav class="segmented settings-bar__item settings-bar__item--secondary" aria-label="Language"><a href="/en/posts/backtest-lookahead-bar-timing/" lang="en" hrefLang="en" title="English" aria-current="page">EN</a><a href="/zh-tw/posts/backtest-lookahead-bar-timing/" lang="zh-TW" hrefLang="zh-TW" title="繁體中文">中文</a></nav><button type="button" class="btn btn-ghost btn-sm btn-icon settings-bar__item settings-bar__item--secondary" aria-label="Theme: System" title="Theme: System → Light"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="12" height="8.5" rx="1.25"></rect><path d="M5.5 14h5M8 11.5V14"></path></svg></button><button type="button" id="radix-_r19R_5_" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="btn btn-ghost btn-sm settings-menu" aria-label="Settings" title="Settings"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h6M12 5h1M3 11h1M7 11h6"></path><circle cx="10.5" cy="5" r="1.5"></circle><circle cx="5.5" cy="11" r="1.5"></circle></svg></button></div><!--astro:end--></astro-island></div></div></header><main id="main"><div class="article" data-view-panel="article"><div class="wide article-banner"><div class="article-cover article-cover--banner" style="--c1:var(--chart-3);--c2:var(--chart-1)"></div></div><header class="article-header"><span class="category-chip">Backtest mechanics</span><h1 class="article-title visually-hidden">How a backtest avoids look-ahead bias: bar timestamps, shift, and what happens inside one bar</h1><p class="article-dek"><p>A backtest that sees the future looks better than any strategy can trade. The two most common ways it happens are quiet: a signal reads a bar’s close before that bar has finished, or the backtest assumes the convenient order of events inside a bar. This post walks through both with simulated prices on which no rule can have an edge, and explains the rules TradePose uses to keep them out.</p></p><dl class="article-meta"><div><dt>Published</dt><dd>2026-10-24 20:38</dd></div><div><dt>Reading time</dt><dd>9 min read</dd></div></dl></header><div><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value=="object"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};"requestIdleCallback"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event("astro:idle"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="rHmcD" prefix="r26" component-url="/_astro/ArticleToc.VhlXB6WE.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;en&quot;],&quot;items&quot;:[1,[[0,{&quot;id&quot;:[0,&quot;when-is-a-decision-made&quot;],&quot;label&quot;:[0,&quot;When is a decision made?&quot;]}],[0,{&quot;id&quot;:[0,&quot;bars-are-labelled-by-their-start-time&quot;],&quot;label&quot;:[0,&quot;Bars are labelled by their start time&quot;]}],[0,{&quot;id&quot;:[0,&quot;which-bars-does-the-shift-move&quot;],&quot;label&quot;:[0,&quot;Which bars does the shift move?&quot;]}],[0,{&quot;id&quot;:[0,&quot;why-the-engine-does-not-decide-causality-for-you&quot;],&quot;label&quot;:[0,&quot;Why the engine does not decide causality for you&quot;]}],[0,{&quot;id&quot;:[0,&quot;what-happened-first-inside-one-bar&quot;],&quot;label&quot;:[0,&quot;What happened first inside one bar?&quot;]}],[0,{&quot;id&quot;:[0,&quot;the-same-rule-applies-to-excursion-statistics&quot;],&quot;label&quot;:[0,&quot;The same rule applies to excursion statistics&quot;]}],[0,{&quot;id&quot;:[0,&quot;goals-title&quot;],&quot;label&quot;:[0,&quot;Questions this study answers&quot;]}],[0,{&quot;id&quot;:[0,&quot;arising-title&quot;],&quot;label&quot;:[0,&quot;Questions raised along the way&quot;]}],[0,{&quot;id&quot;:[0,&quot;method&quot;],&quot;label&quot;:[0,&quot;Method and data&quot;]}]]]}" ssr client="idle" opts="{&quot;name&quot;:&quot;ArticleToc&quot;,&quot;value&quot;:true}" await-children><nav class="toc toc--aside" aria-label="Contents"><div class="toc-title" aria-hidden="true">Contents</div><ol class="toc-list"><li class=""><a href="#when-is-a-decision-made" aria-current="true">When is a decision made?</a></li><li class=""><a href="#bars-are-labelled-by-their-start-time">Bars are labelled by their start time</a></li><li class=""><a href="#which-bars-does-the-shift-move">Which bars does the shift move?</a></li><li class=""><a href="#why-the-engine-does-not-decide-causality-for-you">Why the engine does not decide causality for you</a></li><li class=""><a href="#what-happened-first-inside-one-bar">What happened first inside one bar?</a></li><li class=""><a href="#the-same-rule-applies-to-excursion-statistics">The same rule applies to excursion statistics</a></li><li class=""><a href="#goals-title">Questions this study answers</a></li><li class=""><a href="#arising-title">Questions raised along the way</a></li><li class=""><a href="#method">Method and data</a></li></ol></nav><!--astro:end--></astro-island></div>
+<div class="abstract"><div class="abstract-title">Conclusion</div><p>Every decision in TradePose is made at the open of a bar: the current open is known, the current high, low, close and volume are not. Bars are labelled by their start time and other timeframes are joined backward onto the main timeline without any automatic delay, so a strategy that wants a finished higher-timeframe bar declares <code>shift=1</code> on that timeframe’s own bars. Shifting after the join only moves one row of the main timeframe; on a random walk that mistake turns a coin flip into a 66.6% win rate. The engine does not treat a shift as proof of causality, so checking the lineage of each input stays with the author. Inside a bar, where OHLC data does not record which price came first, the engine always picks the outcome it can prove: a stop reached on the entry bar is taken, a target reached on the entry bar is not, and when a stop and a target are both reached the stop wins. Those rules can understate a strategy, but they never invent profit.</p></div><p class="reading-split">That is the conclusion. Each section below is the evidence for one claim; follow the sections or the evidence links into the strategy report for the data on every parameter set.</p>
+<div class="prose"><h2 id="when-is-a-decision-made">When is a decision made?</h2>
+<p>Every backtest needs one answer to a simple question: at the moment a decision is made, which prices are already known?</p>
+<p>TradePose evaluates strategies <strong>at the open of each bar</strong>. At 10:00, the 10:00 bar’s open is known; its high, low, close and volume are not, because they only exist once the bar has finished at 10:15. Every rule below follows from this line:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="When is a decision made? (table)"><table class="data-table"><thead><tr><th>Value of the current bar</th><th>Known when the decision is made?</th></tr></thead><tbody><tr><td>Open</td><td>Yes</td></tr><tr><td>High, low, close, volume</td><td>No: only after the bar finishes</td></tr><tr><td>Any indicator computed from the current high, low, close or volume</td><td>No</td></tr></tbody></table></div>
+<p>A strategy that needs a close therefore uses the close of a bar that has already finished.</p>
+<h2 id="bars-are-labelled-by-their-start-time">Bars are labelled by their start time</h2>
+<p>Each bar carries the time it <strong>starts</strong>: the 15-minute bar labelled 10:00 covers 10:00 to 10:15. When a strategy uses a second timeframe, for example 1-hour bars next to 15-minute bars, each 15-minute row is joined to the most recent 1-hour bar whose start time is not later than its own.</p>
+<p>The engine <strong>does not add a delay</strong> to that join. The table below joins simulated 1-hour closes onto a 15-minute timeline:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Bars are labelled by their start time (table)"><table class="data-table"><thead><tr><th>15-minute row</th><th class="num">15-minute close</th><th class="num">1-hour close, <code>shift=0</code></th><th class="num">1-hour close, <code>shift=1</code></th></tr></thead><tbody><tr><td>00:00</td><td class="num">14,891.2</td><td class="num">14,899.7</td><td class="num">14,891.9</td></tr><tr><td>00:15</td><td class="num">14,887.1</td><td class="num">14,899.7</td><td class="num">14,891.9</td></tr><tr><td>00:30</td><td class="num">14,888.1</td><td class="num">14,899.7</td><td class="num">14,891.9</td></tr><tr><td>00:45</td><td class="num">14,899.7</td><td class="num">14,899.7</td><td class="num">14,891.9</td></tr><tr><td>01:00</td><td class="num">14,890.6</td><td class="num">14,890.8</td><td class="num">14,899.7</td></tr><tr><td>01:15</td><td class="num">14,890.8</td><td class="num">14,890.8</td><td class="num">14,899.7</td></tr></tbody></table></div>
+<p>With <code>shift=0</code>, the 00:00 row already shows 14,899.7, the close of the 00:00–01:00 hour, which is only known at 01:00. With <code>shift=1</code> declared on the 1-hour bars, the 00:00–01:00 close appears on the 01:00 row, the first moment it is known, and not an hour later.</p>
+</div><span class="sidenote">Why no automatic delay? If the engine delayed every higher-timeframe bar to its end, a strategy that already declared <code>shift=1</code> would be delayed twice. One rule, stated by the author, keeps direct and resampled data consistent.</span>
+<div class="prose"><h2 id="which-bars-does-the-shift-move">Which bars does the shift move?</h2>
+<p><code>shift=1</code> means “one bar earlier” <strong>on the bars it is declared on</strong>. Declared on daily bars, it reaches the previous day. Applied after the daily values have been joined onto a 15-minute timeline, it only reaches the previous 15-minute row, which usually belongs to the same day.</p>
+<h3 id="simulation-1-one-rule-three-ways-to-shift">Simulation 1: one rule, three ways to shift</h3>
+<p>The test uses 1,500 days of simulated 15-minute prices from a random walk, so no rule can have a real edge. The rule: if the daily bar closed above its open, go long at 09:30 and exit at 16:00; otherwise go short. The only difference between the three versions is where the shift is applied.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Simulation 1: one rule, three ways to shift (table)"><table class="data-table"><thead><tr><th>How the daily signal is shifted</th><th class="num">Trades</th><th class="num">Win rate</th><th class="num">Average per trade</th></tr></thead><tbody><tr><td>No shift</td><td class="num">1,500</td><td class="num">66.6%</td><td class="num">+16.5 points</td></tr><tr><td>Shift after the join (one 15-minute row)</td><td class="num">1,500</td><td class="num">66.6%</td><td class="num">+16.5 points</td></tr><tr><td><code>shift=1</code> on the daily bars</td><td class="num">1,499</td><td class="num">49.0%</td><td class="num">−1.1 points</td></tr></tbody></table></div>
+<p>The first two versions read the close of the day they are trading. The 09:30–16:00 move is part of that day’s move, so they “predict” it two times out of three. Shifting after the join does not help at all: the 09:15 row it reaches belongs to the same day. Only the shift on the daily bars gives the coin flip a random walk should give.</p>
+</div><div class="callout"><strong>Simulated data:</strong><p>Both simulations in this post use randomly generated prices, not market data. A random walk has no edge by construction, so any profit it shows comes from the backtest, not the strategy.</p></div>
+<div class="prose"><p>The same mistake is easy to make in pandas:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="python"><code><span class="line"><span style="color:#6A737D"># Wrong: shift() moves one 15-minute row, which is still the same day</span></span>
+<span class="line"><span style="color:#E1E4E8">m15 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> pd.merge_asof(m15, daily[[</span><span style="color:#9ECBFF">&quot;ts&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">&quot;up&quot;</span><span style="color:#E1E4E8">]], </span><span style="color:#FFAB70">on</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;ts&quot;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">m15[</span><span style="color:#9ECBFF">&quot;up_prev&quot;</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> m15[</span><span style="color:#9ECBFF">&quot;up&quot;</span><span style="color:#E1E4E8">].shift(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Right: shift the daily bars first, then join</span></span>
+<span class="line"><span style="color:#E1E4E8">daily[</span><span style="color:#9ECBFF">&quot;up_prev&quot;</span><span style="color:#E1E4E8">] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> daily[</span><span style="color:#9ECBFF">&quot;up&quot;</span><span style="color:#E1E4E8">].shift(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">m15 </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> pd.merge_asof(m15, daily[[</span><span style="color:#9ECBFF">&quot;ts&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">&quot;up_prev&quot;</span><span style="color:#E1E4E8">]], </span><span style="color:#FFAB70">on</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">&quot;ts&quot;</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<p>In TradePose the shift is declared on the column’s own source, for example <code>tp.DataColumn(column=&quot;close&quot;, shift=1)</code> on the daily source; the engine shifts the daily bars first and only then joins them onto the main timeline. A Polars <code>.shift()</code> written after the join still counts rows of the main timeline.</p>
+<h2 id="why-the-engine-does-not-decide-causality-for-you">Why the engine does not decide causality for you</h2>
+<p>A shift is a number of rows. Whether a value was known at decision time depends on everything it was computed from: an indicator computed from the current bar’s close leaks unless something in its chain selects the previous bar, while an indicator that consumes an input that is already shifted needs no second shift. The engine cannot see that intent from a column name or a shift number, so it does not pretend to:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Why the engine does not decide causality for you (table)"><table class="data-table"><thead><tr><th>Guaranteed by the engine</th><th>Owned by the strategy author</th></tr></thead><tbody><tr><td>Bars are labelled by their start time and joined backward, with no hidden delay</td><td>Choosing which inputs need <code>shift=1</code> to use finished bars</td></tr><tr><td>A declared shift moves that source’s own bars, never rows of the main timeline</td><td>Not shifting a value that is already causal a second time</td></tr><tr><td>Market Profile is published after its window closes; the anchor bar is not part of the finished window</td><td>Reviewing the full lineage of custom columns and expressions</td></tr></tbody></table></div>
+<p>The style checker warns when a shift is missing or cannot be classified, but it does not block a strategy on a guess. Rejecting a valid strategy because of its column name would be as wrong as accepting a leaking one because it carries <code>shift=1</code>.</p>
+<h2 id="what-happened-first-inside-one-bar">What happened first inside one bar?</h2>
+<p>The second kind of look-ahead hides inside a single bar. OHLC data says a bar reached its high and its low, but not in which order. If a stop and a target both lie inside the bar, a backtest has to pick one; picking the target is an assumption that the price went up first.</p>
+<p>TradePose always picks the outcome it can prove:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="What happened first inside one bar? (table)"><table class="data-table"><thead><tr><th>Situation</th><th>Engine rule</th></tr></thead><tbody><tr><td>Immediate entry</td><td>Fills at the open of the bar</td></tr><tr><td>Stop loss reached on the entry bar</td><td>Exits on that bar: the loss is real even if the trade lasts one bar</td></tr><tr><td>Take profit reached on the entry bar</td><td>Not filled on that bar; the earliest fill is the next bar</td></tr><tr><td>Several orders of the same kind reached, for example two long stops at 97 and 99</td><td>The one reached first along the price path: 99</td></tr><tr><td>Orders of different kinds reached</td><td>Exits at the open first, then stops, then targets: a stop reached together with a target wins</td></tr><tr><td>A delayed entry is pending and the base strategy exits at this bar’s open</td><td>The delayed entry is cancelled</td></tr></tbody></table></div>
+<h3 id="simulation-2-three-assumptions-against-the-true-order">Simulation 2: three assumptions against the true order</h3>
+<p>Here the random walk is generated minute by minute, so the true order of events is known, and then combined into 15-minute bars that hide it. A long enters at 09:30 with a stop loss and a take profit at the same distance and exits at 16:00 if neither is reached; 3,000 simulated days. The truth comes from the minute path; the other three columns only see the 15-minute bars:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Simulation 2: three assumptions against the true order (table)"><table class="data-table"><thead><tr><th>Stop and target distance</th><th class="num">Truth</th><th class="num">Target first</th><th class="num">Stop first</th><th class="num">Engine</th></tr></thead><tbody><tr><td>5 points</td><td class="num">50.5%</td><td class="num">60.8%</td><td class="num">41.1%</td><td class="num">30.7%</td></tr><tr><td>10 points</td><td class="num">51.9%</td><td class="num">52.8%</td><td class="num">51.1%</td><td class="num">45.5%</td></tr><tr><td>20 points</td><td class="num">50.9%</td><td class="num">50.9%</td><td class="num">50.9%</td><td class="num">50.4%</td></tr></tbody></table></div>
+<p>Win rates; in this simulation the standard deviation of a 15-minute move is about 12 points. Three things stand out:</p>
+<ul>
+<li><strong>Assuming the target came first invents profit.</strong> With a 5-point distance it turns a fair coin into a 60.8% strategy.</li>
+<li><strong>The engine errs in the other direction.</strong> It never shows profit the bars cannot prove, so with tight distances it understates the strategy: 30.7% against a true 50.5%, mostly because a target reached on the entry bar is not filled and the trade later hits its stop.</li>
+<li><strong>The error shrinks as orders move away from the bar range.</strong> At 20 points every assumption agrees with the truth. When stops and targets are close relative to the bar size, the answer is finer data, not a better assumption.</li>
+</ul>
+<p>The engine’s rules are deliberately one-sided: a backtest that understates a strategy can be checked with finer data, while one that overstates it can send a losing strategy live.</p>
+<h2 id="the-same-rule-applies-to-excursion-statistics">The same rule applies to excursion statistics</h2>
+<p>Maximum adverse and favorable excursion (MAE and MFE) use the same reasoning on the exit bar. When a trade exits at its stop, the favorable side of that bar is excluded, because the price may have reached it only after the stop; when it exits at its target, the adverse side is excluded. The precise definitions of these statistics are covered in the <a href="/en/posts/quant-research-glossary/">quant research glossary</a>.</p>
+</div><div class="callout callout--warning"><strong>Limitations of this post:</strong><p>Both simulations use random-walk prices with no gaps, spread or slippage; real markets add those, and gap fills follow their own rules. The same-bar comparison uses a single symmetric stop and target on 15-minute bars; how much the engine understates depends on the distance relative to the bar range and on the entry type. Whether an input is causal remains the author’s responsibility: the engine guarantees the timing of bars and shifts, not the meaning of every custom column.</p></div>
+<section class="question-section" aria-labelledby="goals-title"><h2 class="question-section-title" id="goals-title">Questions this study answers</h2><div class="question-item"><h3 class="question-item-title">How does TradePose keep a strategy from reading a bar&#x27;s close before the bar has finished?</h3><div class="question-item-answer"><p>Decisions are made at each bar’s open, bars are labelled by their start time and joined backward with no hidden delay, and a strategy that needs a finished bar declares <code>shift=1</code> on that bar’s own timeframe. Whether every input is causal stays with the author, because a shift alone cannot prove it.</p></div></div><div class="question-item"><h3 class="question-item-title">What does the engine do when one bar reaches both the stop and the target?</h3><div class="question-item-answer"><p>It takes the outcome it can prove: the stop wins over the target, a stop on the entry bar is taken, and a target on the entry bar waits for the next bar. With stops and targets close to the bar range this understates a strategy rather than overstating it.</p></div></div></section>
+<section class="question-section" aria-labelledby="arising-title"><h2 class="question-section-title" id="arising-title">Questions raised along the way</h2><div class="question-item"><h3 class="question-item-title">How do I check my own backtest for these two problems?</h3><div class="question-item-answer"><p>Run it on a random walk. Any edge that appears there comes from the backtest. For multi-timeframe signals, make sure the shift is applied to the higher-timeframe bars before they are joined; for stops and targets inside one bar, compare the result with the same test on finer bars.</p></div></div></section><div class="section-head"><h2 id="method">Method and data</h2></div><p class="section-lead">Research setup, data and calculations; the identifiers needed to reproduce the study are under data sources.</p><div class="appendix"><div style="display:contents"><h3>Changelog</h3><div>2026-10-24 20:38 first published</div></div></div><div class="wide"><section class="related"><h2 class="related-title">Related research</h2><div class="related-grid"><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">136 parameter sets · Total return above 0</span><span class="cover-figure__value">75 / 136</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L0.74 12.61L1.48 14.31L2.22 18.68L2.96 19.51L3.70 20.87L4.44 21.47L5.19 22.14L5.93 22.21L6.67 23.32L7.41 24.29L8.15 25.34L8.89 26.50L9.63 27.00L10.37 28.97L11.11 29.85L11.85 31.23L12.59 31.23L13.33 31.74L14.07 31.84L14.81 32.10L15.56 32.33L16.30 32.38L17.04 32.68L17.78 33.26L18.52 33.50L19.26 34.05L20.00 35.07L20.74 36.61L21.48 37.48L22.22 37.82L22.96 38.78L23.70 40.10L24.44 40.67L25.19 41.43L25.93 41.50L26.67 41.58L27.41 41.62L28.15 42.10L28.89 42.99L29.63 43.03L30.37 43.03L31.11 43.21L31.85 43.63L32.59 43.76L33.33 44.17L34.07 44.55L34.81 44.67L35.56 45.35L36.30 45.50L37.04 45.79L37.78 46.62L38.52 46.73L39.26 47.03L40.00 47.26L40.74 47.31L41.48 47.34L42.22 47.45L42.96 48.41L43.70 49.00L44.44 50.05L45.19 50.62L45.93 51.07L46.67 51.17L47.41 51.59L48.15 51.85L48.89 52.57L49.63 52.61L50.37 52.66L51.11 52.68L51.85 52.73L52.59 53.40L53.33 53.62L54.07 53.64L54.81 53.72L55.56 53.91L56.30 54.03L57.04 54.43L57.78 54.62L58.52 54.92L59.26 55.17L60.00 55.24L60.74 55.53L61.48 56.06L62.22 56.09L62.96 56.51L63.70 56.83L64.44 57.08L65.19 57.46L65.93 57.56L66.67 57.78L67.41 57.84L68.15 58.09L68.89 58.34L69.63 58.41L70.37 58.83L71.11 59.60L71.85 59.79L72.59 59.80L73.33 60.14L74.07 60.39L74.81 60.84L75.56 60.93L76.30 60.94L77.04 61.21L77.78 61.25L78.52 61.28L79.26 61.30L80.00 61.50L80.74 61.79L81.48 61.81L82.22 62.18L82.96 64.46L83.70 64.49L84.44 64.56L85.19 64.73L85.93 64.75L86.67 65.18L87.41 65.36L88.15 65.48L88.89 66.94L89.63 69.12L90.37 74.19L91.11 76.07L91.85 76.96L92.59 77.45L93.33 80.89L94.07 82.55L94.81 82.91L95.56 84.45L96.30 84.73L97.04 86.56L97.78 91.89L98.52 93.64L99.26 95.26L100.00 98.00L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 53.79H100"></path><path class="sparkline__line" d="M0.00 2.00L0.74 12.61L1.48 14.31L2.22 18.68L2.96 19.51L3.70 20.87L4.44 21.47L5.19 22.14L5.93 22.21L6.67 23.32L7.41 24.29L8.15 25.34L8.89 26.50L9.63 27.00L10.37 28.97L11.11 29.85L11.85 31.23L12.59 31.23L13.33 31.74L14.07 31.84L14.81 32.10L15.56 32.33L16.30 32.38L17.04 32.68L17.78 33.26L18.52 33.50L19.26 34.05L20.00 35.07L20.74 36.61L21.48 37.48L22.22 37.82L22.96 38.78L23.70 40.10L24.44 40.67L25.19 41.43L25.93 41.50L26.67 41.58L27.41 41.62L28.15 42.10L28.89 42.99L29.63 43.03L30.37 43.03L31.11 43.21L31.85 43.63L32.59 43.76L33.33 44.17L34.07 44.55L34.81 44.67L35.56 45.35L36.30 45.50L37.04 45.79L37.78 46.62L38.52 46.73L39.26 47.03L40.00 47.26L40.74 47.31L41.48 47.34L42.22 47.45L42.96 48.41L43.70 49.00L44.44 50.05L45.19 50.62L45.93 51.07L46.67 51.17L47.41 51.59L48.15 51.85L48.89 52.57L49.63 52.61L50.37 52.66L51.11 52.68L51.85 52.73L52.59 53.40L53.33 53.62L54.07 53.64L54.81 53.72L55.56 53.91L56.30 54.03L57.04 54.43L57.78 54.62L58.52 54.92L59.26 55.17L60.00 55.24L60.74 55.53L61.48 56.06L62.22 56.09L62.96 56.51L63.70 56.83L64.44 57.08L65.19 57.46L65.93 57.56L66.67 57.78L67.41 57.84L68.15 58.09L68.89 58.34L69.63 58.41L70.37 58.83L71.11 59.60L71.85 59.79L72.59 59.80L73.33 60.14L74.07 60.39L74.81 60.84L75.56 60.93L76.30 60.94L77.04 61.21L77.78 61.25L78.52 61.28L79.26 61.30L80.00 61.50L80.74 61.79L81.48 61.81L82.22 62.18L82.96 64.46L83.70 64.49L84.44 64.56L85.19 64.73L85.93 64.75L86.67 65.18L87.41 65.36L88.15 65.48L88.89 66.94L89.63 69.12L90.37 74.19L91.11 76.07L91.85 76.96L92.59 77.45L93.33 80.89L94.07 82.55L94.81 82.91L95.56 84.45L96.30 84.73L97.04 86.56L97.78 91.89L98.52 93.64L99.26 95.26L100.00 98.00"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">US100.cash · NAS100 · Moving-average cross · 136 parameter sets · 148,290 trades</span><h3 class="post-card__title"><a class="post-card__link" href="/en/posts/popular-indicator-signals/">Do popular indicator signals have an edge? 34 default-parameter signals on NAS100: path asymmetry and delayed limit orders, 2018–2025</a></h3><span class="post-card__excerpt">The platform-default signals of the 17 most common technical-indicator families (moving-average crosses, MACD, RSI, Stochastic, CCI, Bollinger, Donchian, SuperTrend, Ichimoku, prior-day levels, opening range, round numbers), long and short, 34 in all, on 1-hour and 30-minute bars of Pepperstone NAS100 and FTMO US100: is the path after a signal asymmetric, do delayed limit orders around it earn anything, and how does holding each signal for 16 fifteen-minute bars compare with the market.</span><span class="post-card__meta"><span>2026-10-28 23:00</span><span>53 min read</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/en/posts/popular-indicator-signals/">Read article</a><a class="btn btn-ghost btn-sm" href="/en/posts/popular-indicator-signals/?view=report">View report</a></div></div></article><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">8 parameter sets · Total return above 0</span><span class="cover-figure__value">8 / 8</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L14.29 33.00L28.57 40.76L42.86 40.78L57.14 42.15L71.43 68.54L85.71 68.91L100.00 70.08L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 98.00H100"></path><path class="sparkline__line" d="M0.00 2.00L14.29 33.00L28.57 40.76L42.86 40.78L57.14 42.15L71.43 68.54L85.71 68.91L100.00 70.08"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">US100.cash · NAS100 · Option expiration · 8 parameter sets · 538 trades</span><h3 class="post-card__title"><a class="post-card__link" href="/en/posts/nas100-opex-day-short/">Shorting NAS100 at the open on option expiration day: the one survivor of 45 pre-registered hypotheses</a></h3><span class="post-card__excerpt">Two rounds of pre-registered structural-flow hypotheses on US index CFDs (45 in all: closing rebalancing, month end, FOMC, earnings nights, fixing times, rebalance days) left one signal standing at the family level: shorting NAS100 at 09:30 New York on monthly option expiration day for one hour. This post records the base signal on Pepperstone NAS100 since 2018 and FTMO US100 since 2022, the delayed entry, the stop and the take profit that followed, the cost, the sizing, and the one read of 2026.</span><span class="post-card__meta"><span>2026-10-28 20:00</span><span>8 min read</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/en/posts/nas100-opex-day-short/">Read article</a><a class="btn btn-ghost btn-sm" href="/en/posts/nas100-opex-day-short/?view=report">View report</a></div></div></article><a class="card card-interactive post-card" href="/en/posts/backtest-signal-deduplication/"><div class="article-cover" style="--c1:var(--chart-3);--c2:var(--chart-1)"></div><div class="post-card__body"><h3 class="post-card__title">When a signal stays true, the engine enters once: how entry and exit signals are cleaned, and why scaling in is several strategies</h3><span class="post-card__excerpt">The entry and exit conditions a strategy author hands to TradePose are booleans per bar, and they are often true for many bars in a row. The engine does not open a position on every bar. It cleans them into a strictly alternating sequence of entries and exits, so every position has one entry and one exit. This post explains the three cleaning stages, which signals are ignored, why the engine is built this way, and why scaling in or out should be written as several independent strategies combined in a portfolio.</span><span class="post-card__meta"><span>2026-10-28 17:24</span><span>10 min read</span></span></div></a></div></section></div><!-- island 外層加 div：astro-island 為 display: contents，否則引用區塊會被排進格線的側欄 --><div><script>(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value=="object"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event("astro:visible"));})();</script><astro-island uid="Z1FVMCh" prefix="r14" component-url="/_astro/index.DKisFm5J.js" component-export="Citation" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;Cite this article&quot;],&quot;copyLabels&quot;:[0,{&quot;copy&quot;:[0,&quot;Copy&quot;],&quot;copied&quot;:[0,&quot;Copied&quot;],&quot;failed&quot;:[0,&quot;Couldn&#39;t copy&quot;]}],&quot;text&quot;:[0,&quot;TradePose Research (2026). \&quot;How a backtest avoids look-ahead bias: bar timestamps, shift, and what happens inside one bar.\&quot; TradePose Research Notes.&quot;],&quot;bibtex&quot;:[0,&quot;@article{tradepose2026backtestlookaheadbartiming,\n  title   = {How a backtest avoids look-ahead bias: bar timestamps, shift, and what happens inside one bar},\n  author  = {TradePose Research},\n  journal = {TradePose Research Notes},\n  year    = {2026}\n}&quot;]}" ssr client="visible" opts="{&quot;name&quot;:&quot;Citation&quot;,&quot;value&quot;:true}" await-children><div class="citation"><div class="citation-title">Cite this article</div><p class="citation-text">TradePose Research (2026). &quot;How a backtest avoids look-ahead bias: bar timestamps, shift, and what happens inside one bar.&quot; TradePose Research Notes.</p><div class="citation-code">@article{tradepose2026backtestlookaheadbartiming,
+  title   = {How a backtest avoids look-ahead bias: bar timestamps, shift, and what happens inside one bar},
+  author  = {TradePose Research},
+  journal = {TradePose Research Notes},
+  year    = {2026}
+}<button type="button" class="btn btn-secondary btn-sm">Copy</button></div></div><!--astro:end--></astro-island></div></div></main><footer class="site-footer"><div class="container"><div class="site-footer__grid"><div class="site-footer__brand"><span class="site-brand"><span class="site-brand__mark" aria-hidden="true"></span>TradePose</span><p class="site-footer__tagline">Quantitative research notes: backtests, statistics and strategy diagnostics. Every number comes from the backtest statistics published with the article.</p></div><div><h2 class="site-footer__title">Research</h2><ul><li><a href="/en/#research">Research index</a></li><li><a href="/en/#method">Data and methodology</a></li><li><a href="/en/rss.xml">RSS</a></li></ul></div></div><div class="site-footer__legal"><span>© 2026 TradePose</span><span>Research is not investment advice</span></div></div></footer><script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BflPKFW9.js"></script></body></html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html><html lang="zh-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>一個進場機會，同時計算多種出場：引擎怎麼拆解一個策略｜TradePose Research</title><meta name="description" content="TradePose 把每個策略拆成一個進場機會，和套在它上面的交易政策。進場機會只算一次，每個政策在它之上獨立計算，而且每個政策的交易都能逐筆對回它來自的機會，包括延遲進場沒有成交的那些。這篇說明這個拆法，以及它為什麼讓分層研究做得到。"><meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large"><link rel="canonical" href="https://research.tradepose.com/zh-tw/posts/one-opportunity-many-exit-policies/"><link rel="alternate" hreflang="en" href="https://research.tradepose.com/en/posts/one-opportunity-many-exit-policies/"><link rel="alternate" hreflang="zh-TW" href="https://research.tradepose.com/zh-tw/posts/one-opportunity-many-exit-policies/"><link rel="alternate" hreflang="x-default" href="https://research.tradepose.com/en/posts/one-opportunity-many-exit-policies/"><link rel="alternate" type="application/rss+xml" title="TradePose Research" href="/zh-tw/rss.xml"><meta property="og:site_name" content="TradePose Research"><meta property="og:locale" content="zh_TW"><meta property="og:locale:alternate" content="en_US"><meta property="og:type" content="article"><meta property="og:title" content="一個進場機會，同時計算多種出場：引擎怎麼拆解一個策略"><meta property="og:description" content="TradePose 把每個策略拆成一個進場機會，和套在它上面的交易政策。進場機會只算一次，每個政策在它之上獨立計算，而且每個政策的交易都能逐筆對回它來自的機會，包括延遲進場沒有成交的那些。這篇說明這個拆法，以及它為什麼讓分層研究做得到。"><meta property="og:url" content="https://research.tradepose.com/zh-tw/posts/one-opportunity-many-exit-policies/"><meta property="og:image" content="https://research.tradepose.com/og-default.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="一個進場機會，同時計算多種出場：引擎怎麼拆解一個策略"><meta name="twitter:description" content="TradePose 把每個策略拆成一個進場機會，和套在它上面的交易政策。進場機會只算一次，每個政策在它之上獨立計算，而且每個政策的交易都能逐筆對回它來自的機會，包括延遲進場沒有成交的那些。這篇說明這個拆法，以及它為什麼讓分層研究做得到。"><meta name="twitter:image" content="https://research.tradepose.com/og-default.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"一個進場機會，同時計算多種出場：引擎怎麼拆解一個策略","description":"TradePose 把每個策略拆成一個進場機會，和套在它上面的交易政策。進場機會只算一次，每個政策在它之上獨立計算，而且每個政策的交易都能逐筆對回它來自的機會，包括延遲進場沒有成交的那些。這篇說明這個拆法，以及它為什麼讓分層研究做得到。","articleSection":"研究方法","keywords":"回測, 參數掃描, 出場策略, 停損, 停利, 延遲進場, 限價單, 父策略, 逐筆對齊, 成交率, 分層策略研究","inLanguage":"zh-TW","datePublished":"2026-10-24T22:10:00+08:00","dateModified":"2026-10-24T22:10:00+08:00","image":"https://research.tradepose.com/og-default.png","url":"https://research.tradepose.com/zh-tw/posts/one-opportunity-many-exit-policies/","mainEntityOfPage":"https://research.tradepose.com/zh-tw/posts/one-opportunity-many-exit-policies/","author":{"@type":"Organization","name":"TradePose Research"},"publisher":{"@type":"Organization","name":"TradePose","url":"https://tradepose.com"}}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"研究","item":"https://research.tradepose.com/zh-tw/"},{"@type":"ListItem","position":2,"name":"一個進場機會，同時計算多種出場：引擎怎麼拆解一個策略","item":"https://research.tradepose.com/zh-tw/posts/one-opportunity-many-exit-policies/"}]}</script><!-- data-init：第一次繪製前套用主題、計算模式與檢視；頁面轉場換頁後重新執行（<html> 的屬性換成新頁的） --><script data-init>try { const q = new URLSearchParams(location.search).get('theme'); if (q === 'light' || q === 'dark') sessionStorage.setItem('tp-theme', q); } catch {}
+try { const t = sessionStorage.getItem('tp-theme') ?? localStorage.getItem('tp-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; else if (t === 'system') delete document.documentElement.dataset.theme; } catch {}</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CYDbzu1r.js"></script><link rel="stylesheet" href="/_astro/Base.OLjrjMpp.css"><style>html[data-view=report] [data-view-panel=article],html[data-view=case] [data-view-panel=article]{display:none}
+</style></head><body><a class="skip-link" href="#main">跳到主要內容</a><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><header class="site-header site-header--article"><div class="container site-header__inner"><a class="site-brand" href="/zh-tw/"><span class="site-brand__mark" aria-hidden="true"></span><span class="site-brand__name">TradePose</span><span class="site-brand__sub">Research</span></a><div class="site-header__context"><astro-island uid="1jBXMQ" prefix="r18" component-url="/_astro/index.i-83YKa-.js" component-export="PageContext" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;一個進場機會，同時計算多種出場：引擎怎麼拆解一個策略&quot;],&quot;followHeading&quot;:[0,true],&quot;labels&quot;:[0,{&quot;open&quot;:[0,&quot;打開目錄&quot;],&quot;contents&quot;:[0,&quot;目錄&quot;],&quot;close&quot;:[0,&quot;關閉&quot;]}]}" ssr client="load" opts="{&quot;name&quot;:&quot;PageContext&quot;,&quot;value&quot;:true}" await-children><div class="page-context"><span class="page-context__heading"><span class="page-context__title" title="一個進場機會，同時計算多種出場：引擎怎麼拆解一個策略">一個進場機會，同時計算多種出場：引擎怎麼拆解一個策略</span></span><span class="page-context__progress" aria-hidden="true" style="--progress:0"></span></div><!--astro:end--></astro-island></div><div class="site-header__actions"><astro-island uid="Z48go5" prefix="r19" component-url="/_astro/SiteSettings.DX80NSQG.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;zh-tw&quot;],&quot;modes&quot;:[1,[]],&quot;languages&quot;:[1,[[0,{&quot;href&quot;:[0,&quot;/en/posts/one-opportunity-many-exit-policies/&quot;],&quot;lang&quot;:[0,&quot;en&quot;],&quot;name&quot;:[0,&quot;English&quot;],&quot;short&quot;:[0,&quot;EN&quot;],&quot;current&quot;:[0,false]}],[0,{&quot;href&quot;:[0,&quot;/zh-tw/posts/one-opportunity-many-exit-policies/&quot;],&quot;lang&quot;:[0,&quot;zh-TW&quot;],&quot;name&quot;:[0,&quot;繁體中文&quot;],&quot;short&quot;:[0,&quot;中文&quot;],&quot;current&quot;:[0,true]}]]],&quot;views&quot;:[1,[]]}" ssr client="load" opts="{&quot;name&quot;:&quot;SiteSettings&quot;,&quot;value&quot;:true}" await-children><div class="settings-bar"><nav class="segmented settings-bar__item settings-bar__item--secondary" aria-label="語言"><a href="/en/posts/one-opportunity-many-exit-policies/" lang="en" hrefLang="en" title="English">EN</a><a href="/zh-tw/posts/one-opportunity-many-exit-policies/" lang="zh-TW" hrefLang="zh-TW" title="繁體中文" aria-current="page">中文</a></nav><button type="button" class="btn btn-ghost btn-sm btn-icon settings-bar__item settings-bar__item--secondary" aria-label="主題: 跟隨系統" title="主題: 跟隨系統 → 淺色"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="12" height="8.5" rx="1.25"></rect><path d="M5.5 14h5M8 11.5V14"></path></svg></button><button type="button" id="radix-_r19R_5_" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="btn btn-ghost btn-sm settings-menu" aria-label="設定" title="設定"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h6M12 5h1M3 11h1M7 11h6"></path><circle cx="10.5" cy="5" r="1.5"></circle><circle cx="5.5" cy="11" r="1.5"></circle></svg></button></div><!--astro:end--></astro-island></div></div></header><main id="main"><div class="article" data-view-panel="article"><div class="wide article-banner"><div class="article-cover article-cover--banner" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div></div><header class="article-header"><span class="category-chip">研究方法</span><h1 class="article-title visually-hidden">一個進場機會，<wbr/>同時計算多種出場：<wbr/>引擎怎麼拆解一個策略</h1><p class="article-dek"><p>測試十種出場設定，通常就是把同一個回測跑十次，再比較十個無法逐筆對齊的總數。TradePose 把每個策略拆成一個進場機會和套在上面的政策，所有出場設定共用同一個進場機會，每筆交易也都能對回它來自的機會。這篇說明這個拆法怎麼運作，以及它讓研究多看到了什麼。</p></p><dl class="article-meta"><div><dt>發布</dt><dd>2026-10-24 22:10</dd></div><div><dt>閱讀時間</dt><dd>5 分鐘</dd></div></dl></header><div><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value=="object"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};"requestIdleCallback"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event("astro:idle"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="1qvmLJ" prefix="r28" component-url="/_astro/ArticleToc.VhlXB6WE.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;zh-tw&quot;],&quot;items&quot;:[1,[[0,{&quot;id&quot;:[0,&quot;為什麼所有出場設定要共用同一個進場機會&quot;],&quot;label&quot;:[0,&quot;為什麼所有出場設定要共用同一個進場機會？&quot;]}],[0,{&quot;id&quot;:[0,&quot;引擎怎麼拆解一個策略&quot;],&quot;label&quot;:[0,&quot;引擎怎麼拆解一個策略&quot;]}],[0,{&quot;id&quot;:[0,&quot;什麼只算一次&quot;],&quot;label&quot;:[0,&quot;什麼只算一次&quot;]}],[0,{&quot;id&quot;:[0,&quot;政策之間互不影響&quot;],&quot;label&quot;:[0,&quot;政策之間互不影響&quot;]}],[0,{&quot;id&quot;:[0,&quot;每筆交易都對得上它的機會&quot;],&quot;label&quot;:[0,&quot;每筆交易都對得上它的機會&quot;]}],[0,{&quot;id&quot;:[0,&quot;這讓分層研究做得到&quot;],&quot;label&quot;:[0,&quot;這讓分層研究做得到&quot;]}],[0,{&quot;id&quot;:[0,&quot;goals-title&quot;],&quot;label&quot;:[0,&quot;這篇研究要回答的問題&quot;]}],[0,{&quot;id&quot;:[0,&quot;arising-title&quot;],&quot;label&quot;:[0,&quot;研究中衍生的問題&quot;]}],[0,{&quot;id&quot;:[0,&quot;method&quot;],&quot;label&quot;:[0,&quot;方法與資料&quot;]}]]]}" ssr client="idle" opts="{&quot;name&quot;:&quot;ArticleToc&quot;,&quot;value&quot;:true}" await-children><nav class="toc toc--aside" aria-label="目錄"><div class="toc-title" aria-hidden="true">目錄</div><ol class="toc-list"><li class=""><a href="#為什麼所有出場設定要共用同一個進場機會" aria-current="true">為什麼所有出場設定要共用同一個進場機會？</a></li><li class=""><a href="#引擎怎麼拆解一個策略">引擎怎麼拆解一個策略</a></li><li class=""><a href="#什麼只算一次">什麼只算一次</a></li><li class=""><a href="#政策之間互不影響">政策之間互不影響</a></li><li class=""><a href="#每筆交易都對得上它的機會">每筆交易都對得上它的機會</a></li><li class=""><a href="#這讓分層研究做得到">這讓分層研究做得到</a></li><li class=""><a href="#goals-title">這篇研究要回答的問題</a></li><li class=""><a href="#arising-title">研究中衍生的問題</a></li><li class=""><a href="#method">方法與資料</a></li></ol></nav><!--astro:end--></astro-island></div>
+<div class="abstract"><div class="abstract-title">結論</div><p>TradePose 的策略是一個進場機會（方向，以及什麼時候開倉、平倉、失效），加上一個基準政策和任意多個管理政策（怎麼進場，以及停損、停利、保本、移動停損放在哪裡）。資料、指標和進場機會只算一次，每個政策只計算自己的進出場。政策之間互不影響：加入、拿掉或重新排列政策，其他政策的交易都不變；只要有一個失敗，整批就不回傳。每筆交易都帶著它所屬機會的開始時間，延遲進場沒成交的機會也保留為未觸發的列。這個對齊能拆開總數看不出的兩個效果：在帶有上漲趨勢的隨機漫步上模擬回檔進場，子策略每個成交日的進場價都好 10 點，整體卻比父策略少了 12,328 點，因為它錯過的正是父策略最好的那些日子。</p></div><p class="reading-split">以上是結論；以下每一節是一個主張的證據，可以從各節或證據連結進入策略報告，看全部參數組的數據。</p>
+<div class="prose"><h2 id="為什麼所有出場設定要共用同一個進場機會">為什麼所有出場設定要共用同一個進場機會？</h2>
+<p>常見的出場測試方式是改出場參數、重跑回測：每個停損距離跑一次，每個停利距離再跑一次。這有兩個代價：</p>
+<ul>
+<li><strong>重複計算。</strong> 每次跑的資料、指標和進場訊號都一樣，卻每次都重算。</li>
+<li><strong>結果對不起來。</strong> 每次都產生一份自己的交易清單。可以比總數，卻沒辦法問：新的出場對某一筆交易做了什麼？</li>
+</ul>
+<p>第二個代價更重要。分層研究要拿每個子策略和它的父策略比較，比較的品質取決於兩邊的交易能不能逐筆對上。</p>
+<h2 id="引擎怎麼拆解一個策略">引擎怎麼拆解一個策略</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="引擎怎麼拆解一個策略（表格）"><table class="data-table"><thead><tr><th>部分</th><th>決定什麼</th><th>每個策略有幾個</th></tr></thead><tbody><tr><td>進場機會</td><td>方向，以及一段機會開倉、平倉、失效的條件</td><td>一個</td></tr><tr><td>基準政策</td><td>照機會本身交易：機會開始時進場、結束時出場</td><td>一個</td></tr><tr><td>管理政策</td><td>怎麼進場（立即、回檔、突破），以及怎麼出場（停損、停利、保本、移動停損、時間出場）</td><td>零個或多個</td></tr></tbody></table></div>
+<p>進場機會是所有變化共用的部分。「回檔進場加 2 倍 ATR 停損」和「立即進場不設停損」是同一個機會上的兩個政策，不是兩個策略。</p>
+<h2 id="什麼只算一次">什麼只算一次</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="什麼只算一次（表格）"><table class="data-table"><thead><tr><th>計算</th><th>次數</th></tr></thead><tbody><tr><td>載入行情、重新取樣、計算指標</td><td>每份不同的輸入一次；能不能共用依內容識別判斷，不看名稱</td></tr><tr><td>進場機會與持有狀態</td><td>每個策略一次</td></tr><tr><td>每個政策的進出場與交易統計</td><td>每個政策一次</td></tr></tbody></table></div>
+<p>所以多加一種出場設定，成本只有那個政策本身。一大批政策被分到好幾個 Worker 時，每個 Worker 會各自算一次共用的部分；在同一個 Worker 裡不會重複。</p>
+<h2 id="政策之間互不影響">政策之間互不影響</h2>
+<p>共用計算只有在一個政策絕對改變不了另一個政策的結果時才安全。引擎保證、而且測試會檢查：</p>
+<ul>
+<li>加入、拿掉或重新排列其他政策，每個政策的交易都完全相同；</li>
+<li>同一個政策被選兩次，只執行一次；</li>
+<li>任何一個政策失敗，整批都不回傳，結果不會在沒人察覺的情況下少了某個政策。</li>
+</ul>
+<h2 id="每筆交易都對得上它的機會">每筆交易都對得上它的機會</h2>
+<p>政策產生的每筆交易都帶著 <code>base_entry_time</code>，也就是它所屬機會開始的時間。所以每個政策的交易都能用這個鍵和父策略對齊：同一個機會，兩種交易方式。</p>
+<p>延遲進場不一定會成交。掛在市價下方的買進限價單，等的回檔可能根本不會來。這些機會不會從結果裡消失，而是保留為 <code>is_adv_triggered = false</code> 的列，連同掛單原本會成交的價格一起留下。少了它們，子策略的交易清單只會有它有交易的日子，看不出它跳過了哪些日子。</p>
+<h3 id="模擬回檔進場和它的父策略">模擬：回檔進場和它的父策略</h3>
+<p>測試用 3,000 天的模擬每分鐘價格，價格是帶有小幅上漲趨勢的隨機漫步。父策略在 09:30 開盤做多、16:00 出場。子策略是同一個機會，改成在開盤價下方掛買進限價單，有效到 16:00。</p>
+<p>父策略總共賺 20,436 點，每筆平均 6.81 點。把子策略和父策略逐日對齊：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="模擬：回檔進場和它的父策略（表格）"><table class="data-table"><thead><tr><th>限價距離開盤</th><th class="num">成交率</th><th class="num">子策略總計</th><th class="num">父策略總計</th><th class="num">子策略 − 父策略</th></tr></thead><tbody><tr><td>10 點</td><td class="num">82.9%</td><td class="num">8,108</td><td class="num">20,436</td><td class="num">−12,328</td></tr><tr><td>20 點</td><td class="num">69.4%</td><td class="num">4,490</td><td class="num">20,436</td><td class="num">−15,946</td></tr><tr><td>40 點</td><td class="num">47.1%</td><td class="num">2,408</td><td class="num">20,436</td><td class="num">−18,028</td></tr></tbody></table></div>
+<p>這個差異可以精確拆成兩部分，而且只有逐筆對齊才看得到：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="模擬：回檔進場和它的父策略（表格）"><table class="data-table"><thead><tr><th>限價距離開盤</th><th class="num">得到：成交日的較好價格</th><th class="num">放棄：錯過的日子裡父策略的結果</th><th class="num">錯過的日子裡父策略的平均</th></tr></thead><tbody><tr><td>10 點</td><td class="num">+24,860</td><td class="num">−37,188</td><td class="num">+72.35</td></tr><tr><td>20 點</td><td class="num">+41,620</td><td class="num">−57,566</td><td class="num">+62.64</td></tr><tr><td>40 點</td><td class="num">+56,560</td><td class="num">−74,588</td><td class="num">+47.03</td></tr></tbody></table></div>
+<p>只看有交易的日子，10 點的子策略像是改善：每筆 +3.26 點，父策略在同樣這些日子是 −6.74 點。從這個角度完全看不到代價。限價單沒有成交的日子，就是價格從沒回檔的日子，也正是父策略最強的日子，每天平均 +72.35 點。</p>
+</div><div class="callout"><strong>模擬資料：</strong><p>模擬使用帶有上漲趨勢的隨機產生價格，不是市場資料。它說明的是比較方法怎麼運作，不代表回檔進場在任何市場的表現。</p></div>
+<div class="prose"><h2 id="這讓分層研究做得到">這讓分層研究做得到</h2>
+<p>我們的研究一層一層長出策略，每個子策略都只和它的父策略比較；各層與規則見<a href="/zh-tw/posts/strategy-lineage-layers/">研究地圖與分層方法</a>。上面的拆法讓這個比較既公平又便宜：</p>
+<ul>
+<li>同一個父策略的所有子策略，在同一次計算裡共用父策略的機會；</li>
+<li>每個子策略的交易都能和父策略對齊，包括子策略跳過的機會；</li>
+<li>出場評分可以拿父策略的交易，用候選的停損和停利重新跑一次，因為每筆父策略交易都保留了自己的偏移統計和進場時的波動。</li>
+</ul>
+</div><div class="callout callout--warning"><strong>這篇的限制：</strong><p>模擬使用沒有跳空、點差與滑價的隨機漫步，而且只有一種進場規則；實際的回檔進場還取決於限價距離怎麼選。這裡說的共用計算只在同一個 Worker 內成立；一批政策分到好幾個 Worker 時，每個 Worker 都會重算共用的部分。</p></div>
+<section class="question-section" aria-labelledby="goals-title"><h2 class="question-section-title" id="goals-title">這篇研究要回答的問題</h2><div class="question-item"><h3 class="question-item-title">為什麼 TradePose 讓所有出場設定共用同一個進場機會？</h3><div class="question-item-answer"><p>因為每種變化的進場機會都一樣：資料、指標和進場機會只算一次，每個政策只加上自己的進出場。政策之間互相隔離，所以共用計算永遠不會改變結果。</p></div></div><div class="question-item"><h3 class="question-item-title">子策略要怎麼和父策略逐筆比較？</h3><div class="question-item-answer"><p>每筆交易都帶著所屬機會的開始時間，延遲進場沒成交的機會也保留為未觸發的列。用這個鍵對齊，就能同時看到子策略有交易時的較好價格，以及它錯過的那些交易裡父策略的結果。</p></div></div></section>
+<section class="question-section" aria-labelledby="arising-title"><h2 class="question-section-title" id="arising-title">研究中衍生的問題</h2><div class="question-item"><h3 class="question-item-title">只比較策略實際做過的交易，會不會誤導？</h3><div class="question-item-answer"><p>會。回檔進場在成交的日子看起來每筆都比較好，但它錯過的日子正是價格從沒回檔的日子。模擬裡那些錯過的日子平均 +72 點，超過了較好進場價帶來的好處。</p></div></div></section><div class="section-head"><h2 id="method">方法與資料</h2></div><p class="section-lead">研究設定、資料與計算方式；重現研究用的識別字在資料來源。</p><div class="appendix"><div style="display:contents"><h3>更新紀錄</h3><div>2026-10-24 22:10　首次發布</div></div></div><div class="wide"><section class="related"><h2 class="related-title">相關研究</h2><div class="related-grid"><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">136 組參數 · 累積報酬為正</span><span class="cover-figure__value">75 / 136</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L0.74 12.61L1.48 14.31L2.22 18.68L2.96 19.51L3.70 20.87L4.44 21.47L5.19 22.14L5.93 22.21L6.67 23.32L7.41 24.29L8.15 25.34L8.89 26.50L9.63 27.00L10.37 28.97L11.11 29.85L11.85 31.23L12.59 31.23L13.33 31.74L14.07 31.84L14.81 32.10L15.56 32.33L16.30 32.38L17.04 32.68L17.78 33.26L18.52 33.50L19.26 34.05L20.00 35.07L20.74 36.61L21.48 37.48L22.22 37.82L22.96 38.78L23.70 40.10L24.44 40.67L25.19 41.43L25.93 41.50L26.67 41.58L27.41 41.62L28.15 42.10L28.89 42.99L29.63 43.03L30.37 43.03L31.11 43.21L31.85 43.63L32.59 43.76L33.33 44.17L34.07 44.55L34.81 44.67L35.56 45.35L36.30 45.50L37.04 45.79L37.78 46.62L38.52 46.73L39.26 47.03L40.00 47.26L40.74 47.31L41.48 47.34L42.22 47.45L42.96 48.41L43.70 49.00L44.44 50.05L45.19 50.62L45.93 51.07L46.67 51.17L47.41 51.59L48.15 51.85L48.89 52.57L49.63 52.61L50.37 52.66L51.11 52.68L51.85 52.73L52.59 53.40L53.33 53.62L54.07 53.64L54.81 53.72L55.56 53.91L56.30 54.03L57.04 54.43L57.78 54.62L58.52 54.92L59.26 55.17L60.00 55.24L60.74 55.53L61.48 56.06L62.22 56.09L62.96 56.51L63.70 56.83L64.44 57.08L65.19 57.46L65.93 57.56L66.67 57.78L67.41 57.84L68.15 58.09L68.89 58.34L69.63 58.41L70.37 58.83L71.11 59.60L71.85 59.79L72.59 59.80L73.33 60.14L74.07 60.39L74.81 60.84L75.56 60.93L76.30 60.94L77.04 61.21L77.78 61.25L78.52 61.28L79.26 61.30L80.00 61.50L80.74 61.79L81.48 61.81L82.22 62.18L82.96 64.46L83.70 64.49L84.44 64.56L85.19 64.73L85.93 64.75L86.67 65.18L87.41 65.36L88.15 65.48L88.89 66.94L89.63 69.12L90.37 74.19L91.11 76.07L91.85 76.96L92.59 77.45L93.33 80.89L94.07 82.55L94.81 82.91L95.56 84.45L96.30 84.73L97.04 86.56L97.78 91.89L98.52 93.64L99.26 95.26L100.00 98.00L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 53.79H100"></path><path class="sparkline__line" d="M0.00 2.00L0.74 12.61L1.48 14.31L2.22 18.68L2.96 19.51L3.70 20.87L4.44 21.47L5.19 22.14L5.93 22.21L6.67 23.32L7.41 24.29L8.15 25.34L8.89 26.50L9.63 27.00L10.37 28.97L11.11 29.85L11.85 31.23L12.59 31.23L13.33 31.74L14.07 31.84L14.81 32.10L15.56 32.33L16.30 32.38L17.04 32.68L17.78 33.26L18.52 33.50L19.26 34.05L20.00 35.07L20.74 36.61L21.48 37.48L22.22 37.82L22.96 38.78L23.70 40.10L24.44 40.67L25.19 41.43L25.93 41.50L26.67 41.58L27.41 41.62L28.15 42.10L28.89 42.99L29.63 43.03L30.37 43.03L31.11 43.21L31.85 43.63L32.59 43.76L33.33 44.17L34.07 44.55L34.81 44.67L35.56 45.35L36.30 45.50L37.04 45.79L37.78 46.62L38.52 46.73L39.26 47.03L40.00 47.26L40.74 47.31L41.48 47.34L42.22 47.45L42.96 48.41L43.70 49.00L44.44 50.05L45.19 50.62L45.93 51.07L46.67 51.17L47.41 51.59L48.15 51.85L48.89 52.57L49.63 52.61L50.37 52.66L51.11 52.68L51.85 52.73L52.59 53.40L53.33 53.62L54.07 53.64L54.81 53.72L55.56 53.91L56.30 54.03L57.04 54.43L57.78 54.62L58.52 54.92L59.26 55.17L60.00 55.24L60.74 55.53L61.48 56.06L62.22 56.09L62.96 56.51L63.70 56.83L64.44 57.08L65.19 57.46L65.93 57.56L66.67 57.78L67.41 57.84L68.15 58.09L68.89 58.34L69.63 58.41L70.37 58.83L71.11 59.60L71.85 59.79L72.59 59.80L73.33 60.14L74.07 60.39L74.81 60.84L75.56 60.93L76.30 60.94L77.04 61.21L77.78 61.25L78.52 61.28L79.26 61.30L80.00 61.50L80.74 61.79L81.48 61.81L82.22 62.18L82.96 64.46L83.70 64.49L84.44 64.56L85.19 64.73L85.93 64.75L86.67 65.18L87.41 65.36L88.15 65.48L88.89 66.94L89.63 69.12L90.37 74.19L91.11 76.07L91.85 76.96L92.59 77.45L93.33 80.89L94.07 82.55L94.81 82.91L95.56 84.45L96.30 84.73L97.04 86.56L97.78 91.89L98.52 93.64L99.26 95.26L100.00 98.00"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">US100.cash · NAS100 · 均線交叉 · 136 組參數 · 148,290 筆交易</span><h3 class="post-card__title"><a class="post-card__link" href="/zh-tw/posts/popular-indicator-signals/">熱門技術指標的預設訊號有優勢嗎？<wbr/>34 個訊號在 NAS100 的路徑與延遲限價單檢定（2018–2025）</a></h3><span class="post-card__excerpt">把 17 個最常見技術指標家族的平台預設訊號（均線交叉、MACD、RSI、Stochastic、CCI、Bollinger、Donchian、SuperTrend、Ichimoku、前日高低、開盤區間、整數關卡）做多做空共 34 個，在 Pepperstone NAS100 與 FTMO US100 的 1 小時與 30 分鐘 K 線上，檢定訊號後四小時的路徑有沒有可交易的不對稱、在訊號附近掛延遲限價單有沒有期望值，並把每個訊號直接持有 16 根 15 分鐘 K 線的回測與同期大盤比較。</span><span class="post-card__meta"><span>2026-10-28 23:00</span><span>49 分鐘</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/zh-tw/posts/popular-indicator-signals/">讀文章</a><a class="btn btn-ghost btn-sm" href="/zh-tw/posts/popular-indicator-signals/?view=report">看報告</a></div></div></article><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">8 組參數 · 累積報酬為正</span><span class="cover-figure__value">8 / 8</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L14.29 33.00L28.57 40.76L42.86 40.78L57.14 42.15L71.43 68.54L85.71 68.91L100.00 70.08L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 98.00H100"></path><path class="sparkline__line" d="M0.00 2.00L14.29 33.00L28.57 40.76L42.86 40.78L57.14 42.15L71.43 68.54L85.71 68.91L100.00 70.08"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">US100.cash · NAS100 · 選擇權到期日 · 8 組參數 · 538 筆交易</span><h3 class="post-card__title"><a class="post-card__link" href="/zh-tw/posts/nas100-opex-day-short/">選擇權到期日開盤放空 NAS100：<wbr/>45 條預註冊假設裡唯一站住的訊號（OPEX day short）</a></h3><span class="post-card__excerpt">兩輪共 45 條事前登錄的結構性流量假設（收盤再平衡、月底、FOMC、財報夜、黃金與外匯定價、指數重組日）在美股指數 CFD 上只剩一條在家族層級站住：每月選擇權到期日（OPEX）紐約 09:30 放空 NAS100、持有一小時。本文記錄這個基本訊號在 Pepperstone NAS100（2018 起）與 FTMO US100（2022 起）的表現、之後的延遲進場、停損與停利、成本、部位，以及凍結後對 2026 的一次讀取。</span><span class="post-card__meta"><span>2026-10-28 20:00</span><span>6 分鐘</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/zh-tw/posts/nas100-opex-day-short/">讀文章</a><a class="btn btn-ghost btn-sm" href="/zh-tw/posts/nas100-opex-day-short/?view=report">看報告</a></div></div></article><a class="card card-interactive post-card" href="/zh-tw/posts/backtest-signal-deduplication/"><div class="article-cover" style="--c1:var(--chart-3);--c2:var(--chart-1)"></div><div class="post-card__body"><h3 class="post-card__title">訊號連續成立時，<wbr/>引擎只進一次場：<wbr/>進出場訊號的清洗規則，<wbr/>以及加碼為什麼要拆成多個策略</h3><span class="post-card__excerpt">策略作者交給 TradePose 的進場與出場條件是逐根 K 線的布林值，常常會連續好幾根都成立。引擎不會每一根都開一個部位，而是把它們清洗成嚴格交替的進場、出場序列，每個部位只有一個進場點和一個出場點。這篇說明清洗的三個關卡、哪些訊號會被忽略、為什麼這樣設計，以及想加碼或減碼時，為什麼該寫成幾個獨立策略再組合。</span><span class="post-card__meta"><span>2026-10-28 17:24</span><span>9 分鐘</span></span></div></a></div></section></div><!-- island 外層加 div：astro-island 為 display: contents，否則引用區塊會被排進格線的側欄 --><div><script>(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value=="object"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event("astro:visible"));})();</script><astro-island uid="nbvhJ" prefix="r14" component-url="/_astro/index.DKisFm5J.js" component-export="Citation" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;引用本文&quot;],&quot;copyLabels&quot;:[0,{&quot;copy&quot;:[0,&quot;複製&quot;],&quot;copied&quot;:[0,&quot;已複製&quot;],&quot;failed&quot;:[0,&quot;無法複製&quot;]}],&quot;text&quot;:[0,&quot;TradePose Research（2026）。〈一個進場機會，同時計算多種出場：引擎怎麼拆解一個策略〉TradePose Research Notes.&quot;],&quot;bibtex&quot;:[0,&quot;@article{tradepose2026oneopportunitymanyexitpolicies,\n  title   = {一個進場機會，同時計算多種出場：引擎怎麼拆解一個策略},\n  author  = {TradePose Research},\n  journal = {TradePose Research Notes},\n  year    = {2026}\n}&quot;]}" ssr client="visible" opts="{&quot;name&quot;:&quot;Citation&quot;,&quot;value&quot;:true}" await-children><div class="citation"><div class="citation-title">引用本文</div><p class="citation-text">TradePose Research（2026）。〈一個進場機會，同時計算多種出場：引擎怎麼拆解一個策略〉TradePose Research Notes.</p><div class="citation-code">@article{tradepose2026oneopportunitymanyexitpolicies,
+  title   = {一個進場機會，同時計算多種出場：引擎怎麼拆解一個策略},
+  author  = {TradePose Research},
+  journal = {TradePose Research Notes},
+  year    = {2026}
+}<button type="button" class="btn btn-secondary btn-sm">複製</button></div></div><!--astro:end--></astro-island></div></div></main><footer class="site-footer"><div class="container"><div class="site-footer__grid"><div class="site-footer__brand"><span class="site-brand"><span class="site-brand__mark" aria-hidden="true"></span>TradePose</span><p class="site-footer__tagline">量化研究筆記：回測、統計與策略診斷。文中數字皆由文章附帶的回測統計產生。</p></div><div><h2 class="site-footer__title">研究</h2><ul><li><a href="/zh-tw/#research">研究目錄</a></li><li><a href="/zh-tw/#method">資料與計算說明</a></li><li><a href="/zh-tw/rss.xml">RSS</a></li></ul></div></div><div class="site-footer__legal"><span>© 2026 TradePose</span><span>研究內容不構成投資建議</span></div></div></footer><script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BflPKFW9.js"></script></body></html>
