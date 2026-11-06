@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>TradePose Research</title>
+    <link>https://research.tradepose.com/zh-tw/</link>
+    <description>量化研究筆記：回測、統計與策略診斷</description>
+    <language>zh-TW</language>
+    <item>
+      <title>日內波動有固定週期，ATR 要不要依時段加權？</title>
+      <link>https://research.tradepose.com/zh-tw/posts/intraday-session-weighted-atr/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/intraday-session-weighted-atr/</guid>
+      <description>指數的波動在一天之內有固定的週期：美股開盤最大、亞洲時段最小。這篇用 NAS100 檢驗：把日線 ATR 依交易時段加權，能不能更貼近市場實際的波動？結論是要看決策的時間長度。一天以內，加權後描述波動的誤差少三成以上；跨日持有時，加權會自動平均回 1，和日線 ATR 沒有差別。文章說明原因，以及一天以內的策略該怎麼算單位。</description>
+      <category>研究方法</category>
+      <pubDate>Wed, 04 Nov 2026 08:17:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>熱門技術指標的預設訊號有優勢嗎？34 個訊號在 NAS100 的路徑與延遲限價單檢定（2018–2025）</title>
+      <link>https://research.tradepose.com/zh-tw/posts/popular-indicator-signals/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/popular-indicator-signals/</guid>
+      <description>把 17 個最常見技術指標家族的平台預設訊號（均線交叉、MACD、RSI、Stochastic、CCI、Bollinger、Donchian、SuperTrend、Ichimoku、前日高低、開盤區間、整數關卡）做多做空共 34 個，在 Pepperstone NAS100 與 FTMO US100 的 1 小時與 30 分鐘 K 線上，檢定訊號後四小時的路徑有沒有可交易的不對稱、在訊號附近掛延遲限價單有沒有期望值，並把每個訊號直接持有 16 根 15 分鐘 K 線的回測與同期大盤比較。</description>
+      <category>策略研究</category>
+      <pubDate>Wed, 28 Oct 2026 15:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>選擇權到期日開盤放空 NAS100：45 條假設裡唯一站住的訊號（OPEX day short）</title>
+      <link>https://research.tradepose.com/zh-tw/posts/nas100-opex-day-short/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/nas100-opex-day-short/</guid>
+      <description>兩輪共 45 條事前登錄的結構性流量假設（收盤再平衡、月底、FOMC、財報夜、黃金與外匯定價、指數重組日）在美股指數 CFD 上只剩一條在家族層級站住：每月選擇權到期日（OPEX）紐約 09:30 放空 NAS100、持有一小時。這個窗口最早是在同一份資料的掃描裡找到的，所以標為事後。本文記錄這個基本訊號在 Pepperstone NAS100（2018 起）與 FTMO US100（2022 起）的表現、之後的延遲進場、停損與停利、成本、部位，以及凍結後對 2026 的一次讀取。</description>
+      <category>策略研究</category>
+      <pubDate>Wed, 28 Oct 2026 12:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>訊號連續成立時，引擎只進一次場：進出場訊號的清洗規則，以及加碼為什麼要拆成多個策略</title>
+      <link>https://research.tradepose.com/zh-tw/posts/backtest-signal-deduplication/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/backtest-signal-deduplication/</guid>
+      <description>策略作者交給 TradePose 的進場與出場條件是逐根 K 線的布林值，常常會連續好幾根都成立。引擎不會每一根都開一個部位，而是把它們清洗成嚴格交替的進場、出場序列，每個部位只有一個進場點和一個出場點。這篇說明清洗的三個關卡、哪些訊號會被忽略、為什麼這樣設計，以及想加碼或減碼時，為什麼該寫成幾個獨立策略再組合。</description>
+      <category>回測機制</category>
+      <pubDate>Wed, 28 Oct 2026 09:24:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>大盤基準：22 個商品每日、每週、每月單純持有賺多少？</title>
+      <link>https://research.tradepose.com/zh-tw/posts/market-benchmarks/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/market-benchmarks/</guid>
+      <description>單純持有一個商品能賺多少？22 個股價指數、貴金屬、原物料與外匯，做多與做空各自每日、每週、每月持有，跳空都包含在交易裡，當作評估策略的大盤基準。</description>
+      <category>研究方法</category>
+      <pubDate>Mon, 26 Oct 2026 18:05:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>交易稀少的策略，為什麼 Sharpe 會被高估：年化要用完整的交易日</title>
+      <link>https://research.tradepose.com/zh-tw/posts/sharpe-ratio-sparse-trading/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/sharpe-ratio-sparse-trading/</guid>
+      <description>常見的 Sharpe 算法只用有交易出場的日子，再乘上 √252 年化。對一個月才交易一次的策略，這會把 Sharpe 高估好幾倍，還會讓它排在更好的策略前面。這篇說明誤差從哪裡來、TradePose 怎麼組成日序列，以及在自己的程式裡怎麼改。</description>
+      <category>研究方法</category>
+      <pubDate>Sat, 24 Oct 2026 15:28:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>一個進場機會，同時計算多種出場：引擎怎麼拆解一個策略</title>
+      <link>https://research.tradepose.com/zh-tw/posts/one-opportunity-many-exit-policies/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/one-opportunity-many-exit-policies/</guid>
+      <description>TradePose 把每個策略拆成一個進場機會，和套在它上面的交易政策。進場機會只算一次，每個政策在它之上獨立計算，而且每個政策的交易都能逐筆對回它來自的機會，包括延遲進場沒有成交的那些。這篇說明這個拆法，以及它為什麼讓分層研究做得到。</description>
+      <category>研究方法</category>
+      <pubDate>Sat, 24 Oct 2026 14:10:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>SuperTrend 狀態交易：從 768 個候選到 1 個留觀策略（US100 與黃金）</title>
+      <link>https://research.tradepose.com/zh-tw/posts/us100-xauusd-supertrend-state-redo/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/us100-xauusd-supertrend-state-redo/</guid>
+      <description>照策略挑選方法論，從 US100 與黃金的 768 個 SuperTrend 狀態候選，走完校準、否決清單、進出場樹、葉節點檢查、組合與部位，得到一個 10 策略組合：挑選期（2022-03 到 2025-12）成本後 +70,078 美元、最大回撤 4,723。凍結後讀驗證期（2026-01 到 2026-10-23），組合虧 2,564 美元。拆解發現狀態訊號本身沒有平均優勢，獲利主要來自在同一段資料上挑出的出場參數。組合不上線；驗證期仍一致的 US100 4 小時空頭做空留倉策略（r14）以新候選凍結、留觀。</description>
+      <category>策略研究</category>
+      <pubDate>Sat, 24 Oct 2026 14:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>回測怎麼避免偷看未來：K 線的時間標記、shift 與同一根 K 線裡的先後</title>
+      <link>https://research.tradepose.com/zh-tw/posts/backtest-lookahead-bar-timing/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/backtest-lookahead-bar-timing/</guid>
+      <description>回測偷看未來最常見的兩種方式很隱蔽：在一根 K 線還沒收完時就讀它的收盤價，以及在同一根 K 線裡假設對自己有利的先後順序。這篇說明 TradePose 在什麼時候做決策、哪些部分由引擎保證、哪些由策略作者負責，以及一根 K 線碰到多個價格時引擎採用的保守規則。</description>
+      <category>回測機制</category>
+      <pubDate>Sat, 24 Oct 2026 12:38:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>4 小時 K 怎麼切：夏令時間讓回測結果取決於起點</title>
+      <link>https://research.tradepose.com/zh-tw/posts/resample-daylight-saving-wall-clock/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/resample-daylight-saving-wall-clock/</guid>
+      <description>同一個 4 小時策略、同一段行情，回測從冬天開始和從夏天開始，交易就不一樣。原因是常見的重新取樣函式只讓第一根 K 對齊當地時鐘，之後每格加固定的 4 小時。這篇說明問題怎麼出現、怎麼依當地牆上時鐘切 K，以及怎麼在不犧牲正確性的前提下把速度追回來。</description>
+      <category>回測機制</category>
+      <pubDate>Sat, 24 Oct 2026 11:52:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>MAE、G_MFE、獲利因子是什麼？ 量化策略研究用詞表（Glossary）</title>
+      <link>https://research.tradepose.com/zh-tw/posts/quant-research-glossary/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/quant-research-glossary/</guid>
+      <description>研究文章與策略報告共用的術語與方法：計算模式與波動單位、它們為什麼不能直接對照、MAE／G_MFE／MFE 等偏移指標、績效與回撤、研究分層的順序、對照組、有利與不利延遲進場、停損停利與保本、停利與濾網的判斷方法，以及挑選方法的用語。</description>
+      <category>研究方法</category>
+      <pubDate>Thu, 08 Oct 2026 15:52:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>研究地圖與研究方法：一個策略怎麼從假說走到凍結的組合</title>
+      <link>https://research.tradepose.com/zh-tw/posts/strategy-lineage-layers/</link>
+      <guid isPermaLink="true">https://research.tradepose.com/posts/strategy-lineage-layers/</guid>
+      <description>全站研究的入口。說明一個研究在讀資料之前要宣告什麼、讀法怎麼對雜訊校準、基礎訊號的否決清單、進出場各層、最後的成本相關性與部位階段、凍結，以及目前發布的研究與閱讀順序。</description>
+      <category>研究方法</category>
+      <pubDate>Thu, 08 Oct 2026 10:52:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,336 @@
+<!DOCTYPE html><html lang="zh-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>日內波動有固定週期，ATR 要不要依時段加權？｜TradePose Research</title><meta name="description" content="指數的波動在一天之內有固定的週期：美股開盤最大、亞洲時段最小。這篇用 NAS100 檢驗：把日線 ATR 依交易時段加權，能不能更貼近市場實際的波動？結論是要看決策的時間長度。一天以內，加權後描述波動的誤差少三成以上；跨日持有時，加權會自動平均回 1，和日線 ATR 沒有差別。文章說明原因，以及一天以內的策略該怎麼算單位。"><meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large"><link rel="canonical" href="https://research.tradepose.com/zh-tw/posts/intraday-session-weighted-atr/"><link rel="alternate" hreflang="en" href="https://research.tradepose.com/en/posts/intraday-session-weighted-atr/"><link rel="alternate" hreflang="zh-TW" href="https://research.tradepose.com/zh-tw/posts/intraday-session-weighted-atr/"><link rel="alternate" hreflang="x-default" href="https://research.tradepose.com/en/posts/intraday-session-weighted-atr/"><link rel="alternate" type="application/rss+xml" title="TradePose Research" href="/zh-tw/rss.xml"><meta property="og:site_name" content="TradePose Research"><meta property="og:locale" content="zh_TW"><meta property="og:locale:alternate" content="en_US"><meta property="og:type" content="article"><meta property="og:title" content="日內波動有固定週期，ATR 要不要依時段加權？"><meta property="og:description" content="指數的波動在一天之內有固定的週期：美股開盤最大、亞洲時段最小。這篇用 NAS100 檢驗：把日線 ATR 依交易時段加權，能不能更貼近市場實際的波動？結論是要看決策的時間長度。一天以內，加權後描述波動的誤差少三成以上；跨日持有時，加權會自動平均回 1，和日線 ATR 沒有差別。文章說明原因，以及一天以內的策略該怎麼算單位。"><meta property="og:url" content="https://research.tradepose.com/zh-tw/posts/intraday-session-weighted-atr/"><meta property="og:image" content="https://research.tradepose.com/og-default.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="日內波動有固定週期，ATR 要不要依時段加權？"><meta name="twitter:description" content="指數的波動在一天之內有固定的週期：美股開盤最大、亞洲時段最小。這篇用 NAS100 檢驗：把日線 ATR 依交易時段加權，能不能更貼近市場實際的波動？結論是要看決策的時間長度。一天以內，加權後描述波動的誤差少三成以上；跨日持有時，加權會自動平均回 1，和日線 ATR 沒有差別。文章說明原因，以及一天以內的策略該怎麼算單位。"><meta name="twitter:image" content="https://research.tradepose.com/og-default.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"日內波動有固定週期，ATR 要不要依時段加權？","description":"指數的波動在一天之內有固定的週期：美股開盤最大、亞洲時段最小。這篇用 NAS100 檢驗：把日線 ATR 依交易時段加權，能不能更貼近市場實際的波動？結論是要看決策的時間長度。一天以內，加權後描述波動的誤差少三成以上；跨日持有時，加權會自動平均回 1，和日線 ATR 沒有差別。文章說明原因，以及一天以內的策略該怎麼算單位。","articleSection":"研究方法","keywords":"ATR, 日內波動, 日內季節性, intraday periodicity, 交易時段, 波動單位, 停損, MAE, theta time, NAS100, 那斯達克, 波動正規化","inLanguage":"zh-TW","datePublished":"2026-11-04T16:17:00+08:00","dateModified":"2026-11-04T16:17:00+08:00","image":"https://research.tradepose.com/og-default.png","url":"https://research.tradepose.com/zh-tw/posts/intraday-session-weighted-atr/","mainEntityOfPage":"https://research.tradepose.com/zh-tw/posts/intraday-session-weighted-atr/","author":{"@type":"Organization","name":"TradePose Research"},"publisher":{"@type":"Organization","name":"TradePose","url":"https://tradepose.com"}}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"研究","item":"https://research.tradepose.com/zh-tw/"},{"@type":"ListItem","position":2,"name":"日內波動有固定週期，ATR 要不要依時段加權？","item":"https://research.tradepose.com/zh-tw/posts/intraday-session-weighted-atr/"}]}</script><!-- data-init：第一次繪製前套用主題、計算模式與檢視；頁面轉場換頁後重新執行（<html> 的屬性換成新頁的） --><script data-init>try { const q = new URLSearchParams(location.search).get('theme'); if (q === 'light' || q === 'dark') sessionStorage.setItem('tp-theme', q); } catch {}
+try { const t = sessionStorage.getItem('tp-theme') ?? localStorage.getItem('tp-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; else if (t === 'system') delete document.documentElement.dataset.theme; } catch {}</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CYDbzu1r.js"></script><link rel="stylesheet" href="/_astro/Base.OLjrjMpp.css"><style>html[data-view=report] [data-view-panel=article],html[data-view=case] [data-view-panel=article]{display:none}
+</style></head><body><a class="skip-link" href="#main">跳到主要內容</a><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><header class="site-header site-header--article"><div class="container site-header__inner"><a class="site-brand" href="/zh-tw/"><span class="site-brand__mark" aria-hidden="true"></span><span class="site-brand__name">TradePose</span><span class="site-brand__sub">Research</span></a><div class="site-header__context"><astro-island uid="ZHCMiO" prefix="r18" component-url="/_astro/index.i-83YKa-.js" component-export="PageContext" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;日內波動有固定週期，ATR 要不要依時段加權？&quot;],&quot;followHeading&quot;:[0,true],&quot;labels&quot;:[0,{&quot;open&quot;:[0,&quot;打開目錄&quot;],&quot;contents&quot;:[0,&quot;目錄&quot;],&quot;close&quot;:[0,&quot;關閉&quot;]}]}" ssr client="load" opts="{&quot;name&quot;:&quot;PageContext&quot;,&quot;value&quot;:true}" await-children><div class="page-context"><span class="page-context__heading"><span class="page-context__title" title="日內波動有固定週期，ATR 要不要依時段加權？">日內波動有固定週期，ATR 要不要依時段加權？</span></span><span class="page-context__progress" aria-hidden="true" style="--progress:0"></span></div><!--astro:end--></astro-island></div><div class="site-header__actions"><astro-island uid="165Q62" prefix="r19" component-url="/_astro/SiteSettings.DX80NSQG.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;zh-tw&quot;],&quot;modes&quot;:[1,[]],&quot;languages&quot;:[1,[[0,{&quot;href&quot;:[0,&quot;/en/posts/intraday-session-weighted-atr/&quot;],&quot;lang&quot;:[0,&quot;en&quot;],&quot;name&quot;:[0,&quot;English&quot;],&quot;short&quot;:[0,&quot;EN&quot;],&quot;current&quot;:[0,false]}],[0,{&quot;href&quot;:[0,&quot;/zh-tw/posts/intraday-session-weighted-atr/&quot;],&quot;lang&quot;:[0,&quot;zh-TW&quot;],&quot;name&quot;:[0,&quot;繁體中文&quot;],&quot;short&quot;:[0,&quot;中文&quot;],&quot;current&quot;:[0,true]}]]],&quot;views&quot;:[1,[]]}" ssr client="load" opts="{&quot;name&quot;:&quot;SiteSettings&quot;,&quot;value&quot;:true}" await-children><div class="settings-bar"><nav class="segmented settings-bar__item settings-bar__item--secondary" aria-label="語言"><a href="/en/posts/intraday-session-weighted-atr/" lang="en" hrefLang="en" title="English">EN</a><a href="/zh-tw/posts/intraday-session-weighted-atr/" lang="zh-TW" hrefLang="zh-TW" title="繁體中文" aria-current="page">中文</a></nav><button type="button" class="btn btn-ghost btn-sm btn-icon settings-bar__item settings-bar__item--secondary" aria-label="主題: 跟隨系統" title="主題: 跟隨系統 → 淺色"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="12" height="8.5" rx="1.25"></rect><path d="M5.5 14h5M8 11.5V14"></path></svg></button><button type="button" id="radix-_r19R_5_" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="btn btn-ghost btn-sm settings-menu" aria-label="設定" title="設定"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h6M12 5h1M3 11h1M7 11h6"></path><circle cx="10.5" cy="5" r="1.5"></circle><circle cx="5.5" cy="11" r="1.5"></circle></svg></button></div><!--astro:end--></astro-island></div></div></header><main id="main"><div class="article" data-view-panel="article"><div class="wide article-banner"><div class="article-cover article-cover--banner" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div></div><header class="article-header"><span class="category-chip">研究方法</span><h1 class="article-title visually-hidden">日內波動有固定週期，<wbr/>ATR 要不要依時段加權？</h1><p class="article-dek"><p>很多策略用「倍數 × ATR」設定停損、停利與移動停損，讓距離隨市場的波動狀態調整。日線 ATR 是一整天的平均，可是文獻早就確認，波動在一天之內有固定的週期：美股開盤的 15 分鐘，可以比亞洲深夜的 15 分鐘大好幾倍。這篇檢驗一件事：把 ATR 依交易時段加權，是否讓單位更貼近市場實際的波動？</p></p><dl class="article-meta"><div><dt>發布</dt><dd>2026-11-04 16:17</dd></div><div><dt>閱讀時間</dt><dd>10 分鐘</dd></div></dl></header><div><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value=="object"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};"requestIdleCallback"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event("astro:idle"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="RBQbK" prefix="r31" component-url="/_astro/ArticleToc.VhlXB6WE.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;zh-tw&quot;],&quot;items&quot;:[1,[[0,{&quot;id&quot;:[0,&quot;問題日線-atr-是一整天的平均&quot;],&quot;label&quot;:[0,&quot;問題：日線 ATR 是一整天的平均&quot;]}],[0,{&quot;id&quot;:[0,&quot;時段權重怎麼算&quot;],&quot;label&quot;:[0,&quot;時段權重怎麼算&quot;]}],[0,{&quot;id&quot;:[0,&quot;檢定一加權尺度能不能更準確描述接下來的波動&quot;],&quot;label&quot;:[0,&quot;檢定一：加權尺度能不能更準確描述接下來的波動&quot;]}],[0,{&quot;id&quot;:[0,&quot;檢定二用在跨日持有的策略上&quot;],&quot;label&quot;:[0,&quot;檢定二：用在跨日持有的策略上&quot;]}],[0,{&quot;id&quot;:[0,&quot;為什麼跨日沒有效果&quot;],&quot;label&quot;:[0,&quot;為什麼跨日沒有效果&quot;]}],[0,{&quot;id&quot;:[0,&quot;一天以內的期間剩餘時間比時段更重要&quot;],&quot;label&quot;:[0,&quot;一天以內的期間：剩餘時間比時段更重要&quot;]}],[0,{&quot;id&quot;:[0,&quot;結論&quot;],&quot;label&quot;:[0,&quot;結論&quot;]}],[0,{&quot;id&quot;:[0,&quot;參考文獻&quot;],&quot;label&quot;:[0,&quot;參考文獻&quot;]}],[0,{&quot;id&quot;:[0,&quot;goals-title&quot;],&quot;label&quot;:[0,&quot;這篇研究要回答的問題&quot;]}],[0,{&quot;id&quot;:[0,&quot;arising-title&quot;],&quot;label&quot;:[0,&quot;研究中衍生的問題&quot;]}],[0,{&quot;id&quot;:[0,&quot;method&quot;],&quot;label&quot;:[0,&quot;方法與資料&quot;]}]]]}" ssr client="idle" opts="{&quot;name&quot;:&quot;ArticleToc&quot;,&quot;value&quot;:true}" await-children><nav class="toc toc--aside" aria-label="目錄"><div class="toc-title" aria-hidden="true">目錄</div><ol class="toc-list"><li class=""><a href="#問題日線-atr-是一整天的平均" aria-current="true">問題：日線 ATR 是一整天的平均</a></li><li class=""><a href="#時段權重怎麼算">時段權重怎麼算</a></li><li class=""><a href="#檢定一加權尺度能不能更準確描述接下來的波動">檢定一：加權尺度能不能更準確描述接下來的波動</a></li><li class=""><a href="#檢定二用在跨日持有的策略上">檢定二：用在跨日持有的策略上</a></li><li class=""><a href="#為什麼跨日沒有效果">為什麼跨日沒有效果</a></li><li class=""><a href="#一天以內的期間剩餘時間比時段更重要">一天以內的期間：剩餘時間比時段更重要</a></li><li class=""><a href="#結論">結論</a></li><li class=""><a href="#參考文獻">參考文獻</a></li><li class=""><a href="#goals-title">這篇研究要回答的問題</a></li><li class=""><a href="#arising-title">研究中衍生的問題</a></li><li class=""><a href="#method">方法與資料</a></li></ol></nav><!--astro:end--></astro-island></div>
+<div class="abstract"><div class="abstract-title">結論</div><p>我們把一天分成亞洲、歐洲、美國、美盤後四個時段，用 2018–2020 的資料估計各時段的波動權重（美國 1.60、亞洲 0.69），再用 2021–2026 的 NAS100 檢驗。這裡不看策略績效，只看尺度本身。在一天以內的期間，「ATR × 這段期間的時段權重平均」描述實際波動的誤差比單純的 ATR 少 31–34%，每一年都成立。期間到 24 小時，平均權重剛好回到 1，兩者沒有差別。所以把加權單位用在跨日持有的 SuperTrend 交易上，不論在進場時鎖定、逐 K 棒更新，或改用 1 小時 ATR，最大不利移動（MAE）÷ 單位的分布都沒有變得更一致，多數反而更分散。對一天以內、出場時間固定的期間，最重要的是剩餘時間：單位乘上 √(剩餘時間 ÷ 一天) 就讓誤差少 36%；再用 30 分鐘一格的日內 U 形，可以多少約 1%，並修正開盤與收盤附近的偏差。</p></div><p class="reading-split">以上是結論；以下每一節是一個主張的證據，可以從各節或證據連結進入策略報告，看全部參數組的數據。</p>
+<div class="prose"><h2 id="問題日線-atr-是一整天的平均">問題：日線 ATR 是一整天的平均</h2>
+<p>用 ATR 設定距離，比用固定點數或固定百分比更能適應市場：波動大的日子停損放寬，波動小的日子收緊。但日線 ATR 是<strong>整天</strong>的平均，同一個數字被用在一天之中的任何時刻。</p>
+<p>日內波動的週期是很早就確立的現象：</p>
+<ul>
+<li>Dacorogna 等（1993）把一天的波動看成東亞、歐洲、美洲三個市場中心活躍度的總和。把活躍度對時間累積（他們稱為 theta time），季節性的波動差異大部分就會消失。</li>
+<li>Andersen &amp; Bollerslev（1997、1998）發現日內週期在外匯與股價指數上普遍存在，與各地市場的開收盤相連；要先移除這個週期，才能正確估計波動。</li>
+<li>美股正規交易時段內的波動呈 U 形：開盤最大、午盤最小、收盤再升（Wood, McInish &amp; Ord 1985）。</li>
+</ul>
+<p>所以問題很直接：如果單位依時段加權，是否能更貼近市場實際的波動？如果可以，進出場參數就應該在加權後的尺度上調整。</p>
+</div><span class="sidenote">本文的 ATR 都是日線 True Range（當日最高與最低、含前一日收盤的區間）的簡單平均，日線依紐約日曆日切分，只用已完成的日子。ATR21 是最近 21 天的平均。</span>
+<div class="prose"><h2 id="時段權重怎麼算">時段權重怎麼算</h2>
+<p>一天從紐約時間 18:00 起算，分成四個時段：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="時段權重怎麼算（表格）"><table class="data-table"><thead><tr><th>時段</th><th>紐約時間</th><th>對應市場</th></tr></thead><tbody><tr><td>亞洲</td><td>18:00–03:00</td><td>東京、香港、新加坡</td></tr><tr><td>歐洲</td><td>03:00–09:30</td><td>法蘭克福、倫敦開盤到美股開盤前</td></tr><tr><td>美國</td><td>09:30–16:00</td><td>美股正規交易時段</td></tr><tr><td>美盤後</td><td>16:00–17:00</td><td>現貨收盤後到每日休市</td></tr></tbody></table></div>
+<p>權重的算法：在 2018-06 至 2020-12 這段估計期內，每個時段的每根 15 分鐘 K 棒，取「TR ÷ 日線 ATR」的平均，再除以全天所有 K 棒的同一平均。這個定義保證<strong>全天按 K 棒平均剛好等於 1</strong>。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="時段權重怎麼算（表格）"><table class="data-table"><thead><tr><th>時段</th><th class="num">權重</th><th class="num">佔全天波動</th><th class="num">2018–2025 逐年變異係數</th></tr></thead><tbody><tr><td>亞洲</td><td class="num">0.688</td><td class="num">27%</td><td class="num">0.106</td></tr><tr><td>歐洲</td><td class="num">0.850</td><td class="num">24%</td><td class="num">0.049</td></tr><tr><td>美國</td><td class="num">1.600</td><td class="num">45%</td><td class="num">0.055</td></tr><tr><td>美盤後</td><td class="num">0.915</td><td class="num">4%</td><td class="num">0.115</td></tr></tbody></table></div>
+<p>權重逐年相當穩定。加權單位就是「ATR × 權重」，沒有其他邏輯。</p>
+<h2 id="檢定一加權尺度能不能更準確描述接下來的波動">檢定一：加權尺度能不能更準確描述接下來的波動</h2>
+<p>先不看任何策略，只問尺度本身。</p>
+<p><strong>做法：</strong></p>
+<ol>
+<li>從每一根 15 分鐘 K 棒開始，往後取一段期間，長度從 15 分鐘到 24 小時。</li>
+<li>實際波動是這段期間的區間（最高 − 最低，含起點前一根的收盤）。</li>
+<li>兩個尺度：
+<ul>
+<li>不加權：ATR21。</li>
+<li>加權：ATR21 × 這段期間內每根 K 棒時段權重的<strong>平均</strong>。權重作用在整段期間，不只是起點。</li>
+</ul>
+</li>
+<li>每個尺度乘一個整體常數，在估計期校準。</li>
+<li>用 QLIKE 損失衡量預測誤差，越小越準。2021-01 至 2026-10 為評估期，以月為區塊重抽 2,000 次求 95% 區間。</li>
+</ol>
+</div><span class="sidenote">QLIKE 損失 = 實際 ÷ 預測 − ln(實際 ÷ 預測) − 1。預測剛好等於實際時為 0，是比較波動預測時常用的誤差函數，對整體比例的高估與低估都敏感。</span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="prose"><div class="table-wrap" tabindex="0" role="region" aria-label="檢定一：加權尺度能不能更準確描述接下來的波動（表格）"><table class="data-table"><thead><tr><th>期間長度</th><th>誤差：不加權 → 加權</th><th class="num">誤差減少</th><th>差值 95% 區間</th></tr></thead><tbody><tr><td>15 分鐘</td><td>0.270 → 0.185</td><td class="num">31%</td><td>[−0.092, −0.079]</td></tr><tr><td>1 小時</td><td>0.248 → 0.167</td><td class="num">32%</td><td>[−0.087, −0.074]</td></tr><tr><td>4 小時</td><td>0.214 → 0.142</td><td class="num">34%</td><td>[−0.077, −0.066]</td></tr><tr><td>8 小時</td><td>0.177 → 0.121</td><td class="num">32%</td><td>[−0.060, −0.052]</td></tr><tr><td>24 小時</td><td>0.088 → 0.088</td><td class="num">0%</td><td>[−0.0002, 0.0000]</td></tr></tbody></table></div>
+<p>一天以內，加權後誤差少三成以上，2021 到 2026 每一年都成立。不加權時偏差有多大，看「實際 ÷ 預測」依起點時段的比值（理想值是 1；這張表的單位是 72 日 ATR，結論與 21 日相同）：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="檢定一：加權尺度能不能更準確描述接下來的波動（表格）"><table class="data-table"><thead><tr><th>期間長度</th><th>不加權：亞洲／歐洲／美國／美盤後</th><th>加權：亞洲／歐洲／美國／美盤後</th></tr></thead><tbody><tr><td>15 分鐘</td><td>0.55／0.83／1.57／0.72</td><td>0.82／1.00／1.00／0.80</td></tr><tr><td>1 小時</td><td>0.56／0.94／1.44／0.71</td><td>0.82／1.04／0.95／0.87</td></tr><tr><td>24 小時</td><td>0.90／0.90／0.91／0.91</td><td>0.91／0.90／0.89／0.91</td></tr></tbody></table></div>
+<p>同一個 ATR，在美國時段開始的期間會低估實際波動約五成，在亞洲時段開始的期間會高估。加權後大致回到 1。到了 24 小時，兩者完全一樣。</p>
+<h2 id="檢定二用在跨日持有的策略上">檢定二：用在跨日持有的策略上</h2>
+<p>接著把加權單位用在一個會在任何時段進場的策略：全時段的 SuperTrend 1 小時趨勢做多，翻多進場、翻空出場。三組參數合計，2021 年起約 1,600 筆交易，持有時間中位數 32 小時，60% 超過 24 小時。</p>
+<p>判斷標準是<strong>一致性</strong>：用某個單位衡量每筆交易的最大不利移動（MAE），不同進場時段之間、不同年份之間、不同波動等級之間，分布越接近，代表同一個停損倍數越能適用於所有情況。</p>
+</div><span class="sidenote">MAE（maximum adverse excursion）是持倉期間價格朝不利方向走得最遠的距離；MAE ÷ 單位就是「最大不利移動是幾個單位」。停損常以 MAE 分布的某個分位數（例如 Q75、Q90）為依據。</span>
+<div class="prose"><p>三種加權方式都試過：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="檢定二：用在跨日持有的策略上（表格）"><table class="data-table"><thead><tr><th>單位</th><th class="num">MAE Q75 在不同進場時段之間的相對全距</th><th>與日線 ATR 比較</th></tr></thead><tbody><tr><td>日線 72 日 ATR，進場時鎖定</td><td class="num">0.20</td><td>—</td></tr><tr><td>日線 ATR × 進場時段權重，鎖定</td><td class="num">0.70–1.06（三個出場錨點；日線為 0.09–0.32）</td><td>顯著變差</td></tr><tr><td>日線 ATR × 當下時段權重，持倉中每根 K 棒更新</td><td class="num">0.08–0.16（依 ATR 天數）</td><td>無法區分</td></tr><tr><td>1 小時 ATR，涵蓋一天以上（24–480 小時）</td><td class="num">0.14–0.19</td><td>無法區分</td></tr><tr><td>1 小時 ATR，短於一天（4、12 小時）</td><td class="num">0.72–0.73</td><td>顯著變差</td></tr><tr><td>1 小時 ATR × 進場時段權重</td><td class="num">0.67–1.36</td><td>顯著變差</td></tr></tbody></table></div>
+<p>沒有任何一種加權讓分布更一致。另外，不加權的日線 ATR 之間也有差別：在不同年份與不同波動等級之間，21 日 ATR 比 72 日穩定得多（MAE Q75 的等級間全距 0.06 對 0.27），因為它更快跟上波動狀態的變化。</p>
+<h2 id="為什麼跨日沒有效果">為什麼跨日沒有效果</h2>
+<h3 id="一天以上的期間加權會自動平均回-1">一天以上的期間，加權會自動平均回 1</h3>
+<p>權重的定義保證全天平均等於 1。長度 T 小時的期間，若包含幾個完整日、加上不足一天的 r 小時：</p>
+<p><strong>平均權重 = 1 + (r ÷ T) × (那 r 小時的平均權重 − 1)</strong></p>
+<p>完整日的部分每個時段各經過一次，貢獻剛好是 1；只有零頭會偏離，而且會被期間長度稀釋。實際交易也是這樣：持有超過一天的交易，持倉期間的平均權重有八成落在 0.93–1.08 之間。</p>
+<h3 id="日線-atr-已經涵蓋一整天">日線 ATR 已經涵蓋一整天</h3>
+<p>日線 TR 本身就是一天所有時段波動的總和。對跨日的期間來說，日內週期已經被積分進去了。日線 ATR 會跟著「哪些日子比較波動」變化，這才是跨日持有需要的動態。時段權重只是在一天之內重新分配波動，沒有提供「哪幾天會更波動」的資訊。</p>
+<h3 id="mae-是累積量時段權重是當下強度">MAE 是累積量，時段權重是當下強度</h3>
+<p>MAE 衡量的是<strong>從進場到現在累積</strong>的不利移動，會跨過好幾個時段。在美國或歐洲時段進場的交易，約七成在美國時段達到最大不利移動；在亞洲時段進場的，也有近一半。時段權重描述的卻是<strong>這段時間每單位時間會動多少</strong>。兩者的時間尺度不同：</p>
+<ul>
+<li><strong>只取進場那一刻的權重：</strong> 等於假設整筆交易都在那個時段進行，方向錯誤。</li>
+<li><strong>每根 K 棒換成當下的權重：</strong> 美國時段累積、尚未觸發的不利移動，進入亞洲時段後停損距離縮小到 43%，就被觸發。停損出場因此從美國時段大量移到亞洲時段，而且常在時段交界、以開盤價成交。</li>
+<li><strong>短天期的 1 小時 ATR：</strong> 本身就隨時段起伏，等於已經做了時段加權，結果一樣變差。</li>
+</ul>
+<h3 id="一段固定的距離是怎麼在跨日交易中被達到的">一段固定的距離，是怎麼在跨日交易中被達到的</h3>
+<p>設停損距離為 k 個日 ATR，k 是任意倍數。單一天之內，不利移動不可能超過當天的區間，所以一天內走到 k，那一天的 TR 必須 ≥ k。跨日時，不利移動是累積的，沒有任何一天需要達到 k。</p>
+<p>用 2021 年起的每個交易日（紐約 18:00 起算）開盤做多與做空，單位是前 21 個交易日 TR 的簡單平均、在開盤時鎖定：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="一段固定的距離，是怎麼在跨日交易中被達到的（表格）"><table class="data-table"><thead><tr><th>持有天數</th><th>達到 k 的機率（k = 0.5／1／1.5／2／3）</th><th>達到 k 的路徑中，沒有任何一天的 TR ≥ k</th></tr></thead><tbody><tr><td>1</td><td>39%／12%／3.6%／1.0%／0.2%</td><td>0%（不可能）</td></tr><tr><td>3</td><td>64%／36%／19%／9.0%／1.9%</td><td>0%／10%／40%／58%／71%</td></tr><tr><td>5</td><td>72%／49%／31%／18%／5.6%</td><td>0%／8%／40%／63%／82%</td></tr><tr><td>10</td><td>80%／63%／48%／34%／17%</td><td>0%／5%／30%／61%／86%</td></tr></tbody></table></div>
+<p>k 越大、持有越久，越常是由多天累積達到的，沒有哪一天單獨走到 k。但這些路徑通常也不是每天都很安靜：路徑上最大的單日 TR，中位數約 1.4–2.1 個 ATR，在日 TR ÷ ATR 分布的第 90 百分位附近。</p>
+<p>所以跨日的大幅不利移動，通常是「多天同方向累積，加上至少一天高於平常的波動」。日內週期只決定這些移動在一天之內<strong>什麼時候</strong>發生（多半在美國時段），不決定累積多少天，也不決定哪一天會放大。這就是時段權重改變不了跨日停損的原因。</p>
+<h2 id="一天以內的期間剩餘時間比時段更重要">一天以內的期間：剩餘時間比時段更重要</h2>
+<p>加權尺度真正能用的地方，是<strong>期間事先確定、而且短於一天</strong>的決策，例如時鐘窗口類的策略。</p>
+<p>如果每筆交易都在同一段時間進出（例如每天 09:30 進、16:00 出），每筆的權重都一樣，加權只是整體放大或縮小，沒有任何作用。加權只在進場或出場時間不固定時才有意義。這時權重要依「累積」計算，而不是平均：</p>
+<p><strong>單位 = ATR × √(進場到預定出場之間的累積變異份額)</strong></p>
+<ul>
+<li>變異份額：把一天切成小格，每格的份額是「(TR ÷ 日線 ATR)²」的平均，全天加總為 1。期間一整天時，單位就等於 ATR。</li>
+<li>開根號：價格區間大約和變異的平方根成正比，不是和時間成正比。</li>
+</ul>
+<p>估計出的份額：美國時段佔全天變異 60%；開盤第一個 30 分鐘佔 11.8%，午盤每 30 分鐘約 2.7%，收盤前 30 分鐘回升到 5.2%。</p>
+<p>檢驗：起點取 09:30–15:45 的每一根 15 分鐘 K 棒，終點固定為 16:00，比較四個尺度描述「到收盤的區間」的誤差。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="一天以內的期間：剩餘時間比時段更重要（表格）"><table class="data-table"><thead><tr><th>尺度</th><th class="num">誤差（QLIKE）</th><th>比前一列</th></tr></thead><tbody><tr><td>ATR21</td><td class="num">0.202</td><td>—</td></tr><tr><td>ATR21 × √(剩餘時間 ÷ 一天)</td><td class="num">0.130</td><td>少 36%</td></tr><tr><td>ATR21 × √(四時段累積份額)</td><td class="num">0.130</td><td>相同</td></tr><tr><td>ATR21 × √(30 分鐘格累積份額)</td><td class="num">0.128</td><td>再少 1.1%（95% 區間 &lt; 0）</td></tr></tbody></table></div>
+<ul>
+<li><strong>剩餘時間是最主要的資訊。</strong> 不調整時，越晚開始的期間被高估越多：實際 ÷ 預測從 09:30 起點的 1.68，一路降到 15:30 起點的 0.39。只要乘上 √(剩餘時間)，就拉平到 0.94–1.15。</li>
+<li><strong>四個時段太粗。</strong> 美國時段內的權重是常數，所以和只看剩餘時間完全一樣。</li>
+<li><strong>30 分鐘格的 U 形有小幅幫助。</strong> 它修正開盤與收盤附近的低估，比值再拉平到 0.93–1.08。</li>
+</ul>
+<p>我們也試過把累積份額用在跨日交易<strong>進場後的前 1、4、8 小時</strong>：不同進場時段之間的早期不利移動，差距縮小了三到八成，但不同波動等級之間的差距反而變大。份額是 2018–2020 的平均形狀，高波動日與低波動日的日內形狀不見得相同，所以還不能直接用來設計早期停損。</p>
+<h2 id="結論">結論</h2>
+<ol>
+<li><strong>跨日持有的策略：</strong> 用日線 ATR 的簡單平均、在進場時鎖定就好，不需要時段加權。天數上，21 日比 72 日在不同年份與波動等級之間更穩定。</li>
+<li><strong>一天以內、期間事先確定的決策：</strong> 用 ATR × √(累積變異份額)。最重要的是剩餘時間，其次才是日內形狀；日內形狀要用比「四個時段」更細的格子。</li>
+<li><strong>判斷一個尺度好不好，看它衡量的時間長度。</strong> 時段權重描述的是「接下來這段時間每單位時間會動多少」，適合同樣時間長度的決策；停損面對的是進場以來的累積移動，兩者要對得上。</li>
+</ol>
+</div><div class="callout callout--warning"><strong>這篇的限制：</strong><p>只檢驗了 NAS100（Pepperstone，15 分鐘 K 棒，2018–2026）；評估期的資料在研究過程中多次使用，不是從未讀過的保留資料。策略檢定只用了一個全時段 SuperTrend 策略。歐美夏令時間錯開的約 4 週，歐洲開盤時間會提早 1 小時，沒有另外處理。CPI、FOMC 這類固定排程的事件日，是另一種「按日」可預期的波動放大，本文沒有處理。</p></div>
+<section class="question-section" aria-labelledby="goals-title"><h2 class="question-section-title" id="goals-title">這篇研究要回答的問題</h2><div class="question-item"><h3 class="question-item-title">日線 ATR 能適應日內波動的固定週期嗎？</h3><div class="question-item-answer"><p>不能，但跨日持有的策略也不需要。日線 ATR 是一整天各時段波動的總和，期間涵蓋完整的天數時，時段權重自動平均回 1；一天以內的期間，日線 ATR 會在美國時段低估、在亞洲時段高估實際波動。</p></div></div><div class="question-item"><h3 class="question-item-title">什麼時候該把 ATR 依時段加權？</h3><div class="question-item-answer"><p>當決策的期間事先確定、而且短於一天，並且不同交易的期間不同時。單位用 ATR × √(期間的累積變異份額)，份額至少要細到能分出開盤、午盤與收盤。</p></div></div></section>
+<section class="question-section" aria-labelledby="arising-title"><h2 class="question-section-title" id="arising-title">研究中衍生的問題</h2><div class="question-item"><h3 class="question-item-title">為什麼逐 K 棒更新的加權停損，會把停損出場移到亞洲時段？</h3><div class="question-item-answer"><p>停損比較的是進場以來的累積不利移動，在美國時段累積的虧損不會因為進入亞洲時段而消失；但停損距離在亞洲時段縮小到美國時段的 43%，於是原本未觸發的虧損在安靜的時段被觸發。</p></div></div><div class="question-item"><h3 class="question-item-title">跨日的大幅不利移動是怎麼發生的？</h3><div class="question-item-answer"><p>通常是多天同方向累積，加上至少一天高於平常的波動；持有越久、距離越大，越常沒有任何一天單獨走到那個距離。日內週期只決定它在一天之內何時發生。</p></div></div></section>
+<div class="prose"><h2 id="參考文獻">參考文獻</h2>
+<ul>
+<li>Dacorogna, Müller, Nagler, Olsen &amp; Pictet (1993), A geographical model for the daily and weekly seasonal volatility in the foreign exchange market, <em>Journal of International Money and Finance</em> 12(4), 413–438.</li>
+<li>Andersen &amp; Bollerslev (1997), Intraday periodicity and volatility persistence in financial markets, <em>Journal of Empirical Finance</em> 4(2–3).</li>
+<li>Andersen &amp; Bollerslev (1998), Deutsche mark–dollar volatility: intraday activity patterns, macroeconomic announcements, and longer run dependencies, <em>Journal of Finance</em> 53(1), 219–265.</li>
+<li>Wood, McInish &amp; Ord (1985), An investigation of transactions data for NYSE stocks, <em>Journal of Finance</em> 40(3).</li>
+</ul></div><div class="section-head"><h2 id="method">方法與資料</h2></div><p class="section-lead">研究設定、資料與計算方式；重現研究用的識別字在資料來源。</p><div class="appendix"><div style="display:contents"><h3>更新紀錄</h3><div>2026-11-04 16:17　首次發布</div></div></div><div class="wide"><section class="related"><h2 class="related-title">相關研究</h2><div class="related-grid"><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">136 組參數 · 累積報酬為正</span><span class="cover-figure__value">75 / 136</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L0.74 12.61L1.48 14.31L2.22 18.68L2.96 19.51L3.70 20.87L4.44 21.47L5.19 22.14L5.93 22.21L6.67 23.32L7.41 24.29L8.15 25.34L8.89 26.50L9.63 27.00L10.37 28.97L11.11 29.85L11.85 31.23L12.59 31.23L13.33 31.74L14.07 31.84L14.81 32.10L15.56 32.33L16.30 32.38L17.04 32.68L17.78 33.26L18.52 33.50L19.26 34.05L20.00 35.07L20.74 36.61L21.48 37.48L22.22 37.82L22.96 38.78L23.70 40.10L24.44 40.67L25.19 41.43L25.93 41.50L26.67 41.58L27.41 41.62L28.15 42.10L28.89 42.99L29.63 43.03L30.37 43.03L31.11 43.21L31.85 43.63L32.59 43.76L33.33 44.17L34.07 44.55L34.81 44.67L35.56 45.35L36.30 45.50L37.04 45.79L37.78 46.62L38.52 46.73L39.26 47.03L40.00 47.26L40.74 47.31L41.48 47.34L42.22 47.45L42.96 48.41L43.70 49.00L44.44 50.05L45.19 50.62L45.93 51.07L46.67 51.17L47.41 51.59L48.15 51.85L48.89 52.57L49.63 52.61L50.37 52.66L51.11 52.68L51.85 52.73L52.59 53.40L53.33 53.62L54.07 53.64L54.81 53.72L55.56 53.91L56.30 54.03L57.04 54.43L57.78 54.62L58.52 54.92L59.26 55.17L60.00 55.24L60.74 55.53L61.48 56.06L62.22 56.09L62.96 56.51L63.70 56.83L64.44 57.08L65.19 57.46L65.93 57.56L66.67 57.78L67.41 57.84L68.15 58.09L68.89 58.34L69.63 58.41L70.37 58.83L71.11 59.60L71.85 59.79L72.59 59.80L73.33 60.14L74.07 60.39L74.81 60.84L75.56 60.93L76.30 60.94L77.04 61.21L77.78 61.25L78.52 61.28L79.26 61.30L80.00 61.50L80.74 61.79L81.48 61.81L82.22 62.18L82.96 64.46L83.70 64.49L84.44 64.56L85.19 64.73L85.93 64.75L86.67 65.18L87.41 65.36L88.15 65.48L88.89 66.94L89.63 69.12L90.37 74.19L91.11 76.07L91.85 76.96L92.59 77.45L93.33 80.89L94.07 82.55L94.81 82.91L95.56 84.45L96.30 84.73L97.04 86.56L97.78 91.89L98.52 93.64L99.26 95.26L100.00 98.00L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 53.79H100"></path><path class="sparkline__line" d="M0.00 2.00L0.74 12.61L1.48 14.31L2.22 18.68L2.96 19.51L3.70 20.87L4.44 21.47L5.19 22.14L5.93 22.21L6.67 23.32L7.41 24.29L8.15 25.34L8.89 26.50L9.63 27.00L10.37 28.97L11.11 29.85L11.85 31.23L12.59 31.23L13.33 31.74L14.07 31.84L14.81 32.10L15.56 32.33L16.30 32.38L17.04 32.68L17.78 33.26L18.52 33.50L19.26 34.05L20.00 35.07L20.74 36.61L21.48 37.48L22.22 37.82L22.96 38.78L23.70 40.10L24.44 40.67L25.19 41.43L25.93 41.50L26.67 41.58L27.41 41.62L28.15 42.10L28.89 42.99L29.63 43.03L30.37 43.03L31.11 43.21L31.85 43.63L32.59 43.76L33.33 44.17L34.07 44.55L34.81 44.67L35.56 45.35L36.30 45.50L37.04 45.79L37.78 46.62L38.52 46.73L39.26 47.03L40.00 47.26L40.74 47.31L41.48 47.34L42.22 47.45L42.96 48.41L43.70 49.00L44.44 50.05L45.19 50.62L45.93 51.07L46.67 51.17L47.41 51.59L48.15 51.85L48.89 52.57L49.63 52.61L50.37 52.66L51.11 52.68L51.85 52.73L52.59 53.40L53.33 53.62L54.07 53.64L54.81 53.72L55.56 53.91L56.30 54.03L57.04 54.43L57.78 54.62L58.52 54.92L59.26 55.17L60.00 55.24L60.74 55.53L61.48 56.06L62.22 56.09L62.96 56.51L63.70 56.83L64.44 57.08L65.19 57.46L65.93 57.56L66.67 57.78L67.41 57.84L68.15 58.09L68.89 58.34L69.63 58.41L70.37 58.83L71.11 59.60L71.85 59.79L72.59 59.80L73.33 60.14L74.07 60.39L74.81 60.84L75.56 60.93L76.30 60.94L77.04 61.21L77.78 61.25L78.52 61.28L79.26 61.30L80.00 61.50L80.74 61.79L81.48 61.81L82.22 62.18L82.96 64.46L83.70 64.49L84.44 64.56L85.19 64.73L85.93 64.75L86.67 65.18L87.41 65.36L88.15 65.48L88.89 66.94L89.63 69.12L90.37 74.19L91.11 76.07L91.85 76.96L92.59 77.45L93.33 80.89L94.07 82.55L94.81 82.91L95.56 84.45L96.30 84.73L97.04 86.56L97.78 91.89L98.52 93.64L99.26 95.26L100.00 98.00"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">US100.cash · NAS100 · 均線交叉 · 136 組參數 · 148,290 筆交易</span><h3 class="post-card__title"><a class="post-card__link" href="/zh-tw/posts/popular-indicator-signals/">熱門技術指標的預設訊號有優勢嗎？<wbr/>34 個訊號在 NAS100 的路徑與延遲限價單檢定（2018–2025）</a></h3><span class="post-card__excerpt">把 17 個最常見技術指標家族的平台預設訊號（均線交叉、MACD、RSI、Stochastic、CCI、Bollinger、Donchian、SuperTrend、Ichimoku、前日高低、開盤區間、整數關卡）做多做空共 34 個，在 Pepperstone NAS100 與 FTMO US100 的 1 小時與 30 分鐘 K 線上，檢定訊號後四小時的路徑有沒有可交易的不對稱、在訊號附近掛延遲限價單有沒有期望值，並把每個訊號直接持有 16 根 15 分鐘 K 線的回測與同期大盤比較。</span><span class="post-card__meta"><span>2026-10-28 23:00</span><span>49 分鐘</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/zh-tw/posts/popular-indicator-signals/">讀文章</a><a class="btn btn-ghost btn-sm" href="/zh-tw/posts/popular-indicator-signals/?view=report">看報告</a></div></div></article><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">8 組參數 · 累積報酬為正</span><span class="cover-figure__value">8 / 8</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L14.29 33.00L28.57 40.76L42.86 40.78L57.14 42.15L71.43 68.54L85.71 68.91L100.00 70.08L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 98.00H100"></path><path class="sparkline__line" d="M0.00 2.00L14.29 33.00L28.57 40.76L42.86 40.78L57.14 42.15L71.43 68.54L85.71 68.91L100.00 70.08"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">US100.cash · NAS100 · 選擇權到期日 · 8 組參數 · 538 筆交易</span><h3 class="post-card__title"><a class="post-card__link" href="/zh-tw/posts/nas100-opex-day-short/">選擇權到期日開盤放空 NAS100：<wbr/>45 條假設裡唯一站住的訊號（OPEX day short）</a></h3><span class="post-card__excerpt">兩輪共 45 條事前登錄的結構性流量假設（收盤再平衡、月底、FOMC、財報夜、黃金與外匯定價、指數重組日）在美股指數 CFD 上只剩一條在家族層級站住：每月選擇權到期日（OPEX）紐約 09:30 放空 NAS100、持有一小時。這個窗口最早是在同一份資料的掃描裡找到的，所以標為事後。本文記錄這個基本訊號在 Pepperstone NAS100（2018 起）與 FTMO US100（2022 起）的表現、之後的延遲進場、停損與停利、成本、部位，以及凍結後對 2026 的一次讀取。</span><span class="post-card__meta"><span>2026-10-28 20:00</span><span>6 分鐘</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/zh-tw/posts/nas100-opex-day-short/">讀文章</a><a class="btn btn-ghost btn-sm" href="/zh-tw/posts/nas100-opex-day-short/?view=report">看報告</a></div></div></article><a class="card card-interactive post-card" href="/zh-tw/posts/backtest-signal-deduplication/"><div class="article-cover" style="--c1:var(--chart-3);--c2:var(--chart-1)"></div><div class="post-card__body"><h3 class="post-card__title">訊號連續成立時，<wbr/>引擎只進一次場：<wbr/>進出場訊號的清洗規則，<wbr/>以及加碼為什麼要拆成多個策略</h3><span class="post-card__excerpt">策略作者交給 TradePose 的進場與出場條件是逐根 K 線的布林值，常常會連續好幾根都成立。引擎不會每一根都開一個部位，而是把它們清洗成嚴格交替的進場、出場序列，每個部位只有一個進場點和一個出場點。這篇說明清洗的三個關卡、哪些訊號會被忽略、為什麼這樣設計，以及想加碼或減碼時，為什麼該寫成幾個獨立策略再組合。</span><span class="post-card__meta"><span>2026-10-28 17:24</span><span>9 分鐘</span></span></div></a></div></section></div><!-- island 外層加 div：astro-island 為 display: contents，否則引用區塊會被排進格線的側欄 --><div><script>(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value=="object"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event("astro:visible"));})();</script><astro-island uid="1AkgWA" prefix="r14" component-url="/_astro/index.DKisFm5J.js" component-export="Citation" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;引用本文&quot;],&quot;copyLabels&quot;:[0,{&quot;copy&quot;:[0,&quot;複製&quot;],&quot;copied&quot;:[0,&quot;已複製&quot;],&quot;failed&quot;:[0,&quot;無法複製&quot;]}],&quot;text&quot;:[0,&quot;TradePose Research（2026）。〈日內波動有固定週期，ATR 要不要依時段加權？〉TradePose Research Notes.&quot;],&quot;bibtex&quot;:[0,&quot;@article{tradepose2026intradaysessionweightedatr,\n  title   = {日內波動有固定週期，ATR 要不要依時段加權？},\n  author  = {TradePose Research},\n  journal = {TradePose Research Notes},\n  year    = {2026}\n}&quot;]}" ssr client="visible" opts="{&quot;name&quot;:&quot;Citation&quot;,&quot;value&quot;:true}" await-children><div class="citation"><div class="citation-title">引用本文</div><p class="citation-text">TradePose Research（2026）。〈日內波動有固定週期，ATR 要不要依時段加權？〉TradePose Research Notes.</p><div class="citation-code">@article{tradepose2026intradaysessionweightedatr,
+  title   = {日內波動有固定週期，ATR 要不要依時段加權？},
+  author  = {TradePose Research},
+  journal = {TradePose Research Notes},
+  year    = {2026}
+}<button type="button" class="btn btn-secondary btn-sm">複製</button></div></div><!--astro:end--></astro-island></div></div></main><footer class="site-footer"><div class="container"><div class="site-footer__grid"><div class="site-footer__brand"><span class="site-brand"><span class="site-brand__mark" aria-hidden="true"></span>TradePose</span><p class="site-footer__tagline">量化研究筆記：回測、統計與策略診斷。文中數字皆由文章附帶的回測統計產生。</p></div><div><h2 class="site-footer__title">研究</h2><ul><li><a href="/zh-tw/#research">研究目錄</a></li><li><a href="/zh-tw/#method">資料與計算說明</a></li><li><a href="/zh-tw/rss.xml">RSS</a></li></ul></div></div><div class="site-footer__legal"><span>© 2026 TradePose</span><span>研究內容不構成投資建議</span></div></div></footer><script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BflPKFW9.js"></script></body></html>

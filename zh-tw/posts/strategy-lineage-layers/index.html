@@ -1,0 +1,268 @@
+<!DOCTYPE html><html lang="zh-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>研究地圖與研究方法：一個策略怎麼從假說走到凍結的組合｜TradePose Research</title><meta name="description" content="全站研究的入口。說明一個研究在讀資料之前要宣告什麼、讀法怎麼對雜訊校準、基礎訊號的否決清單、進出場各層、最後的成本相關性與部位階段、凍結，以及目前發布的研究與閱讀順序。"><meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large"><link rel="canonical" href="https://research.tradepose.com/zh-tw/posts/strategy-lineage-layers/"><link rel="alternate" hreflang="en" href="https://research.tradepose.com/en/posts/strategy-lineage-layers/"><link rel="alternate" hreflang="zh-TW" href="https://research.tradepose.com/zh-tw/posts/strategy-lineage-layers/"><link rel="alternate" hreflang="x-default" href="https://research.tradepose.com/en/posts/strategy-lineage-layers/"><link rel="alternate" type="application/rss+xml" title="TradePose Research" href="/zh-tw/rss.xml"><meta property="og:site_name" content="TradePose Research"><meta property="og:locale" content="zh_TW"><meta property="og:locale:alternate" content="en_US"><meta property="og:type" content="article"><meta property="og:title" content="研究地圖與研究方法：一個策略怎麼從假說走到凍結的組合"><meta property="og:description" content="全站研究的入口。說明一個研究在讀資料之前要宣告什麼、讀法怎麼對雜訊校準、基礎訊號的否決清單、進出場各層、最後的成本相關性與部位階段、凍結，以及目前發布的研究與閱讀順序。"><meta property="og:url" content="https://research.tradepose.com/zh-tw/posts/strategy-lineage-layers/"><meta property="og:image" content="https://research.tradepose.com/og-default.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="研究地圖與研究方法：一個策略怎麼從假說走到凍結的組合"><meta name="twitter:description" content="全站研究的入口。說明一個研究在讀資料之前要宣告什麼、讀法怎麼對雜訊校準、基礎訊號的否決清單、進出場各層、最後的成本相關性與部位階段、凍結，以及目前發布的研究與閱讀順序。"><meta name="twitter:image" content="https://research.tradepose.com/og-default.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"研究地圖與研究方法：一個策略怎麼從假說走到凍結的組合","description":"全站研究的入口。說明一個研究在讀資料之前要宣告什麼、讀法怎麼對雜訊校準、基礎訊號的否決清單、進出場各層、最後的成本相關性與部位階段、凍結，以及目前發布的研究與閱讀順序。","articleSection":"研究方法","keywords":"研究地圖, 策略研究方法, 預註冊假說, 雜訊上限, 正向對照, 檢定力, 否決清單, 驗證期, 凍結, 父策略, 平台, 延遲進場, Delayed Entry, 停損停利, SL/TP, 保本停損, Breakeven, 移動停損, Trailing Stop, 濾網, 隨機否決對照, 大盤基準, 投資組合, 部位大小, 過度擬合","inLanguage":"zh-TW","datePublished":"2026-10-08T18:52:00+08:00","dateModified":"2026-10-08T18:52:00+08:00","image":"https://research.tradepose.com/og-default.png","url":"https://research.tradepose.com/zh-tw/posts/strategy-lineage-layers/","mainEntityOfPage":"https://research.tradepose.com/zh-tw/posts/strategy-lineage-layers/","author":{"@type":"Organization","name":"TradePose Research"},"publisher":{"@type":"Organization","name":"TradePose","url":"https://tradepose.com"}}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"研究","item":"https://research.tradepose.com/zh-tw/"},{"@type":"ListItem","position":2,"name":"研究地圖與研究方法：一個策略怎麼從假說走到凍結的組合","item":"https://research.tradepose.com/zh-tw/posts/strategy-lineage-layers/"}]}</script><!-- data-init：第一次繪製前套用主題、計算模式與檢視；頁面轉場換頁後重新執行（<html> 的屬性換成新頁的） --><script data-init>try { const q = new URLSearchParams(location.search).get('theme'); if (q === 'light' || q === 'dark') sessionStorage.setItem('tp-theme', q); } catch {}
+try { const t = sessionStorage.getItem('tp-theme') ?? localStorage.getItem('tp-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; else if (t === 'system') delete document.documentElement.dataset.theme; } catch {}</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CYDbzu1r.js"></script><link rel="stylesheet" href="/_astro/Base.OLjrjMpp.css"><style>html[data-view=report] [data-view-panel=article],html[data-view=case] [data-view-panel=article]{display:none}
+</style></head><body><a class="skip-link" href="#main">跳到主要內容</a><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><header class="site-header site-header--article"><div class="container site-header__inner"><a class="site-brand" href="/zh-tw/"><span class="site-brand__mark" aria-hidden="true"></span><span class="site-brand__name">TradePose</span><span class="site-brand__sub">Research</span></a><div class="site-header__context"><astro-island uid="ZkGrJh" prefix="r18" component-url="/_astro/index.i-83YKa-.js" component-export="PageContext" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;研究地圖與研究方法：一個策略怎麼從假說走到凍結的組合&quot;],&quot;followHeading&quot;:[0,true],&quot;labels&quot;:[0,{&quot;open&quot;:[0,&quot;打開目錄&quot;],&quot;contents&quot;:[0,&quot;目錄&quot;],&quot;close&quot;:[0,&quot;關閉&quot;]}]}" ssr client="load" opts="{&quot;name&quot;:&quot;PageContext&quot;,&quot;value&quot;:true}" await-children><div class="page-context"><span class="page-context__heading"><span class="page-context__title" title="研究地圖與研究方法：一個策略怎麼從假說走到凍結的組合">研究地圖與研究方法：一個策略怎麼從假說走到凍結的組合</span></span><span class="page-context__progress" aria-hidden="true" style="--progress:0"></span></div><!--astro:end--></astro-island></div><div class="site-header__actions"><astro-island uid="Z2hd5Ov" prefix="r19" component-url="/_astro/SiteSettings.DX80NSQG.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;zh-tw&quot;],&quot;modes&quot;:[1,[]],&quot;languages&quot;:[1,[[0,{&quot;href&quot;:[0,&quot;/en/posts/strategy-lineage-layers/&quot;],&quot;lang&quot;:[0,&quot;en&quot;],&quot;name&quot;:[0,&quot;English&quot;],&quot;short&quot;:[0,&quot;EN&quot;],&quot;current&quot;:[0,false]}],[0,{&quot;href&quot;:[0,&quot;/zh-tw/posts/strategy-lineage-layers/&quot;],&quot;lang&quot;:[0,&quot;zh-TW&quot;],&quot;name&quot;:[0,&quot;繁體中文&quot;],&quot;short&quot;:[0,&quot;中文&quot;],&quot;current&quot;:[0,true]}]]],&quot;views&quot;:[1,[]]}" ssr client="load" opts="{&quot;name&quot;:&quot;SiteSettings&quot;,&quot;value&quot;:true}" await-children><div class="settings-bar"><nav class="segmented settings-bar__item settings-bar__item--secondary" aria-label="語言"><a href="/en/posts/strategy-lineage-layers/" lang="en" hrefLang="en" title="English">EN</a><a href="/zh-tw/posts/strategy-lineage-layers/" lang="zh-TW" hrefLang="zh-TW" title="繁體中文" aria-current="page">中文</a></nav><button type="button" class="btn btn-ghost btn-sm btn-icon settings-bar__item settings-bar__item--secondary" aria-label="主題: 跟隨系統" title="主題: 跟隨系統 → 淺色"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="12" height="8.5" rx="1.25"></rect><path d="M5.5 14h5M8 11.5V14"></path></svg></button><button type="button" id="radix-_r19R_5_" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="btn btn-ghost btn-sm settings-menu" aria-label="設定" title="設定"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h6M12 5h1M3 11h1M7 11h6"></path><circle cx="10.5" cy="5" r="1.5"></circle><circle cx="5.5" cy="11" r="1.5"></circle></svg></button></div><!--astro:end--></astro-island></div></div></header><main id="main"><div class="article" data-view-panel="article"><div class="wide article-banner"><div class="article-cover article-cover--banner" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div></div><header class="article-header"><span class="category-chip">研究方法</span><h1 class="article-title visually-hidden">研究地圖與研究方法：<wbr/>一個策略怎麼從假說走到凍結的組合</h1><p class="article-dek"><p>策略研究常見的做法，是把訊號、濾網、進場、停損、停利全部放進同一個大網格一次掃描，再挑出最好的一格。參數一多，最好的那一格多半只是運氣；而回測本身分不出運氣和優勢，除非研究一開始就為此設計。我們的研究就是這樣設計的：每個研究在讀資料之前寫下假說與驗證期，先量出單靠雜訊能好到什麼程度，再用基礎訊號自己的對照組讀它，之後一次加一層進出場，成本、相關性與部位留到最後。這篇說明每個階段與它的判斷規則，再依閱讀順序列出目前發布的研究。</p></p><dl class="article-meta"><div><dt>發布</dt><dd>2026-10-08 18:52</dd></div><div><dt>閱讀時間</dt><dd>15 分鐘</dd></div></dl></header><div><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value=="object"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};"requestIdleCallback"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event("astro:idle"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="Z2fRAL2" prefix="r31" component-url="/_astro/ArticleToc.VhlXB6WE.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;zh-tw&quot;],&quot;items&quot;:[1,[[0,{&quot;id&quot;:[0,&quot;一個研究分成哪幾個階段&quot;],&quot;label&quot;:[0,&quot;一個研究分成哪幾個階段？&quot;]}],[0,{&quot;id&quot;:[0,&quot;讀資料之前研究要宣告什麼&quot;],&quot;label&quot;:[0,&quot;讀資料之前，研究要宣告什麼？&quot;]}],[0,{&quot;id&quot;:[0,&quot;怎麼知道讀法看得見真實效果&quot;],&quot;label&quot;:[0,&quot;怎麼知道讀法看得見真實效果？&quot;]}],[0,{&quot;id&quot;:[0,&quot;基礎訊號怎麼讀&quot;],&quot;label&quot;:[0,&quot;基礎訊號怎麼讀？&quot;]}],[0,{&quot;id&quot;:[0,&quot;為什麼要分層而不是一次掃完&quot;],&quot;label&quot;:[0,&quot;為什麼要分層，而不是一次掃完？&quot;]}],[0,{&quot;id&quot;:[0,&quot;每一層用什麼規則判斷&quot;],&quot;label&quot;:[0,&quot;每一層用什麼規則判斷？&quot;]}],[0,{&quot;id&quot;:[0,&quot;濾網為什麼算一層而且放在最後&quot;],&quot;label&quot;:[0,&quot;濾網為什麼算一層，而且放在最後？&quot;]}],[0,{&quot;id&quot;:[0,&quot;最終階段做什麼&quot;],&quot;label&quot;:[0,&quot;最終階段做什麼？&quot;]}],[0,{&quot;id&quot;:[0,&quot;凍結決定什麼&quot;],&quot;label&quot;:[0,&quot;凍結決定什麼？&quot;]}],[0,{&quot;id&quot;:[0,&quot;結果用什麼單位&quot;],&quot;label&quot;:[0,&quot;結果用什麼單位？&quot;]}],[0,{&quot;id&quot;:[0,&quot;父策略怎麼決定&quot;],&quot;label&quot;:[0,&quot;父策略怎麼決定？&quot;]}],[0,{&quot;id&quot;:[0,&quot;為什麼參數只和兄弟比較&quot;],&quot;label&quot;:[0,&quot;為什麼參數只和兄弟比較？&quot;]}],[0,{&quot;id&quot;:[0,&quot;研究地圖&quot;],&quot;label&quot;:[0,&quot;研究地圖&quot;]}],[0,{&quot;id&quot;:[0,&quot;在策略報告裡怎麼看&quot;],&quot;label&quot;:[0,&quot;在策略報告裡怎麼看？&quot;]}],[0,{&quot;id&quot;:[0,&quot;goals-title&quot;],&quot;label&quot;:[0,&quot;這篇研究要回答的問題&quot;]}],[0,{&quot;id&quot;:[0,&quot;arising-title&quot;],&quot;label&quot;:[0,&quot;研究中衍生的問題&quot;]}],[0,{&quot;id&quot;:[0,&quot;method&quot;],&quot;label&quot;:[0,&quot;方法與資料&quot;]}]]]}" ssr client="idle" opts="{&quot;name&quot;:&quot;ArticleToc&quot;,&quot;value&quot;:true}" await-children><nav class="toc toc--aside" aria-label="目錄"><div class="toc-title" aria-hidden="true">目錄</div><ol class="toc-list"><li class=""><a href="#一個研究分成哪幾個階段" aria-current="true">一個研究分成哪幾個階段？</a></li><li class=""><a href="#讀資料之前研究要宣告什麼">讀資料之前，研究要宣告什麼？</a></li><li class=""><a href="#怎麼知道讀法看得見真實效果">怎麼知道讀法看得見真實效果？</a></li><li class=""><a href="#基礎訊號怎麼讀">基礎訊號怎麼讀？</a></li><li class=""><a href="#為什麼要分層而不是一次掃完">為什麼要分層，而不是一次掃完？</a></li><li class=""><a href="#每一層用什麼規則判斷">每一層用什麼規則判斷？</a></li><li class=""><a href="#濾網為什麼算一層而且放在最後">濾網為什麼算一層，而且放在最後？</a></li><li class=""><a href="#最終階段做什麼">最終階段做什麼？</a></li><li class=""><a href="#凍結決定什麼">凍結決定什麼？</a></li><li class=""><a href="#結果用什麼單位">結果用什麼單位？</a></li><li class=""><a href="#父策略怎麼決定">父策略怎麼決定？</a></li><li class=""><a href="#為什麼參數只和兄弟比較">為什麼參數只和兄弟比較？</a></li><li class=""><a href="#研究地圖">研究地圖</a></li><li class=""><a href="#在策略報告裡怎麼看">在策略報告裡怎麼看？</a></li><li class=""><a href="#goals-title">這篇研究要回答的問題</a></li><li class=""><a href="#arising-title">研究中衍生的問題</a></li><li class=""><a href="#method">方法與資料</a></li></ol></nav><!--astro:end--></astro-island></div>
+<div class="abstract"><div class="abstract-title">結論</div><p>一個研究從一個假說開始，只預先宣告一個基礎窗口、一小組候選，並把資料最後一段定為驗證期，任何挑選步驟都不讀它。讀任何候選之前，研究先量出雜訊上限（沒有效果的資料上，最好的候選看起來能多好），用一個刻意偷看未來、在引擎上跑的策略證明讀法看得見真實效果，並把門檻凍結。接著基礎訊號帶一張否決清單：九條有名字的質疑理由，各有自己的對照組與凍結的門檻；往下走哪些，由讀表之前寫下的處置規則決定。只有站得住的基礎訊號才加進出場層，每層只改一件事，用整段回測的最大回撤和父策略比，而且要落在平台上才保留；濾網放最後。成本、相關性、組合與部位在最終階段判斷。之後整組凍結，驗證期只讀一次，策略會不會延續只看凍結之後的紀錄。</p></div><p class="reading-split">以上是結論；以下每一節是一個主張的證據，可以從各節或證據連結進入策略報告，看全部參數組的數據。</p>
+<div class="prose"><h2 id="一個研究分成哪幾個階段">一個研究分成哪幾個階段？</h2>
+<p>每個階段回答一個問題，只把它設計要放行的東西交給下一階段。術語的定義見<a href="/zh-tw/posts/quant-research-glossary/">量化策略研究用詞表</a>。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="一個研究分成哪幾個階段？（表格）"><table class="data-table"><thead><tr><th>階段</th><th>回答的問題</th><th>會改或會量的東西</th><th>和什麼比</th></tr></thead><tbody><tr><td>設計</td><td>假說是什麼，資料答得出來嗎？</td><td>假說、一個基礎窗口、候選集、所需筆數、驗證期、處置規則</td><td>還沒有；不讀任何資料</td></tr><tr><td>校準</td><td>最好的候選單靠運氣能多好，讀法看得見真實效果嗎？</td><td>雜訊上限、正向對照、最小可偵測效果、凍結門檻</td><td>同一批候選的雜訊版</td></tr><tr><td>基礎訊號（根）</td><td>訊號或窗口本身有沒有優勢？</td><td>不改；照宣告的基礎窗口</td><td>否決清單：雜訊、其他進場時刻、大盤、隨機日、其他年份與商品</td></tr><tr><td>延遲進場</td><td>換個進場價，能不能少挨一點不利波動？</td><td>有利或不利延遲進場與距離</td><td>根的立即進場，在每一個訊號上</td></tr><tr><td>停損／停利</td><td>停損停利該放在哪？</td><td>停損（SL）、停利（TP）</td><td>選出的進場，在同一批進場上</td></tr><tr><td>保本／移動停損</td><td>走對方向之後，能不能不變成虧損、少回吐一點？</td><td>保本停損（BE）、移動停損（TS）</td><td>選出的停損停利</td></tr><tr><td>濾網</td><td>完成的策略有沒有該整天不做的日子？</td><td>趨勢、波動或 Market Profile 條件</td><td>完成的策略與依大小配對的隨機否決</td></tr><tr><td>最終</td><td>成本後還賺嗎，哪些可以組合？</td><td>成本、成員、相關性</td><td>最佳單一策略與大盤</td></tr><tr><td>部位</td><td>每筆可以押多少？</td><td>每筆風險、群組權重</td><td>帳戶規則</td></tr><tr><td>凍結</td><td>會不會延續？</td><td>不改；整組固定</td><td>驗證期讀一次，之後看凍結後的紀錄</td></tr></tbody></table></div>
+<p>延遲進場有兩種，名稱是從掛單的角度取的：</p>
+<ul>
+<li>有利延遲進場（Favorable delayed entry）：Buy/Sell Limit。多單在訊號價下方掛限價單，等回檔才成交。</li>
+<li>不利延遲進場（Adverse delayed entry）：Buy/Sell Stop。多單在訊號價上方掛觸價單，等突破才成交。</li>
+</ul>
+<h2 id="讀資料之前研究要宣告什麼">讀資料之前，研究要宣告什麼？</h2>
+<p><strong>五行假說</strong>：現象是什麼、為什麼會重複；它在時間或狀態上的錨點（開盤、收盤、到期日、profile 狀態）；視野；成本後每筆的預期大小；什麼結果會讓我們放棄它。寫不出這五行的研究是搜尋，用搜尋的雜訊上限來讀。</p>
+<p><strong>一個假說一個基礎窗口。</strong> 機制自己說明在哪裡進、在哪裡出，那個窗口就是假說。這個階段不掃進場時間、出場時間、停損或持有長度：掃描是在挑結果，不是在檢驗。窗口的變化要等基礎訊號站住之後，才以後面的層出現。</p>
+<p><strong>候選少、每個筆數多。</strong> N 個沒有優勢的候選裡，最好的 t 大約是 √(2 ln N)：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="讀資料之前，研究要宣告什麼？（表格）"><table class="data-table"><thead><tr><th>有效候選數</th><th>雜訊上限（t）</th></tr></thead><tbody><tr><td>5</td><td>1.8</td></tr><tr><td>10</td><td>2.1</td></tr><tr><td>30</td><td>2.6</td></tr><tr><td>100</td><td>3.0</td></tr><tr><td>1,000</td><td>3.7</td></tr></tbody></table></div>
+<p>幾十個各有理由的候選，看得見幾千格掃描看不見的效果。相鄰候選必須是不同的交易：步距至少是持有長度的四分之一，時間錨點是有名字的時刻，不是一天裡的每半小時。每個候選要多少筆交易由設計檢查決定，大約是 ((上限 + 0.84) × σ ÷ δ)²，σ 是每筆結果的標準差，δ 是值得交易的效果大小；筆數不夠的候選集先改設計，不讀。</p>
+<p><strong>驗證期。</strong> 資料的最後一段在讀任何東西之前宣告。挑選階段的任何 Run 都不碰它；凍結之後只讀一次。</p>
+<p><strong>處置規則。</strong> 哪些候選往下走，是研究者的規則，在讀否決表之前寫下，並寫明它選的是什麼：平均報酬的優勢，或比單純持有更能控制回撤。看過表才寫的規則，在它放行的每個候選旁邊標「事後」。</p>
+<h2 id="怎麼知道讀法看得見真實效果">怎麼知道讀法看得見真實效果？</h2>
+<p>校準在讀任何候選之前做，每個家族一次（同商品、同時框、同持倉方式、同用法）：</p>
+<ul>
+<li><strong>雜訊上限。</strong> 第一讀數在雜訊版資料上重算，每版 40 次以上：同一天進場的交易一起變號，消掉所有日曆效應與漂移，保留每個候選自己的分佈。家族最好統計量的 95 分位就是雜訊上限。真實最好落在雜訊區間內，就寫「與雜訊無法區分」，並附上這個讀法最小看得見的效果。</li>
+<li><strong>引擎上的正向對照。</strong> 一個刻意偷看未來的策略（在一部分日子提前讀到當天收盤）用同一個引擎跑、用同一種讀法讀。標不出它的讀法對窗口效果是盲的，不能用。</li>
+<li><strong>實際大小的檢定力。</strong> 把資訊係數（IC）0.02、0.05、0.10 的進場訊號，在沒有優勢的背景上輪流植入每個候選。80% 標得出來的大小就是家族的最小可偵測效果；沒有讀到的結果寫成「IC x 以上的效果可以排除」，不寫「沒有效果」。</li>
+<li><strong>凍結門檻。</strong> 每條否決理由的門檻都從這裡的雜訊區間讀出，連同版本凍結。看過真實讀數才定的門檻是挑選。</li>
+</ul>
+<h2 id="基礎訊號怎麼讀">基礎訊號怎麼讀？</h2>
+<p>第一讀數是窗口本身：候選的交易 t 與每小時平均，對照同一筆交易在同樣日子、其他進場時刻的結果，以及雜訊上限。有條件的候選（星期幾、事件、profile 狀態）另外和同窗口、同類別的非條件日比；這回答的是條件有沒有加分，不是窗口有沒有優勢。</p>
+<p>每個候選接著帶一張否決清單離開。每一列標為清、觀察、中或不適用，附數字與對照組：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="基礎訊號怎麼讀？（表格）"><table class="data-table"><thead><tr><th>質疑理由</th><th>問題</th><th>對照組</th></tr></thead><tbody><tr><td>雜訊</td><td>雜訊給得出這個 t 嗎？</td><td>雜訊上限；其他時刻的同長度窗口</td></tr><tr><td>孤峰</td><td>這個值是資料的性質，還是單一格的運氣？</td><td>交易日自助法重找最佳進場時刻</td></tr><tr><td>單年</td><td>是不是靠一年活著？</td><td>自己的逐年平均</td></tr><tr><td>條件不加分</td><td>條件日比同窗口其他日子多賺嗎？</td><td>同類別非條件日，類別內置換</td></tr><tr><td>市場就能做到</td><td>資訊已知之後待在市場裡是不是一樣好？</td><td>同方向從進場持有到時段收盤、同樣日子</td></tr><tr><td>路徑比運氣差</td><td>回撤是不是比同形狀的隨機日更深？</td><td>同類別、同筆數的隨機日</td></tr><tr><td>薄利</td><td>優勢撐得過成本嗎？</td><td>商品的高成本情境</td></tr><tr><td>行情依賴</td><td>是不是只活在一種波動狀態？</td><td>自己交易的隨機子集</td></tr><tr><td>單商品</td><td>在兄弟商品上站得住嗎？</td><td>每個兄弟商品上的同一個讀數</td></tr></tbody></table></div>
+<p>方法不寫「入選」或「淘汰」；由處置規則決定，接受了哪些質疑也留在結果旁邊。假說是條件時，每個對照組都在條件自己的類別內抽（星期研究的隨機日在同一個星期幾內抽），同一家族的多個假說用家族內的偽發現率門檻控制。</p>
+<p><strong>兩種大盤基準，各回答自己的問題。</strong> 「市場就能做到」用同樣日子、同一進場時間持有到收盤，隔離的是候選的時機。<a href="/zh-tw/posts/market-benchmarks/">22 個商品的大盤基準</a>回答候選和單純待在這個商品、同一個視野（日、週、月，多空都有）比起來如何，用研究自己的單位在引擎上跑。兩者都是引擎上的 Run，不從 K 線自己重建。</p>
+<h2 id="為什麼要分層而不是一次掃完">為什麼要分層，而不是一次掃完？</h2>
+<p>一次掃描所有參數，組合數是每個參數選項數的乘積。網格越大，越容易靠運氣挑到一格特別好的，結果也越難解釋：那一格好，是因為進場、因為停損，還是兩者剛好搭在一起？</p>
+<p>分層之後，每一層只有一兩個研究變數，網格小到可以一眼看懂，也分得清哪一層讓結果變好。某一層找不到比父策略好的設定時，就停在父策略，不為了完整而硬加一層。分層只長在已經站住的基礎訊號上；停損或停利救不了沒有優勢的訊號，只會把它的過去配適得更好看。</p>
+<h2 id="每一層用什麼規則判斷">每一層用什麼規則判斷？</h2>
+<ul>
+<li><strong>每層只改一件事，只跟父策略比，用同一批進場。</strong> 進場、出場與濾網的效果才分得清楚。</li>
+<li><strong>延遲進場算每一個訊號。</strong> 延遲進場以意向治療判斷：沒成交的訊號算零，子策略和父策略在父策略的完整訊號集上比。沒有任何距離通過時，保留最小的有利距離，而不是立即進場。</li>
+<li><strong>搜尋範圍來自父策略自己的偏移。</strong> 有利延遲進場從一步到獲利交易 MAE 的 Q1；不利延遲進場在虧損交易 G_MFE 的 Q2 到 Q3 附近，讓大多數虧損交易不會成交。停損從 MAE 的 Q60 搜到 Q95。停利在 MFE 和 G_MFE 上分兩支各自搜，因為兩者切掉的交易不同。保本觸發點不低於虧損交易 G_MFE 的 Q3：走到這裡，交易就不再像會輸的交易。移動停損比停損寬，以 MHL 的 Q2 到 Q3 為錨。</li>
+<li><strong>停損放在獲利交易 MAE 的群聚之外。</strong> 在 MAE 對 MFE 的平面上，群聚是峰值周圍的密集區；停損切進去，會把之後會回來的交易鎖成虧損，波動一變就亂觸發。</li>
+<li><strong>出場看回撤，不看多賺。</strong> 停損、停利、保本、移動停損要讓整段回測的最大回撤低於父策略，經得起時段自助法，周圍也是平台，才保留。報酬因此變少是預期中的代價，不是失敗。</li>
+<li><strong>好參數是平台，不是孤島。</strong> 重抽交易日後仍找回同一個設定，鄰近的設定結果也差不多；只有一格好，就是運氣。</li>
+<li><strong>探索階段獲利面只要求贏過大盤。</strong> 各層挑選時，每筆平均只要勝過同窗口持有；獲利空間、成本與相關性留到最終階段。</li>
+</ul>
+<h2 id="濾網為什麼算一層而且放在最後">濾網為什麼算一層，而且放在最後？</h2>
+<p>濾網決定的是「哪些天不做」，它的價值在於擋掉的是不是壞日子。要回答這件事，必須先知道那一天如果做了會是什麼結果，也就是進場與出場都已確定。放在前面，之後每一層都在被濾過的日子上挑參數，進場與停損的效果就和濾網的效果混在一起。</p>
+<p>所以濾網放在完成的策略上，和兩件事比：不加濾網的同一個策略，以及隨機否決同樣筆數的交易：以濾網典型的連續長度為區塊抽，並依被擋掉交易的大小配對。讀的是留下交易的標準化平均。要依大小配對，是因為波動狀態本來就會擋掉比較大的交易，不配對的回撤比較會自己過關；只是少做幾天、剛好避開壞年份的濾網，贏不過隨機否決。</p>
+<h2 id="最終階段做什麼">最終階段做什麼？</h2>
+<ul>
+<li><strong>成本。</strong> 在商品的高成本情境下，每筆淨結果仍要為正；停利離成本太近就是薄利，即使毛數字很好看。</li>
+<li><strong>相關性。</strong> 策略在「風險被結算的單位」上比：當沖策略用交易日（每日虧損上限），不同星期交易或多日持有的策略用週或月。一起漲跌的策略算同一個賭注；每個根最多留三個葉子。</li>
+<li><strong>組合。</strong> 組合在回收因子與最大回撤上，要贏過最好的單一成員，也要贏過同樣在市場時間的大盤，否則只是某一支策略的放大版。</li>
+<li><strong>部位。</strong> 每筆風險是固定金額：手數依研究單位下的停損距離決定，不複利。挑選會把每個樣本內平均抬高，所以部位用的是把平均優勢至少砍掉一半（家族收縮更大時砍得更多）之後的樣本內交易序列。部位大小要讓這個序列的區塊自助法回撤 95 分位、以及所有停損同一天觸發的損失，都落在帳戶規則內。</li>
+</ul>
+<h2 id="凍結決定什麼">凍結決定什麼？</h2>
+<p>一組策略送實盤或紙上交易時，記錄它的定義、否決表與凍結日期，之後不再改；要改就是新候選、新凍結日期。驗證期在凍結之後讀一次，不改變任何決定。之後每月重算凍結後的紀錄，以處置規則所選的那個量領頭，每支策略讀為一致（落在樣本內交易預測的區間內）、無行情（大盤跌、相對大盤的優勢還在）或壞了（優勢低於樣本內區間）。樣本內的讀數都算在拿來挑選的資料上；策略會不會延續，只有凍結後的資料答得出來。</p>
+<h2 id="結果用什麼單位">結果用什麼單位？</h2>
+<p>結果與距離都用波動單位：每筆損益、每個停損停利距離，都除以研究宣告的固定窗口內日線 True Range 的簡單平均。價格多年會漂移，固定點數每年意義不同；換成單位之後，某一年 0.8 的停損才能和另一年的 0.8 比。換單位會改變所有網格與結果，所以是新研究，不是參數。日內視野的單位見<a href="/zh-tw/posts/intraday-session-weighted-atr/">ATR 要不要依時段加權</a>。</p>
+<h2 id="父策略怎麼決定">父策略怎麼決定？</h2>
+<p>每一組參數的位置，是它有設定的最後一層：只設延遲進場就在延遲進場層，設了停損停利就在停損／停利層，什麼都沒設就是根。</p>
+<p>父策略依三個條件找：</p>
+<ol>
+<li>同一個根：訊號、方向、進出場時間都相同。</li>
+<li>到上一層為止的設定都相同：停損停利的父策略，延遲進場要和它一樣。</li>
+<li>這一層和之後的設定都沒有：停損停利的父策略不能已經有停損停利。</li>
+</ol>
+<p>跳過的層不算：直接在立即進場上設停損停利，父策略就是立即進場。比較時沒有放進來的組不會被當成父策略，報告也不會替它找替代。我們用策略的內容判斷是不是同一個，不用回測編號，所以分開掃描的子策略也能找到同一個父策略；引擎只算一次進場機會，再把每種出場套在上面，所以子策略的每筆交易都和父策略一一對齊（<a href="/zh-tw/posts/one-opportunity-many-exit-policies/">一個進場機會，同時計算多種出場</a>）。</p>
+<h2 id="為什麼參數只和兄弟比較">為什麼參數只和兄弟比較？</h2>
+<p>同一個父策略底下、同一層的子策略稱為兄弟。它們只有研究變數不同，其他設定全部一樣，所以兄弟之間的差異只能歸因到研究變數。父策略本身不和兄弟並列，而是當成基準：</p>
+<ul>
+<li>子策略普遍比父策略好，這一層才值得加。</li>
+<li>只有一兩個子策略比父策略好，而且周圍都比父策略差，那多半是孤島。</li>
+<li>所有子策略都比父策略差，就停在父策略。</li>
+</ul>
+<h2 id="研究地圖">研究地圖</h2>
+<p>先讀方法、引擎與基準；下面每篇研究各自獨立。</p>
+<h3 id="方法引擎與基準">方法、引擎與基準</h3>
+<ul>
+<li><a href="/zh-tw/posts/quant-research-glossary/">量化策略研究用詞表</a>：單位、MAE／G_MFE 等偏移指標、績效與回撤、延遲進場與出場。</li>
+<li><a href="/zh-tw/posts/market-benchmarks/">22 個商品的大盤基準</a>：每個市場做多或做空，每日、每週、每月單純持有賺多少。</li>
+<li><a href="/zh-tw/posts/backtest-lookahead-bar-timing/">回測怎麼避免偷看未來</a>：K 線的時間標記、shift 與同一根 K 線裡的先後。</li>
+<li><a href="/zh-tw/posts/backtest-signal-deduplication/">訊號連續成立時，引擎只進一次場</a>：進出場訊號的清洗規則，以及加碼為什麼要拆成多個策略。</li>
+<li><a href="/zh-tw/posts/one-opportunity-many-exit-policies/">一個進場機會，同時計算多種出場</a>：讓分層研究成立的拆法。</li>
+<li><a href="/zh-tw/posts/resample-daylight-saving-wall-clock/">4 小時 K 怎麼切</a>：跨夏令時間依當地時鐘切 K 線。</li>
+<li><a href="/zh-tw/posts/sharpe-ratio-sparse-trading/">交易稀少的策略，為什麼 Sharpe 會被高估</a>：年化要用完整的交易日。</li>
+<li><a href="/zh-tw/posts/intraday-session-weighted-atr/">ATR 要不要依時段加權？</a>：日內與多日視野的波動單位。</li>
+</ul>
+<h3 id="已知時點的結構性資金流">已知時點的結構性資金流</h3>
+<ol>
+<li><a href="/zh-tw/posts/nas100-opex-day-short/">選擇權到期日開盤放空 NAS100</a>45 條結構性資金流假設裡，唯一在家族層級站住的一條，從基礎讀數、進出場層、成本、部位，到驗證期的讀取。這個窗口最早是在同一份資料的掃描裡找到的，所以讀數標為事後，驗證期標「先前研究看過」。</li>
+</ol>
+<h3 id="指標訊號與狀態">指標訊號與狀態</h3>
+<ol>
+<li><a href="/zh-tw/posts/popular-indicator-signals/">熱門技術指標的預設訊號有優勢嗎？</a>17 類指標的 34 個預設訊號在 NAS100 上：路徑的不對稱、延遲限價單，以及固定持有對大盤。</li>
+<li><a href="/zh-tw/posts/us100-xauusd-supertrend-state-redo/">SuperTrend 狀態交易：從 768 個候選到 1 個留觀策略</a>在 US100 與黃金上完整走一次挑選方法，從校準、否決清單到部位，以及凍結後驗證期的結果。</li>
+</ol>
+<h2 id="在策略報告裡怎麼看">在策略報告裡怎麼看？</h2>
+<ul>
+<li>研究階段：多層的研究可以切換各層，每一層的參數組列出和父策略的差距。</li>
+<li>選取：可以一鍵把選取組的父策略和相鄰格加進來比較。</li>
+<li>參數鄰域：熱圖只畫同一個父策略的子策略，X、Y 是這一層的研究變數；顏色以父策略為中心，綠色優於父策略、紅色劣於。也可以改看全部父策略的中位數，檢查這一層的效果是不是普遍成立。</li>
+</ul>
+</div><div class="callout callout--warning"><strong>這套方法的限制</strong><p>凍結之前的每個階段都讀同一段歷史，每一次在它上面做的選擇都會把結果抬高；子策略之間也不是獨立的嘗試，相鄰設定的交易大多相同。校準說得出雜訊能好到哪裡，但沒辦法讓小樣本變得有檢定力：沒有讀到的結果只排除大於最小可偵測效果的部分。驗證期只是一段、只讀一次。策略會不會延續，只有凍結後的紀錄答得出來。</p></div>
+<section class="question-section" aria-labelledby="goals-title"><h2 class="question-section-title" id="goals-title">這篇研究要回答的問題</h2><div class="question-item"><h3 class="question-item-title">一個策略要依什麼順序研究？</h3><div class="question-item-answer"><p>設計（假說、一個基礎窗口、候選、驗證期、處置規則）→ 對雜訊校準 → 基礎訊號與否決清單 → 延遲進場 → 停損／停利 → 保本與移動停損 → 濾網 → 成本、相關性與組合 → 部位 → 凍結、驗證期讀一次、凍結後的紀錄。</p></div></div><div class="question-item"><h3 class="question-item-title">基礎訊號怎麼判斷？</h3><div class="question-item-answer"><p>先讀窗口本身：交易 t 對同一筆交易在其他進場時刻、對校準量出的雜訊上限。接著帶一張九條具名質疑的否決清單（雜訊、孤峰、單年、條件不加分、市場就能做到、路徑比運氣差、薄利、行情依賴、單商品），各有對照組與校準時凍結的門檻；往下走哪些，由讀表前寫下的處置規則決定。</p></div></div><div class="question-item"><h3 class="question-item-title">進出場各層用什麼規則保留設定？</h3><div class="question-item-answer"><p>每層只改一件事，在同一批進場上和父策略比；延遲進場把沒成交的訊號算零；搜尋範圍來自父策略的 MAE、MFE、G_MFE 與 MHL；停損放在獲利交易 MAE 群聚之外；整段回測最大回撤下降而且落在平台上，出場才保留；最終階段之前，獲利面只要求贏過大盤。</p></div></div><div class="question-item"><h3 class="question-item-title">目前有哪些研究系列，該從哪一篇開始讀？</h3><div class="question-item-answer"><p>先讀方法、引擎與基準；再依研究地圖的順序讀已知時點的結構性資金流、指標訊號與狀態這兩組研究。</p></div></div></section>
+<section class="question-section" aria-labelledby="arising-title"><h2 class="question-section-title" id="arising-title">研究中衍生的問題</h2><div class="question-item"><h3 class="question-item-title">為什麼讀任何候選之前要先量雜訊上限？</h3><div class="question-item-answer"><p>候選一多，最好的那一個靠運氣就會很好看：30 個沒有優勢的候選，最好的 t 約 2.6；1,000 個約 3.7。不知道這批候選實際的上限，一格看起來很強的結果就分不出是不是雜訊；看過結果才定的門檻是選擇，不是檢定。</p></div></div><div class="question-item"><h3 class="question-item-title">為什麼驗證期只讀一次？</h3><div class="question-item-answer"><p>每一次拿來做選擇的讀取都會變成挑選的一部分。凍結之後讀一次，驗證期才是選擇無法配適的檢查；反覆讀，它就只是又一段拿來挑選的期間。</p></div></div><div class="question-item"><h3 class="question-item-title">為什麼停損不能放在 MAE 的群聚裡？</h3><div class="question-item-answer"><p>獲利交易的 MAE 會群聚在某個範圍，停損切進那裡，會把之後會回來的交易鎖成虧損，連續發生時回撤反而更深。所以停損放在群聚之外，判斷標準是回撤有沒有下降，而不是報酬有沒有變多。</p></div></div></section><div class="section-head"><h2 id="method">方法與資料</h2></div><p class="section-lead">研究設定、資料與計算方式；重現研究用的識別字在資料來源。</p><div class="appendix"><div style="display:contents"><h3>更新紀錄</h3><div><ol><li>2026-10-08 18:52　首次發布</li><li>2026-11-04 16:40　方法改寫為預先宣告的假說、雜訊校準、否決清單、以回撤判斷的出場層、最終階段與凍結；研究地圖更新為目前發布的研究</li></ol></div></div></div><div class="wide"><section class="related"><h2 class="related-title">相關研究</h2><div class="related-grid"><a class="card card-interactive post-card" href="/zh-tw/posts/intraday-session-weighted-atr/"><div class="article-cover" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div><div class="post-card__body"><span class="eyebrow">NAS100 · ATR · SuperTrend</span><h3 class="post-card__title">日內波動有固定週期，<wbr/>ATR 要不要依時段加權？</h3><span class="post-card__excerpt">指數的波動在一天之內有固定的週期：美股開盤最大、亞洲時段最小。這篇用 NAS100 檢驗：把日線 ATR 依交易時段加權，能不能更貼近市場實際的波動？結論是要看決策的時間長度。一天以內，加權後描述波動的誤差少三成以上；跨日持有時，加權會自動平均回 1，和日線 ATR 沒有差別。文章說明原因，以及一天以內的策略該怎麼算單位。</span><span class="post-card__meta"><span>2026-11-04 16:17</span><span>10 分鐘</span></span></div></a><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">136 組參數 · 累積報酬為正</span><span class="cover-figure__value">75 / 136</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L0.74 12.61L1.48 14.31L2.22 18.68L2.96 19.51L3.70 20.87L4.44 21.47L5.19 22.14L5.93 22.21L6.67 23.32L7.41 24.29L8.15 25.34L8.89 26.50L9.63 27.00L10.37 28.97L11.11 29.85L11.85 31.23L12.59 31.23L13.33 31.74L14.07 31.84L14.81 32.10L15.56 32.33L16.30 32.38L17.04 32.68L17.78 33.26L18.52 33.50L19.26 34.05L20.00 35.07L20.74 36.61L21.48 37.48L22.22 37.82L22.96 38.78L23.70 40.10L24.44 40.67L25.19 41.43L25.93 41.50L26.67 41.58L27.41 41.62L28.15 42.10L28.89 42.99L29.63 43.03L30.37 43.03L31.11 43.21L31.85 43.63L32.59 43.76L33.33 44.17L34.07 44.55L34.81 44.67L35.56 45.35L36.30 45.50L37.04 45.79L37.78 46.62L38.52 46.73L39.26 47.03L40.00 47.26L40.74 47.31L41.48 47.34L42.22 47.45L42.96 48.41L43.70 49.00L44.44 50.05L45.19 50.62L45.93 51.07L46.67 51.17L47.41 51.59L48.15 51.85L48.89 52.57L49.63 52.61L50.37 52.66L51.11 52.68L51.85 52.73L52.59 53.40L53.33 53.62L54.07 53.64L54.81 53.72L55.56 53.91L56.30 54.03L57.04 54.43L57.78 54.62L58.52 54.92L59.26 55.17L60.00 55.24L60.74 55.53L61.48 56.06L62.22 56.09L62.96 56.51L63.70 56.83L64.44 57.08L65.19 57.46L65.93 57.56L66.67 57.78L67.41 57.84L68.15 58.09L68.89 58.34L69.63 58.41L70.37 58.83L71.11 59.60L71.85 59.79L72.59 59.80L73.33 60.14L74.07 60.39L74.81 60.84L75.56 60.93L76.30 60.94L77.04 61.21L77.78 61.25L78.52 61.28L79.26 61.30L80.00 61.50L80.74 61.79L81.48 61.81L82.22 62.18L82.96 64.46L83.70 64.49L84.44 64.56L85.19 64.73L85.93 64.75L86.67 65.18L87.41 65.36L88.15 65.48L88.89 66.94L89.63 69.12L90.37 74.19L91.11 76.07L91.85 76.96L92.59 77.45L93.33 80.89L94.07 82.55L94.81 82.91L95.56 84.45L96.30 84.73L97.04 86.56L97.78 91.89L98.52 93.64L99.26 95.26L100.00 98.00L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 53.79H100"></path><path class="sparkline__line" d="M0.00 2.00L0.74 12.61L1.48 14.31L2.22 18.68L2.96 19.51L3.70 20.87L4.44 21.47L5.19 22.14L5.93 22.21L6.67 23.32L7.41 24.29L8.15 25.34L8.89 26.50L9.63 27.00L10.37 28.97L11.11 29.85L11.85 31.23L12.59 31.23L13.33 31.74L14.07 31.84L14.81 32.10L15.56 32.33L16.30 32.38L17.04 32.68L17.78 33.26L18.52 33.50L19.26 34.05L20.00 35.07L20.74 36.61L21.48 37.48L22.22 37.82L22.96 38.78L23.70 40.10L24.44 40.67L25.19 41.43L25.93 41.50L26.67 41.58L27.41 41.62L28.15 42.10L28.89 42.99L29.63 43.03L30.37 43.03L31.11 43.21L31.85 43.63L32.59 43.76L33.33 44.17L34.07 44.55L34.81 44.67L35.56 45.35L36.30 45.50L37.04 45.79L37.78 46.62L38.52 46.73L39.26 47.03L40.00 47.26L40.74 47.31L41.48 47.34L42.22 47.45L42.96 48.41L43.70 49.00L44.44 50.05L45.19 50.62L45.93 51.07L46.67 51.17L47.41 51.59L48.15 51.85L48.89 52.57L49.63 52.61L50.37 52.66L51.11 52.68L51.85 52.73L52.59 53.40L53.33 53.62L54.07 53.64L54.81 53.72L55.56 53.91L56.30 54.03L57.04 54.43L57.78 54.62L58.52 54.92L59.26 55.17L60.00 55.24L60.74 55.53L61.48 56.06L62.22 56.09L62.96 56.51L63.70 56.83L64.44 57.08L65.19 57.46L65.93 57.56L66.67 57.78L67.41 57.84L68.15 58.09L68.89 58.34L69.63 58.41L70.37 58.83L71.11 59.60L71.85 59.79L72.59 59.80L73.33 60.14L74.07 60.39L74.81 60.84L75.56 60.93L76.30 60.94L77.04 61.21L77.78 61.25L78.52 61.28L79.26 61.30L80.00 61.50L80.74 61.79L81.48 61.81L82.22 62.18L82.96 64.46L83.70 64.49L84.44 64.56L85.19 64.73L85.93 64.75L86.67 65.18L87.41 65.36L88.15 65.48L88.89 66.94L89.63 69.12L90.37 74.19L91.11 76.07L91.85 76.96L92.59 77.45L93.33 80.89L94.07 82.55L94.81 82.91L95.56 84.45L96.30 84.73L97.04 86.56L97.78 91.89L98.52 93.64L99.26 95.26L100.00 98.00"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">US100.cash · NAS100 · 均線交叉 · 136 組參數 · 148,290 筆交易</span><h3 class="post-card__title"><a class="post-card__link" href="/zh-tw/posts/popular-indicator-signals/">熱門技術指標的預設訊號有優勢嗎？<wbr/>34 個訊號在 NAS100 的路徑與延遲限價單檢定（2018–2025）</a></h3><span class="post-card__excerpt">把 17 個最常見技術指標家族的平台預設訊號（均線交叉、MACD、RSI、Stochastic、CCI、Bollinger、Donchian、SuperTrend、Ichimoku、前日高低、開盤區間、整數關卡）做多做空共 34 個，在 Pepperstone NAS100 與 FTMO US100 的 1 小時與 30 分鐘 K 線上，檢定訊號後四小時的路徑有沒有可交易的不對稱、在訊號附近掛延遲限價單有沒有期望值，並把每個訊號直接持有 16 根 15 分鐘 K 線的回測與同期大盤比較。</span><span class="post-card__meta"><span>2026-10-28 23:00</span><span>49 分鐘</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/zh-tw/posts/popular-indicator-signals/">讀文章</a><a class="btn btn-ghost btn-sm" href="/zh-tw/posts/popular-indicator-signals/?view=report">看報告</a></div></div></article><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">8 組參數 · 累積報酬為正</span><span class="cover-figure__value">8 / 8</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L14.29 33.00L28.57 40.76L42.86 40.78L57.14 42.15L71.43 68.54L85.71 68.91L100.00 70.08L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 98.00H100"></path><path class="sparkline__line" d="M0.00 2.00L14.29 33.00L28.57 40.76L42.86 40.78L57.14 42.15L71.43 68.54L85.71 68.91L100.00 70.08"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">US100.cash · NAS100 · 選擇權到期日 · 8 組參數 · 538 筆交易</span><h3 class="post-card__title"><a class="post-card__link" href="/zh-tw/posts/nas100-opex-day-short/">選擇權到期日開盤放空 NAS100：<wbr/>45 條假設裡唯一站住的訊號（OPEX day short）</a></h3><span class="post-card__excerpt">兩輪共 45 條事前登錄的結構性流量假設（收盤再平衡、月底、FOMC、財報夜、黃金與外匯定價、指數重組日）在美股指數 CFD 上只剩一條在家族層級站住：每月選擇權到期日（OPEX）紐約 09:30 放空 NAS100、持有一小時。這個窗口最早是在同一份資料的掃描裡找到的，所以標為事後。本文記錄這個基本訊號在 Pepperstone NAS100（2018 起）與 FTMO US100（2022 起）的表現、之後的延遲進場、停損與停利、成本、部位，以及凍結後對 2026 的一次讀取。</span><span class="post-card__meta"><span>2026-10-28 20:00</span><span>6 分鐘</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/zh-tw/posts/nas100-opex-day-short/">讀文章</a><a class="btn btn-ghost btn-sm" href="/zh-tw/posts/nas100-opex-day-short/?view=report">看報告</a></div></div></article></div></section></div><!-- island 外層加 div：astro-island 為 display: contents，否則引用區塊會被排進格線的側欄 --><div><script>(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value=="object"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event("astro:visible"));})();</script><astro-island uid="2uW8Lm" prefix="r14" component-url="/_astro/index.DKisFm5J.js" component-export="Citation" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;引用本文&quot;],&quot;copyLabels&quot;:[0,{&quot;copy&quot;:[0,&quot;複製&quot;],&quot;copied&quot;:[0,&quot;已複製&quot;],&quot;failed&quot;:[0,&quot;無法複製&quot;]}],&quot;text&quot;:[0,&quot;TradePose Research（2026）。〈研究地圖與研究方法：一個策略怎麼從假說走到凍結的組合〉TradePose Research Notes.&quot;],&quot;bibtex&quot;:[0,&quot;@article{tradepose2026strategylineagelayers,\n  title   = {研究地圖與研究方法：一個策略怎麼從假說走到凍結的組合},\n  author  = {TradePose Research},\n  journal = {TradePose Research Notes},\n  year    = {2026}\n}&quot;]}" ssr client="visible" opts="{&quot;name&quot;:&quot;Citation&quot;,&quot;value&quot;:true}" await-children><div class="citation"><div class="citation-title">引用本文</div><p class="citation-text">TradePose Research（2026）。〈研究地圖與研究方法：一個策略怎麼從假說走到凍結的組合〉TradePose Research Notes.</p><div class="citation-code">@article{tradepose2026strategylineagelayers,
+  title   = {研究地圖與研究方法：一個策略怎麼從假說走到凍結的組合},
+  author  = {TradePose Research},
+  journal = {TradePose Research Notes},
+  year    = {2026}
+}<button type="button" class="btn btn-secondary btn-sm">複製</button></div></div><!--astro:end--></astro-island></div></div></main><footer class="site-footer"><div class="container"><div class="site-footer__grid"><div class="site-footer__brand"><span class="site-brand"><span class="site-brand__mark" aria-hidden="true"></span>TradePose</span><p class="site-footer__tagline">量化研究筆記：回測、統計與策略診斷。文中數字皆由文章附帶的回測統計產生。</p></div><div><h2 class="site-footer__title">研究</h2><ul><li><a href="/zh-tw/#research">研究目錄</a></li><li><a href="/zh-tw/#method">資料與計算說明</a></li><li><a href="/zh-tw/rss.xml">RSS</a></li></ul></div></div><div class="site-footer__legal"><span>© 2026 TradePose</span><span>研究內容不構成投資建議</span></div></div></footer><script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BflPKFW9.js"></script></body></html>

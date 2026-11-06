@@ -1,0 +1,336 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Intraday volatility follows a fixed cycle: should ATR be weighted by trading session? | TradePose Research</title><meta name="description" content="Index volatility follows a fixed cycle within the day: largest at the US open, smallest in the Asian night. This post tests on NAS100 whether weighting the daily ATR by trading session brings the unit closer to the volatility the market actually shows. The answer depends on the horizon of the decision. Within a day, the weighted scale cuts the error of describing volatility by more than 30%; over multi-day holds the weights average back to 1 and the scale is the daily ATR. The post explains why, and how to compute the unit for intraday strategies."><meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large"><link rel="canonical" href="https://research.tradepose.com/en/posts/intraday-session-weighted-atr/"><link rel="alternate" hreflang="en" href="https://research.tradepose.com/en/posts/intraday-session-weighted-atr/"><link rel="alternate" hreflang="zh-TW" href="https://research.tradepose.com/zh-tw/posts/intraday-session-weighted-atr/"><link rel="alternate" hreflang="x-default" href="https://research.tradepose.com/en/posts/intraday-session-weighted-atr/"><link rel="alternate" type="application/rss+xml" title="TradePose Research" href="/en/rss.xml"><meta property="og:site_name" content="TradePose Research"><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_TW"><meta property="og:type" content="article"><meta property="og:title" content="Intraday volatility follows a fixed cycle: should ATR be weighted by trading session?"><meta property="og:description" content="Index volatility follows a fixed cycle within the day: largest at the US open, smallest in the Asian night. This post tests on NAS100 whether weighting the daily ATR by trading session brings the unit closer to the volatility the market actually shows. The answer depends on the horizon of the decision. Within a day, the weighted scale cuts the error of describing volatility by more than 30%; over multi-day holds the weights average back to 1 and the scale is the daily ATR. The post explains why, and how to compute the unit for intraday strategies."><meta property="og:url" content="https://research.tradepose.com/en/posts/intraday-session-weighted-atr/"><meta property="og:image" content="https://research.tradepose.com/og-default.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Intraday volatility follows a fixed cycle: should ATR be weighted by trading session?"><meta name="twitter:description" content="Index volatility follows a fixed cycle within the day: largest at the US open, smallest in the Asian night. This post tests on NAS100 whether weighting the daily ATR by trading session brings the unit closer to the volatility the market actually shows. The answer depends on the horizon of the decision. Within a day, the weighted scale cuts the error of describing volatility by more than 30%; over multi-day holds the weights average back to 1 and the scale is the daily ATR. The post explains why, and how to compute the unit for intraday strategies."><meta name="twitter:image" content="https://research.tradepose.com/og-default.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Intraday volatility follows a fixed cycle: should ATR be weighted by trading session?","description":"Index volatility follows a fixed cycle within the day: largest at the US open, smallest in the Asian night. This post tests on NAS100 whether weighting the daily ATR by trading session brings the unit closer to the volatility the market actually shows. The answer depends on the horizon of the decision. Within a day, the weighted scale cuts the error of describing volatility by more than 30%; over multi-day holds the weights average back to 1 and the scale is the daily ATR. The post explains why, and how to compute the unit for intraday strategies.","articleSection":"Methodology","keywords":"ATR, intraday volatility, intraday seasonality, intraday periodicity, trading sessions, volatility unit, stop loss, MAE, theta time, NAS100, Nasdaq, volatility normalization","inLanguage":"en","datePublished":"2026-11-04T16:17:00+08:00","dateModified":"2026-11-04T16:17:00+08:00","image":"https://research.tradepose.com/og-default.png","url":"https://research.tradepose.com/en/posts/intraday-session-weighted-atr/","mainEntityOfPage":"https://research.tradepose.com/en/posts/intraday-session-weighted-atr/","author":{"@type":"Organization","name":"TradePose Research"},"publisher":{"@type":"Organization","name":"TradePose","url":"https://tradepose.com"}}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Research","item":"https://research.tradepose.com/en/"},{"@type":"ListItem","position":2,"name":"Intraday volatility follows a fixed cycle: should ATR be weighted by trading session?","item":"https://research.tradepose.com/en/posts/intraday-session-weighted-atr/"}]}</script><!-- data-init：第一次繪製前套用主題、計算模式與檢視；頁面轉場換頁後重新執行（<html> 的屬性換成新頁的） --><script data-init>try { const q = new URLSearchParams(location.search).get('theme'); if (q === 'light' || q === 'dark') sessionStorage.setItem('tp-theme', q); } catch {}
+try { const t = sessionStorage.getItem('tp-theme') ?? localStorage.getItem('tp-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; else if (t === 'system') delete document.documentElement.dataset.theme; } catch {}</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CYDbzu1r.js"></script><link rel="stylesheet" href="/_astro/Base.OLjrjMpp.css"><style>html[data-view=report] [data-view-panel=article],html[data-view=case] [data-view-panel=article]{display:none}
+</style></head><body><a class="skip-link" href="#main">Skip to main content</a><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><header class="site-header site-header--article"><div class="container site-header__inner"><a class="site-brand" href="/en/"><span class="site-brand__mark" aria-hidden="true"></span><span class="site-brand__name">TradePose</span><span class="site-brand__sub">Research</span></a><div class="site-header__context"><astro-island uid="ZSINCX" prefix="r18" component-url="/_astro/index.i-83YKa-.js" component-export="PageContext" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;Intraday volatility follows a fixed cycle: should ATR be weighted by trading session?&quot;],&quot;followHeading&quot;:[0,true],&quot;labels&quot;:[0,{&quot;open&quot;:[0,&quot;Open contents&quot;],&quot;contents&quot;:[0,&quot;Contents&quot;],&quot;close&quot;:[0,&quot;Close&quot;]}]}" ssr client="load" opts="{&quot;name&quot;:&quot;PageContext&quot;,&quot;value&quot;:true}" await-children><div class="page-context"><span class="page-context__heading"><span class="page-context__title" title="Intraday volatility follows a fixed cycle: should ATR be weighted by trading session?">Intraday volatility follows a fixed cycle: should ATR be weighted by trading session?</span></span><span class="page-context__progress" aria-hidden="true" style="--progress:0"></span></div><!--astro:end--></astro-island></div><div class="site-header__actions"><astro-island uid="108vJu" prefix="r19" component-url="/_astro/SiteSettings.DX80NSQG.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;en&quot;],&quot;modes&quot;:[1,[]],&quot;languages&quot;:[1,[[0,{&quot;href&quot;:[0,&quot;/en/posts/intraday-session-weighted-atr/&quot;],&quot;lang&quot;:[0,&quot;en&quot;],&quot;name&quot;:[0,&quot;English&quot;],&quot;short&quot;:[0,&quot;EN&quot;],&quot;current&quot;:[0,true]}],[0,{&quot;href&quot;:[0,&quot;/zh-tw/posts/intraday-session-weighted-atr/&quot;],&quot;lang&quot;:[0,&quot;zh-TW&quot;],&quot;name&quot;:[0,&quot;繁體中文&quot;],&quot;short&quot;:[0,&quot;中文&quot;],&quot;current&quot;:[0,false]}]]],&quot;views&quot;:[1,[]]}" ssr client="load" opts="{&quot;name&quot;:&quot;SiteSettings&quot;,&quot;value&quot;:true}" await-children><div class="settings-bar"><nav class="segmented settings-bar__item settings-bar__item--secondary" aria-label="Language"><a href="/en/posts/intraday-session-weighted-atr/" lang="en" hrefLang="en" title="English" aria-current="page">EN</a><a href="/zh-tw/posts/intraday-session-weighted-atr/" lang="zh-TW" hrefLang="zh-TW" title="繁體中文">中文</a></nav><button type="button" class="btn btn-ghost btn-sm btn-icon settings-bar__item settings-bar__item--secondary" aria-label="Theme: System" title="Theme: System → Light"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="12" height="8.5" rx="1.25"></rect><path d="M5.5 14h5M8 11.5V14"></path></svg></button><button type="button" id="radix-_r19R_5_" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="btn btn-ghost btn-sm settings-menu" aria-label="Settings" title="Settings"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h6M12 5h1M3 11h1M7 11h6"></path><circle cx="10.5" cy="5" r="1.5"></circle><circle cx="5.5" cy="11" r="1.5"></circle></svg></button></div><!--astro:end--></astro-island></div></div></header><main id="main"><div class="article" data-view-panel="article"><div class="wide article-banner"><div class="article-cover article-cover--banner" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div></div><header class="article-header"><span class="category-chip">Methodology</span><h1 class="article-title visually-hidden">Intraday volatility follows a fixed cycle: should ATR be weighted by trading session?</h1><p class="article-dek"><p>Many strategies set stops, targets and trailing stops as “multiple × ATR”, so distances follow the state of the market. The daily ATR is an average over the whole day, yet the literature established long ago that volatility follows a fixed cycle within the day: a 15-minute bar at the US open can move several times more than one in the Asian night. This post tests one question: does weighting the ATR by trading session bring the unit closer to the volatility the market actually shows?</p></p><dl class="article-meta"><div><dt>Published</dt><dd>2026-11-04 16:17</dd></div><div><dt>Reading time</dt><dd>12 min read</dd></div></dl></header><div><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value=="object"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};"requestIdleCallback"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event("astro:idle"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="Z1Puwms" prefix="r31" component-url="/_astro/ArticleToc.VhlXB6WE.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;en&quot;],&quot;items&quot;:[1,[[0,{&quot;id&quot;:[0,&quot;the-problem-the-daily-atr-is-a-whole-day-average&quot;],&quot;label&quot;:[0,&quot;The problem: the daily ATR is a whole-day average&quot;]}],[0,{&quot;id&quot;:[0,&quot;how-the-session-weights-are-computed&quot;],&quot;label&quot;:[0,&quot;How the session weights are computed&quot;]}],[0,{&quot;id&quot;:[0,&quot;test-1-does-the-weighted-scale-describe-the-coming-volatility-better&quot;],&quot;label&quot;:[0,&quot;Test 1: does the weighted scale describe the coming volatility better?&quot;]}],[0,{&quot;id&quot;:[0,&quot;test-2-a-strategy-held-over-several-days&quot;],&quot;label&quot;:[0,&quot;Test 2: a strategy held over several days&quot;]}],[0,{&quot;id&quot;:[0,&quot;why-it-does-not-help-over-several-days&quot;],&quot;label&quot;:[0,&quot;Why it does not help over several days&quot;]}],[0,{&quot;id&quot;:[0,&quot;intraday-periods-time-left-matters-more-than-the-session&quot;],&quot;label&quot;:[0,&quot;Intraday periods: time left matters more than the session&quot;]}],[0,{&quot;id&quot;:[0,&quot;conclusions&quot;],&quot;label&quot;:[0,&quot;Conclusions&quot;]}],[0,{&quot;id&quot;:[0,&quot;references&quot;],&quot;label&quot;:[0,&quot;References&quot;]}],[0,{&quot;id&quot;:[0,&quot;goals-title&quot;],&quot;label&quot;:[0,&quot;Questions this study answers&quot;]}],[0,{&quot;id&quot;:[0,&quot;arising-title&quot;],&quot;label&quot;:[0,&quot;Questions raised along the way&quot;]}],[0,{&quot;id&quot;:[0,&quot;method&quot;],&quot;label&quot;:[0,&quot;Method and data&quot;]}]]]}" ssr client="idle" opts="{&quot;name&quot;:&quot;ArticleToc&quot;,&quot;value&quot;:true}" await-children><nav class="toc toc--aside" aria-label="Contents"><div class="toc-title" aria-hidden="true">Contents</div><ol class="toc-list"><li class=""><a href="#the-problem-the-daily-atr-is-a-whole-day-average" aria-current="true">The problem: the daily ATR is a whole-day average</a></li><li class=""><a href="#how-the-session-weights-are-computed">How the session weights are computed</a></li><li class=""><a href="#test-1-does-the-weighted-scale-describe-the-coming-volatility-better">Test 1: does the weighted scale describe the coming volatility better?</a></li><li class=""><a href="#test-2-a-strategy-held-over-several-days">Test 2: a strategy held over several days</a></li><li class=""><a href="#why-it-does-not-help-over-several-days">Why it does not help over several days</a></li><li class=""><a href="#intraday-periods-time-left-matters-more-than-the-session">Intraday periods: time left matters more than the session</a></li><li class=""><a href="#conclusions">Conclusions</a></li><li class=""><a href="#references">References</a></li><li class=""><a href="#goals-title">Questions this study answers</a></li><li class=""><a href="#arising-title">Questions raised along the way</a></li><li class=""><a href="#method">Method and data</a></li></ol></nav><!--astro:end--></astro-island></div>
+<div class="abstract"><div class="abstract-title">Conclusion</div><p>We split the day into four sessions (Asia, Europe, US, after the US close), estimated a volatility weight for each from 2018–2020 data (US 1.60, Asia 0.69) and tested on NAS100 over 2021–2026. Strategy performance is left out; only the scale itself is judged. Over horizons within a day, “ATR × the mean session weight of the period” describes the realized range with 31–34% less error than the plain ATR, in every year. At 24 hours the mean weight is exactly 1 again and the two are the same. Accordingly, on multi-day SuperTrend trades no weighting (frozen at entry, updated every bar, or a 1-hour ATR) made the maximum adverse excursion (MAE) per unit more consistent; most made it less so. For intraday periods with a known exit time, the main information is the time left: multiplying the unit by √(time left ÷ one day) cuts the error by 36%, and a 30-minute intraday U-shape cuts about 1% more and fixes the bias near the open and the close.</p></div><p class="reading-split">That is the conclusion. Each section below is the evidence for one claim; follow the sections or the evidence links into the strategy report for the data on every parameter set.</p>
+<div class="prose"><h2 id="the-problem-the-daily-atr-is-a-whole-day-average">The problem: the daily ATR is a whole-day average</h2>
+<p>Distances in ATR adapt better than fixed points or percentages: wider stops on volatile days, tighter ones on quiet days. But the daily ATR is an average over the <strong>whole</strong> day, and the same number is applied at any time of day.</p>
+<p>The intraday cycle of volatility is a long-established fact:</p>
+<ul>
+<li>Dacorogna et al. (1993) model the day’s volatility as the sum of the activity of three market centres, East Asia, Europe and America. Accumulating activity over time (their theta time) removes most of the seasonal differences in volatility.</li>
+<li>Andersen &amp; Bollerslev (1997, 1998) find the intraday cycle in currencies and equity indices alike, tied to the opening and closing of local markets; it has to be removed before volatility can be estimated properly.</li>
+<li>Within US regular trading hours volatility is U-shaped: highest at the open, lowest at midday, rising into the close (Wood, McInish &amp; Ord 1985).</li>
+</ul>
+<p>So the question is direct: if the unit is weighted by session, does it match realized volatility better? If so, exit parameters should be tuned on the weighted scale.</p>
+</div><span class="sidenote">Every ATR here is a simple mean of daily True Range (the day’s high-low range including the previous close), with daily bars cut on the New York calendar date and only completed days used. ATR21 is the mean of the last 21 days.</span>
+<div class="prose"><h2 id="how-the-session-weights-are-computed">How the session weights are computed</h2>
+<p>The day starts at 18:00 New York time and is split into four sessions:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="How the session weights are computed (table)"><table class="data-table"><thead><tr><th>Session</th><th>New York time</th><th>Markets</th></tr></thead><tbody><tr><td>Asia</td><td>18:00–03:00</td><td>Tokyo, Hong Kong, Singapore</td></tr><tr><td>Europe</td><td>03:00–09:30</td><td>Frankfurt and London open to the US open</td></tr><tr><td>US</td><td>09:30–16:00</td><td>US regular trading hours</td></tr><tr><td>After the US close</td><td>16:00–17:00</td><td>Cash close to the daily break</td></tr></tbody></table></div>
+<p>Weights: over the estimation period June 2018 to December 2020, for each 15-minute bar of a session, average “TR ÷ daily ATR”, then divide by the same average over all bars of the day. By construction <strong>the bar-weighted mean over a whole day is exactly 1</strong>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="How the session weights are computed (table)"><table class="data-table"><thead><tr><th>Session</th><th class="num">Weight</th><th class="num">Share of the day’s volatility</th><th class="num">Year-to-year coefficient of variation, 2018–2025</th></tr></thead><tbody><tr><td>Asia</td><td class="num">0.688</td><td class="num">27%</td><td class="num">0.106</td></tr><tr><td>Europe</td><td class="num">0.850</td><td class="num">24%</td><td class="num">0.049</td></tr><tr><td>US</td><td class="num">1.600</td><td class="num">45%</td><td class="num">0.055</td></tr><tr><td>After the close</td><td class="num">0.915</td><td class="num">4%</td><td class="num">0.115</td></tr></tbody></table></div>
+<p>The weights are stable from year to year. The weighted unit is “ATR × weight” and nothing else.</p>
+<h2 id="test-1-does-the-weighted-scale-describe-the-coming-volatility-better">Test 1: does the weighted scale describe the coming volatility better?</h2>
+<p>No strategy yet; only the scale.</p>
+<p><strong>Method:</strong></p>
+<ol>
+<li>Start at every 15-minute bar and take a period ahead, from 15 minutes to 24 hours.</li>
+<li>Realized volatility is the period’s range (high minus low, including the close before the start).</li>
+<li>Two scales:
+<ul>
+<li>Plain: ATR21.</li>
+<li>Weighted: ATR21 × the <strong>mean</strong> session weight of the bars in the period. The weight covers the whole period, not just its start.</li>
+</ul>
+</li>
+<li>Each scale gets one overall constant, calibrated on the estimation period.</li>
+<li>The error is the QLIKE loss; lower is better. Evaluation runs January 2021 to October 2026, with 95% intervals from 2,000 monthly block bootstrap draws.</li>
+</ol>
+</div><span class="sidenote">QLIKE loss = realized ÷ forecast − ln(realized ÷ forecast) − 1. It is 0 when the forecast equals the realized value; it is a standard loss for comparing volatility forecasts and penalizes both over- and under-prediction of scale.</span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="prose"><div class="table-wrap" tabindex="0" role="region" aria-label="Test 1: does the weighted scale describe the coming volatility better? (table)"><table class="data-table"><thead><tr><th>Horizon</th><th>Error: plain → weighted</th><th class="num">Error reduction</th><th>95% interval of the difference</th></tr></thead><tbody><tr><td>15 minutes</td><td>0.270 → 0.185</td><td class="num">31%</td><td>[−0.092, −0.079]</td></tr><tr><td>1 hour</td><td>0.248 → 0.167</td><td class="num">32%</td><td>[−0.087, −0.074]</td></tr><tr><td>4 hours</td><td>0.214 → 0.142</td><td class="num">34%</td><td>[−0.077, −0.066]</td></tr><tr><td>8 hours</td><td>0.177 → 0.121</td><td class="num">32%</td><td>[−0.060, −0.052]</td></tr><tr><td>24 hours</td><td>0.088 → 0.088</td><td class="num">0%</td><td>[−0.0002, 0.0000]</td></tr></tbody></table></div>
+<p>Within a day the weighted scale cuts the error by more than 30%, in every year from 2021 to 2026. How large the plain bias is shows in realized ÷ forecast by starting session (ideal 1; this table uses the 72-day ATR, with the same conclusions as the 21-day one):</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Test 1: does the weighted scale describe the coming volatility better? (table)"><table class="data-table"><thead><tr><th>Horizon</th><th>Plain: Asia / Europe / US / after</th><th>Weighted: Asia / Europe / US / after</th></tr></thead><tbody><tr><td>15 minutes</td><td>0.55 / 0.83 / 1.57 / 0.72</td><td>0.82 / 1.00 / 1.00 / 0.80</td></tr><tr><td>1 hour</td><td>0.56 / 0.94 / 1.44 / 0.71</td><td>0.82 / 1.04 / 0.95 / 0.87</td></tr><tr><td>24 hours</td><td>0.90 / 0.90 / 0.91 / 0.91</td><td>0.91 / 0.90 / 0.89 / 0.91</td></tr></tbody></table></div>
+<p>The same ATR underestimates the volatility of periods starting in the US session by about half and overestimates those starting in Asia. Weighting brings them back near 1. At 24 hours the two scales are identical.</p>
+<h2 id="test-2-a-strategy-held-over-several-days">Test 2: a strategy held over several days</h2>
+<p>Next, the weighted unit on a strategy that can enter in any session: an all-hours SuperTrend 1-hour trend long, entering on the flip up and exiting on the flip down. Three parameter sets together give about 1,600 trades from 2021, with a median holding time of 32 hours; 60% are held longer than 24 hours.</p>
+<p>The criterion is <strong>consistency</strong>: measure each trade’s maximum adverse excursion (MAE) in a unit; the closer its distribution across entry sessions, years and volatility levels, the better one stop multiple fits every case.</p>
+</div><span class="sidenote">MAE (maximum adverse excursion) is the furthest the price moved against the position while it was open; MAE ÷ unit is that distance in units. Stops are often anchored on a quantile of the MAE distribution, such as Q75 or Q90.</span>
+<div class="prose"><p>Every way of weighting was tried:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Test 2: a strategy held over several days (table)"><table class="data-table"><thead><tr><th>Unit</th><th class="num">Relative range of MAE Q75 across entry sessions</th><th>Against the daily ATR</th></tr></thead><tbody><tr><td>Daily 72-day ATR, frozen at entry</td><td class="num">0.20</td><td>—</td></tr><tr><td>Daily ATR × entry-session weight, frozen</td><td class="num">0.70–1.06 (three exit anchors; daily 0.09–0.32)</td><td>clearly worse</td></tr><tr><td>Daily ATR × current-session weight, updated every bar while held</td><td class="num">0.08–0.16 (by ATR length)</td><td>indistinguishable</td></tr><tr><td>1-hour ATR over a day or more (24–480 hours)</td><td class="num">0.14–0.19</td><td>indistinguishable</td></tr><tr><td>1-hour ATR shorter than a day (4, 12 hours)</td><td class="num">0.72–0.73</td><td>clearly worse</td></tr><tr><td>1-hour ATR × entry-session weight</td><td class="num">0.67–1.36</td><td>clearly worse</td></tr></tbody></table></div>
+<p>No weighting made the distribution more consistent. Among plain daily ATRs there is a difference, though: across years and volatility levels the 21-day ATR is far steadier than the 72-day one (range of MAE Q75 across volatility levels 0.06 against 0.27), because it follows changes in the volatility state faster.</p>
+<h2 id="why-it-does-not-help-over-several-days">Why it does not help over several days</h2>
+<h3 id="over-a-day-or-more-the-weights-average-back-to-1">Over a day or more the weights average back to 1</h3>
+<p>The weights average to 1 over a whole day by construction. For a period of T hours made of whole days plus r leftover hours:</p>
+<p><strong>Mean weight = 1 + (r ÷ T) × (mean weight of those r hours − 1)</strong></p>
+<p>Whole days pass every session once and contribute exactly 1; only the leftover part deviates, diluted by the length of the period. Real trades behave this way: for trades held longer than a day, 80% have a mean weight over the holding period between 0.93 and 1.08.</p>
+<h3 id="the-daily-atr-already-covers-the-whole-day">The daily ATR already covers the whole day</h3>
+<p>Daily TR is already the sum of every session’s movement. For a multi-day period the intraday cycle has been integrated out. The daily ATR changes with which days are more volatile, and that is the dynamic a multi-day hold needs. Session weights only redistribute volatility within a day; they say nothing about which days will be more volatile.</p>
+<h3 id="mae-accumulates-the-session-weight-is-an-intensity">MAE accumulates; the session weight is an intensity</h3>
+<p>MAE measures the adverse move <strong>accumulated since entry</strong>, across several sessions. Trades entered in the US or European session reach their largest adverse move in the US session about 70% of the time, and those entered in Asia nearly half the time. The session weight instead describes <strong>how much the market moves per unit of time right now</strong>. The two work on different time scales:</p>
+<ul>
+<li><strong>Weight of the entry bar only:</strong> assumes the whole trade happens in that session; the correction points the wrong way.</li>
+<li><strong>Weight of the current bar, updated every bar:</strong> an adverse move built up in the US session does not vanish when the Asian session starts, but the stop distance shrinks to 43% of its US value, so the unrealized loss is stopped out in the quiet session. Stop exits move from the US session to Asia, often filled at the open of the bar where the session changes.</li>
+<li><strong>Short 1-hour ATR:</strong> rises and falls with the session by itself, which amounts to session weighting, with the same result.</li>
+</ul>
+<h3 id="how-a-fixed-distance-is-reached-over-several-days">How a fixed distance is reached over several days</h3>
+<p>Let the stop sit k daily ATRs away, for any multiple k. Within one day the adverse move cannot exceed that day’s range, so reaching k in one day needs that day’s TR ≥ k. Over several days the move accumulates and no single day has to reach k.</p>
+<p>Long and short from every session open since 2021 (sessions from 18:00 New York), with the unit the simple mean of the previous 21 sessions’ TR, frozen at the open:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="How a fixed distance is reached over several days (table)"><table class="data-table"><thead><tr><th>Sessions held</th><th>Chance of reaching k (k = 0.5 / 1 / 1.5 / 2 / 3)</th><th>Paths reaching k with no single day’s TR ≥ k</th></tr></thead><tbody><tr><td>1</td><td>39% / 12% / 3.6% / 1.0% / 0.2%</td><td>0% (impossible)</td></tr><tr><td>3</td><td>64% / 36% / 19% / 9.0% / 1.9%</td><td>0% / 10% / 40% / 58% / 71%</td></tr><tr><td>5</td><td>72% / 49% / 31% / 18% / 5.6%</td><td>0% / 8% / 40% / 63% / 82%</td></tr><tr><td>10</td><td>80% / 63% / 48% / 34% / 17%</td><td>0% / 5% / 30% / 61% / 86%</td></tr></tbody></table></div>
+<p>The larger k and the longer the hold, the more often the distance is reached by accumulation, with no day getting there on its own. Yet these paths are rarely quiet every day: the largest single-day TR along them has a median of about 1.4–2.1 ATR, near the 90th percentile of daily TR ÷ ATR.</p>
+<p>So large multi-day adverse moves are usually “several days in the same direction plus at least one above-normal day”. The intraday cycle only decides <strong>when</strong> within a day those moves happen (mostly in the US session); it decides neither how many days accumulate nor which day expands. That is why session weights cannot change whether a multi-day stop is reached.</p>
+<h2 id="intraday-periods-time-left-matters-more-than-the-session">Intraday periods: time left matters more than the session</h2>
+<p>The weighted scale is useful where the period is <strong>known in advance and shorter than a day</strong>, as in clock-window strategies.</p>
+<p>If every trade enters and exits at the same times (say 09:30 to 16:00 every day), every trade gets the same weight and weighting only rescales everything; it has no effect. It matters only when entry or exit times vary. The weight then has to be accumulated, not averaged:</p>
+<p><strong>Unit = ATR × √(cumulative variance share between entry and planned exit)</strong></p>
+<ul>
+<li>Variance share: cut the day into small cells; each cell’s share is the average of (TR ÷ daily ATR)², and the shares sum to 1 over the day. For a full day the unit equals the ATR.</li>
+<li>Square root: a price range grows with the square root of variance, not with time.</li>
+</ul>
+<p>The estimated shares: the US session holds 60% of the day’s variance; the first 30 minutes after the open hold 11.8%, each midday half hour about 2.7%, and the last half hour before the close 5.2%.</p>
+<p>Test: start at every 15-minute bar from 09:30 to 15:45, end at 16:00, and compare four scales describing the range to the close.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Intraday periods: time left matters more than the session (table)"><table class="data-table"><thead><tr><th>Scale</th><th class="num">Error (QLIKE)</th><th>Against the row above</th></tr></thead><tbody><tr><td>ATR21</td><td class="num">0.202</td><td>—</td></tr><tr><td>ATR21 × √(time left ÷ one day)</td><td class="num">0.130</td><td>36% lower</td></tr><tr><td>ATR21 × √(cumulative share, four sessions)</td><td class="num">0.130</td><td>the same</td></tr><tr><td>ATR21 × √(cumulative share, 30-minute cells)</td><td class="num">0.128</td><td>1.1% lower again (95% interval &lt; 0)</td></tr></tbody></table></div>
+<ul>
+<li><strong>Time left is the main information.</strong> Unadjusted, later starts are overestimated more and more: realized ÷ forecast falls from 1.68 for a 09:30 start to 0.39 for a 15:30 start. Multiplying by √(time left) flattens it to 0.94–1.15.</li>
+<li><strong>Four sessions are too coarse.</strong> The weight is constant inside the US session, so the result equals the time-left scale.</li>
+<li><strong>The 30-minute U-shape helps a little.</strong> It fixes the underestimate near the open and the close, flattening the ratio to 0.93–1.08.</li>
+</ul>
+<p>We also tried the cumulative share for the <strong>first 1, 4 and 8 hours after entry</strong> of the multi-day trades: the gap in early adverse moves between entry sessions shrank by 30–80%, but the gap between volatility levels grew. The shares are the 2018–2020 average shape, and high- and low-volatility days need not share one intraday shape, so this is not yet a basis for an early stop.</p>
+<h2 id="conclusions">Conclusions</h2>
+<ol>
+<li><strong>Strategies held over several days:</strong> a simple-mean daily ATR frozen at entry is enough; no session weighting. On the length, 21 days is steadier than 72 across years and volatility levels.</li>
+<li><strong>Intraday decisions with a period known in advance:</strong> use ATR × √(cumulative variance share). Time left comes first, the intraday shape second, and the shape needs cells finer than four sessions.</li>
+<li><strong>Judge a scale on the horizon it serves.</strong> A session weight says how much the market moves per unit of time over the coming period; it fits decisions over that same horizon. A stop faces the move accumulated since entry, and the two have to match.</li>
+</ol>
+</div><div class="callout callout--warning"><strong>Limitations:</strong><p>Only NAS100 was tested (Pepperstone, 15-minute bars, 2018–2026); the evaluation data was used repeatedly during the study and is not an untouched holdout. The strategy tests use a single all-hours SuperTrend strategy. During the roughly four weeks when European and US daylight saving time differ, Europe opens an hour earlier in New York time; this was not handled separately. Scheduled event days such as CPI and FOMC are another, day-level form of predictable volatility and are not covered here.</p></div>
+<section class="question-section" aria-labelledby="goals-title"><h2 class="question-section-title" id="goals-title">Questions this study answers</h2><div class="question-item"><h3 class="question-item-title">Does the daily ATR adapt to the fixed intraday cycle?</h3><div class="question-item-answer"><p>No, but strategies held over several days do not need it to. The daily ATR is the sum of every session’s movement, and over whole days the session weights average back to 1. For periods within a day the daily ATR underestimates realized volatility in the US session and overestimates it in Asia.</p></div></div><div class="question-item"><h3 class="question-item-title">When should ATR be weighted by session?</h3><div class="question-item-answer"><p>When the decision’s period is known in advance, is shorter than a day, and differs between trades. Use ATR × √(cumulative variance share of the period), with cells at least fine enough to separate the open, midday and the close.</p></div></div></section>
+<section class="question-section" aria-labelledby="arising-title"><h2 class="question-section-title" id="arising-title">Questions raised along the way</h2><div class="question-item"><h3 class="question-item-title">Why does a per-bar weighted stop move stop exits into the Asian session?</h3><div class="question-item-answer"><p>A stop compares the adverse move accumulated since entry. A loss built up in the US session does not disappear when Asia opens, but the stop distance there shrinks to 43% of its US value, so losses that had not hit the stop are stopped out in the quiet session.</p></div></div><div class="question-item"><h3 class="question-item-title">How do large multi-day adverse moves happen?</h3><div class="question-item-answer"><p>Usually several days in the same direction plus at least one above-normal day; the longer the hold and the larger the distance, the more often no single day reaches it alone. The intraday cycle only decides when within the day it happens.</p></div></div></section>
+<div class="prose"><h2 id="references">References</h2>
+<ul>
+<li>Dacorogna, Müller, Nagler, Olsen &amp; Pictet (1993), A geographical model for the daily and weekly seasonal volatility in the foreign exchange market, <em>Journal of International Money and Finance</em> 12(4), 413–438.</li>
+<li>Andersen &amp; Bollerslev (1997), Intraday periodicity and volatility persistence in financial markets, <em>Journal of Empirical Finance</em> 4(2–3).</li>
+<li>Andersen &amp; Bollerslev (1998), Deutsche mark–dollar volatility: intraday activity patterns, macroeconomic announcements, and longer run dependencies, <em>Journal of Finance</em> 53(1), 219–265.</li>
+<li>Wood, McInish &amp; Ord (1985), An investigation of transactions data for NYSE stocks, <em>Journal of Finance</em> 40(3).</li>
+</ul></div><div class="section-head"><h2 id="method">Method and data</h2></div><p class="section-lead">Research setup, data and calculations; the identifiers needed to reproduce the study are under data sources.</p><div class="appendix"><div style="display:contents"><h3>Changelog</h3><div>2026-11-04 16:17 first published</div></div></div><div class="wide"><section class="related"><h2 class="related-title">Related research</h2><div class="related-grid"><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">136 parameter sets · Total return above 0</span><span class="cover-figure__value">75 / 136</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L0.74 12.61L1.48 14.31L2.22 18.68L2.96 19.51L3.70 20.87L4.44 21.47L5.19 22.14L5.93 22.21L6.67 23.32L7.41 24.29L8.15 25.34L8.89 26.50L9.63 27.00L10.37 28.97L11.11 29.85L11.85 31.23L12.59 31.23L13.33 31.74L14.07 31.84L14.81 32.10L15.56 32.33L16.30 32.38L17.04 32.68L17.78 33.26L18.52 33.50L19.26 34.05L20.00 35.07L20.74 36.61L21.48 37.48L22.22 37.82L22.96 38.78L23.70 40.10L24.44 40.67L25.19 41.43L25.93 41.50L26.67 41.58L27.41 41.62L28.15 42.10L28.89 42.99L29.63 43.03L30.37 43.03L31.11 43.21L31.85 43.63L32.59 43.76L33.33 44.17L34.07 44.55L34.81 44.67L35.56 45.35L36.30 45.50L37.04 45.79L37.78 46.62L38.52 46.73L39.26 47.03L40.00 47.26L40.74 47.31L41.48 47.34L42.22 47.45L42.96 48.41L43.70 49.00L44.44 50.05L45.19 50.62L45.93 51.07L46.67 51.17L47.41 51.59L48.15 51.85L48.89 52.57L49.63 52.61L50.37 52.66L51.11 52.68L51.85 52.73L52.59 53.40L53.33 53.62L54.07 53.64L54.81 53.72L55.56 53.91L56.30 54.03L57.04 54.43L57.78 54.62L58.52 54.92L59.26 55.17L60.00 55.24L60.74 55.53L61.48 56.06L62.22 56.09L62.96 56.51L63.70 56.83L64.44 57.08L65.19 57.46L65.93 57.56L66.67 57.78L67.41 57.84L68.15 58.09L68.89 58.34L69.63 58.41L70.37 58.83L71.11 59.60L71.85 59.79L72.59 59.80L73.33 60.14L74.07 60.39L74.81 60.84L75.56 60.93L76.30 60.94L77.04 61.21L77.78 61.25L78.52 61.28L79.26 61.30L80.00 61.50L80.74 61.79L81.48 61.81L82.22 62.18L82.96 64.46L83.70 64.49L84.44 64.56L85.19 64.73L85.93 64.75L86.67 65.18L87.41 65.36L88.15 65.48L88.89 66.94L89.63 69.12L90.37 74.19L91.11 76.07L91.85 76.96L92.59 77.45L93.33 80.89L94.07 82.55L94.81 82.91L95.56 84.45L96.30 84.73L97.04 86.56L97.78 91.89L98.52 93.64L99.26 95.26L100.00 98.00L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 53.79H100"></path><path class="sparkline__line" d="M0.00 2.00L0.74 12.61L1.48 14.31L2.22 18.68L2.96 19.51L3.70 20.87L4.44 21.47L5.19 22.14L5.93 22.21L6.67 23.32L7.41 24.29L8.15 25.34L8.89 26.50L9.63 27.00L10.37 28.97L11.11 29.85L11.85 31.23L12.59 31.23L13.33 31.74L14.07 31.84L14.81 32.10L15.56 32.33L16.30 32.38L17.04 32.68L17.78 33.26L18.52 33.50L19.26 34.05L20.00 35.07L20.74 36.61L21.48 37.48L22.22 37.82L22.96 38.78L23.70 40.10L24.44 40.67L25.19 41.43L25.93 41.50L26.67 41.58L27.41 41.62L28.15 42.10L28.89 42.99L29.63 43.03L30.37 43.03L31.11 43.21L31.85 43.63L32.59 43.76L33.33 44.17L34.07 44.55L34.81 44.67L35.56 45.35L36.30 45.50L37.04 45.79L37.78 46.62L38.52 46.73L39.26 47.03L40.00 47.26L40.74 47.31L41.48 47.34L42.22 47.45L42.96 48.41L43.70 49.00L44.44 50.05L45.19 50.62L45.93 51.07L46.67 51.17L47.41 51.59L48.15 51.85L48.89 52.57L49.63 52.61L50.37 52.66L51.11 52.68L51.85 52.73L52.59 53.40L53.33 53.62L54.07 53.64L54.81 53.72L55.56 53.91L56.30 54.03L57.04 54.43L57.78 54.62L58.52 54.92L59.26 55.17L60.00 55.24L60.74 55.53L61.48 56.06L62.22 56.09L62.96 56.51L63.70 56.83L64.44 57.08L65.19 57.46L65.93 57.56L66.67 57.78L67.41 57.84L68.15 58.09L68.89 58.34L69.63 58.41L70.37 58.83L71.11 59.60L71.85 59.79L72.59 59.80L73.33 60.14L74.07 60.39L74.81 60.84L75.56 60.93L76.30 60.94L77.04 61.21L77.78 61.25L78.52 61.28L79.26 61.30L80.00 61.50L80.74 61.79L81.48 61.81L82.22 62.18L82.96 64.46L83.70 64.49L84.44 64.56L85.19 64.73L85.93 64.75L86.67 65.18L87.41 65.36L88.15 65.48L88.89 66.94L89.63 69.12L90.37 74.19L91.11 76.07L91.85 76.96L92.59 77.45L93.33 80.89L94.07 82.55L94.81 82.91L95.56 84.45L96.30 84.73L97.04 86.56L97.78 91.89L98.52 93.64L99.26 95.26L100.00 98.00"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">US100.cash · NAS100 · Moving-average cross · 136 parameter sets · 148,290 trades</span><h3 class="post-card__title"><a class="post-card__link" href="/en/posts/popular-indicator-signals/">Do popular indicator signals have an edge? 34 default-parameter signals on NAS100: path asymmetry and delayed limit orders, 2018–2025</a></h3><span class="post-card__excerpt">The platform-default signals of the 17 most common technical-indicator families (moving-average crosses, MACD, RSI, Stochastic, CCI, Bollinger, Donchian, SuperTrend, Ichimoku, prior-day levels, opening range, round numbers), long and short, 34 in all, on 1-hour and 30-minute bars of Pepperstone NAS100 and FTMO US100: is the path after a signal asymmetric, do delayed limit orders around it earn anything, and how does holding each signal for 16 fifteen-minute bars compare with the market.</span><span class="post-card__meta"><span>2026-10-28 23:00</span><span>53 min read</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/en/posts/popular-indicator-signals/">Read article</a><a class="btn btn-ghost btn-sm" href="/en/posts/popular-indicator-signals/?view=report">View report</a></div></div></article><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">8 parameter sets · Total return above 0</span><span class="cover-figure__value">8 / 8</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L14.29 33.00L28.57 40.76L42.86 40.78L57.14 42.15L71.43 68.54L85.71 68.91L100.00 70.08L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 98.00H100"></path><path class="sparkline__line" d="M0.00 2.00L14.29 33.00L28.57 40.76L42.86 40.78L57.14 42.15L71.43 68.54L85.71 68.91L100.00 70.08"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">US100.cash · NAS100 · Option expiration · 8 parameter sets · 538 trades</span><h3 class="post-card__title"><a class="post-card__link" href="/en/posts/nas100-opex-day-short/">Shorting NAS100 at the open on option expiration day: the only one of 45 hypotheses that held</a></h3><span class="post-card__excerpt">Two rounds of pre-registered structural-flow hypotheses on US index CFDs (45 in all: closing rebalancing, month end, FOMC, earnings nights, fixing times, rebalance days) left one signal standing at the family level: shorting NAS100 at 09:30 New York on monthly option expiration day for one hour, a window first found in an earlier scan of the same data and therefore labelled post hoc. This post records the base signal on Pepperstone NAS100 since 2018 and FTMO US100 since 2022, the delayed entry, the stop and the take profit that followed, the cost, the sizing, and the one read of 2026.</span><span class="post-card__meta"><span>2026-10-28 20:00</span><span>8 min read</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/en/posts/nas100-opex-day-short/">Read article</a><a class="btn btn-ghost btn-sm" href="/en/posts/nas100-opex-day-short/?view=report">View report</a></div></div></article><a class="card card-interactive post-card" href="/en/posts/backtest-signal-deduplication/"><div class="article-cover" style="--c1:var(--chart-3);--c2:var(--chart-1)"></div><div class="post-card__body"><h3 class="post-card__title">When a signal stays true, the engine enters once: how entry and exit signals are cleaned, and why scaling in is several strategies</h3><span class="post-card__excerpt">The entry and exit conditions a strategy author hands to TradePose are booleans per bar, and they are often true for many bars in a row. The engine does not open a position on every bar. It cleans them into a strictly alternating sequence of entries and exits, so every position has one entry and one exit. This post explains the three cleaning stages, which signals are ignored, why the engine is built this way, and why scaling in or out should be written as several independent strategies combined in a portfolio.</span><span class="post-card__meta"><span>2026-10-28 17:24</span><span>10 min read</span></span></div></a></div></section></div><!-- island 外層加 div：astro-island 為 display: contents，否則引用區塊會被排進格線的側欄 --><div><script>(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value=="object"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event("astro:visible"));})();</script><astro-island uid="2nERlD" prefix="r14" component-url="/_astro/index.DKisFm5J.js" component-export="Citation" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;Cite this article&quot;],&quot;copyLabels&quot;:[0,{&quot;copy&quot;:[0,&quot;Copy&quot;],&quot;copied&quot;:[0,&quot;Copied&quot;],&quot;failed&quot;:[0,&quot;Couldn&#39;t copy&quot;]}],&quot;text&quot;:[0,&quot;TradePose Research (2026). \&quot;Intraday volatility follows a fixed cycle: should ATR be weighted by trading session?.\&quot; TradePose Research Notes.&quot;],&quot;bibtex&quot;:[0,&quot;@article{tradepose2026intradaysessionweightedatr,\n  title   = {Intraday volatility follows a fixed cycle: should ATR be weighted by trading session?},\n  author  = {TradePose Research},\n  journal = {TradePose Research Notes},\n  year    = {2026}\n}&quot;]}" ssr client="visible" opts="{&quot;name&quot;:&quot;Citation&quot;,&quot;value&quot;:true}" await-children><div class="citation"><div class="citation-title">Cite this article</div><p class="citation-text">TradePose Research (2026). &quot;Intraday volatility follows a fixed cycle: should ATR be weighted by trading session?.&quot; TradePose Research Notes.</p><div class="citation-code">@article{tradepose2026intradaysessionweightedatr,
+  title   = {Intraday volatility follows a fixed cycle: should ATR be weighted by trading session?},
+  author  = {TradePose Research},
+  journal = {TradePose Research Notes},
+  year    = {2026}
+}<button type="button" class="btn btn-secondary btn-sm">Copy</button></div></div><!--astro:end--></astro-island></div></div></main><footer class="site-footer"><div class="container"><div class="site-footer__grid"><div class="site-footer__brand"><span class="site-brand"><span class="site-brand__mark" aria-hidden="true"></span>TradePose</span><p class="site-footer__tagline">Quantitative research notes: backtests, statistics and strategy diagnostics. Every number comes from the backtest statistics published with the article.</p></div><div><h2 class="site-footer__title">Research</h2><ul><li><a href="/en/#research">Research index</a></li><li><a href="/en/#method">Data and methodology</a></li><li><a href="/en/rss.xml">RSS</a></li></ul></div></div><div class="site-footer__legal"><span>© 2026 TradePose</span><span>Research is not investment advice</span></div></div></footer><script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BflPKFW9.js"></script></body></html>
