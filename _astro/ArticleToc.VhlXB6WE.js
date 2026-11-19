@@ -1,0 +1,1 @@
+import{k as e,n as t}from"./Toc.BI6G-NAR.js";import{t as n}from"./messages.XSXWFw8e.js";var r=e();function i({locale:e,items:i}){let a=n(e);return(0,r.jsx)(t,{items:i,title:a.common.ui.toc.title})}export{i as default};

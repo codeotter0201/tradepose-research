@@ -1,0 +1,371 @@
+<!DOCTYPE html><html lang="zh-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>只用價格的技術指標，為什麼在短週期上很難證明有效：我們測過的範圍與學到的事｜TradePose Research</title><meta name="description" content="均線、MACD、RSI、SuperTrend 這些技術指標，都是用同一份價格算出來的。我們在股價指數與黃金上測過最常見的幾類，持有數分鐘到數天，沒有一個被證明能預測漲跌方向。這篇用白話說明我們怎麼測、看到什麼數字、每個研究能排除多大的優勢，以及背後的原因：日線以上交易太少，分不出實力和運氣；短週期每筆賺賠太小，成本吃掉需要的優勢；回測裡好看的結果多半來自挑參數和大盤的漲幅。文中也說明以月為單位、跨幾十個市場的趨勢跟隨為什麼是另一回事，以及價格能預測的波動大小。文末附一份檢查任何指標回測的清單。"><meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large"><link rel="canonical" href="https://research.tradepose.com/zh-tw/posts/ohlcv-indicator-strategy-limits/"><link rel="alternate" hreflang="en" href="https://research.tradepose.com/en/posts/ohlcv-indicator-strategy-limits/"><link rel="alternate" hreflang="zh-TW" href="https://research.tradepose.com/zh-tw/posts/ohlcv-indicator-strategy-limits/"><link rel="alternate" hreflang="x-default" href="https://research.tradepose.com/en/posts/ohlcv-indicator-strategy-limits/"><link rel="alternate" type="application/rss+xml" title="TradePose Research" href="/zh-tw/rss.xml"><meta property="og:site_name" content="TradePose Research"><meta property="og:locale" content="zh_TW"><meta property="og:locale:alternate" content="en_US"><meta property="og:type" content="article"><meta property="og:title" content="只用價格的技術指標，為什麼在短週期上很難證明有效：我們測過的範圍與學到的事"><meta property="og:description" content="均線、MACD、RSI、SuperTrend 這些技術指標，都是用同一份價格算出來的。我們在股價指數與黃金上測過最常見的幾類，持有數分鐘到數天，沒有一個被證明能預測漲跌方向。這篇用白話說明我們怎麼測、看到什麼數字、每個研究能排除多大的優勢，以及背後的原因：日線以上交易太少，分不出實力和運氣；短週期每筆賺賠太小，成本吃掉需要的優勢；回測裡好看的結果多半來自挑參數和大盤的漲幅。文中也說明以月為單位、跨幾十個市場的趨勢跟隨為什麼是另一回事，以及價格能預測的波動大小。文末附一份檢查任何指標回測的清單。"><meta property="og:url" content="https://research.tradepose.com/zh-tw/posts/ohlcv-indicator-strategy-limits/"><meta property="og:image" content="https://research.tradepose.com/og-default.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="只用價格的技術指標，為什麼在短週期上很難證明有效：我們測過的範圍與學到的事"><meta name="twitter:description" content="均線、MACD、RSI、SuperTrend 這些技術指標，都是用同一份價格算出來的。我們在股價指數與黃金上測過最常見的幾類，持有數分鐘到數天，沒有一個被證明能預測漲跌方向。這篇用白話說明我們怎麼測、看到什麼數字、每個研究能排除多大的優勢，以及背後的原因：日線以上交易太少，分不出實力和運氣；短週期每筆賺賠太小，成本吃掉需要的優勢；回測裡好看的結果多半來自挑參數和大盤的漲幅。文中也說明以月為單位、跨幾十個市場的趨勢跟隨為什麼是另一回事，以及價格能預測的波動大小。文末附一份檢查任何指標回測的清單。"><meta name="twitter:image" content="https://research.tradepose.com/og-default.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"只用價格的技術指標，為什麼在短週期上很難證明有效：我們測過的範圍與學到的事","description":"均線、MACD、RSI、SuperTrend 這些技術指標，都是用同一份價格算出來的。我們在股價指數與黃金上測過最常見的幾類，持有數分鐘到數天，沒有一個被證明能預測漲跌方向。這篇用白話說明我們怎麼測、看到什麼數字、每個研究能排除多大的優勢，以及背後的原因：日線以上交易太少，分不出實力和運氣；短週期每筆賺賠太小，成本吃掉需要的優勢；回測裡好看的結果多半來自挑參數和大盤的漲幅。文中也說明以月為單位、跨幾十個市場的趨勢跟隨為什麼是另一回事，以及價格能預測的波動大小。文末附一份檢查任何指標回測的清單。","articleSection":"研究方法","keywords":"技術指標, 技術分析有效嗎, 均線交叉, MACD, RSI, SuperTrend, 趨勢跟隨, 時間序列動能, 回測可信嗎, 樣本數, 交易成本, 過度配適, 驗證期, 對照組, 大盤基準","inLanguage":"zh-TW","datePublished":"2026-11-17T16:45:00+08:00","dateModified":"2026-11-17T16:45:00+08:00","image":"https://research.tradepose.com/og-default.png","url":"https://research.tradepose.com/zh-tw/posts/ohlcv-indicator-strategy-limits/","mainEntityOfPage":"https://research.tradepose.com/zh-tw/posts/ohlcv-indicator-strategy-limits/","author":{"@type":"Organization","name":"TradePose Research"},"publisher":{"@type":"Organization","name":"TradePose","url":"https://tradepose.com"}}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"研究","item":"https://research.tradepose.com/zh-tw/"},{"@type":"ListItem","position":2,"name":"只用價格的技術指標，為什麼在短週期上很難證明有效：我們測過的範圍與學到的事","item":"https://research.tradepose.com/zh-tw/posts/ohlcv-indicator-strategy-limits/"}]}</script><!-- data-init：第一次繪製前套用主題、計算模式與檢視；頁面轉場換頁後重新執行（<html> 的屬性換成新頁的） --><script data-init>try { const q = new URLSearchParams(location.search).get('theme'); if (q === 'light' || q === 'dark') sessionStorage.setItem('tp-theme', q); } catch {}
+try { const t = sessionStorage.getItem('tp-theme') ?? localStorage.getItem('tp-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; else if (t === 'system') delete document.documentElement.dataset.theme; } catch {}</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CYDbzu1r.js"></script><link rel="stylesheet" href="/_astro/Base.OLjrjMpp.css"><style>html[data-view=report] [data-view-panel=article],html[data-view=case] [data-view-panel=article]{display:none}
+</style></head><body><a class="skip-link" href="#main">跳到主要內容</a><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><header class="site-header site-header--article"><div class="container site-header__inner"><a class="site-brand" href="/zh-tw/"><span class="site-brand__mark" aria-hidden="true"></span><span class="site-brand__name">TradePose</span><span class="site-brand__sub">Research</span></a><div class="site-header__context"><astro-island uid="HTNX7" prefix="r18" component-url="/_astro/index.i-83YKa-.js" component-export="PageContext" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;只用價格的技術指標，為什麼在短週期上很難證明有效：我們測過的範圍與學到的事&quot;],&quot;followHeading&quot;:[0,true],&quot;labels&quot;:[0,{&quot;open&quot;:[0,&quot;打開目錄&quot;],&quot;contents&quot;:[0,&quot;目錄&quot;],&quot;close&quot;:[0,&quot;關閉&quot;]}]}" ssr client="load" opts="{&quot;name&quot;:&quot;PageContext&quot;,&quot;value&quot;:true}" await-children><div class="page-context"><span class="page-context__heading"><span class="page-context__title" title="只用價格的技術指標，為什麼在短週期上很難證明有效：我們測過的範圍與學到的事">只用價格的技術指標，為什麼在短週期上很難證明有效：我們測過的範圍與學到的事</span></span><span class="page-context__progress" aria-hidden="true" style="--progress:0"></span></div><!--astro:end--></astro-island></div><div class="site-header__actions"><astro-island uid="BDJLW" prefix="r19" component-url="/_astro/SiteSettings.DX80NSQG.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;zh-tw&quot;],&quot;modes&quot;:[1,[]],&quot;languages&quot;:[1,[[0,{&quot;href&quot;:[0,&quot;/en/posts/ohlcv-indicator-strategy-limits/&quot;],&quot;lang&quot;:[0,&quot;en&quot;],&quot;name&quot;:[0,&quot;English&quot;],&quot;short&quot;:[0,&quot;EN&quot;],&quot;current&quot;:[0,false]}],[0,{&quot;href&quot;:[0,&quot;/zh-tw/posts/ohlcv-indicator-strategy-limits/&quot;],&quot;lang&quot;:[0,&quot;zh-TW&quot;],&quot;name&quot;:[0,&quot;繁體中文&quot;],&quot;short&quot;:[0,&quot;中文&quot;],&quot;current&quot;:[0,true]}]]],&quot;views&quot;:[1,[]]}" ssr client="load" opts="{&quot;name&quot;:&quot;SiteSettings&quot;,&quot;value&quot;:true}" await-children><div class="settings-bar"><nav class="segmented settings-bar__item settings-bar__item--secondary" aria-label="語言"><a href="/en/posts/ohlcv-indicator-strategy-limits/" lang="en" hrefLang="en" title="English">EN</a><a href="/zh-tw/posts/ohlcv-indicator-strategy-limits/" lang="zh-TW" hrefLang="zh-TW" title="繁體中文" aria-current="page">中文</a></nav><button type="button" class="btn btn-ghost btn-sm btn-icon settings-bar__item settings-bar__item--secondary" aria-label="主題: 跟隨系統" title="主題: 跟隨系統 → 淺色"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="12" height="8.5" rx="1.25"></rect><path d="M5.5 14h5M8 11.5V14"></path></svg></button><button type="button" id="radix-_r19R_5_" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="btn btn-ghost btn-sm settings-menu" aria-label="設定" title="設定"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h6M12 5h1M3 11h1M7 11h6"></path><circle cx="10.5" cy="5" r="1.5"></circle><circle cx="5.5" cy="11" r="1.5"></circle></svg></button></div><!--astro:end--></astro-island></div></div></header><main id="main"><div class="article" data-view-panel="article"><div class="wide article-banner"><div class="article-cover article-cover--banner" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div></div><header class="article-header"><span class="category-chip">研究方法</span><h1 class="article-title visually-hidden">只用價格的技術指標，<wbr/>為什麼在短週期上很難證明有效：<wbr/>我們測過的範圍與學到的事</h1><p class="article-dek"><p>均線、MACD、RSI、Bollinger 通道、SuperTrend，這些技術指標都是把同一份價格用不同的公式再算一次。我們花了幾個月，用同一套方法測過其中最常見的幾類，沒有一個被證明能預測接下來的漲跌方向。這個結論有明確的範圍：持有數分鐘到數天的策略、幾個走勢高度相關的股價指數與黃金的差價合約（CFD）、2018 到 2026 年；成交量指標沒有測。範圍以外，例如以月為單位、跨幾十個市場的趨勢跟隨，學術上有不同的證據，文中另外說明。這篇不需要統計背景：先用擲硬幣說明「證明一個策略有效」要多少筆交易，再說明每個研究做了什麼、看到什麼數字、能排除多大的優勢，最後整理成四個原因，以及一份讀者可以自己拿來檢查任何指標回測的清單。</p></p><dl class="article-meta"><div><dt>發布</dt><dd>2026-11-17 16:45</dd></div><div><dt>閱讀時間</dt><dd>23 分鐘</dd></div></dl></header><div><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value=="object"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};"requestIdleCallback"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event("astro:idle"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="Z1S2KEX" prefix="r33" component-url="/_astro/ArticleToc.VhlXB6WE.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;zh-tw&quot;],&quot;items&quot;:[1,[[0,{&quot;id&quot;:[0,&quot;先想一個擲硬幣的問題&quot;],&quot;label&quot;:[0,&quot;先想一個擲硬幣的問題&quot;]}],[0,{&quot;id&quot;:[0,&quot;我們怎麼測四個共同的做法&quot;],&quot;label&quot;:[0,&quot;我們怎麼測：四個共同的做法&quot;]}],[0,{&quot;id&quot;:[0,&quot;研究一34-個熱門指標訊號&quot;],&quot;label&quot;:[0,&quot;研究一：34 個熱門指標訊號&quot;]}],[0,{&quot;id&quot;:[0,&quot;研究二supertrend-策略從挑選到驗證&quot;],&quot;label&quot;:[0,&quot;研究二：SuperTrend 策略，從挑選到驗證&quot;]}],[0,{&quot;id&quot;:[0,&quot;研究三換個市場狀態指標會不會比較準&quot;],&quot;label&quot;:[0,&quot;研究三：換個市場狀態，指標會不會比較準？&quot;]}],[0,{&quot;id&quot;:[0,&quot;每個研究排除了什麼&quot;],&quot;label&quot;:[0,&quot;每個研究排除了什麼&quot;]}],[0,{&quot;id&quot;:[0,&quot;把結果整理成四個原因&quot;],&quot;label&quot;:[0,&quot;把結果整理成四個原因&quot;]}],[0,{&quot;id&quot;:[0,&quot;只用價格也有證據的地方長週期多市場的趨勢&quot;],&quot;label&quot;:[0,&quot;只用價格也有證據的地方：長週期、多市場的趨勢&quot;]}],[0,{&quot;id&quot;:[0,&quot;價格資料能預測什麼波動的大小&quot;],&quot;label&quot;:[0,&quot;價格資料能預測什麼：波動的大小&quot;]}],[0,{&quot;id&quot;:[0,&quot;對照有原因的想法也一樣難&quot;],&quot;label&quot;:[0,&quot;對照：有原因的想法也一樣難&quot;]}],[0,{&quot;id&quot;:[0,&quot;自己怎麼檢查一個指標策略的回測&quot;],&quot;label&quot;:[0,&quot;自己怎麼檢查一個指標策略的回測&quot;]}],[0,{&quot;id&quot;:[0,&quot;這對我們的研究方向代表什麼&quot;],&quot;label&quot;:[0,&quot;這對我們的研究方向代表什麼&quot;]}],[0,{&quot;id&quot;:[0,&quot;延伸閱讀&quot;],&quot;label&quot;:[0,&quot;延伸閱讀&quot;]}],[0,{&quot;id&quot;:[0,&quot;goals-title&quot;],&quot;label&quot;:[0,&quot;這篇研究要回答的問題&quot;]}],[0,{&quot;id&quot;:[0,&quot;arising-title&quot;],&quot;label&quot;:[0,&quot;研究中衍生的問題&quot;]}],[0,{&quot;id&quot;:[0,&quot;method&quot;],&quot;label&quot;:[0,&quot;方法與資料&quot;]}]]]}" ssr client="idle" opts="{&quot;name&quot;:&quot;ArticleToc&quot;,&quot;value&quot;:true}" await-children><nav class="toc toc--aside" aria-label="目錄"><div class="toc-title" aria-hidden="true">目錄</div><ol class="toc-list"><li class=""><a href="#先想一個擲硬幣的問題" aria-current="true">先想一個擲硬幣的問題</a></li><li class=""><a href="#我們怎麼測四個共同的做法">我們怎麼測：四個共同的做法</a></li><li class=""><a href="#研究一34-個熱門指標訊號">研究一：34 個熱門指標訊號</a></li><li class=""><a href="#研究二supertrend-策略從挑選到驗證">研究二：SuperTrend 策略，從挑選到驗證</a></li><li class=""><a href="#研究三換個市場狀態指標會不會比較準">研究三：換個市場狀態，指標會不會比較準？</a></li><li class=""><a href="#每個研究排除了什麼">每個研究排除了什麼</a></li><li class=""><a href="#把結果整理成四個原因">把結果整理成四個原因</a></li><li class=""><a href="#只用價格也有證據的地方長週期多市場的趨勢">只用價格也有證據的地方：長週期、多市場的趨勢</a></li><li class=""><a href="#價格資料能預測什麼波動的大小">價格資料能預測什麼：波動的大小</a></li><li class=""><a href="#對照有原因的想法也一樣難">對照：有原因的想法也一樣難</a></li><li class=""><a href="#自己怎麼檢查一個指標策略的回測">自己怎麼檢查一個指標策略的回測</a></li><li class=""><a href="#這對我們的研究方向代表什麼">這對我們的研究方向代表什麼</a></li><li class=""><a href="#延伸閱讀">延伸閱讀</a></li><li class=""><a href="#goals-title">這篇研究要回答的問題</a></li><li class=""><a href="#arising-title">研究中衍生的問題</a></li><li class=""><a href="#method">方法與資料</a></li></ol></nav><!--astro:end--></astro-island></div>
+<div class="abstract"><div class="abstract-title">結論</div><p>一個策略只要比擲硬幣好一點點就能賺錢，可是「好一點點」需要非常多筆交易才能和運氣分開：勝率 52.5% 的策略，大約要 2,500 筆。日線以上的指標策略一年只有十幾到幾十筆，在單一市場上等於要幾十年到幾百年的資料。短週期的策略交易夠多，但每筆的賺賠很小，來回成本佔掉一大塊：持有 15 分鐘的策略大約要六成勝率才能打平。我們實際測了 34 個熱門指標訊號、768 個 SuperTrend 候選策略，以及波動狀態與日線、日內的規則：訊號出現後的走勢和隨便挑一個時間點沒有可交易的差別；一個在歷史上賺 70,078 美元的 10 策略組合，拆開來看訊號本身在挑選期就接近 0，獲利來自挑出來的出場參數，規則定案後在新的一年虧了 2,564 美元。依研究不同，能排除的大約是勝率 52.5% 到 57% 以上的優勢，更小的無法判定。同一份價格資料確實能預測一件事：接下來的波動大不大，所以我們把技術指標用在停損距離與部位大小。</p></div><p class="reading-split">以上是結論；以下每一節是一個主張的證據，可以從各節或證據連結進入策略報告，看全部參數組的數據。</p>
+<div class="prose"><h2 id="先想一個擲硬幣的問題">先想一個擲硬幣的問題</h2>
+<p>假設有人給你一枚硬幣，說它出現正面的機率是 52.5%，不是 50%。你要擲幾次才能確定他沒騙你？</p>
+<p>擲 100 次不夠。一枚完全公平的硬幣擲 100 次，出現 55 次以上正面的機率大約是 18%，所以看到 55 次正面什麼也證明不了。次數少的時候，運氣造成的起伏比你要找的那 2.5 個百分點大得多。</p>
+<p>交易策略是同一個問題。一個策略的每筆交易就是擲一次硬幣，「有優勢」的意思是這枚硬幣稍微偏向你。專業上，勝率比五成多 1 到 2.5 個百分點（假設賺和賠的金額一樣大）就已經是有用到很好的訊號，多 5 個百分點算非常強。要有八成的把握把這樣的硬幣和公平的硬幣分開，需要的次數是：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="先想一個擲硬幣的問題（表格）"><table class="data-table"><thead><tr><th>真實勝率</th><th class="num">需要的交易筆數</th></tr></thead><tbody><tr><td>51%（有用）</td><td class="num">約 15,500 筆</td></tr><tr><td>52.5%（好訊號）</td><td class="num">約 2,500 筆</td></tr><tr><td>55%（很強）</td><td class="num">約 620 筆</td></tr><tr><td>60%</td><td class="num">約 155 筆</td></tr></tbody></table></div>
+<p>這張表是整篇文章的基礎。下面每個研究的結論，都是「測了多少筆、所以能分辨多大的優勢」的問題。</p>
+<p>勝率只是方便說明的換算。賺賠不一樣大的策略，例如勝率 40%、每次賺 3 賠 1，一樣適用，只是要改用「每筆平均 ÷ 每筆起伏」來算，見下面的小框。</p>
+</div><div class="callout"><strong>給想自己算的讀者：</strong><p>把每筆交易的平均損益除以每筆損益的標準差，得到「每筆優勢」；賺賠一樣大時，它等於（勝率 − 50%）× 2，所以 51%、52.5%、55% 對應 0.02、0.05、0.10。需要的筆數 ≈ 6.19 ÷ 每筆優勢的平方，條件是單尾 5% 顯著水準、80% 的機率看得到、每筆交易彼此獨立。實際的交易常常擠在同一段行情裡，彼此不獨立；報酬也有肥尾與波動聚集，需要的筆數只會更多。</p></div>
+<div class="prose"><h2 id="我們怎麼測四個共同的做法">我們怎麼測：四個共同的做法</h2>
+<p>每個研究都在 TradePose 回測引擎上用 15 分鐘 K 線跑，商品是那斯達克 100 指數（兩家券商的 NAS100 與 US100）、其他股價指數與黃金的 CFD，資料從 2018 或 2022 年開始。所有研究共用四個做法，先說明，後面的數字才好讀。</p>
+<p><strong>一、每個結果都要和對照組比</strong>。「訊號出現後價格漲了」不代表訊號有用，因為價格本來就會動。所以每個訊號都配一個對照組：同樣的做法，但套在沒有訊號的時間點上，例如把訊號的時間往後挪一到四小時，或隨機挑同一個星期幾、同一個小時的時間。訊號要有用，結果必須明顯比對照組好。如果對照組賺得一樣多，賺錢的原因就不是訊號。</p>
+<p><strong>二、和單純持有比</strong>。指數長期上漲，任何「買進再持有一陣子」的規則都會分到漲幅。所以每個策略還要和「同樣的持有時間、同方向、什麼都不看就持有」比，細節見〈<a href="/zh-tw/posts/market-benchmarks/">大盤基準</a>〉。</p>
+<p><strong>三、留一段資料不看</strong>。研究開始前先劃出最後一段時間（我們用 2026 年）不讀。所有挑選都在前面的資料上做，稱為挑選期；規則定案、寫下來之後，才打開最後那一段看一次，稱為驗證期。在挑選期好看很容易，因為規則就是照那段資料挑出來的；驗證期才是沒看過的考題。</p>
+<p><strong>四、先確認方法看得見</strong>。一套檢驗什麼都不通過，可能是真的沒有東西，也可能是方法太粗。所以我們在真實資料上「植入」已知強度的訊號：把一部分交易的方向換成事後知道的正確方向，換的比例決定強度，再用同一套方法檢驗，看抓不抓得到。抓得到的強度，就是這個研究能排除的範圍；抓不到的，只能說「無法判定」。</p>
+<p>另外兩個會反覆出現的詞：</p>
+<ul>
+<li><strong>波動單位</strong>：不同時期的價格波動差很多，直接用點數比較不公平。我們把每筆損益除以「最近 72 個交易日，每天高低範圍的平均」，得到以波動為單位的數字。在 NAS100，1 個單位大約是 300 點，所以 0.05 個單位約 15 點。</li>
+<li><strong>一次測很多個，門檻要提高</strong>：同時測 100 個訊號，就算全部沒用，也會有幾個碰巧好看。所以整批一起測的時候，「好看」的標準要比單獨測一個時嚴格。</li>
+</ul>
+<h2 id="研究一34-個熱門指標訊號">研究一：34 個熱門指標訊號</h2>
+<p><strong>測什麼</strong>。技術分析教科書、TradingView 與 MetaTrader 內建指標教的那些訊號，全部用平台的預設參數，不做任何調整。一共 17 類，每類做多、做空各一個訊號，共 34 個：</p>
+<ul>
+<li><strong>均線</strong>：EMA 9/21 交叉、SMA 20/50 交叉、SMA 50/200 交叉（黃金交叉與死亡交叉）、收盤價穿越 SMA 20、收盤價穿越 EMA 200</li>
+<li><strong>動能</strong>：MACD 訊號線交叉、MACD 穿越零軸、RSI、Stochastic、CCI ±100</li>
+<li><strong>通道與突破</strong>：Bollinger 通道外、Donchian 20 期高低突破、SuperTrend 翻轉、Ichimoku 轉換線與基準線交叉</li>
+<li><strong>價位</strong>：突破前一日高低點、開盤區間突破、整數關卡</li>
+</ul>
+<p>在 NAS100（2018 到 2025 年）與 US100（2022 到 2025 年）上，分別用 1 小時與 30 分鐘 K 線判定訊號。34 個訊號 × 2 個商品 × 2 個時間框 = 136 個策略，每個策略的筆數中位數約 960 筆，最少的黃金交叉只有 73 筆，最多的 3,227 筆。</p>
+<p><strong>第一步：訊號出現後，走勢有沒有不一樣</strong>？我們量訊號後四小時內，價格往有利方向最多走多遠、往不利方向最多走多遠，再和對照組（往後挪一到四小時的時間點、隨機時間點）比。</p>
+<ul>
+<li>均線交叉、MACD 這類訊號：訊號後的走勢和對照組沒有差別。</li>
+<li>價位型的訊號（通道外、突破、前日高低、整數關卡）：訊號後的走勢確實比較大，但有利和不利兩個方向一起變大。也就是說，這些位置的價格比較活躍，可是看不出會往哪邊走。能多拿到的只有個位數到十幾點。</li>
+</ul>
+<p>研究開始前就算好，每一格的訊號數量都足以看出 15 點（0.05 個波動單位）的走勢差別，而沒有一格出現。</p>
+<p><strong>第二步：在訊號附近掛限價單</strong>。常見的說法是「訊號出現後價格會先衝過頭再拉回」或「先掃停損再延續」。我們照這兩個說法在訊號附近掛限價單，試了 2,304 種組合（訊號、掛單距離、波動條件、商品）。結果：</p>
+<ul>
+<li>沒有任何一種組合通過整批的門檻。</li>
+<li>成交後平均每筆是 −0.007 到 −0.011 個波動單位，還沒扣任何成本就是負的。</li>
+<li>同樣的掛單方式掛在對照組的時間點上，賺賠幾乎一樣。訊號沒有提供掛單方式本身以外的東西。</li>
+</ul>
+<p><strong>第三步：訊號出現就進場，持有四小時</strong>。這是最直接的用法，沒有停損也沒有停利。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="研究一：34 個熱門指標訊號（表格）"><table class="data-table"><thead><tr><th></th><th class="num">做多的 68 個策略</th><th class="num">做空的 68 個策略</th></tr></thead><tbody><tr><td>累積損益為正的策略數</td><td class="num">53</td><td class="num">22</td></tr><tr><td>平均每筆損益（波動單位）</td><td class="num">+0.011</td><td class="num">−0.004</td></tr><tr><td>平均有幾成的年份為正</td><td class="num">64%</td><td class="num">40%</td></tr></tbody></table></div>
+<p>做多看起來不錯，做空很差。但這段期間指數是上漲的，所以真正的問題是：這些策略有沒有贏過「同樣的持有時間、單純做多（或做空）」？</p>
+<ul>
+<li>136 個策略裡贏過單純持有的有 72 個，剛好一半，和擲硬幣一樣。</li>
+<li>最大回撤比單純持有（按持有時間比例換算）還小的，只有 4 個。</li>
+<li>每一年都賺錢的，只有 2 個。</li>
+</ul>
+<p><strong>能排除什麼</strong>。第一步排除的是 15 點以上的走勢差別。第二步沒有事先算能看得見多小的效果，所以小的正期望值沒有被排除。第三步不是正式檢定，照它的筆數，單獨看一個策略能看出約 54% 以上的勝率優勢，136 個一起看要約 57% 以上。</p>
+<p><strong>這個研究說明什麼</strong>。預設參數的熱門指標訊號，在四小時的範圍裡沒有看得見的方向優勢。做多策略賺的錢來自指數上漲，不是來自訊號。</p>
+<h2 id="研究二supertrend-策略從挑選到驗證">研究二：SuperTrend 策略，從挑選到驗證</h2>
+<p>第一個研究只用預設參數。常見的反駁是：「預設參數當然沒用，要調參數、加停損停利才行。」第二個研究就是把這件事認真做一遍。</p>
+<p><strong>測什麼</strong>。SuperTrend 是一個趨勢指標：它在價格上下各畫一條隨波動調整的線，收盤突破上線就轉為多頭狀態，跌破下線就轉為空頭狀態。我們問的是：SuperTrend 處於多頭（或空頭）狀態時，順著它（或逆著它）在美股交易時段持倉，能不能做出比單純持有更穩的策略？</p>
+<p>候選共 768 個：US100、黃金，加上另一家券商的同樣兩個商品，每個商品 192 個（1 小時與 4 小時指標 × 當天平倉或留倉 × 四種用法 × 12 組指標參數）。</p>
+<p><strong>怎麼挑</strong>。挑選期是 2022 年 3 月到 2025 年底，驗證期是 2026 年 1 月到 10 月。在挑選期裡依序做：</p>
+<ol>
+<li>先看只有訊號、不加任何出場規則的版本（我們稱為「根」），用對照組和單純持有篩掉不行的。768 個剩下 50 個，分屬 13 組。</li>
+<li>對留下來的，一層一層加上進場方式、停損、停利、保本、移動停損，每一層只留比上一層好、而且相鄰參數也一樣好的設定。</li>
+<li>扣掉成本（US100 來回 6 點、黃金每盎司 0.60 美元），檢查策略之間的相關性，定出部位大小。</li>
+</ol>
+<p>最後得到一個 10 個策略的組合。到這一步為止，所有該做的防護都做了：事前寫好假設、有對照組、要求相鄰參數也好、扣成本、不用複利。</p>
+<p><strong>結果</strong>：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="研究二：SuperTrend 策略，從挑選到驗證（表格）"><table class="data-table"><thead><tr><th>10 策略組合</th><th class="num">挑選期</th><th class="num">驗證期</th></tr></thead><tbody><tr><td>損益（已扣成本）</td><td class="num">+70,078 美元</td><td class="num">−2,564 美元</td></tr><tr><td>最大回撤</td><td class="num">4,723 美元</td><td class="num">5,532 美元</td></tr></tbody></table></div>
+<p>10 個策略裡，驗證期有 7 個虧損。</p>
+<p><strong>訊號本身在挑選期就接近 0</strong>。把每個策略拆成兩部分就看得出來：訊號本身（根），以及後來加上去的進出場規則。單位是扣成本後每筆的波動單位，取 9 個策略的數字（另一個策略在驗證期只有 15 筆，太少，不列入）：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="研究二：SuperTrend 策略，從挑選到驗證（表格）"><table class="data-table"><thead><tr><th></th><th class="num">挑選期</th><th class="num">驗證期</th></tr></thead><tbody><tr><td>訊號本身（9 個策略的範圍）</td><td class="num">−0.04 到 +0.01</td><td class="num">−0.06 到 +0.02</td></tr><tr><td>進出場規則多帶來的（9 個策略平均）</td><td class="num">+0.040</td><td class="num">+0.006</td></tr></tbody></table></div>
+<p>這個結論不是只靠 2026 年的虧損。即使在被拿來挑選的那段資料裡，訊號本身也接近 0：SuperTrend 的狀態沒有告訴我們接下來會漲還是會跌。挑選期賺的錢幾乎全部來自停損、停利、移動停損的參數，而這些參數是照挑選期的資料挑的。換到新的一年，它們的貢獻只剩大約七分之一。2026 年的虧損只是讓這件事現形。</p>
+<p><strong>能排除什麼</strong>。這個研究的平均報酬，設計上讀不到合理大小的優勢：每格只有 100 到 800 筆、每筆起伏又大，要讀到值得交易的優勢需要數百到數萬筆。所以它不能證明「SuperTrend 沒有任何優勢」。它能說的是：訊號本身的估計值在兩段都接近 0，而組合的獲利來自在同一段資料上挑出來的出場參數。</p>
+<p><strong>這個研究說明什麼</strong>。調參數、加停損停利確實能把回測做得很好看，但如果訊號本身沒有東西，好看的部分就是參數配合了那段歷史。對照組、相鄰參數、成本這些檢查都通過了，仍然擋不住，因為它們檢查的是「挑選過程夠不夠小心」，不是「訊號裡有沒有東西」。</p>
+<h2 id="研究三換個市場狀態指標會不會比較準">研究三：換個市場狀態，指標會不會比較準？</h2>
+<p>另一個常見的想法是：指標不是任何時候都有用，要看市場狀態，例如「盤整時用震盪指標、趨勢時用均線」或「波動大的時候訊號比較準」。</p>
+<p><strong>測什麼</strong>。先把每一天分成高波動與低波動：最近 5 天的每日高低範圍，相對於最近 72 天的平均，落在最高三分之一算高波動，最低三分之一算低波動。然後測三件事：</p>
+<ol>
+<li><strong>高低波動時，指標訊號的準確度有沒有差</strong>？10 個平台內建指標 × 1 小時與 4 小時 K 線，在 6 個股價指數上共約 25 萬筆交易。20 個比較裡，只有 1 個的差異超出運氣能解釋的範圍，而 20 個裡碰巧出現 1 個正是隨機會有的數量。</li>
+<li><strong>日線規則：低波動時順勢、高波動時反向</strong>。在 8 個市場（NAS100、日經、恆生、英國富時、黃金、歐元、日圓、原油）上，2018 年起，每次持有一天。低波動時順勢在每個市場都接近 0 或為負。高波動時反向只有一種設定接近運氣的上限，相鄰的設定都不行，是孤立的一格。</li>
+<li><strong>日內規則：當日動能延續、跳空回補</strong>。在美股三大指數上，都沒有超出運氣能解釋的範圍。</li>
+</ol>
+<p>這裡「運氣能解釋的範圍」是這樣量的：把交易的方向隨機打亂很多次，看純靠運氣最好能到多少。真實結果要超過這條線才算數。</p>
+<p><strong>能排除什麼</strong>。用「植入訊號」的方法校準過：</p>
+<ul>
+<li>第 1 項：交易多的 1 小時訊號，約 52.5% 勝率的優勢有九成抓得到；4 小時訊號交易少，只能排除約 55% 以上。</li>
+<li>第 2 項：約 55% 的優勢幾乎一定抓得到；52.5% 約有三分之一會漏掉。</li>
+<li>第 3 項：約 55% 的優勢大約四分之三抓得到；52.5% 幾乎看不到。美股三大指數走勢高度相關，三個加起來接近一個市場。</li>
+</ul>
+<p><strong>這個研究說明什麼</strong>。用市場狀態切換指標，並沒有讓指標變準。</p>
+<h2 id="每個研究排除了什麼">每個研究排除了什麼</h2>
+<p>把上面的數字放在一起（勝率都假設賺賠一樣大）。比表中更小的優勢都無法判定；限價單那一步沒有事先量能看得見多小的效果，所以不列入：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="每個研究排除了什麼（表格）"><table class="data-table"><thead><tr><th>研究</th><th>可以排除</th></tr></thead><tbody><tr><td>熱門指標：訊號後走勢</td><td>15 點以上的走勢差別</td></tr><tr><td>熱門指標：持有 4 小時</td><td>約 54%（單一策略）、57%（整批）以上</td></tr><tr><td>SuperTrend 狀態</td><td>只有很大的優勢</td></tr><tr><td>高低波動下的指標</td><td>約 52.5%（1 小時）、55%（4 小時）以上</td></tr><tr><td>日線規則</td><td>約 55% 以上</td></tr><tr><td>日內規則</td><td>55% 的大部分</td></tr></tbody></table></div>
+<p>所以「沒有找到」的意思，在不同研究裡差別很大。最嚴的一端排除了約 52.5% 以上的優勢，最鬆的只排除很大的優勢。更小的優勢可能存在，但在這樣的資料與成本下，它既無法被證明，也很難拿來交易。</p>
+<h2 id="把結果整理成四個原因">把結果整理成四個原因</h2>
+<p>只靠價格在短週期上決定買賣方向的策略，有四個結構性的困難。</p>
+<h3 id="原因一日線以上交易太少">原因一：日線以上，交易太少</h3>
+<p>回到擲硬幣的表：勝率 52.5% 需要約 2,500 筆。把它換成年數（同樣假設賺賠一樣大）：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="原因一：日線以上，交易太少（表格）"><table class="data-table"><thead><tr><th>真實勝率</th><th class="num">每年 12 筆</th><th class="num">每年 50 筆</th><th class="num">每年 250 筆</th><th class="num">每年 1,000 筆</th></tr></thead><tbody><tr><td>51%</td><td class="num">1,289 年</td><td class="num">309 年</td><td class="num">62 年</td><td class="num">15 年</td></tr><tr><td>52.5%</td><td class="num">206 年</td><td class="num">49 年</td><td class="num">10 年</td><td class="num">2.5 年</td></tr><tr><td>55%</td><td class="num">52 年</td><td class="num">12 年</td><td class="num">2.5 年</td><td class="num">0.6 年</td></tr></tbody></table></div>
+<p>日線的指標策略落在表的左邊。黃金交叉用日線一年只出現一兩次；就算放到 1 小時 K 線，八年也只有 73 到 274 筆。這種策略的回測可以很漂亮，因為只要抓到少數幾段大行情就夠了，但那幾筆無法和運氣分開。我們手上的資料是 4 到 8 年。</p>
+<p>這張表是單一市場、只測一個策略時的數字。有兩件事會改變它：試的參數越多，碰巧好看的機會越大，需要的年數要再乘上將近三倍；反過來，同時在很多個走勢不相關的市場上看，每年的筆數就多了好幾倍。後面談長週期的趨勢時會用到第二點。</p>
+<h3 id="原因二短週期成本吃掉需要的優勢">原因二：短週期，成本吃掉需要的優勢</h3>
+<p>照上面的表，交易越頻繁越快能證明，那做短線應該比較容易才對。問題是持有時間越短，每筆的賺賠越小，可是來回的成本（點差與手續費）每筆都一樣。</p>
+<p>用研究一的實測：持有四小時，每筆損益的起伏大約是 0.38 個波動單位（NAS100 約 114 點）。US100 的來回成本約 6 點，等於每筆都先輸 0.02 個單位。換成勝率，持有四小時的策略要 52.6% 才能打平（假設賺賠一樣大）。持有時間更短時：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="原因二：短週期，成本吃掉需要的優勢（表格）"><table class="data-table"><thead><tr><th>持有時間</th><th class="num">每筆起伏（NAS100 點數）</th><th class="num">打平需要的勝率</th></tr></thead><tbody><tr><td>15 分鐘</td><td class="num">約 28 點</td><td class="num">約 60%</td></tr><tr><td>1 小時</td><td class="num">約 57 點</td><td class="num">約 55%</td></tr><tr><td>4 小時（實測）</td><td class="num">約 114 點</td><td class="num">約 52.6%</td></tr><tr><td>1 天</td><td class="num">約 270 點</td><td class="num">約 51%</td></tr><tr><td>5 天</td><td class="num">約 610 點</td><td class="num">約 50.5%</td></tr></tbody></table></div>
+</div><div class="callout"><strong>這張表怎麼來的：</strong><p>只有四小時那一列是實測，其他列假設價格起伏和持有時間的平方根成正比（持有時間變四分之一，起伏變一半）。實際上一天之內的波動並不平均：美股開盤時段每 15 分鐘的起伏比平均大，打平需要的勝率較低；清淡的時段則更高，見〈<a href="/zh-tw/posts/intraday-session-weighted-atr/">ATR 要不要依時段加權？</a>〉。成本是我們對一家券商 US100 的估計，換券商或商品會不同。</p></div>
+<div class="prose"><p>持有 15 分鐘的策略，平均要六成勝率才只是不賠。六成勝率是非常強的訊號；如果價格裡真的藏著這麼強、又能用公開公式算出來的規律，很難想像它還沒被交易掉。</p>
+<p>兩端合起來看：</p>
+<ul>
+<li><strong>日線以上</strong>：成本影響很小，但交易太少，單一市場要幾十年以上的資料才分得出實力和運氣。</li>
+<li><strong>一小時以下</strong>：交易夠多，但成本影響很大，需要的勝率高到不合理。</li>
+<li><strong>中間（持有數小時）</strong>：每年數百筆、成本影響中等，打平就需要一個好訊號；我們測的訊號沒有一個到這個程度。</li>
+</ul>
+<p>研究一正好落在中間：筆數夠多，足以看出 15 點的走勢差別，但訊號能多拿到的只有個位數到十幾點，和成本差不多大。</p>
+<h3 id="原因三說不出原因的規律很難相信它會延續">原因三：說不出原因的規律，很難相信它會延續</h3>
+<p>很多短線策略說自己捕捉的是「市場的短期波動」。如果那些波動只是雜訊，也就是沒有原因的隨機起伏，那麼在裡面找到的規律，沒有理由在下一段時間重複出現。</p>
+<p>有原因不是規律存在的必要條件，規律可以先被發現、後被解釋。但原因是我們相信它在沒看過的資料上會延續的主要依據。原因也可以藏在價格裡：例如市場對消息反應不足，價格的趨勢就會延續，長週期的動能常被這樣解釋。</p>
+<p>我們測的短週期指標訊號，難在兩件事同時成立。第一，說不出是誰、為什麼要在這個時間點這樣交易。第二，它們有最多可以挑的參數：試 12 組參數、5 種停損、5 種停利，就有 300 種組合，其中一定有幾種在這段歷史上特別好看。沒有原因、又有很多可挑的組合，挑出來的多半是那段歷史的形狀。研究二量到的就是這件事。</p>
+<p>學術上也有同樣的例子。Brock、Lakonishok 與 LeBaron（1992）發現，道瓊指數上的簡單均線與突破規則在 1897 到 1986 年有效；Sullivan、Timmermann 與 White（1999）修正了「從很多規則裡挑最好的」帶來的偏誤，並看 1987 年之後的資料，最好的規則沒有延續。</p>
+<h3 id="原因四大盤的漲幅看起來像優勢">原因四：大盤的漲幅看起來像優勢</h3>
+<p>研究一裡，做多的 68 個策略有 53 個賺錢，做空的只有 22 個。不是做多的訊號比較準，而是指數在漲。任何做多的規則都會分到漲幅，回測看起來就像策略有效。</p>
+<p>分辨的方法只有一個：和同樣持有時間的單純持有比。比完之後贏的剛好一半。</p>
+<h2 id="只用價格也有證據的地方長週期多市場的趨勢">只用價格也有證據的地方：長週期、多市場的趨勢</h2>
+<p>學術研究裡有一類只用價格決定方向、證據相當扎實的策略：時間序列動能（time-series momentum），也就是一般說的趨勢跟隨。做法很簡單：一個市場過去一年漲了就做多、跌了就做空，持有一個月左右再重新判斷。Moskowitz、Ooi 與 Pedersen（2012）在幾十個股價指數、債券、外匯與商品期貨上看到這個效果；Hurst、Ooi 與 Pedersen（2017）把資料往回延伸到 1880 年，每個年代平均都為正。</p>
+<p>這和本文的結論不衝突，反而可以用原因一解釋：</p>
+<ul>
+<li><strong>週期是月，不是小時</strong>：每個市場一年只交易十幾次。照原因一的表，即使每筆達到「很強」的 55% 勝率，單一市場也要約 52 年才讀得出來。</li>
+<li><strong>它能被證明，靠的是廣度與長度</strong>：幾十個走勢不太相關的市場一起看，每年的有效筆數多了好幾十倍，再加上一百多年的資料。</li>
+<li><strong>我們的資料做不到</strong>：我們的商品是幾個高度相關的股價指數 CFD 加黃金，資料 4 到 8 年；測過的日線規則每次持有一天，不是一個月。所以我們沒有測過這種策略，本文的結論也不涵蓋它。</li>
+</ul>
+<p>這類研究也有自己的限制。學術上的歷史績效是很多市場合起來的組合，個別市場和個別年代起伏很大，也要扣掉期貨換月、成本與實際執行的差異。它說明的是「只用價格不必然沒有方向資訊」，不是「任何一條趨勢規則都能賺錢」。</p>
+<h2 id="價格資料能預測什麼波動的大小">價格資料能預測什麼：波動的大小</h2>
+<p>價格資料能穩定預測的，是波動的大小。研究三裡的高波動標記：被標為高波動之後，接下來 5 個交易日的每日高低範圍，美股四大指數平均大 27.7%，黃金大 39.3%。在沒有參與挑選的 2026 年，分別是 31% 與 71%，同樣成立。</p>
+<p>也就是說，最近波動大，接下來通常也大。這有說得出來的原因（消息與不確定性不會一天就消化完），在沒看過的資料上也成立。但它預測的是「會動多少」，不是「往哪邊動」。所以我們這樣使用技術指標：</p>
+<ul>
+<li><strong>設定距離</strong>（用）：停損、停利放在幾倍的每日波動之外。</li>
+<li><strong>決定部位</strong>（用）：波動大時縮小部位，讓每筆承擔的風險接近。</li>
+<li><strong>描述狀態</strong>（用）：在報告裡分開看高波動與低波動時的績效。</li>
+<li><strong>決定方向</strong>（短週期不用）：指標出現訊號就買或賣。</li>
+</ul>
+<h2 id="對照有原因的想法也一樣難">對照：有原因的想法也一樣難</h2>
+<p>同一段期間我們也測了 45 條不是從價格型態出發的想法。它們的依據是「某些人在已知的時間必須交易」：選擇權到期、月底基金調整部位、黃金與外匯的定價時段、指數成分股調整。</p>
+<p>45 條裡有 1 條站住：每月選擇權到期日，美股開盤時放空 NAS100、持有一小時，見〈<a href="/zh-tw/posts/nas100-opex-day-short/">選擇權到期日開盤放空 NAS100</a>〉。它的資訊來自日曆，K 線上看不到「今天是到期日」。</p>
+<p>但它也有限制。這個時段最早是在同一份資料的掃描裡找到的，屬於事後發現；2026 年的讀取也是在已知方向之後做的。所以它還不是一個事先提出、再被驗證的訊號，扣成本後利潤也很薄，仍在累積規則定案之後的紀錄。</p>
+<p>這個對照說明的是：有原因的想法比較值得花時間，但要過同樣的檢驗；45 條只留下 1 條，而且還是事後發現，門檻本來就很高。</p>
+<h2 id="自己怎麼檢查一個指標策略的回測">自己怎麼檢查一個指標策略的回測</h2>
+<p>看到任何一個「回測績效很好」的技術指標策略，可以問這六個問題：</p>
+<ol>
+<li><strong>總共幾筆交易</strong>？少於幾百筆，再好看的勝率都可能是運氣。對照上面擲硬幣的表。</li>
+<li><strong>試過幾組參數</strong>？只給你看最好的那一組，等於從很多枚硬幣裡挑出剛好連續出現正面的那一枚。</li>
+<li><strong>有沒有一段規則定案後才看的資料</strong>？沒有的話，整份回測都是挑選期，好看是預期中的事。</li>
+<li><strong>和單純持有比過嗎</strong>？做多的策略在上漲的市場賺錢，不需要任何訊號。</li>
+<li><strong>扣成本了嗎？每筆平均賺多少</strong>？每筆平均賺的如果和點差差不多大，實際交易很可能是負的。</li>
+<li><strong>說得出為什麼可能持續嗎</strong>？說不出原因不代表一定沒有，但這時候更需要沒看過的資料來確認。</li>
+</ol>
+<p>SuperTrend 的 10 策略組合在第 1、2、4、5 題都有好答案，第 3 題的答案是虧損，回頭看第 6 題，一開始就答不出來。</p>
+<h2 id="這對我們的研究方向代表什麼">這對我們的研究方向代表什麼</h2>
+<ol>
+<li><strong>短週期、少數相關市場、只靠價格指標決定方向的研究，暫停</strong>。持有數分鐘到數天、在幾個走勢相關的市場上，我們的資料與成本讀不出合理大小的優勢。這是資料條件的限制，不是對所有價格訊號的判決。</li>
+<li><strong>長週期的趨勢是另一個問題</strong>。以月為單位的趨勢跟隨需要很多低相關的市場和很長的資料；要做，先準備好那樣的資料，再照原因一算讀不讀得出來。</li>
+<li><strong>新的想法優先找價格以外的資訊，或說得出來的原因</strong>。日曆、跨市場的資金流、其他商品的狀態，都比同一份價格的另一種算法有機會；同樣要過一樣的檢驗。</li>
+<li><strong>動手之前先算分不分得出來</strong>。用每年大概幾筆、可能的優勢多大，先估需要幾年；估出來分不出來就不開始。</li>
+<li><strong>沒找到，要說清楚排除了什麼</strong>。每個研究各寫它能排除的範圍，像上面那張表。</li>
+</ol>
+<h2 id="延伸閱讀">延伸閱讀</h2>
+<ul>
+<li>Brock, Lakonishok &amp; LeBaron (1992), <a href="https://doi.org/10.1111/j.1540-6261.1992.tb04681.x">Simple Technical Trading Rules and the Stochastic Properties of Stock Returns</a>, <em>The Journal of Finance</em>.</li>
+<li>Sullivan, Timmermann &amp; White (1999), <a href="https://doi.org/10.1111/0022-1082.00163">Data-Snooping, Technical Trading Rule Performance, and the Bootstrap</a>, <em>The Journal of Finance</em>.</li>
+<li>Park &amp; Irwin (2007), <a href="https://doi.org/10.1111/j.1467-6419.2007.00519.x">What Do We Know About the Profitability of Technical Analysis?</a>, <em>Journal of Economic Surveys</em>.</li>
+<li>Moskowitz, Ooi &amp; Pedersen (2012), <a href="https://doi.org/10.1016/j.jfineco.2011.11.003">Time Series Momentum</a>, <em>Journal of Financial Economics</em>.</li>
+<li>Hurst, Ooi &amp; Pedersen (2017), <a href="https://doi.org/10.3905/jpm.2017.44.1.015">A Century of Evidence on Trend-Following Investing</a>, <em>The Journal of Portfolio Management</em>.</li>
+<li>Bailey, Borwein, López de Prado &amp; Zhu (2017), <a href="https://doi.org/10.21314/JCF.2016.322">The Probability of Backtest Overfitting</a>, <em>Journal of Computational Finance</em>.</li>
+</ul>
+</div><div class="callout callout--warning"><strong>這篇的限制：</strong><p>測過的商品是股價指數與黃金的 CFD，期間 2018 到 2026 年，持有時間從數分鐘到數天；個股、加密貨幣、交易所期貨與以月為單位的持有沒有測。CFD 的成交量是券商報價跳動的次數，不是交易所的實際成交量，所以 OBV、VWAP、Volume Profile 這類以成交量為主的指標不在測過的清單裡。我們也沒有測過把多個指標當成模型輸入的做法。「勝率」的說法都假設賺和賠一樣大，表裡的數字是用來說明量級的。所有結論都受交易筆數限制，每個研究能排除的範圍不同，見「每個研究排除了什麼」。這些是回測，不是實際交易紀錄，也不是投資建議。</p></div>
+<section class="question-section" aria-labelledby="goals-title"><h2 class="question-section-title" id="goals-title">這篇研究要回答的問題</h2><div class="question-item"><h3 class="question-item-title">只用價格算出來的技術指標，能不能預測漲跌方向？</h3><div class="question-item-answer"><p>在我們測過的範圍裡沒有被證明：持有數分鐘到數天、股價指數與黃金的 CFD、2018 到 2026 年。34 個熱門指標的預設訊號、768 個 SuperTrend 候選策略、高低波動下的 10 個指標訊號，以及日線與日內的價格規則，沒有一個在對照組、單純持有的比較與驗證期之後還站得住；能排除的大約是勝率 52.5% 到 57% 以上的優勢，依研究而不同。以月為單位、跨幾十個市場的趨勢跟隨，學術上有正面的證據，我們沒有測。</p></div></div><div class="question-item"><h3 class="question-item-title">為什麼日線策略和短線策略都很難證明？</h3><div class="question-item-answer"><p>原因不同。日線以上的策略交易太少：每年 12 到 50 筆時，一個勝率 52.5% 的好訊號，在單一市場上要 49 到 206 年的資料才分得出實力和運氣。一小時以下的策略筆數夠，但每筆賺賠小、成本固定：持有 15 分鐘時，平均大約要六成勝率才能打平成本。</p></div></div><div class="question-item"><h3 class="question-item-title">技術指標還有什麼用？</h3><div class="question-item-answer"><p>用來量波動。最近波動大，接下來通常也大，這在挑選期與 2026 年都成立。所以我們用每日波動來設定停損、停利的距離與部位大小。</p></div></div></section>
+<section class="question-section" aria-labelledby="arising-title"><h2 class="question-section-title" id="arising-title">研究中衍生的問題</h2><div class="question-item"><h3 class="question-item-title">回測明明賺錢，為什麼不算證據？</h3><div class="question-item-answer"><p>三個常見的來源都會讓沒有優勢的策略在回測裡賺錢：在同一段歷史上挑參數、做多策略分到大盤的漲幅、交易太少時幾筆大行情的運氣。分辨的方法是規則定案後看一段沒看過的資料、和單純持有比、先確認交易筆數夠不夠。SuperTrend 的 10 策略組合在挑選期賺錢，但訊號本身在挑選期就接近 0，驗證期也虧損。</p></div></div><div class="question-item"><h3 class="question-item-title">趨勢跟隨也只用價格，為什麼它有證據？</h3><div class="question-item-answer"><p>因為它的週期是月，而且在幾十個走勢不太相關的市場上、一百多年的資料裡看。單一市場一年只有十幾筆交易，讀不出來；很多市場一起看，有效筆數多了好幾十倍。這正好是原因一的另一面：同樣只用價格，證據強不強，取決於筆數、市場的廣度和資料的長度。</p></div></div><div class="question-item"><h3 class="question-item-title">把很多個指標組合起來會不會有效？</h3><div class="question-item-answer"><p>我們沒有測過。把指標當成模型的輸入，有時比直接用原始價格更容易學到結構。但同一份價格算出來的指標彼此高度相似，例如 MACD 本身就是兩條均線的差；組合越多，可以挑的也越多。所以這類研究更需要事先固定做法，並用沒看過的資料檢驗。</p></div></div><div class="question-item"><h3 class="question-item-title">那什麼樣的訊號比較有機會？</h3><div class="question-item-answer"><p>背後有說得出來的原因、而且原因會持續存在的訊號。我們測的 45 條這類想法裡，站住的是選擇權到期日開盤放空 NAS100，依據是到期日的避險部位調整，資訊來自日曆。但它是事後發現的，扣成本後利潤很薄，每月只有一次，還在累積規則定案之後的紀錄。</p></div></div><div class="question-item"><h3 class="question-item-title">更長的資料或更多商品能解決交易太少的問題嗎？</h3><div class="question-item-answer"><p>能，前提是商品之間的走勢不太相關，這也是趨勢跟隨的研究能成立的原因。美股幾個指數幾乎同漲同跌，加進來等於同一個商品算好幾次。把資料往回拉長也有代價：十幾年前的市場結構、交易成本與參與者都不同，越早的資料越難代表現在。</p></div></div></section><div class="section-head"><h2 id="method">方法與資料</h2></div><p class="section-lead">研究設定、資料與計算方式；重現研究用的識別字在資料來源。</p><div class="appendix"><div style="display:contents"><h3>更新紀錄</h3><div>2026-11-17 16:45　首次發布</div></div></div><div class="wide"><section class="related"><h2 class="related-title">相關研究</h2><div class="related-grid"><a class="card card-interactive post-card" href="/zh-tw/posts/fx-fixing-window-gotobi-london/"><div class="article-cover" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div><div class="post-card__body"><span class="eyebrow">USDJPY · EURUSD · SuperTrend</span><h3 class="post-card__title">外匯定盤的結構性流量：<wbr/>五十日東京定盤與月底倫敦定盤，<wbr/>原因知道了，<wbr/>空間夠嗎？</h3><span class="post-card__excerpt">五十日東京定盤和月底倫敦定盤是外匯市場裡少數「先知道原因」的事件：誰要換匯、什麼時候換、往哪個方向，都由制度決定。我們用當地時區，在定盤前固定時間進場、定盤後固定時間出場，和同一個星期幾的非事件日比較，2018 到 2025 年。五十日定盤前的上漲最多約 1 pip，而且 2022 年後幾乎消失；定盤後的回落平均約 3 pips，但集中在少數年份和月底；月底倫敦定盤的波動確實比較大，方向卻和理論相反；加上 SuperTrend 方向過濾也沒有幫助。這篇說明背後的原理、怎麼測、看到什麼，以及為什麼知道原因還不夠。</span><span class="post-card__meta"><span>2026-11-19 19:46</span><span>10 分鐘</span></span></div></a><a class="card card-interactive post-card" href="/zh-tw/posts/intraday-session-weighted-atr/"><div class="article-cover" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div><div class="post-card__body"><span class="eyebrow">NAS100 · ATR · SuperTrend</span><h3 class="post-card__title">日內波動有固定週期，<wbr/>ATR 要不要依時段加權？</h3><span class="post-card__excerpt">指數的波動在一天之內有固定的週期：美股開盤最大、亞洲時段最小。這篇用 NAS100 檢驗：把日線 ATR 依交易時段加權，能不能更貼近市場實際的波動？結論是要看決策的時間長度。一天以內，加權後描述波動的誤差少三成以上；跨日持有時，加權會自動平均回 1，和日線 ATR 沒有差別。文章說明原因，以及一天以內的策略該怎麼算單位。</span><span class="post-card__meta"><span>2026-11-04 16:17</span><span>10 分鐘</span></span></div></a><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">8 組參數 · 累積報酬為正</span><span class="cover-figure__value">8 / 8</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L14.29 33.00L28.57 40.76L42.86 40.78L57.14 42.15L71.43 68.54L85.71 68.91L100.00 70.08L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 98.00H100"></path><path class="sparkline__line" d="M0.00 2.00L14.29 33.00L28.57 40.76L42.86 40.78L57.14 42.15L71.43 68.54L85.71 68.91L100.00 70.08"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">US100.cash · NAS100 · 選擇權到期日 · 8 組參數 · 538 筆交易</span><h3 class="post-card__title"><a class="post-card__link" href="/zh-tw/posts/nas100-opex-day-short/">選擇權到期日開盤放空 NAS100：<wbr/>45 條假設裡唯一站住的訊號（OPEX day short）</a></h3><span class="post-card__excerpt">兩輪共 45 條事前登錄的結構性流量假設（收盤再平衡、月底、FOMC、財報夜、黃金與外匯定價、指數重組日）在美股指數 CFD 上只剩一條在家族層級站住：每月選擇權到期日（OPEX）紐約 09:30 放空 NAS100、持有一小時。這個窗口最早是在同一份資料的掃描裡找到的，所以標為事後。本文記錄這個基本訊號在 Pepperstone NAS100（2018 起）與 FTMO US100（2022 起）的表現、之後的延遲進場、停損與停利、成本、部位，以及凍結後對 2026 的一次讀取。</span><span class="post-card__meta"><span>2026-10-28 20:00</span><span>6 分鐘</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/zh-tw/posts/nas100-opex-day-short/">讀文章</a><a class="btn btn-ghost btn-sm" href="/zh-tw/posts/nas100-opex-day-short/?view=report">看報告</a></div></div></article></div></section></div><!-- island 外層加 div：astro-island 為 display: contents，否則引用區塊會被排進格線的側欄 --><div><script>(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value=="object"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event("astro:visible"));})();</script><astro-island uid="17EevC" prefix="r14" component-url="/_astro/index.DKisFm5J.js" component-export="Citation" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;引用本文&quot;],&quot;copyLabels&quot;:[0,{&quot;copy&quot;:[0,&quot;複製&quot;],&quot;copied&quot;:[0,&quot;已複製&quot;],&quot;failed&quot;:[0,&quot;無法複製&quot;]}],&quot;text&quot;:[0,&quot;TradePose Research（2026）。〈只用價格的技術指標，為什麼在短週期上很難證明有效：我們測過的範圍與學到的事〉TradePose Research Notes.&quot;],&quot;bibtex&quot;:[0,&quot;@article{tradepose2026ohlcvindicatorstrategylimits,\n  title   = {只用價格的技術指標，為什麼在短週期上很難證明有效：我們測過的範圍與學到的事},\n  author  = {TradePose Research},\n  journal = {TradePose Research Notes},\n  year    = {2026}\n}&quot;]}" ssr client="visible" opts="{&quot;name&quot;:&quot;Citation&quot;,&quot;value&quot;:true}" await-children><div class="citation"><div class="citation-title">引用本文</div><p class="citation-text">TradePose Research（2026）。〈只用價格的技術指標，為什麼在短週期上很難證明有效：我們測過的範圍與學到的事〉TradePose Research Notes.</p><div class="citation-code">@article{tradepose2026ohlcvindicatorstrategylimits,
+  title   = {只用價格的技術指標，為什麼在短週期上很難證明有效：我們測過的範圍與學到的事},
+  author  = {TradePose Research},
+  journal = {TradePose Research Notes},
+  year    = {2026}
+}<button type="button" class="btn btn-secondary btn-sm">複製</button></div></div><!--astro:end--></astro-island></div></div></main><footer class="site-footer"><div class="container"><div class="site-footer__grid"><div class="site-footer__brand"><span class="site-brand"><span class="site-brand__mark" aria-hidden="true"></span>TradePose</span><p class="site-footer__tagline">量化研究筆記：回測、統計與策略診斷。文中數字皆由文章附帶的回測統計產生。</p></div><div><h2 class="site-footer__title">研究</h2><ul><li><a href="/zh-tw/#research">研究目錄</a></li><li><a href="/zh-tw/#method">資料與計算說明</a></li><li><a href="/zh-tw/rss.xml">RSS</a></li></ul></div></div><div class="site-footer__legal"><span>© 2026 TradePose</span><span>研究內容不構成投資建議</span></div></div></footer><script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BflPKFW9.js"></script></body></html>

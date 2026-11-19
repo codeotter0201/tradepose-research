@@ -1,0 +1,233 @@
+<!DOCTYPE html><html lang="zh-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>外匯定盤的結構性流量：五十日東京定盤與月底倫敦定盤，原因知道了，空間夠嗎？｜TradePose Research</title><meta name="description" content="五十日東京定盤和月底倫敦定盤是外匯市場裡少數「先知道原因」的事件：誰要換匯、什麼時候換、往哪個方向，都由制度決定。我們用當地時區，在定盤前固定時間進場、定盤後固定時間出場，和同一個星期幾的非事件日比較，2018 到 2025 年。五十日定盤前的上漲最多約 1 pip，而且 2022 年後幾乎消失；定盤後的回落平均約 3 pips，但集中在少數年份和月底；月底倫敦定盤的波動確實比較大，方向卻和理論相反；加上 SuperTrend 方向過濾也沒有幫助。這篇說明背後的原理、怎麼測、看到什麼，以及為什麼知道原因還不夠。"><meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large"><link rel="canonical" href="https://research.tradepose.com/zh-tw/posts/fx-fixing-window-gotobi-london/"><link rel="alternate" hreflang="en" href="https://research.tradepose.com/en/posts/fx-fixing-window-gotobi-london/"><link rel="alternate" hreflang="zh-TW" href="https://research.tradepose.com/zh-tw/posts/fx-fixing-window-gotobi-london/"><link rel="alternate" hreflang="x-default" href="https://research.tradepose.com/en/posts/fx-fixing-window-gotobi-london/"><link rel="alternate" type="application/rss+xml" title="TradePose Research" href="/zh-tw/rss.xml"><meta property="og:site_name" content="TradePose Research"><meta property="og:locale" content="zh_TW"><meta property="og:locale:alternate" content="en_US"><meta property="og:type" content="article"><meta property="og:title" content="外匯定盤的結構性流量：五十日東京定盤與月底倫敦定盤，原因知道了，空間夠嗎？"><meta property="og:description" content="五十日東京定盤和月底倫敦定盤是外匯市場裡少數「先知道原因」的事件：誰要換匯、什麼時候換、往哪個方向，都由制度決定。我們用當地時區，在定盤前固定時間進場、定盤後固定時間出場，和同一個星期幾的非事件日比較，2018 到 2025 年。五十日定盤前的上漲最多約 1 pip，而且 2022 年後幾乎消失；定盤後的回落平均約 3 pips，但集中在少數年份和月底；月底倫敦定盤的波動確實比較大，方向卻和理論相反；加上 SuperTrend 方向過濾也沒有幫助。這篇說明背後的原理、怎麼測、看到什麼，以及為什麼知道原因還不夠。"><meta property="og:url" content="https://research.tradepose.com/zh-tw/posts/fx-fixing-window-gotobi-london/"><meta property="og:image" content="https://research.tradepose.com/og-default.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="外匯定盤的結構性流量：五十日東京定盤與月底倫敦定盤，原因知道了，空間夠嗎？"><meta name="twitter:description" content="五十日東京定盤和月底倫敦定盤是外匯市場裡少數「先知道原因」的事件：誰要換匯、什麼時候換、往哪個方向，都由制度決定。我們用當地時區，在定盤前固定時間進場、定盤後固定時間出場，和同一個星期幾的非事件日比較，2018 到 2025 年。五十日定盤前的上漲最多約 1 pip，而且 2022 年後幾乎消失；定盤後的回落平均約 3 pips，但集中在少數年份和月底；月底倫敦定盤的波動確實比較大，方向卻和理論相反；加上 SuperTrend 方向過濾也沒有幫助。這篇說明背後的原理、怎麼測、看到什麼，以及為什麼知道原因還不夠。"><meta name="twitter:image" content="https://research.tradepose.com/og-default.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"外匯定盤的結構性流量：五十日東京定盤與月底倫敦定盤，原因知道了，空間夠嗎？","description":"五十日東京定盤和月底倫敦定盤是外匯市場裡少數「先知道原因」的事件：誰要換匯、什麼時候換、往哪個方向，都由制度決定。我們用當地時區，在定盤前固定時間進場、定盤後固定時間出場，和同一個星期幾的非事件日比較，2018 到 2025 年。五十日定盤前的上漲最多約 1 pip，而且 2022 年後幾乎消失；定盤後的回落平均約 3 pips，但集中在少數年份和月底；月底倫敦定盤的波動確實比較大，方向卻和理論相反；加上 SuperTrend 方向過濾也沒有幫助。這篇說明背後的原理、怎麼測、看到什麼，以及為什麼知道原因還不夠。","articleSection":"研究方法","keywords":"外匯定盤, 五十日, Gotobi, 東京定盤, 倫敦定盤, WM/Reuters, 月底再平衡, USDJPY, EURUSD, 結構性流量, SuperTrend, 對照組, 驗證期","inLanguage":"zh-TW","datePublished":"2026-11-19T19:46:00+08:00","dateModified":"2026-11-19T19:46:00+08:00","image":"https://research.tradepose.com/og-default.png","url":"https://research.tradepose.com/zh-tw/posts/fx-fixing-window-gotobi-london/","mainEntityOfPage":"https://research.tradepose.com/zh-tw/posts/fx-fixing-window-gotobi-london/","author":{"@type":"Organization","name":"TradePose Research"},"publisher":{"@type":"Organization","name":"TradePose","url":"https://tradepose.com"}}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"研究","item":"https://research.tradepose.com/zh-tw/"},{"@type":"ListItem","position":2,"name":"外匯定盤的結構性流量：五十日東京定盤與月底倫敦定盤，原因知道了，空間夠嗎？","item":"https://research.tradepose.com/zh-tw/posts/fx-fixing-window-gotobi-london/"}]}</script><!-- data-init：第一次繪製前套用主題、計算模式與檢視；頁面轉場換頁後重新執行（<html> 的屬性換成新頁的） --><script data-init>try { const q = new URLSearchParams(location.search).get('theme'); if (q === 'light' || q === 'dark') sessionStorage.setItem('tp-theme', q); } catch {}
+try { const t = sessionStorage.getItem('tp-theme') ?? localStorage.getItem('tp-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; else if (t === 'system') delete document.documentElement.dataset.theme; } catch {}</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CYDbzu1r.js"></script><link rel="stylesheet" href="/_astro/Base.OLjrjMpp.css"><style>html[data-view=report] [data-view-panel=article],html[data-view=case] [data-view-panel=article]{display:none}
+</style></head><body><a class="skip-link" href="#main">跳到主要內容</a><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><header class="site-header site-header--article"><div class="container site-header__inner"><a class="site-brand" href="/zh-tw/"><span class="site-brand__mark" aria-hidden="true"></span><span class="site-brand__name">TradePose</span><span class="site-brand__sub">Research</span></a><div class="site-header__context"><astro-island uid="1ft2B0" prefix="r18" component-url="/_astro/index.i-83YKa-.js" component-export="PageContext" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;外匯定盤的結構性流量：五十日東京定盤與月底倫敦定盤，原因知道了，空間夠嗎？&quot;],&quot;followHeading&quot;:[0,true],&quot;labels&quot;:[0,{&quot;open&quot;:[0,&quot;打開目錄&quot;],&quot;contents&quot;:[0,&quot;目錄&quot;],&quot;close&quot;:[0,&quot;關閉&quot;]}]}" ssr client="load" opts="{&quot;name&quot;:&quot;PageContext&quot;,&quot;value&quot;:true}" await-children><div class="page-context"><span class="page-context__heading"><span class="page-context__title" title="外匯定盤的結構性流量：五十日東京定盤與月底倫敦定盤，原因知道了，空間夠嗎？">外匯定盤的結構性流量：五十日東京定盤與月底倫敦定盤，原因知道了，空間夠嗎？</span></span><span class="page-context__progress" aria-hidden="true" style="--progress:0"></span></div><!--astro:end--></astro-island></div><div class="site-header__actions"><astro-island uid="Z1FTJ9T" prefix="r19" component-url="/_astro/SiteSettings.DX80NSQG.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;zh-tw&quot;],&quot;modes&quot;:[1,[]],&quot;languages&quot;:[1,[[0,{&quot;href&quot;:[0,&quot;/en/posts/fx-fixing-window-gotobi-london/&quot;],&quot;lang&quot;:[0,&quot;en&quot;],&quot;name&quot;:[0,&quot;English&quot;],&quot;short&quot;:[0,&quot;EN&quot;],&quot;current&quot;:[0,false]}],[0,{&quot;href&quot;:[0,&quot;/zh-tw/posts/fx-fixing-window-gotobi-london/&quot;],&quot;lang&quot;:[0,&quot;zh-TW&quot;],&quot;name&quot;:[0,&quot;繁體中文&quot;],&quot;short&quot;:[0,&quot;中文&quot;],&quot;current&quot;:[0,true]}]]],&quot;views&quot;:[1,[]]}" ssr client="load" opts="{&quot;name&quot;:&quot;SiteSettings&quot;,&quot;value&quot;:true}" await-children><div class="settings-bar"><nav class="segmented settings-bar__item settings-bar__item--secondary" aria-label="語言"><a href="/en/posts/fx-fixing-window-gotobi-london/" lang="en" hrefLang="en" title="English">EN</a><a href="/zh-tw/posts/fx-fixing-window-gotobi-london/" lang="zh-TW" hrefLang="zh-TW" title="繁體中文" aria-current="page">中文</a></nav><button type="button" class="btn btn-ghost btn-sm btn-icon settings-bar__item settings-bar__item--secondary" aria-label="主題: 跟隨系統" title="主題: 跟隨系統 → 淺色"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="12" height="8.5" rx="1.25"></rect><path d="M5.5 14h5M8 11.5V14"></path></svg></button><button type="button" id="radix-_r19R_5_" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="btn btn-ghost btn-sm settings-menu" aria-label="設定" title="設定"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h6M12 5h1M3 11h1M7 11h6"></path><circle cx="10.5" cy="5" r="1.5"></circle><circle cx="5.5" cy="11" r="1.5"></circle></svg></button></div><!--astro:end--></astro-island></div></div></header><main id="main"><div class="article" data-view-panel="article"><div class="wide article-banner"><div class="article-cover article-cover--banner" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div></div><header class="article-header"><span class="category-chip">研究方法</span><h1 class="article-title visually-hidden">外匯定盤的結構性流量：<wbr/>五十日東京定盤與月底倫敦定盤，<wbr/>原因知道了，<wbr/>空間夠嗎？</h1><p class="article-dek"><p>大部分技術指標的困難在於：價格是結果，造成它的原因很多，而且分不開。外匯定盤不一樣，它的原因是制度：誰必須換匯、在哪個時刻用哪個價格成交、有時連方向都事先知道。這篇測兩個最常被提到的定盤事件：日本企業結算日的東京定盤（五十日，Gotobi），以及每月最後一個營業日的倫敦 WM/Reuters 定盤。每個商品都用定盤所在國家的時區，在定盤前固定時間進場、定盤後和收盤前各看一次，和同一個星期幾的非事件日比較。資料是 Pepperstone 的 USDJPY 與 EURUSD 15 分鐘 K 線，2018 年 3 月到 2025 年底；2026 年起保留作驗證，這次沒有讀。用詞見<a href="/zh-tw/posts/quant-research-glossary/">研究用詞表</a>。</p></p><dl class="article-meta"><div><dt>發布</dt><dd>2026-11-19 19:46</dd></div><div><dt>閱讀時間</dt><dd>10 分鐘</dd></div></dl></header><div><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value=="object"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};"requestIdleCallback"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event("astro:idle"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="1szcWA" prefix="r29" component-url="/_astro/ArticleToc.VhlXB6WE.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;zh-tw&quot;],&quot;items&quot;:[1,[[0,{&quot;id&quot;:[0,&quot;為什麼研究定盤先有原因再看結果&quot;],&quot;label&quot;:[0,&quot;為什麼研究定盤：先有原因，再看結果&quot;]}],[0,{&quot;id&quot;:[0,&quot;五十日東京定盤的原理&quot;],&quot;label&quot;:[0,&quot;五十日東京定盤的原理&quot;]}],[0,{&quot;id&quot;:[0,&quot;月底倫敦定盤的原理&quot;],&quot;label&quot;:[0,&quot;月底倫敦定盤的原理&quot;]}],[0,{&quot;id&quot;:[0,&quot;知道原因為什麼還不一定能賺錢&quot;],&quot;label&quot;:[0,&quot;知道原因，為什麼還不一定能賺錢&quot;]}],[0,{&quot;id&quot;:[0,&quot;怎麼測&quot;],&quot;label&quot;:[0,&quot;怎麼測&quot;]}],[0,{&quot;id&quot;:[0,&quot;結果一五十日定盤前的上漲最多約-1-pip&quot;],&quot;label&quot;:[0,&quot;結果一：五十日定盤前的上漲，最多約 1 pip&quot;]}],[0,{&quot;id&quot;:[0,&quot;結果二定盤後的回落平均有但不穩&quot;],&quot;label&quot;:[0,&quot;結果二：定盤後的回落，平均有，但不穩&quot;]}],[0,{&quot;id&quot;:[0,&quot;結果三月底倫敦定盤波動有方向相反&quot;],&quot;label&quot;:[0,&quot;結果三：月底倫敦定盤，波動有，方向相反&quot;]}],[0,{&quot;id&quot;:[0,&quot;結果四supertrend-方向過濾沒有幫助&quot;],&quot;label&quot;:[0,&quot;結果四：SuperTrend 方向過濾沒有幫助&quot;]}],[0,{&quot;id&quot;:[0,&quot;這份研究學到的事&quot;],&quot;label&quot;:[0,&quot;這份研究學到的事&quot;]}],[0,{&quot;id&quot;:[0,&quot;判定&quot;],&quot;label&quot;:[0,&quot;判定&quot;]}],[0,{&quot;id&quot;:[0,&quot;goals-title&quot;],&quot;label&quot;:[0,&quot;這篇研究要回答的問題&quot;]}],[0,{&quot;id&quot;:[0,&quot;arising-title&quot;],&quot;label&quot;:[0,&quot;研究中衍生的問題&quot;]}],[0,{&quot;id&quot;:[0,&quot;method&quot;],&quot;label&quot;:[0,&quot;方法與資料&quot;]}]]]}" ssr client="idle" opts="{&quot;name&quot;:&quot;ArticleToc&quot;,&quot;value&quot;:true}" await-children><nav class="toc toc--aside" aria-label="目錄"><div class="toc-title" aria-hidden="true">目錄</div><ol class="toc-list"><li class=""><a href="#為什麼研究定盤先有原因再看結果" aria-current="true">為什麼研究定盤：先有原因，再看結果</a></li><li class=""><a href="#五十日東京定盤的原理">五十日東京定盤的原理</a></li><li class=""><a href="#月底倫敦定盤的原理">月底倫敦定盤的原理</a></li><li class=""><a href="#知道原因為什麼還不一定能賺錢">知道原因，為什麼還不一定能賺錢</a></li><li class=""><a href="#怎麼測">怎麼測</a></li><li class=""><a href="#結果一五十日定盤前的上漲最多約-1-pip">結果一：五十日定盤前的上漲，最多約 1 pip</a></li><li class=""><a href="#結果二定盤後的回落平均有但不穩">結果二：定盤後的回落，平均有，但不穩</a></li><li class=""><a href="#結果三月底倫敦定盤波動有方向相反">結果三：月底倫敦定盤，波動有，方向相反</a></li><li class=""><a href="#結果四supertrend-方向過濾沒有幫助">結果四：SuperTrend 方向過濾沒有幫助</a></li><li class=""><a href="#這份研究學到的事">這份研究學到的事</a></li><li class=""><a href="#判定">判定</a></li><li class=""><a href="#goals-title">這篇研究要回答的問題</a></li><li class=""><a href="#arising-title">研究中衍生的問題</a></li><li class=""><a href="#method">方法與資料</a></li></ol></nav><!--astro:end--></astro-island></div>
+<div class="abstract"><div class="abstract-title">結論</div><p>原因是真的，空間不夠。五十日東京 08:00 到 10:00 做多 USDJPY，平均只比對照日多約 1 pip，8 年有 7 年為正但不顯著，而且 2018–2021 年還看得到、2022–2025 年幾乎沒有。定盤後 10:00 到 15:00 的回落比較清楚，平均多約 3 pips，是整份研究唯一通過多重比較校正的讀數；但只有 2019、2022 兩年真的強，2023 年反向，而且效果集中在月底和 25 日附近，去掉這些日子就不見了。月底倫敦定盤「當月美股上漲 → 賣美元」在 EURUSD 和 USDJPY 都是錯的方向，美元反而走強；那幾個小時的單邊走勢確實比平常大，只是方向和理論相反。用 1 小時 SuperTrend 的方向把交易分組，五十日的效果在多頭和空頭狀態下沒有差別。沒有一個候選留下足以覆蓋成本的空間。</p></div><p class="reading-split">以上是結論；以下每一節是一個主張的證據，可以從各節或證據連結進入策略報告，看全部參數組的數據。</p>
+<div class="prose"><h2 id="為什麼研究定盤先有原因再看結果">為什麼研究定盤：先有原因，再看結果</h2>
+<p>看一根長紅 K，說「因為買盤強」，是從結果倒推原因。價格上漲可以來自新聞、大戶、停損被掃、或單純沒有人賣，看到 10 不能斷定是 3 + 7。技術指標的根本困難就在這裡：它們都是從價格算出來的，沒辦法分辨背後是哪一種原因。</p>
+<p>有一類事件的順序是反過來的：原因由制度或合約決定，價格是否反應是可以檢驗的結果。外匯定盤是其中最常被提到的例子，因為它同時具備三件事：</p>
+<ul>
+<li><strong>誰要交易是已知的</strong>：企業付貨款、基金調整避險，都是必須做的交易，和價格高低無關。</li>
+<li><strong>什麼時候交易是已知的</strong>：定盤價在固定時刻計算，事件日期事先排好。</li>
+<li><strong>方向有時也推得出來</strong>：例如進口商付美元貨款，就要買美元。</li>
+</ul>
+<p>如果這三件事成立，價格在定盤前後應該留下可以重複看到的痕跡。這份研究要檢驗的就是這個痕跡夠不夠大、夠不夠穩。</p>
+<h2 id="五十日東京定盤的原理">五十日東京定盤的原理</h2>
+<p>日本企業習慣在每月 5、10、15、20、25、30 日和月底結算貨款，這些日子叫「五十日」（ごとび，Gotobi）。遇到假日就提前到前一個營業日。</p>
+<p>東京的銀行每天在 9:55 公布當天給客戶的匯率，稱為東京定盤。進口商要付的美元貨款，大多直接用這個價格向銀行買。結算日的買美元需求比平常多，銀行也事先知道。</p>
+<p>預期的價格路徑：</p>
+<ol>
+<li>銀行在定盤前先買進美元避險，USDJPY 在定盤前上漲。</li>
+<li>定盤後，這些預先建立的部位不再需要，價格回落。</li>
+</ol>
+<h2 id="月底倫敦定盤的原理">月底倫敦定盤的原理</h2>
+<p>WM/Reuters 定盤在倫敦時間 16:00 計算，全球的指數基金與資產管理公司大多用這個價格結算月底的匯率避險與再平衡。</p>
+<p>預期的機制：外國基金持有美國股票，同時用外匯避險鎖住匯率。當月美股上漲，美元資產變多，避險就不夠了，月底要再賣出美元補足。所以理論上，<strong>當月美股上漲時，月底定盤前美元走弱</strong>，反之亦然。</p>
+<h2 id="知道原因為什麼還不一定能賺錢">知道原因，為什麼還不一定能賺錢</h2>
+<p>就算機制完全正確，還有三個問題：</p>
+<ul>
+<li><strong>大家都知道</strong>：結構越公開，越多人提前卡位，效果會被提前、分散或壓平。</li>
+<li><strong>只看得到一邊</strong>：我們知道有人必須買，但不知道買多少，也不知道同時有沒有人必須賣。決定價格的是淨流量。</li>
+<li><strong>規模小</strong>：每天的外匯成交量非常大，一個時段的結算需求可能只推動幾 pips，和點差同一個量級。</li>
+</ul>
+<p>所以問題不是「有沒有這回事」，而是<strong>價格留下的空間是否夠大、夠穩，能在成本之後留下獲利</strong>。</p>
+<h2 id="怎麼測">怎麼測</h2>
+<ul>
+<li><strong>時區</strong>：USDJPY 的五十日測試用東京時間；月底測試的 EURUSD 和 USDJPY 用倫敦時間。日 K 也在當地午夜換日，波動單位才跟當地的交易日一致。</li>
+<li><strong>進出場</strong>：每個平日都在固定時間進場、固定時間出場，事件日和非事件日用完全相同的規則。
+<ul>
+<li>五十日：東京 08:00 做多 USDJPY，10:00（定盤後）和 15:00 各出場一次。</li>
+<li>月底：倫敦 14:00 依當月美股（NAS100）漲跌決定方向，美股漲就賣美元（買 EURUSD、賣 USDJPY），16:15（定盤後）和 20:30 各出場一次。20:30 離倫敦收盤還有一段緩衝。</li>
+</ul>
+</li>
+<li><strong>比較對象</strong>：事件日對同一個星期幾的非事件日。星期五本來就有自己的走法，拿五十日的星期五去比所有日子會混進星期效應。</li>
+<li><strong>單位</strong>：當地日 K 真實波幅（True Range）的 21 日簡單平均。USDJPY 約 0.73 日圓（約 73 pips），EURUSD 約 0.0063（約 63 pips）。下文的「單位」都指這個。</li>
+<li><strong>檢定</strong>：事件日減對照日的差，用 Welch t 與「在同一個星期幾內隨機指定事件日」1,000 次的置換檢定；同一個事件的幾個讀數做多重比較校正（Benjamini–Hochberg q）；另外植入已知大小的效果，估計這份樣本測得到多小的差。</li>
+<li><strong>事前登錄</strong>：事件日的定義、進出場時間、比較方式與放棄條件在讀結果前寫下。月底的資料先前另一份研究讀過，所以月底的結果只當描述。</li>
+</ul>
+<h2 id="結果一五十日定盤前的上漲最多約-1-pip">結果一：五十日定盤前的上漲，最多約 1 pip</h2>
+<p>08:00 → 10:00 做多，582 個五十日比對照日平均多 0.015 單位，約 1.1 pips。</p>
+<ul>
+<li>8 年有 7 年為正，但置換檢定 p 0.089，不顯著。</li>
+<li>2018–2021 年 t 2.2，2022–2025 年只剩 0.24：效果在變弱。</li>
+<li>這份樣本對 0.03 單位（約 2 pips）的效果有 84% 的機率測到。所以如果定盤前的上漲存在，它大約只有 1 pip。</li>
+</ul>
+<p>空間上，五十日的最大順向（MFE）中位數 0.155 單位、對照日 0.129；最大逆向（MAE）0.118 對 0.139。路徑稍微順一點，但差距約 2 pips，跟點差差不多。</p>
+<p>一路抱到 15:00 的整段交易反而比對照日差（excess t −1.38）：定盤前那一點漲幅，定盤後全吐回去。</p>
+<h2 id="結果二定盤後的回落平均有但不穩">結果二：定盤後的回落，平均有，但不穩</h2>
+<p>10:00 → 15:00 做空，五十日比對照日平均多 0.041 單位，約 3 pips。t 2.59，置換檢定 p 0.014，校正後 q 0.042，是整份研究唯一通過多重比較的讀數。</p>
+<p>它不是少數極端交易造成的：去掉頭尾各 2.5% 的交易，t 還是 2.92，中位數差也一樣是 0.044。以年為區塊重抽樣，90% 區間是 0.007 到 0.076 單位。</p>
+<p>拆開來看就不平均了。</p>
+<p><strong>年份</strong>：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="結果二：定盤後的回落，平均有，但不穩（表格）"><table class="data-table"><thead><tr><th>年份</th><th class="num">差（單位）</th><th class="num">t</th></tr></thead><tbody><tr><td>2018</td><td class="num">+0.010</td><td class="num">0.25</td></tr><tr><td>2019</td><td class="num">+0.098</td><td class="num">2.39</td></tr><tr><td>2020</td><td class="num">+0.010</td><td class="num">0.23</td></tr><tr><td>2021</td><td class="num">−0.005</td><td class="num">−0.13</td></tr><tr><td>2022</td><td class="num">+0.142</td><td class="num">2.60</td></tr><tr><td>2023</td><td class="num">−0.051</td><td class="num">−1.21</td></tr><tr><td>2024</td><td class="num">+0.056</td><td class="num">1.11</td></tr><tr><td>2025</td><td class="num">+0.065</td><td class="num">1.58</td></tr></tbody></table></div>
+<p>只有 2019 和 2022 兩年真的強，三年接近 0，一年反向。</p>
+<p><strong>日子</strong>：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="結果二：定盤後的回落，平均有，但不穩（表格）"><table class="data-table"><thead><tr><th>切法</th><th class="num">天數</th><th class="num">差（單位）</th><th class="num">t</th></tr></thead><tbody><tr><td>只有月底營業日</td><td class="num">84</td><td class="num">+0.138</td><td class="num">3.09</td></tr><tr><td>去掉月底</td><td class="num">498</td><td class="num">+0.025</td><td class="num">1.53</td></tr><tr><td>去掉月底與 23–25 日</td><td class="num">416</td><td class="num">+0.015</td><td class="num">0.84</td></tr></tbody></table></div>
+<p>效果幾乎都在月底和 25 日附近。這兩天是日本企業結算最集中的日子，機制上說得通；但這個切法是看了資料才找到的，用同一份資料再挑一次條件，數字一定會好看。如果要用，只能當成新的假設，用沒看過的資料驗證。</p>
+<h2 id="結果三月底倫敦定盤波動有方向相反">結果三：月底倫敦定盤，波動有，方向相反</h2>
+<p>「當月美股上漲 → 月底定盤前賣美元」在兩個貨幣對都是錯的方向：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="結果三：月底倫敦定盤，波動有，方向相反（表格）"><table class="data-table"><thead><tr><th>候選</th><th class="num">天數</th><th class="num">excess t</th></tr></thead><tbody><tr><td>EURUSD 14:00 → 16:15</td><td class="num">93</td><td class="num">−2.22</td></tr><tr><td>EURUSD 14:00 → 20:30</td><td class="num">92</td><td class="num">−2.71</td></tr><tr><td>USDJPY 14:00 → 16:15</td><td class="num">93</td><td class="num">−2.80</td></tr><tr><td>USDJPY 14:00 → 20:30</td><td class="num">92</td><td class="num">−2.65</td></tr></tbody></table></div>
+<p>實際是當月美股上漲時，月底美元走強。</p>
+<p>那幾個小時的單邊走勢確實比較大：事件日的最大逆向中位數 0.38–0.46 單位，平常只有 0.24–0.29。可以觀察到的事實是「月底定盤附近波動變大」，「往哪個方向」是理論的推論，而推論錯了。</p>
+<p>這段資料先前讀過，每年只有約 12 個月底，檢定力也低（0.05 單位的效果只有 25–34% 的機率測到），所以這個反向只是描述，不是新的訊號。</p>
+<h2 id="結果四supertrend-方向過濾沒有幫助">結果四：SuperTrend 方向過濾沒有幫助</h2>
+<p>用東京時間 1 小時 K 的 SuperTrend（ATR 10、倍數 3），取進場前最後一根完成 K 的方向，把五十日的交易分成多頭和空頭狀態，比較兩邊的事件效果。狀態序列整段循環平移 1,000 次作為對照，避免趨勢狀態本身的連續性造成假象。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="結果四：SuperTrend 方向過濾沒有幫助（表格）"><table class="data-table"><thead><tr><th>段落</th><th class="num">交互作用 t</th><th class="num">循環平移 p</th></tr></thead><tbody><tr><td>08:00 → 10:00 做多</td><td class="num">0.50</td><td class="num">0.63</td></tr><tr><td>10:00 → 15:00 做空</td><td class="num">0.39</td><td class="num">0.66</td></tr><tr><td>08:00 → 15:00 做多</td><td class="num">−0.04</td><td class="num">0.98</td></tr></tbody></table></div>
+<p>多頭狀態下的五十日看起來比較好（到定盤平均 +0.032 單位），但同一個狀態的非五十日也有 +0.012。那是趨勢狀態本身的延續，每天都一樣，和五十日無關。兩種狀態下的五十日效果方向相同，差異在雜訊範圍內。</p>
+<h2 id="這份研究學到的事">這份研究學到的事</h2>
+<ol>
+<li><strong>知道原因不等於能賺錢</strong>。五十日的機制是真的，方向也對，但價格只留下 1 到 3 pips，而且越來越小。越公開的結構，越早被別人搶先。</li>
+<li><strong>知道有人要買，不知道淨流量</strong>。月底定盤是最好的例子：理論說該賣美元，實際上美元走強。我們只看到一邊的需求。</li>
+<li><strong>把觀察到的事實和推論分開</strong>。月底波動變大是資料裡看得到的；方向是從機制推出來的。前者站得住，後者不成立。</li>
+<li><strong>平均顯著不等於穩定</strong>。定盤後回落的 t 2.59 看起來不錯，但它是兩個好年份和月底幾天撐起來的。</li>
+<li><strong>事後切出來的條件不能直接用</strong>。「只做月底五十日」t 3.09 很漂亮，正因為它是看完結果才找到的。</li>
+<li><strong>過濾器不會讓不存在的效果出現</strong>。SuperTrend 只是把本來就有的趨勢延續分到不同組，五十日本身的效果沒有變。</li>
+</ol>
+<h2 id="判定">判定</h2>
+<ul>
+<li><strong>五十日定盤前做多</strong>：不做。最多約 1 pip，而且在消失。</li>
+<li><strong>五十日定盤後做空</strong>：觀察，不交易。如果要追，就把「五十日 10:00 → 15:00 做空」原樣固定，月底只記錄、不篩選，用 2026 年起的資料驗證。每年約 74 筆，大概要一到兩年才看得出來。</li>
+<li><strong>月底倫敦定盤賣美元</strong>：不做。方向相反，而且資料已經讀過。</li>
+<li><strong>SuperTrend 方向過濾</strong>：不採用。</li>
+</ul>
+</div><div class="callout callout--warning"><strong>這篇的限制：</strong><p>只測了 Pepperstone 的 USDJPY 與 EURUSD，期間 2018 年 3 月到 2025 年底，結果是毛結果，沒有扣點差。進出場時間各只測了一組，沒有掃描。月底的資料先前讀過，只能當描述。2026 年起的資料保留作驗證，這次沒有讀。</p></div>
+<section class="question-section" aria-labelledby="goals-title"><h2 class="question-section-title" id="goals-title">這篇研究要回答的問題</h2><div class="question-item"><h3 class="question-item-title">五十日東京定盤前做多 USDJPY 有沒有效？</h3><div class="question-item-answer"><p>有一點，但太小。08:00 到 10:00 平均只比同一個星期幾的非五十日多約 1 pip，8 年有 7 年為正，但不顯著，而且 2022 年後幾乎消失。這份樣本能排除約 2 pips 以上的效果。</p></div></div><div class="question-item"><h3 class="question-item-title">五十日定盤後的回落是穩定的訊號嗎？</h3><div class="question-item-answer"><p>不是。平均約 3 pips，通過多重比較校正，也不是少數極端值造成的；但只有 2019、2022 兩年真的強，2023 年反向，效果集中在月底和 25 日附近，去掉這些日子就不見了。</p></div></div><div class="question-item"><h3 class="question-item-title">月底倫敦定盤可以按當月美股方向交易美元嗎？</h3><div class="question-item-answer"><p>在這份資料裡方向是相反的：當月美股上漲時，月底美元走強，不是走弱。那幾個小時的波動確實比平常大，但資料先前讀過、每年只有約 12 筆，只能當描述。</p></div></div></section>
+<section class="question-section" aria-labelledby="arising-title"><h2 class="question-section-title" id="arising-title">研究中衍生的問題</h2><div class="question-item"><h3 class="question-item-title">為什麼有明確原因的事件也賺不到錢？</h3><div class="question-item-answer"><p>因為原因公開、規模有限，而且我們只看得到一邊。大家都知道五十日要買美元，就會有人提前買、提前賣，效果被分散；同時可能有其他人必須賣美元，抵銷掉需求。價格只反映淨流量，結果剩下的空間和點差差不多。</p></div></div><div class="question-item"><h3 class="question-item-title">SuperTrend 這類趨勢過濾為什麼沒有加分？</h3><div class="question-item-answer"><p>過濾器能做的是把交易分組。多頭狀態下的五十日看起來比較好，是因為多頭狀態下每天都比較好，不是五十日在多頭時特別有效。要判斷過濾器有沒有用，要比較「同一個狀態下，事件日比非事件日多多少」，而不是只看事件日在哪個狀態下賺比較多。</p></div></div><div class="question-item"><h3 class="question-item-title">月底和 25 日的效果比較強，為什麼不直接只做那幾天？</h3><div class="question-item-answer"><p>因為這個條件是看了結果才找到的。在同一份資料上反覆切分，總會切出一組好看的數字。它可以當成新的假設寫下來，用規則固定之後才出現的資料驗證，不能拿同一份資料證明自己。</p></div></div></section><div class="section-head"><h2 id="method">方法與資料</h2></div><p class="section-lead">研究設定、資料與計算方式；重現研究用的識別字在資料來源。</p><div class="appendix"><div style="display:contents"><h3>更新紀錄</h3><div>2026-11-19 19:46　首次發布</div></div></div><div class="wide"><section class="related"><h2 class="related-title">相關研究</h2><div class="related-grid"><a class="card card-interactive post-card" href="/zh-tw/posts/ohlcv-indicator-strategy-limits/"><div class="article-cover" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div><div class="post-card__body"><span class="eyebrow">US100.cash · XAUUSD · NAS100</span><h3 class="post-card__title">只用價格的技術指標，<wbr/>為什麼在短週期上很難證明有效：<wbr/>我們測過的範圍與學到的事</h3><span class="post-card__excerpt">均線、MACD、RSI、SuperTrend 這些技術指標，都是用同一份價格算出來的。我們在股價指數與黃金上測過最常見的幾類，持有數分鐘到數天，沒有一個被證明能預測漲跌方向。這篇用白話說明我們怎麼測、看到什麼數字、每個研究能排除多大的優勢，以及背後的原因：日線以上交易太少，分不出實力和運氣；短週期每筆賺賠太小，成本吃掉需要的優勢；回測裡好看的結果多半來自挑參數和大盤的漲幅。文中也說明以月為單位、跨幾十個市場的趨勢跟隨為什麼是另一回事，以及價格能預測的波動大小。文末附一份檢查任何指標回測的清單。</span><span class="post-card__meta"><span>2026-11-17 16:45</span><span>23 分鐘</span></span></div></a><a class="card card-interactive post-card" href="/zh-tw/posts/intraday-session-weighted-atr/"><div class="article-cover" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div><div class="post-card__body"><span class="eyebrow">NAS100 · ATR · SuperTrend</span><h3 class="post-card__title">日內波動有固定週期，<wbr/>ATR 要不要依時段加權？</h3><span class="post-card__excerpt">指數的波動在一天之內有固定的週期：美股開盤最大、亞洲時段最小。這篇用 NAS100 檢驗：把日線 ATR 依交易時段加權，能不能更貼近市場實際的波動？結論是要看決策的時間長度。一天以內，加權後描述波動的誤差少三成以上；跨日持有時，加權會自動平均回 1，和日線 ATR 沒有差別。文章說明原因，以及一天以內的策略該怎麼算單位。</span><span class="post-card__meta"><span>2026-11-04 16:17</span><span>10 分鐘</span></span></div></a><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">8 組參數 · 累積報酬為正</span><span class="cover-figure__value">8 / 8</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L14.29 33.00L28.57 40.76L42.86 40.78L57.14 42.15L71.43 68.54L85.71 68.91L100.00 70.08L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 98.00H100"></path><path class="sparkline__line" d="M0.00 2.00L14.29 33.00L28.57 40.76L42.86 40.78L57.14 42.15L71.43 68.54L85.71 68.91L100.00 70.08"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">US100.cash · NAS100 · 選擇權到期日 · 8 組參數 · 538 筆交易</span><h3 class="post-card__title"><a class="post-card__link" href="/zh-tw/posts/nas100-opex-day-short/">選擇權到期日開盤放空 NAS100：<wbr/>45 條假設裡唯一站住的訊號（OPEX day short）</a></h3><span class="post-card__excerpt">兩輪共 45 條事前登錄的結構性流量假設（收盤再平衡、月底、FOMC、財報夜、黃金與外匯定價、指數重組日）在美股指數 CFD 上只剩一條在家族層級站住：每月選擇權到期日（OPEX）紐約 09:30 放空 NAS100、持有一小時。這個窗口最早是在同一份資料的掃描裡找到的，所以標為事後。本文記錄這個基本訊號在 Pepperstone NAS100（2018 起）與 FTMO US100（2022 起）的表現、之後的延遲進場、停損與停利、成本、部位，以及凍結後對 2026 的一次讀取。</span><span class="post-card__meta"><span>2026-10-28 20:00</span><span>6 分鐘</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/zh-tw/posts/nas100-opex-day-short/">讀文章</a><a class="btn btn-ghost btn-sm" href="/zh-tw/posts/nas100-opex-day-short/?view=report">看報告</a></div></div></article></div></section></div><!-- island 外層加 div：astro-island 為 display: contents，否則引用區塊會被排進格線的側欄 --><div><script>(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value=="object"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event("astro:visible"));})();</script><astro-island uid="Z1JE5LR" prefix="r14" component-url="/_astro/index.DKisFm5J.js" component-export="Citation" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;引用本文&quot;],&quot;copyLabels&quot;:[0,{&quot;copy&quot;:[0,&quot;複製&quot;],&quot;copied&quot;:[0,&quot;已複製&quot;],&quot;failed&quot;:[0,&quot;無法複製&quot;]}],&quot;text&quot;:[0,&quot;TradePose Research（2026）。〈外匯定盤的結構性流量：五十日東京定盤與月底倫敦定盤，原因知道了，空間夠嗎？〉TradePose Research Notes.&quot;],&quot;bibtex&quot;:[0,&quot;@article{tradepose2026fxfixingwindowgotobilondon,\n  title   = {外匯定盤的結構性流量：五十日東京定盤與月底倫敦定盤，原因知道了，空間夠嗎？},\n  author  = {TradePose Research},\n  journal = {TradePose Research Notes},\n  year    = {2026}\n}&quot;]}" ssr client="visible" opts="{&quot;name&quot;:&quot;Citation&quot;,&quot;value&quot;:true}" await-children><div class="citation"><div class="citation-title">引用本文</div><p class="citation-text">TradePose Research（2026）。〈外匯定盤的結構性流量：五十日東京定盤與月底倫敦定盤，原因知道了，空間夠嗎？〉TradePose Research Notes.</p><div class="citation-code">@article{tradepose2026fxfixingwindowgotobilondon,
+  title   = {外匯定盤的結構性流量：五十日東京定盤與月底倫敦定盤，原因知道了，空間夠嗎？},
+  author  = {TradePose Research},
+  journal = {TradePose Research Notes},
+  year    = {2026}
+}<button type="button" class="btn btn-secondary btn-sm">複製</button></div></div><!--astro:end--></astro-island></div></div></main><footer class="site-footer"><div class="container"><div class="site-footer__grid"><div class="site-footer__brand"><span class="site-brand"><span class="site-brand__mark" aria-hidden="true"></span>TradePose</span><p class="site-footer__tagline">量化研究筆記：回測、統計與策略診斷。文中數字皆由文章附帶的回測統計產生。</p></div><div><h2 class="site-footer__title">研究</h2><ul><li><a href="/zh-tw/#research">研究目錄</a></li><li><a href="/zh-tw/#method">資料與計算說明</a></li><li><a href="/zh-tw/rss.xml">RSS</a></li></ul></div></div><div class="site-footer__legal"><span>© 2026 TradePose</span><span>研究內容不構成投資建議</span></div></div></footer><script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BflPKFW9.js"></script></body></html>

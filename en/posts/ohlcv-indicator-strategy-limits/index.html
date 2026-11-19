@@ -1,0 +1,371 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Why price-only technical indicators are so hard to prove at short horizons: what we tested and what we learned | TradePose Research</title><meta name="description" content="Moving averages, MACD, RSI and SuperTrend are all computed from the same prices. We tested the most common kinds on stock indexes and gold, with holds from minutes to days, and none was shown to predict direction. This post explains in plain terms how we tested, what numbers we saw, how large an edge each study can rule out, and the reasons behind it: strategies on daily bars and above trade too rarely to tell skill from luck, short-horizon strategies win and lose so little per trade that cost consumes the edge they need, and good-looking backtests mostly come from choosing parameters and from the market's own rise. It also explains why trend following measured in months across dozens of markets is a different matter, and what price data does forecast: the size of volatility. A checklist at the end lets readers examine any indicator backtest themselves."><meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large"><link rel="canonical" href="https://research.tradepose.com/en/posts/ohlcv-indicator-strategy-limits/"><link rel="alternate" hreflang="en" href="https://research.tradepose.com/en/posts/ohlcv-indicator-strategy-limits/"><link rel="alternate" hreflang="zh-TW" href="https://research.tradepose.com/zh-tw/posts/ohlcv-indicator-strategy-limits/"><link rel="alternate" hreflang="x-default" href="https://research.tradepose.com/en/posts/ohlcv-indicator-strategy-limits/"><link rel="alternate" type="application/rss+xml" title="TradePose Research" href="/en/rss.xml"><meta property="og:site_name" content="TradePose Research"><meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_TW"><meta property="og:type" content="article"><meta property="og:title" content="Why price-only technical indicators are so hard to prove at short horizons: what we tested and what we learned"><meta property="og:description" content="Moving averages, MACD, RSI and SuperTrend are all computed from the same prices. We tested the most common kinds on stock indexes and gold, with holds from minutes to days, and none was shown to predict direction. This post explains in plain terms how we tested, what numbers we saw, how large an edge each study can rule out, and the reasons behind it: strategies on daily bars and above trade too rarely to tell skill from luck, short-horizon strategies win and lose so little per trade that cost consumes the edge they need, and good-looking backtests mostly come from choosing parameters and from the market's own rise. It also explains why trend following measured in months across dozens of markets is a different matter, and what price data does forecast: the size of volatility. A checklist at the end lets readers examine any indicator backtest themselves."><meta property="og:url" content="https://research.tradepose.com/en/posts/ohlcv-indicator-strategy-limits/"><meta property="og:image" content="https://research.tradepose.com/og-default.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Why price-only technical indicators are so hard to prove at short horizons: what we tested and what we learned"><meta name="twitter:description" content="Moving averages, MACD, RSI and SuperTrend are all computed from the same prices. We tested the most common kinds on stock indexes and gold, with holds from minutes to days, and none was shown to predict direction. This post explains in plain terms how we tested, what numbers we saw, how large an edge each study can rule out, and the reasons behind it: strategies on daily bars and above trade too rarely to tell skill from luck, short-horizon strategies win and lose so little per trade that cost consumes the edge they need, and good-looking backtests mostly come from choosing parameters and from the market's own rise. It also explains why trend following measured in months across dozens of markets is a different matter, and what price data does forecast: the size of volatility. A checklist at the end lets readers examine any indicator backtest themselves."><meta name="twitter:image" content="https://research.tradepose.com/og-default.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Why price-only technical indicators are so hard to prove at short horizons: what we tested and what we learned","description":"Moving averages, MACD, RSI and SuperTrend are all computed from the same prices. We tested the most common kinds on stock indexes and gold, with holds from minutes to days, and none was shown to predict direction. This post explains in plain terms how we tested, what numbers we saw, how large an edge each study can rule out, and the reasons behind it: strategies on daily bars and above trade too rarely to tell skill from luck, short-horizon strategies win and lose so little per trade that cost consumes the edge they need, and good-looking backtests mostly come from choosing parameters and from the market's own rise. It also explains why trend following measured in months across dozens of markets is a different matter, and what price data does forecast: the size of volatility. A checklist at the end lets readers examine any indicator backtest themselves.","articleSection":"Methodology","keywords":"technical indicators, does technical analysis work, moving average crossover, MACD, RSI, SuperTrend, trend following, time-series momentum, can backtests be trusted, sample size, trading costs, overfitting, validation period, control group, market benchmark","inLanguage":"en","datePublished":"2026-11-17T16:45:00+08:00","dateModified":"2026-11-17T16:45:00+08:00","image":"https://research.tradepose.com/og-default.png","url":"https://research.tradepose.com/en/posts/ohlcv-indicator-strategy-limits/","mainEntityOfPage":"https://research.tradepose.com/en/posts/ohlcv-indicator-strategy-limits/","author":{"@type":"Organization","name":"TradePose Research"},"publisher":{"@type":"Organization","name":"TradePose","url":"https://tradepose.com"}}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Research","item":"https://research.tradepose.com/en/"},{"@type":"ListItem","position":2,"name":"Why price-only technical indicators are so hard to prove at short horizons: what we tested and what we learned","item":"https://research.tradepose.com/en/posts/ohlcv-indicator-strategy-limits/"}]}</script><!-- data-init：第一次繪製前套用主題、計算模式與檢視；頁面轉場換頁後重新執行（<html> 的屬性換成新頁的） --><script data-init>try { const q = new URLSearchParams(location.search).get('theme'); if (q === 'light' || q === 'dark') sessionStorage.setItem('tp-theme', q); } catch {}
+try { const t = sessionStorage.getItem('tp-theme') ?? localStorage.getItem('tp-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; else if (t === 'system') delete document.documentElement.dataset.theme; } catch {}</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CYDbzu1r.js"></script><link rel="stylesheet" href="/_astro/Base.OLjrjMpp.css"><style>html[data-view=report] [data-view-panel=article],html[data-view=case] [data-view-panel=article]{display:none}
+</style></head><body><a class="skip-link" href="#main">Skip to main content</a><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();</script><header class="site-header site-header--article"><div class="container site-header__inner"><a class="site-brand" href="/en/"><span class="site-brand__mark" aria-hidden="true"></span><span class="site-brand__name">TradePose</span><span class="site-brand__sub">Research</span></a><div class="site-header__context"><astro-island uid="1nPSST" prefix="r18" component-url="/_astro/index.i-83YKa-.js" component-export="PageContext" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;Why price-only technical indicators are so hard to prove at short horizons: what we tested and what we learned&quot;],&quot;followHeading&quot;:[0,true],&quot;labels&quot;:[0,{&quot;open&quot;:[0,&quot;Open contents&quot;],&quot;contents&quot;:[0,&quot;Contents&quot;],&quot;close&quot;:[0,&quot;Close&quot;]}]}" ssr client="load" opts="{&quot;name&quot;:&quot;PageContext&quot;,&quot;value&quot;:true}" await-children><div class="page-context"><span class="page-context__heading"><span class="page-context__title" title="Why price-only technical indicators are so hard to prove at short horizons: what we tested and what we learned">Why price-only technical indicators are so hard to prove at short horizons: what we tested and what we learned</span></span><span class="page-context__progress" aria-hidden="true" style="--progress:0"></span></div><!--astro:end--></astro-island></div><div class="site-header__actions"><astro-island uid="ZiIlya" prefix="r19" component-url="/_astro/SiteSettings.DX80NSQG.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;en&quot;],&quot;modes&quot;:[1,[]],&quot;languages&quot;:[1,[[0,{&quot;href&quot;:[0,&quot;/en/posts/ohlcv-indicator-strategy-limits/&quot;],&quot;lang&quot;:[0,&quot;en&quot;],&quot;name&quot;:[0,&quot;English&quot;],&quot;short&quot;:[0,&quot;EN&quot;],&quot;current&quot;:[0,true]}],[0,{&quot;href&quot;:[0,&quot;/zh-tw/posts/ohlcv-indicator-strategy-limits/&quot;],&quot;lang&quot;:[0,&quot;zh-TW&quot;],&quot;name&quot;:[0,&quot;繁體中文&quot;],&quot;short&quot;:[0,&quot;中文&quot;],&quot;current&quot;:[0,false]}]]],&quot;views&quot;:[1,[]]}" ssr client="load" opts="{&quot;name&quot;:&quot;SiteSettings&quot;,&quot;value&quot;:true}" await-children><div class="settings-bar"><nav class="segmented settings-bar__item settings-bar__item--secondary" aria-label="Language"><a href="/en/posts/ohlcv-indicator-strategy-limits/" lang="en" hrefLang="en" title="English" aria-current="page">EN</a><a href="/zh-tw/posts/ohlcv-indicator-strategy-limits/" lang="zh-TW" hrefLang="zh-TW" title="繁體中文">中文</a></nav><button type="button" class="btn btn-ghost btn-sm btn-icon settings-bar__item settings-bar__item--secondary" aria-label="Theme: System" title="Theme: System → Light"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="12" height="8.5" rx="1.25"></rect><path d="M5.5 14h5M8 11.5V14"></path></svg></button><button type="button" id="radix-_r19R_5_" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="btn btn-ghost btn-sm settings-menu" aria-label="Settings" title="Settings"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h6M12 5h1M3 11h1M7 11h6"></path><circle cx="10.5" cy="5" r="1.5"></circle><circle cx="5.5" cy="11" r="1.5"></circle></svg></button></div><!--astro:end--></astro-island></div></div></header><main id="main"><div class="article" data-view-panel="article"><div class="wide article-banner"><div class="article-cover article-cover--banner" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div></div><header class="article-header"><span class="category-chip">Methodology</span><h1 class="article-title visually-hidden">Why price-only technical indicators are so hard to prove at short horizons: what we tested and what we learned</h1><p class="article-dek"><p>Moving averages, MACD, RSI, Bollinger Bands and SuperTrend all recalculate the same prices with different formulas. Over several months we tested the most common kinds with one method, and none was shown to predict which way the price goes next. That conclusion has a clear scope: strategies holding from minutes to days, a few closely correlated stock indexes and gold traded as contracts for difference (CFDs), 2018 to 2026; volume indicators were not tested. Outside that scope, for example trend following measured in months across dozens of markets, the academic evidence is different, and the post discusses it separately. No background in statistics is needed. The post starts with a coin flip to show how many trades it takes to prove a strategy works, then goes through each study, what we did, what numbers we saw and how large an edge it can rule out, and ends with four reasons and a checklist readers can use on any indicator backtest.</p></p><dl class="article-meta"><div><dt>Published</dt><dd>2026-11-17 16:45</dd></div><div><dt>Reading time</dt><dd>28 min read</dd></div></dl></header><div><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value=="object"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};"requestIdleCallback"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event("astro:idle"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="Zczlgx" prefix="r33" component-url="/_astro/ArticleToc.VhlXB6WE.js" component-export="default" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;locale&quot;:[0,&quot;en&quot;],&quot;items&quot;:[1,[[0,{&quot;id&quot;:[0,&quot;start-with-a-coin-flip&quot;],&quot;label&quot;:[0,&quot;Start with a coin flip&quot;]}],[0,{&quot;id&quot;:[0,&quot;how-we-tested-four-shared-practices&quot;],&quot;label&quot;:[0,&quot;How we tested: four shared practices&quot;]}],[0,{&quot;id&quot;:[0,&quot;study-1-34-popular-indicator-signals&quot;],&quot;label&quot;:[0,&quot;Study 1: 34 popular indicator signals&quot;]}],[0,{&quot;id&quot;:[0,&quot;study-2-a-supertrend-strategy-from-selection-to-validation&quot;],&quot;label&quot;:[0,&quot;Study 2: a SuperTrend strategy, from selection to validation&quot;]}],[0,{&quot;id&quot;:[0,&quot;study-3-would-indicators-be-more-accurate-in-a-different-market-state&quot;],&quot;label&quot;:[0,&quot;Study 3: would indicators be more accurate in a different market state?&quot;]}],[0,{&quot;id&quot;:[0,&quot;what-each-study-rules-out&quot;],&quot;label&quot;:[0,&quot;What each study rules out&quot;]}],[0,{&quot;id&quot;:[0,&quot;four-reasons-behind-the-results&quot;],&quot;label&quot;:[0,&quot;Four reasons behind the results&quot;]}],[0,{&quot;id&quot;:[0,&quot;where-price-alone-does-have-evidence-long-horizon-trends-across-many-markets&quot;],&quot;label&quot;:[0,&quot;Where price alone does have evidence: long-horizon trends across many markets&quot;]}],[0,{&quot;id&quot;:[0,&quot;what-price-data-does-forecast-the-size-of-volatility&quot;],&quot;label&quot;:[0,&quot;What price data does forecast: the size of volatility&quot;]}],[0,{&quot;id&quot;:[0,&quot;for-contrast-ideas-with-a-cause-are-just-as-hard&quot;],&quot;label&quot;:[0,&quot;For contrast: ideas with a cause are just as hard&quot;]}],[0,{&quot;id&quot;:[0,&quot;how-to-check-an-indicator-backtest-yourself&quot;],&quot;label&quot;:[0,&quot;How to check an indicator backtest yourself&quot;]}],[0,{&quot;id&quot;:[0,&quot;what-this-means-for-our-research-direction&quot;],&quot;label&quot;:[0,&quot;What this means for our research direction&quot;]}],[0,{&quot;id&quot;:[0,&quot;further-reading&quot;],&quot;label&quot;:[0,&quot;Further reading&quot;]}],[0,{&quot;id&quot;:[0,&quot;goals-title&quot;],&quot;label&quot;:[0,&quot;Questions this study answers&quot;]}],[0,{&quot;id&quot;:[0,&quot;arising-title&quot;],&quot;label&quot;:[0,&quot;Questions raised along the way&quot;]}],[0,{&quot;id&quot;:[0,&quot;method&quot;],&quot;label&quot;:[0,&quot;Method and data&quot;]}]]]}" ssr client="idle" opts="{&quot;name&quot;:&quot;ArticleToc&quot;,&quot;value&quot;:true}" await-children><nav class="toc toc--aside" aria-label="Contents"><div class="toc-title" aria-hidden="true">Contents</div><ol class="toc-list"><li class=""><a href="#start-with-a-coin-flip" aria-current="true">Start with a coin flip</a></li><li class=""><a href="#how-we-tested-four-shared-practices">How we tested: four shared practices</a></li><li class=""><a href="#study-1-34-popular-indicator-signals">Study 1: 34 popular indicator signals</a></li><li class=""><a href="#study-2-a-supertrend-strategy-from-selection-to-validation">Study 2: a SuperTrend strategy, from selection to validation</a></li><li class=""><a href="#study-3-would-indicators-be-more-accurate-in-a-different-market-state">Study 3: would indicators be more accurate in a different market state?</a></li><li class=""><a href="#what-each-study-rules-out">What each study rules out</a></li><li class=""><a href="#four-reasons-behind-the-results">Four reasons behind the results</a></li><li class=""><a href="#where-price-alone-does-have-evidence-long-horizon-trends-across-many-markets">Where price alone does have evidence: long-horizon trends across many markets</a></li><li class=""><a href="#what-price-data-does-forecast-the-size-of-volatility">What price data does forecast: the size of volatility</a></li><li class=""><a href="#for-contrast-ideas-with-a-cause-are-just-as-hard">For contrast: ideas with a cause are just as hard</a></li><li class=""><a href="#how-to-check-an-indicator-backtest-yourself">How to check an indicator backtest yourself</a></li><li class=""><a href="#what-this-means-for-our-research-direction">What this means for our research direction</a></li><li class=""><a href="#further-reading">Further reading</a></li><li class=""><a href="#goals-title">Questions this study answers</a></li><li class=""><a href="#arising-title">Questions raised along the way</a></li><li class=""><a href="#method">Method and data</a></li></ol></nav><!--astro:end--></astro-island></div>
+<div class="abstract"><div class="abstract-title">Conclusion</div><p>A strategy only has to be slightly better than a coin flip to make money, but “slightly better” takes a very large number of trades to separate from luck: about 2,500 trades for a strategy with a 52.5% win rate. Indicator strategies on daily bars and above make a dozen to a few dozen trades a year, which on a single market means decades to centuries of data. Short-horizon strategies trade often enough, but each trade wins or loses little and the round-trip cost takes a large share: a 15-minute hold needs a win rate of roughly 60% to break even. We tested 34 popular indicator signals, 768 SuperTrend candidate strategies, and rules based on volatility states, daily bars and intraday moves. The path after a signal shows no tradable difference from the path after an arbitrary moment. A 10-strategy portfolio that made USD 70,078 on history turned out, once split apart, to have a signal near 0 even in the selection period, with its profit coming from chosen exit parameters; after its rules were fixed it lost USD 2,564 in a new year. Depending on the study, what can be ruled out is an edge above roughly a 52.5% to 57% win rate; smaller edges cannot be judged. The same price data does forecast one thing, how large the next moves will be, so we use technical indicators for stop distances and position size.</p></div><p class="reading-split">That is the conclusion. Each section below is the evidence for one claim; follow the sections or the evidence links into the strategy report for the data on every parameter set.</p>
+<div class="prose"><h2 id="start-with-a-coin-flip">Start with a coin flip</h2>
+<p>Suppose someone hands you a coin and says it lands heads 52.5% of the time, not 50%. How many flips do you need to be sure they are telling the truth?</p>
+<p>100 flips are not enough. A perfectly fair coin flipped 100 times shows 55 or more heads about 18% of the time, so seeing 55 heads proves nothing. With few flips, the swings caused by luck are far larger than the 2.5 percentage points you are looking for.</p>
+<p>A trading strategy is the same problem. Each trade is one flip, and “having an edge” means the coin leans slightly your way. By professional standards, a win rate 1 to 2.5 percentage points above one half (when wins and losses are the same size) is already a useful to good signal, and 5 points above is very strong. To be 80% sure of telling such a coin from a fair one, you need this many flips:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Start with a coin flip (table)"><table class="data-table"><thead><tr><th>True win rate</th><th class="num">Trades needed</th></tr></thead><tbody><tr><td>51% (useful)</td><td class="num">about 15,500</td></tr><tr><td>52.5% (a good signal)</td><td class="num">about 2,500</td></tr><tr><td>55% (very strong)</td><td class="num">about 620</td></tr><tr><td>60%</td><td class="num">about 155</td></tr></tbody></table></div>
+<p>The whole post rests on this table. Every conclusion below comes down to how many trades were tested, and therefore how large an edge could be told apart.</p>
+<p>Win rate is only a convenient translation. A strategy whose wins and losses differ in size, say a 40% win rate that wins 3 for every 1 it loses, works the same way, measured instead by “mean result per trade ÷ swing per trade”; see the box below.</p>
+</div><div class="callout"><strong>For readers who want to do the arithmetic:</strong><p>Divide the mean result per trade by the standard deviation of the result per trade to get the “edge per trade”; with equal wins and losses it equals (win rate − 50%) × 2, so 51%, 52.5% and 55% correspond to 0.02, 0.05 and 0.10. Trades needed ≈ 6.19 ÷ the square of the edge per trade, for a one-sided 5% level, an 80% chance of detection and trades that are independent of each other. Real trades often cluster in the same stretch of market and are not independent, and returns have fat tails and volatility clustering, so the number needed only goes up.</p></div>
+<div class="prose"><h2 id="how-we-tested-four-shared-practices">How we tested: four shared practices</h2>
+<p>Every study ran on 15-minute bars in the TradePose backtest engine. The instruments are CFDs on the Nasdaq 100 index (NAS100 and US100 at two brokers), other stock indexes and gold, with data from 2018 or 2022. All studies share four practices, explained here so the numbers that follow are easy to read.</p>
+<p><strong>1. Every result is compared with a control group.</strong> “The price rose after the signal” does not show the signal works, because prices move anyway. So each signal has a control group: the same procedure applied at moments without a signal, for example the signal time shifted one to four hours later, or a random time on the same weekday and hour. For a signal to be useful, its result has to be clearly better than the control group’s. If the control group earns as much, the signal is not the reason for the profit.</p>
+<p><strong>2. Comparison with simply holding.</strong> Indexes rise over the long run, so any rule that buys and holds for a while takes a share of the rise. Each strategy is therefore also compared with holding in the same direction for the same time without looking at anything; see <a href="/en/posts/market-benchmarks/">Market benchmarks</a>.</p>
+<p><strong>3. A stretch of data left unread.</strong> Before a study starts, the final stretch (we use 2026) is set aside. All choices are made on the earlier data, the selection period. Only after the rules are fixed and written down is the final stretch opened, once: the validation period. Looking good in the selection period is easy, because the rules were chosen on that data; the validation period is the unseen exam.</p>
+<p><strong>4. First check that the method can see.</strong> A test that nothing passes may mean there really is nothing, or that the method is too coarse. So we “plant” signals of known strength in the real data: the direction of a share of the trades is replaced with the direction known afterwards to be right, the share sets the strength, and the same method is run to see whether it catches it. The strengths it catches are what the study can rule out; the ones it misses can only be called “cannot be judged”.</p>
+<p>Two more terms that recur:</p>
+<ul>
+<li><strong>Volatility unit</strong>: price swings differ a great deal between periods, so comparing in points is unfair. We divide each trade’s result by the mean daily high-to-low range of the last 72 trading days, which gives a number in units of volatility. On NAS100, 1 unit is about 300 points, so 0.05 units is about 15 points.</li>
+<li><strong>Testing many at once raises the bar</strong>: test 100 signals together and a few will look good by chance even if none works. So the standard for “good” in a batch is stricter than for a single test.</li>
+</ul>
+<h2 id="study-1-34-popular-indicator-signals">Study 1: 34 popular indicator signals</h2>
+<p><strong>What was tested.</strong> The signals taught in technical analysis textbooks and built into TradingView and MetaTrader, all with platform default parameters and no tuning. There are 17 families, each with one long and one short signal, 34 in total:</p>
+<ul>
+<li><strong>Moving averages</strong>: EMA 9/21 crossover, SMA 20/50 crossover, SMA 50/200 crossover (golden cross and death cross), close crossing SMA 20, close crossing EMA 200</li>
+<li><strong>Momentum</strong>: MACD signal line crossover, MACD crossing zero, RSI, Stochastic, CCI ±100</li>
+<li><strong>Channels and breakouts</strong>: outside the Bollinger Bands, Donchian 20-period breakout, SuperTrend flip, Ichimoku conversion and base line crossover</li>
+<li><strong>Price levels</strong>: break of the previous day’s high or low, opening range breakout, round numbers</li>
+</ul>
+<p>Signals were evaluated on 1-hour and 30-minute bars, on NAS100 (2018 to 2025) and US100 (2022 to 2025). 34 signals × 2 instruments × 2 timeframes = 136 strategies, with a median of about 960 trades each; the fewest, the golden cross, has 73 and the most has 3,227.</p>
+<p><strong>Step 1: is the path different after a signal?</strong> We measured how far the price travelled in the favorable direction and in the adverse direction within four hours of the signal, and compared with the control group (moments shifted one to four hours later, and random moments).</p>
+<ul>
+<li>Moving average crossovers and MACD: the path after the signal is no different from the control group.</li>
+<li>Price-level signals (outside a band, breakouts, previous-day high and low, round numbers): the path after the signal is indeed larger, but larger in both the favorable and the adverse direction. Prices are more active at these levels, yet nothing shows which way they will go. The extra that can be taken is a few points to a dozen.</li>
+</ul>
+<p>It was worked out before the study that every cell had enough signals to reveal a path difference of 15 points (0.05 volatility units), and no cell showed one.</p>
+<p><strong>Step 2: limit orders near the signal.</strong> Two common claims are that the price overshoots after a signal and then pulls back, or that it first takes out stops and then continues. We placed limit orders near the signals according to both claims and tried 2,304 combinations (signal, order distance, volatility condition, instrument). The result:</p>
+<ul>
+<li>No combination passed the batch threshold.</li>
+<li>The mean result per filled order was −0.007 to −0.011 volatility units, negative before any cost.</li>
+<li>The same orders placed at control-group moments earned almost exactly the same. The signal added nothing beyond the order structure itself.</li>
+</ul>
+<p><strong>Step 3: enter at the signal and hold for four hours.</strong> This is the most direct use, with no stop loss and no take profit.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Study 1: 34 popular indicator signals (table)"><table class="data-table"><thead><tr><th></th><th class="num">68 long</th><th class="num">68 short</th></tr></thead><tbody><tr><td>Positive total</td><td class="num">53</td><td class="num">22</td></tr><tr><td>Mean per trade (units)</td><td class="num">+0.011</td><td class="num">−0.004</td></tr><tr><td>Positive years (mean)</td><td class="num">64%</td><td class="num">40%</td></tr></tbody></table></div>
+<p>Long looks fine and short looks poor. But the index rose over this period, so the real question is whether these strategies beat simply being long (or short) for the same time.</p>
+<ul>
+<li>72 of the 136 strategies beat simply holding, exactly half, the same as a coin flip.</li>
+<li>Only 4 had a maximum drawdown smaller than simply holding (scaled to their time in the market).</li>
+<li>Only 2 made money in every year.</li>
+</ul>
+<p><strong>What it can rule out.</strong> Step 1 rules out path differences of 15 points or more. Step 2 did not work out in advance how small an effect it could see, so a small positive expectation is not ruled out. Step 3 is not a formal test; at its trade counts, a single strategy could reveal an edge above about a 54% win rate, and all 136 read together only above about 57%.</p>
+<p><strong>What this study shows.</strong> Popular indicator signals at default parameters show no visible directional edge over a four-hour horizon. The money the long strategies made came from the index rising, not from the signals.</p>
+<h2 id="study-2-a-supertrend-strategy-from-selection-to-validation">Study 2: a SuperTrend strategy, from selection to validation</h2>
+<p>The first study used default parameters only. The usual objection is that defaults obviously do not work, and that parameters have to be tuned and stops and targets added. The second study does exactly that, carefully.</p>
+<p><strong>What was tested.</strong> SuperTrend is a trend indicator: it draws a line above and a line below the price, both adjusted for volatility; a close above the upper line turns the state bullish and a close below the lower line turns it bearish. Our question: when SuperTrend is in a bullish (or bearish) state, can holding with it (or against it) during the US trading session produce a strategy steadier than simply holding?</p>
+<p>There were 768 candidates: US100 and gold, plus the same two instruments at another broker, 192 per instrument (1-hour and 4-hour indicator × closing the same day or holding overnight × four ways of using the state × 12 sets of indicator parameters).</p>
+<p><strong>How they were chosen.</strong> The selection period is March 2022 to the end of 2025; the validation period is January to October 2026. Within the selection period, in order:</p>
+<ol>
+<li>Look first at the version with the signal alone and no exit rules (we call it the “root”), and screen out the ones that fail against the control group and against simply holding. Of 768, 50 remained, in 13 groups.</li>
+<li>For those, add the entry method, stop loss, take profit, breakeven and trailing stop one layer at a time, keeping only settings that improve on the previous layer and whose neighbouring parameters are just as good.</li>
+<li>Subtract costs (6 points round trip on US100, USD 0.60 per ounce on gold), check the correlation between strategies, and set the position size.</li>
+</ol>
+<p>The result was a portfolio of 10 strategies. Up to this point every safeguard had been applied: hypotheses written in advance, control groups, neighbouring parameters required to be good, costs subtracted, no compounding.</p>
+<p><strong>Result:</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Study 2: a SuperTrend strategy, from selection to validation (table)"><table class="data-table"><thead><tr><th>10-strategy portfolio</th><th class="num">Selection</th><th class="num">Validation</th></tr></thead><tbody><tr><td>Profit (after cost)</td><td class="num">+USD 70,078</td><td class="num">−USD 2,564</td></tr><tr><td>Maximum drawdown</td><td class="num">USD 4,723</td><td class="num">USD 5,532</td></tr></tbody></table></div>
+<p>Of the 10 strategies, 7 lost money in the validation period.</p>
+<p><strong>The signal was near 0 already in the selection period.</strong> Splitting each strategy in two parts makes it visible: the signal itself (the root), and the entry and exit rules added afterwards. The unit is volatility units per trade after cost, for 9 strategies (the tenth had only 15 trades in the validation period, too few, and is left out):</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Study 2: a SuperTrend strategy, from selection to validation (table)"><table class="data-table"><thead><tr><th></th><th class="num">Selection</th><th class="num">Validation</th></tr></thead><tbody><tr><td>Signal itself (range of 9)</td><td class="num">−0.04 to +0.01</td><td class="num">−0.06 to +0.02</td></tr><tr><td>Added by exits (mean of 9)</td><td class="num">+0.040</td><td class="num">+0.006</td></tr></tbody></table></div>
+<p>This conclusion does not rest on the 2026 loss alone. Even in the data used for selection, the signal itself was near 0: the SuperTrend state did not tell us whether the price would rise or fall next. Almost all the money made in the selection period came from the stop loss, take profit and trailing stop parameters, and those were chosen on the selection-period data. In a new year their contribution fell to about one seventh. The 2026 loss only made this visible.</p>
+<p><strong>What it can rule out.</strong> By design, this study’s mean returns cannot reveal an edge of plausible size: each cell had only 100 to 800 trades with large swings per trade, and reading an edge worth trading would need hundreds to tens of thousands. So it cannot prove that SuperTrend has no edge at all. What it can say is that the estimate for the signal itself is near 0 in both periods, and that the portfolio’s profit came from exit parameters chosen on the same data.</p>
+<p><strong>What this study shows.</strong> Tuning parameters and adding stops and targets really can make a backtest look very good, but when the signal itself holds nothing, the good-looking part is the parameters fitting that stretch of history. The control groups, neighbouring parameters and costs all passed and still could not prevent it, because they check whether the selection was careful, not whether the signal holds anything.</p>
+<h2 id="study-3-would-indicators-be-more-accurate-in-a-different-market-state">Study 3: would indicators be more accurate in a different market state?</h2>
+<p>Another common idea is that indicators do not work all the time and depend on the market state, for example “oscillators in ranges, moving averages in trends” or “signals are more accurate when volatility is high”.</p>
+<p><strong>What was tested.</strong> Each day is first labelled high or low volatility: the daily high-to-low range of the last 5 days relative to the 72-day mean, top third for high and bottom third for low. Then three things were tested:</p>
+<ol>
+<li><strong>Does the accuracy of indicator signals differ between high and low volatility?</strong> 10 built-in indicators × 1-hour and 4-hour bars on 6 stock indexes, about 250,000 trades. Of 20 comparisons, 1 showed a difference beyond what luck explains, and 1 in 20 by chance is exactly what randomness produces.</li>
+<li><strong>Daily rules: follow the trend in low volatility, go against it in high volatility.</strong> On 8 markets (NAS100, Nikkei, Hang Seng, FTSE 100, gold, euro, yen, crude oil) from 2018, each trade held for one day. Following the trend in low volatility was near 0 or negative in every market. Going against it in high volatility came close to the ceiling of luck in one setting only, with neighbouring settings failing: an isolated cell.</li>
+<li><strong>Intraday rules: same-day momentum continuation, gap fade.</strong> On three US indexes, none went beyond what luck explains.</li>
+</ol>
+<p>“What luck explains” is measured like this: shuffle the direction of the trades at random many times and see how good pure luck can get. A real result has to exceed that line to count.</p>
+<p><strong>What it can rule out.</strong> Calibrated with planted signals:</p>
+<ul>
+<li>Item 1: for 1-hour signals with many trades, an edge of about a 52.5% win rate is caught nine times in ten; 4-hour signals trade less and only rule out about 55% and above.</li>
+<li>Item 2: an edge of about 55% is almost always caught; about one in three is missed at 52.5%.</li>
+<li>Item 3: about three in four are caught at 55%; 52.5% is nearly invisible. The three US indexes move closely together, so the three add up to roughly one market.</li>
+</ul>
+<p><strong>What this study shows.</strong> Switching indicators by market state did not make them more accurate.</p>
+<h2 id="what-each-study-rules-out">What each study rules out</h2>
+<p>The numbers above side by side (win rates assume equal wins and losses). Edges smaller than those in the table cannot be judged; the limit-order step did not work out in advance how small an effect it could see, so it is left out:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="What each study rules out (table)"><table class="data-table"><thead><tr><th>Study</th><th>Ruled out</th></tr></thead><tbody><tr><td>Popular indicators: path</td><td>15+ point path differences</td></tr><tr><td>Popular indicators: 4-hour hold</td><td>54%+ (single), 57%+ (batch)</td></tr><tr><td>SuperTrend states</td><td>Only very large edges</td></tr><tr><td>Indicators by volatility</td><td>52.5%+ (1 hour), 55%+ (4 hours)</td></tr><tr><td>Daily rules</td><td>About 55% and up</td></tr><tr><td>Intraday rules</td><td>Most of 55%</td></tr></tbody></table></div>
+<p>So “nothing found” means very different things in different studies. At the strict end it rules out an edge above about 52.5%; at the loose end only very large edges. Smaller edges may exist, but with this data and these costs they can neither be proven nor easily traded.</p>
+<h2 id="four-reasons-behind-the-results">Four reasons behind the results</h2>
+<p>A strategy that decides direction from price alone at short horizons faces four structural difficulties.</p>
+<h3 id="reason-1-on-daily-bars-and-above-there-are-too-few-trades">Reason 1: on daily bars and above, there are too few trades</h3>
+<p>Back to the coin-flip table: a 52.5% win rate needs about 2,500 trades. Converted to years, by number of trades per year (again with equal wins and losses):</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Reason 1: on daily bars and above, there are too few trades (table)"><table class="data-table"><thead><tr><th>True win rate</th><th class="num">12 a year</th><th class="num">50 a year</th><th class="num">250 a year</th><th class="num">1,000 a year</th></tr></thead><tbody><tr><td>51%</td><td class="num">1,289 yr</td><td class="num">309 yr</td><td class="num">62 yr</td><td class="num">15 yr</td></tr><tr><td>52.5%</td><td class="num">206 yr</td><td class="num">49 yr</td><td class="num">10 yr</td><td class="num">2.5 yr</td></tr><tr><td>55%</td><td class="num">52 yr</td><td class="num">12 yr</td><td class="num">2.5 yr</td><td class="num">0.6 yr</td></tr></tbody></table></div>
+<p>Daily indicator strategies sit on the left of the table. The golden cross on daily bars appears once or twice a year; even on 1-hour bars it produced only 73 to 274 trades in eight years. A backtest of such a strategy can look excellent, because catching a few large moves is enough, but those few trades cannot be separated from luck. The data we have covers 4 to 8 years.</p>
+<p>This table is for a single market and a single strategy. Two things change it: the more parameters are tried, the higher the chance that one looks good by accident, and the years needed are multiplied by nearly three; in the other direction, reading many markets that do not move together multiplies the trades per year. The section on long-horizon trends uses the second point.</p>
+<h3 id="reason-2-at-short-horizons-cost-consumes-the-edge-you-need">Reason 2: at short horizons, cost consumes the edge you need</h3>
+<p>By the table above, more frequent trading proves itself sooner, so short-term trading should be the easier place. The problem is that the shorter the hold, the smaller each win or loss, while the round-trip cost (spread and commission) is the same on every trade.</p>
+<p>From the measurements of Study 1: at a four-hour hold, the swing of the result per trade is about 0.38 volatility units (about 114 points on NAS100). The round-trip cost on US100 is about 6 points, so each trade starts 0.02 units down. As a win rate, a four-hour strategy needs 52.6% to break even (with equal wins and losses). For shorter holds:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Reason 2: at short horizons, cost consumes the edge you need (table)"><table class="data-table"><thead><tr><th>Holding time</th><th class="num">Swing per trade (NAS100 points)</th><th class="num">Win rate to break even</th></tr></thead><tbody><tr><td>15 minutes</td><td class="num">about 28</td><td class="num">about 60%</td></tr><tr><td>1 hour</td><td class="num">about 57</td><td class="num">about 55%</td></tr><tr><td>4 hours (measured)</td><td class="num">about 114</td><td class="num">about 52.6%</td></tr><tr><td>1 day</td><td class="num">about 270</td><td class="num">about 51%</td></tr><tr><td>5 days</td><td class="num">about 610</td><td class="num">about 50.5%</td></tr></tbody></table></div>
+</div><div class="callout"><strong>Where this table comes from:</strong><p>Only the four-hour row is measured; the other rows assume the swing scales with the square root of holding time (a quarter of the time, half the swing). In reality volatility is uneven within a day: the 15-minute swing at the US open is larger than average, so the break-even win rate there is lower, and in quiet hours it is higher; see <a href="/en/posts/intraday-session-weighted-atr/">Should ATR be weighted by trading session?</a>. The cost is our estimate for US100 at one broker and differs by broker and instrument.</p></div>
+<div class="prose"><p>A 15-minute strategy needs, on average, a 60% win rate only to avoid losing. A 60% win rate is a very strong signal; if prices held a regularity that strong, computable with a public formula, it is hard to imagine it would still be there to trade.</p>
+<p>The two ends side by side:</p>
+<ul>
+<li><strong>Daily bars and above</strong>: cost matters little, but there are too few trades; on a single market it takes decades of data or more to tell skill from luck.</li>
+<li><strong>Under one hour</strong>: there are enough trades, but cost matters a great deal, and the win rate required is implausibly high.</li>
+<li><strong>In between (holding a few hours)</strong>: hundreds of trades a year and a moderate cost; breaking even already takes a good signal, and none of the signals we tested reaches that.</li>
+</ul>
+<p>Study 1 sits in the middle: enough trades to reveal a 15-point path difference, while the extra the signals offer is a few points to a dozen, about the size of the cost.</p>
+<h3 id="reason-3-a-regularity-nobody-can-explain-is-hard-to-trust">Reason 3: a regularity nobody can explain is hard to trust</h3>
+<p>Many short-term strategies say they capture “short-term market fluctuations”. If those fluctuations are just noise, random swings without a cause, then a regularity found in them has no reason to appear again in the next stretch of time.</p>
+<p>A cause is not a precondition for a regularity to exist; regularities can be found first and explained later. But a cause is the main reason to believe a regularity will carry on in data not yet seen. The cause can also sit inside prices: if markets underreact to news, price trends persist, and long-horizon momentum is often explained this way.</p>
+<p>The short-horizon indicator signals we tested are hard because two things hold at once. First, nobody can say who trades this way at this moment, or why. Second, they have the most parameters to choose from: try 12 parameter sets, 5 stop losses and 5 take profits and there are 300 combinations, a few of which are bound to look especially good on this stretch of history. With no cause and many combinations to pick from, what gets picked is mostly the shape of that history. That is what Study 2 measured.</p>
+<p>The academic record has the same example. Brock, Lakonishok and LeBaron (1992) found that simple moving average and breakout rules on the Dow worked from 1897 to 1986; Sullivan, Timmermann and White (1999) corrected for the bias of picking the best of many rules and looked at data after 1987, and the best rule did not persist.</p>
+<h3 id="reason-4-the-markets-rise-looks-like-an-edge">Reason 4: the market’s rise looks like an edge</h3>
+<p>In Study 1, 53 of the 68 long strategies made money and only 22 of the 68 short ones. Long signals are not more accurate; the index was rising. Any long rule takes a share of the rise, and the backtest looks as if the strategy works.</p>
+<p>There is one way to tell: compare with simply holding for the same time. After that comparison, exactly half win.</p>
+<h2 id="where-price-alone-does-have-evidence-long-horizon-trends-across-many-markets">Where price alone does have evidence: long-horizon trends across many markets</h2>
+<p>The academic literature has one kind of price-only directional strategy with solid evidence: time-series momentum, usually called trend following. The idea is simple: if a market rose over the past year, go long; if it fell, go short; hold for about a month, then decide again. Moskowitz, Ooi and Pedersen (2012) found the effect across dozens of futures on stock indexes, bonds, currencies and commodities; Hurst, Ooi and Pedersen (2017) extended the data back to 1880 and found it positive on average in every decade.</p>
+<p>This does not contradict the conclusion of this post; Reason 1 explains it:</p>
+<ul>
+<li><strong>The horizon is months, not hours</strong>: each market trades a dozen times a year. By the table in Reason 1, even a “very strong” 55% win rate takes about 52 years to read on a single market.</li>
+<li><strong>It is proven through breadth and length</strong>: dozens of markets that do not move together multiply the effective trades per year many times over, on top of more than a century of data.</li>
+<li><strong>Our data cannot do that</strong>: our instruments are a few closely correlated stock index CFDs plus gold over 4 to 8 years, and the daily rules we tested held for one day, not a month. So we have not tested this kind of strategy, and the conclusion of this post does not cover it.</li>
+</ul>
+<p>This research has its own limits. The historical performance is that of a portfolio of many markets; single markets and single decades swing widely, and futures rolls, costs and real execution have to be subtracted. What it shows is that price alone is not necessarily without directional information, not that any trend rule makes money.</p>
+<h2 id="what-price-data-does-forecast-the-size-of-volatility">What price data does forecast: the size of volatility</h2>
+<p>What price data forecasts reliably is the size of volatility. The high-volatility label from Study 3: after a day is labelled high volatility, the daily high-to-low range over the next 5 trading days is 27.7% larger on average for four US indexes and 39.3% larger for gold. In 2026, which took no part in the selection, the figures are 31% and 71%, and the pattern holds.</p>
+<p>In other words, when recent moves have been large, the next ones usually are too. There is a cause that can be stated (news and uncertainty are not digested in a day), and it holds on unseen data. But it forecasts how much the price will move, not which way. So this is how we use technical indicators:</p>
+<ul>
+<li><strong>Setting distances</strong> (used): stop loss and take profit placed a multiple of the daily range away.</li>
+<li><strong>Sizing</strong> (used): smaller positions when volatility is high, so each trade carries similar risk.</li>
+<li><strong>Describing states</strong> (used): reports show performance separately for high and low volatility.</li>
+<li><strong>Deciding direction</strong> (not used at short horizons): buying or selling when an indicator gives a signal.</li>
+</ul>
+<h2 id="for-contrast-ideas-with-a-cause-are-just-as-hard">For contrast: ideas with a cause are just as hard</h2>
+<p>Over the same period we also tested 45 ideas that do not start from a price pattern. Their basis is that someone has to trade at a known time: option expiration, funds adjusting positions at month end, fixing windows in gold and currencies, changes in index membership.</p>
+<p>One of the 45 held: on monthly option expiration day, short NAS100 at the US open and hold for one hour; see <a href="/en/posts/nas100-opex-day-short/">Shorting NAS100 at the open on option expiration day</a>. Its information comes from the calendar; no bar shows that today is expiration day.</p>
+<p>It has limits too. The window was first found in a scan of the same data, so it is a post hoc finding, and the 2026 reading was made with its direction already known. So it is not yet a signal proposed in advance and then validated, its margin after cost is thin, and its record after the rules were fixed is still accumulating.</p>
+<p>What the contrast shows is that ideas with a cause are a better use of time, but they have to pass the same tests; only 1 of 45 remained, and it was found after the fact, so the bar is high to begin with.</p>
+<h2 id="how-to-check-an-indicator-backtest-yourself">How to check an indicator backtest yourself</h2>
+<p>Faced with any technical indicator strategy whose backtest looks great, ask these six questions:</p>
+<ol>
+<li><strong>How many trades in total?</strong> Below a few hundred, even an impressive win rate may be luck. Compare with the coin-flip table above.</li>
+<li><strong>How many parameter sets were tried?</strong> Being shown only the best one is like picking, from many coins, the one that happened to land heads several times in a row.</li>
+<li><strong>Is there a stretch of data read only after the rules were fixed?</strong> If not, the whole backtest is a selection period, and looking good is expected.</li>
+<li><strong>Was it compared with simply holding?</strong> A long strategy makes money in a rising market without any signal.</li>
+<li><strong>Are costs subtracted? How much does the average trade make?</strong> If the average trade makes about as much as the spread, live trading is likely negative.</li>
+<li><strong>Can anyone say why it might continue?</strong> No stated cause does not mean there is none, but then unseen data matters all the more.</li>
+</ol>
+<p>The 10-strategy SuperTrend portfolio had good answers to questions 1, 2, 4 and 5; the answer to question 3 was a loss, and looking back, question 6 never had an answer.</p>
+<h2 id="what-this-means-for-our-research-direction">What this means for our research direction</h2>
+<ol>
+<li><strong>Research where a price indicator alone decides direction, at short horizons on a few correlated markets, is paused.</strong> Holding from minutes to days on a few markets that move together, our data and costs cannot reveal an edge of plausible size. That is a limit of our data, not a verdict on every price signal.</li>
+<li><strong>Long-horizon trends are a separate question.</strong> Trend following measured in months needs many low-correlation markets and long data; to study it, first assemble that data, then use Reason 1 to work out whether it can be read.</li>
+<li><strong>New ideas look first for information beyond price, or a cause that can be stated.</strong> The calendar, cross-market flows and the state of other instruments all stand a better chance than another calculation on the same prices, and they face the same tests.</li>
+<li><strong>Before starting, work out whether the answer can be told apart.</strong> From the rough number of trades a year and the plausible size of the edge, estimate the years needed; if it cannot be told apart, do not start.</li>
+<li><strong>When nothing is found, say what has been ruled out.</strong> Each study states its own range, as in the table above.</li>
+</ol>
+<h2 id="further-reading">Further reading</h2>
+<ul>
+<li>Brock, Lakonishok &amp; LeBaron (1992), <a href="https://doi.org/10.1111/j.1540-6261.1992.tb04681.x">Simple Technical Trading Rules and the Stochastic Properties of Stock Returns</a>, <em>The Journal of Finance</em>.</li>
+<li>Sullivan, Timmermann &amp; White (1999), <a href="https://doi.org/10.1111/0022-1082.00163">Data-Snooping, Technical Trading Rule Performance, and the Bootstrap</a>, <em>The Journal of Finance</em>.</li>
+<li>Park &amp; Irwin (2007), <a href="https://doi.org/10.1111/j.1467-6419.2007.00519.x">What Do We Know About the Profitability of Technical Analysis?</a>, <em>Journal of Economic Surveys</em>.</li>
+<li>Moskowitz, Ooi &amp; Pedersen (2012), <a href="https://doi.org/10.1016/j.jfineco.2011.11.003">Time Series Momentum</a>, <em>Journal of Financial Economics</em>.</li>
+<li>Hurst, Ooi &amp; Pedersen (2017), <a href="https://doi.org/10.3905/jpm.2017.44.1.015">A Century of Evidence on Trend-Following Investing</a>, <em>The Journal of Portfolio Management</em>.</li>
+<li>Bailey, Borwein, López de Prado &amp; Zhu (2017), <a href="https://doi.org/10.21314/JCF.2016.322">The Probability of Backtest Overfitting</a>, <em>Journal of Computational Finance</em>.</li>
+</ul>
+</div><div class="callout callout--warning"><strong>Limitations of this post:</strong><p>The instruments tested are CFDs on stock indexes and gold, from 2018 to 2026, with holds from minutes to days; single stocks, crypto, exchange-traded futures and holds measured in months were not tested. Volume on a CFD is the broker’s count of price updates, not actual exchange volume, so volume-driven indicators such as OBV, VWAP and Volume Profile are not on the tested list. Nor did we test using several indicators as inputs to a model. Every statement about win rate assumes wins and losses of equal size, and the figures in the tables illustrate orders of magnitude. Every conclusion is limited by the number of trades, and each study rules out a different range; see “What each study rules out”. These are backtests, not live trading records, and not investment advice.</p></div>
+<section class="question-section" aria-labelledby="goals-title"><h2 class="question-section-title" id="goals-title">Questions this study answers</h2><div class="question-item"><h3 class="question-item-title">Can technical indicators computed only from price predict direction?</h3><div class="question-item-answer"><p>Not within what we tested: holds from minutes to days, CFDs on stock indexes and gold, 2018 to 2026. The default signals of 34 popular indicators, 768 SuperTrend candidate strategies, 10 indicator signals under high and low volatility, and daily and intraday price rules: none held up after control groups, the comparison with simply holding and a validation period. What can be ruled out is an edge above roughly a 52.5% to 57% win rate, depending on the study. Trend following measured in months across dozens of markets has positive academic evidence, and we did not test it.</p></div></div><div class="question-item"><h3 class="question-item-title">Why are both daily strategies and short-term strategies hard to prove?</h3><div class="question-item-answer"><p>For different reasons. Strategies on daily bars and above trade too rarely: at 12 to 50 trades a year, a good signal with a 52.5% win rate needs 49 to 206 years of data on a single market to tell skill from luck. Strategies under one hour have enough trades, but each win or loss is small and cost is fixed: at a 15-minute hold, breaking even takes a win rate of roughly 60% on average.</p></div></div><div class="question-item"><h3 class="question-item-title">What are technical indicators still good for?</h3><div class="question-item-answer"><p>Measuring volatility. When recent moves have been large, the next ones usually are too, in the selection period and in 2026 alike. So we use the daily range to set stop loss and take profit distances and position size.</p></div></div></section>
+<section class="question-section" aria-labelledby="arising-title"><h2 class="question-section-title" id="arising-title">Questions raised along the way</h2><div class="question-item"><h3 class="question-item-title">The backtest makes money. Why is that not evidence?</h3><div class="question-item-answer"><p>Three common sources make a strategy without an edge profitable in a backtest: choosing parameters on the same history, long strategies taking a share of the market’s rise, and the luck of a few large moves when trades are few. The ways to tell are to read unseen data after the rules are fixed, to compare with simply holding, and to check first whether there are enough trades. The 10-strategy SuperTrend portfolio made money in the selection period, but its signal was near 0 even there, and it lost in the validation period.</p></div></div><div class="question-item"><h3 class="question-item-title">Trend following also uses only price. Why does it have evidence?</h3><div class="question-item-answer"><p>Because its horizon is months, and it is read across dozens of markets that do not move together, over more than a century of data. A single market makes only a dozen trades a year and cannot be read; many markets together multiply the effective trades many times over. That is the other side of Reason 1: with price alone, how strong the evidence is depends on the number of trades, the breadth of markets and the length of the data.</p></div></div><div class="question-item"><h3 class="question-item-title">Would combining many indicators work?</h3><div class="question-item-answer"><p>We have not tested it. Used as inputs to a model, indicators sometimes make structure easier to learn than raw prices do. But indicators computed from the same prices are very similar to each other (MACD, for example, is the difference between two moving averages), and the more combinations there are, the more there is to pick from. So this kind of research needs its procedure fixed in advance and a test on unseen data all the more.</p></div></div><div class="question-item"><h3 class="question-item-title">Then what kind of signal stands a better chance?</h3><div class="question-item-answer"><p>One with a cause that can be stated and that persists. Of the 45 such ideas we tested, the one that held is shorting NAS100 at the open on option expiration day; its basis is the adjustment of hedging positions at expiration, and its information comes from the calendar. But it was found after the fact, its margin after cost is thin, it trades once a month, and its record after the rules were fixed is still accumulating.</p></div></div><div class="question-item"><h3 class="question-item-title">Would longer data or more instruments solve the problem of too few trades?</h3><div class="question-item-answer"><p>Yes, provided the instruments do not move together, which is why the trend-following research works. The US indexes rise and fall almost in step, so adding them counts one instrument several times. Reaching further back has a price too: market structure, trading costs and participants were different a decade or more ago, and the older the data, the less it represents today.</p></div></div></section><div class="section-head"><h2 id="method">Method and data</h2></div><p class="section-lead">Research setup, data and calculations; the identifiers needed to reproduce the study are under data sources.</p><div class="appendix"><div style="display:contents"><h3>Changelog</h3><div>2026-11-17 16:45 first published</div></div></div><div class="wide"><section class="related"><h2 class="related-title">Related research</h2><div class="related-grid"><a class="card card-interactive post-card" href="/en/posts/fx-fixing-window-gotobi-london/"><div class="article-cover" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div><div class="post-card__body"><span class="eyebrow">USDJPY · EURUSD · SuperTrend</span><h3 class="post-card__title">Structural flows at FX fixings: the Gotobi Tokyo fix and the month-end London fix. The cause is known, but is there enough room?</h3><span class="post-card__excerpt">The Gotobi Tokyo fix and the month-end London fix are among the few FX events where the cause is known in advance: who has to convert, when, and in which direction are set by institutional rules. On each pair&#x27;s local clock we entered at a fixed time before the fix and exited at fixed times after it, and compared event days with non-event days of the same weekday, 2018 to 2025. The rise before the Gotobi fix is at most about 1 pip and has almost vanished since 2022; the fall after the fix averages about 3 pips but sits in a few years and at month end; the month-end London fix does bring larger moves, but in the opposite direction to the theory; and a SuperTrend direction filter adds nothing. This post explains the mechanism, how we tested it, what we saw, and why knowing the cause is not enough.</span><span class="post-card__meta"><span>2026-11-19 19:46</span><span>12 min read</span></span></div></a><a class="card card-interactive post-card" href="/en/posts/intraday-session-weighted-atr/"><div class="article-cover" style="--c1:var(--chart-4);--c2:var(--chart-2)"></div><div class="post-card__body"><span class="eyebrow">NAS100 · ATR · SuperTrend</span><h3 class="post-card__title">Intraday volatility follows a fixed cycle: should ATR be weighted by trading session?</h3><span class="post-card__excerpt">Index volatility follows a fixed cycle within the day: largest at the US open, smallest in the Asian night. This post tests on NAS100 whether weighting the daily ATR by trading session brings the unit closer to the volatility the market actually shows. The answer depends on the horizon of the decision. Within a day, the weighted scale cuts the error of describing volatility by more than 30%; over multi-day holds the weights average back to 1 and the scale is the daily ATR. The post explains why, and how to compute the unit for intraday strategies.</span><span class="post-card__meta"><span>2026-11-04 16:17</span><span>12 min read</span></span></div></a><article class="card card-interactive post-card post-card--actions"><div class="article-cover" style="--c1:var(--chart-1);--c2:var(--chart-2);--c3:var(--chart-4)"><span class="cover-figure"><span class="cover-figure__label">8 parameter sets · Total return above 0</span><span class="cover-figure__value">8 / 8</span><svg class="sparkline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path class="sparkline__area" d="M0.00 2.00L14.29 33.00L28.57 40.76L42.86 40.78L57.14 42.15L71.43 68.54L85.71 68.91L100.00 70.08L100 100L0 100Z"></path><path class="sparkline__zero" d="M0 98.00H100"></path><path class="sparkline__line" d="M0.00 2.00L14.29 33.00L28.57 40.76L42.86 40.78L57.14 42.15L71.43 68.54L85.71 68.91L100.00 70.08"></path></svg></span></div><div class="post-card__body"><span class="eyebrow">US100.cash · NAS100 · Option expiration · 8 parameter sets · 538 trades</span><h3 class="post-card__title"><a class="post-card__link" href="/en/posts/nas100-opex-day-short/">Shorting NAS100 at the open on option expiration day: the only one of 45 hypotheses that held</a></h3><span class="post-card__excerpt">Two rounds of pre-registered structural-flow hypotheses on US index CFDs (45 in all: closing rebalancing, month end, FOMC, earnings nights, fixing times, rebalance days) left one signal standing at the family level: shorting NAS100 at 09:30 New York on monthly option expiration day for one hour, a window first found in an earlier scan of the same data and therefore labelled post hoc. This post records the base signal on Pepperstone NAS100 since 2018 and FTMO US100 since 2022, the delayed entry, the stop and the take profit that followed, the cost, the sizing, and the one read of 2026.</span><span class="post-card__meta"><span>2026-10-28 20:00</span><span>8 min read</span></span><div class="post-card__actions"><a class="btn btn-secondary btn-sm" href="/en/posts/nas100-opex-day-short/">Read article</a><a class="btn btn-ghost btn-sm" href="/en/posts/nas100-opex-day-short/?view=report">View report</a></div></div></article></div></section></div><!-- island 外層加 div：astro-island 為 display: contents，否則引用區塊會被排進格線的側欄 --><div><script>(()=>{var a=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value=="object"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let l of e)if(l.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=a;window.dispatchEvent(new Event("astro:visible"));})();</script><astro-island uid="Z1wtHWr" prefix="r14" component-url="/_astro/index.DKisFm5J.js" component-export="Citation" renderer-url="/_astro/client.Dda4loRL.js" props="{&quot;title&quot;:[0,&quot;Cite this article&quot;],&quot;copyLabels&quot;:[0,{&quot;copy&quot;:[0,&quot;Copy&quot;],&quot;copied&quot;:[0,&quot;Copied&quot;],&quot;failed&quot;:[0,&quot;Couldn&#39;t copy&quot;]}],&quot;text&quot;:[0,&quot;TradePose Research (2026). \&quot;Why price-only technical indicators are so hard to prove at short horizons: what we tested and what we learned.\&quot; TradePose Research Notes.&quot;],&quot;bibtex&quot;:[0,&quot;@article{tradepose2026ohlcvindicatorstrategylimits,\n  title   = {Why price-only technical indicators are so hard to prove at short horizons: what we tested and what we learned},\n  author  = {TradePose Research},\n  journal = {TradePose Research Notes},\n  year    = {2026}\n}&quot;]}" ssr client="visible" opts="{&quot;name&quot;:&quot;Citation&quot;,&quot;value&quot;:true}" await-children><div class="citation"><div class="citation-title">Cite this article</div><p class="citation-text">TradePose Research (2026). &quot;Why price-only technical indicators are so hard to prove at short horizons: what we tested and what we learned.&quot; TradePose Research Notes.</p><div class="citation-code">@article{tradepose2026ohlcvindicatorstrategylimits,
+  title   = {Why price-only technical indicators are so hard to prove at short horizons: what we tested and what we learned},
+  author  = {TradePose Research},
+  journal = {TradePose Research Notes},
+  year    = {2026}
+}<button type="button" class="btn btn-secondary btn-sm">Copy</button></div></div><!--astro:end--></astro-island></div></div></main><footer class="site-footer"><div class="container"><div class="site-footer__grid"><div class="site-footer__brand"><span class="site-brand"><span class="site-brand__mark" aria-hidden="true"></span>TradePose</span><p class="site-footer__tagline">Quantitative research notes: backtests, statistics and strategy diagnostics. Every number comes from the backtest statistics published with the article.</p></div><div><h2 class="site-footer__title">Research</h2><ul><li><a href="/en/#research">Research index</a></li><li><a href="/en/#method">Data and methodology</a></li><li><a href="/en/rss.xml">RSS</a></li></ul></div></div><div class="site-footer__legal"><span>© 2026 TradePose</span><span>Research is not investment advice</span></div></div></footer><script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.BflPKFW9.js"></script></body></html>
